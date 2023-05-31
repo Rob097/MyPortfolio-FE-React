@@ -1,0 +1,45 @@
+{
+  "name": "micro-frontends-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:all": "concurrently \"cd libs/context && npm start\" \"cd apps/header && npm start\" \"cd apps/dashboard && npm start\" \"cd apps/host && npm start\"",
+    "start:dashboard": "concurrently \"cd apps/dashboard && npm start\"",
+    "start:context": "concurrently \"cd libs/context && npm start\"",
+    "start:header": "concurrently \"cd apps/header && npm start\"",
+    "start:host": "concurrently \"cd apps/host && npm start\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "autoprefixer": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^8.0.1",
+    "css-loader": "^6.3.0",
+    "html-webpack-plugin": "^5.3.2",
+    "postcss": "^8.2.1",
+    "postcss-loader": "^4.1.0",
+    "style-loader": "^3.3.0",
+    "tailwindcss": "^3.3.2",
+    "webpack": "^5.57.1",
+    "webpack-cli": "^4.9.0",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "prettier": "^2.7.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
