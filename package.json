@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:all": "concurrently \"cd libs/context && npm start\" \"cd apps/header && npm start\" \"cd apps/dashboard && npm start\" \"cd apps/host && npm start\"",
+    "start:all": "concurrently \"cd shared/context && npm start\" \"cd apps/header && npm start\" \"cd apps/dashboard && npm start\" \"cd apps/host && npm start\"",
     "start:dashboard": "concurrently \"cd apps/dashboard && npm start\"",
-    "start:context": "concurrently \"cd libs/context && npm start\"",
+    "start:context": "concurrently \"cd shared/context && npm start\"",
     "start:header": "concurrently \"cd apps/header && npm start\"",
     "start:host": "concurrently \"cd apps/host && npm start\""
   },
