@@ -11,18 +11,18 @@ module.exports = (_, argv) => {
 
   return {
     output: {
-      publicPath: "http://localhost:3001/",
+      publicPath: "http://localhost:4201/",
     },
 
     resolve: {
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
       alias: {
-        '@common-lib': path.resolve(__dirname, '../../shared/common')
+        '@common-lib': path.resolve(__dirname, '../../shared/common'),
       },
     },
 
     devServer: {
-      port: 3001,
+      port: 4201,
       historyApiFallback: true,
     },
 
@@ -51,15 +51,12 @@ module.exports = (_, argv) => {
 
     plugins: [
       new ModuleFederationPlugin({
-        name: "host",
+        name: "auth",
         filename: "remoteEntry.js",
-        remotes: {
-          header: `header@http://localhost:3002/remoteEntry.js`,
-          dashboard: `dashboard@http://localhost:3003/remoteEntry.js`,
-          context: `context@http://localhost:3004/remoteEntry.js`,
-          auth: `auth@http://localhost:4201/remoteEntry.js`,
+        remotes: {},
+        exposes: {
+          "./Auth": "./src/Auth",
         },
-        exposes: {},
         shared: {
           ...deps,
           react: {
@@ -69,8 +66,8 @@ module.exports = (_, argv) => {
           "react-dom": {
             singleton: true,
             requiredVersion: deps["react-dom"],
-          }
-        }
+          },
+        },
       }),
       new HtmlWebPackPlugin({
         template: "./src/index.html",

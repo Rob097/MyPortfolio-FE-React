@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { createContext, useContext, useReducer } from "react";
 
 const initialState = { count: 0 };
 
@@ -13,10 +13,10 @@ function reducer(state, action) {
   }
 }
 
-export const AppContext = React.createContext();
+export const AppContext = createContext();
 
 export const StoreProvider = ({ children }) => {
-  const value = React.useReducer(reducer, initialState);
+  const value = useReducer(reducer, initialState);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
