@@ -8,7 +8,7 @@ import RemoteHeader from "header/Header";
 import { Suspense } from "react";
 import { createRoot } from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
-import "./index.css";
+import "./index.scss";
 
 const App = () => {
   const [store, dispatch] = useStore();

@@ -3,6 +3,8 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const path = require('path');
 const deps = require("./package.json").dependencies;
 const devDeps = require("./package.json").devDependencies;
+const parentDeps = require("../../package.json").dependencies;
+const parentDevDeps = require("../../package.json").devDependencies;
 const webpack = require('webpack');
 const getEnvKeys = require('../../shared/common/environments/utils.js');
 
@@ -74,17 +76,19 @@ module.exports = (_, argv) => {
           "./ErrorHandler": "./src/ErrorHandler"
         },
         shared: {
+          ...parentDeps,
+          ...parentDevDeps,
           ...deps,
           ...devDeps,
           react: {
             eager: true,
             singleton: true,
-            requiredVersion: deps.react,
+            requiredVersion: parentDeps.react,
           },
           "react-dom": {
             eager: true,
             singleton: true,
-            requiredVersion: deps["react-dom"],
+            requiredVersion: parentDeps["react-dom"],
           }
         }
       }),
