@@ -1,5 +1,5 @@
 import "@common-lib/styles.scss";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import Auth from "./Auth";
 import "./styles/index.scss";
 
@@ -9,10 +9,11 @@ const App = () => {
     <>
       <h2>This is Auth App.js</h2>
       <p>
-        {process.env.REACT_APP_BASE_URL} <code>src/App.js</code> and save               to reload.
+        {process.env.REACT_APP_BASE_URL} <code>src/App.js</code> and save to reload.
       </p>
       <Auth />
     </>
   )
 };
-ReactDOM.render(<App />, document.getElementById("app"));
+const root = createRoot(document.getElementById("app"));
+root.render(<App />);

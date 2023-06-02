@@ -2,6 +2,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
 const deps = require("./package.json").dependencies;
+const devDeps = require("./package.json").devDependencies;
 const webpack = require('webpack');
 const getEnvKeys = require('../../shared/common/environments/utils.js');
 
@@ -11,7 +12,7 @@ module.exports = (_, argv) => {
 
   return {
     output: {
-      publicPath: "http://localhost:3004/",
+      publicPath: "http://localhost:4201/",
     },
 
     resolve: {
@@ -22,8 +23,22 @@ module.exports = (_, argv) => {
     },
 
     devServer: {
-      port: 3004,
+      port: 4201,
       historyApiFallback: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      }
+    },
+
+    optimization: {
+      runtimeChunk: false
+    },
+
+    performance: {
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
     },
 
     module: {
@@ -60,11 +75,14 @@ module.exports = (_, argv) => {
         },
         shared: {
           ...deps,
+          ...devDeps,
           react: {
+            eager: true,
             singleton: true,
             requiredVersion: deps.react,
           },
           "react-dom": {
+            eager: true,
             singleton: true,
             requiredVersion: deps["react-dom"],
           }

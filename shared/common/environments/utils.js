@@ -20,7 +20,12 @@ module.exports = function getEnvironmentKeys(environment) {
 
     // reduce it to a nice object, the same as before
     const envKeys = Object.keys(fileEnv).reduce((prev, next) => {
-        prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
+        prev[`process.env.${next}`] = fileEnv[next];
+        if (fileEnv[next] === 'true' || fileEnv[next] === 'false') {
+            prev[`process.env.${next}`] = fileEnv[next] === 'true';
+        } else {
+            prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
+        }
         return prev;
     }, {});
 

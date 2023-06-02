@@ -2,6 +2,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
 const deps = require("./package.json").dependencies;
+const devDeps = require("./package.json").devDependencies;
 const webpack = require('webpack');
 const getEnvKeys = require('../../shared/common/environments/utils.js');
 
@@ -24,6 +25,20 @@ module.exports = (_, argv) => {
     devServer: {
       port: 3001,
       historyApiFallback: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      }
+    },
+
+    optimization: {
+      runtimeChunk: false
+    },
+
+    performance: {
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
     },
 
     module: {
@@ -54,19 +69,22 @@ module.exports = (_, argv) => {
         name: "host",
         filename: "remoteEntry.js",
         remotes: {
-          header: `header@http://localhost:3002/remoteEntry.js`,
-          dashboard: `dashboard@http://localhost:3003/remoteEntry.js`,
-          context: `context@http://localhost:3004/remoteEntry.js`,
-          auth: `auth@http://localhost:4201/remoteEntry.js`,
+          auth: `auth@http://localhost:3002/remoteEntry.js`,
+          header: `header@http://localhost:3003/remoteEntry.js`,
+          dashboard: `dashboard@http://localhost:3004/remoteEntry.js`,
+          context: `context@http://localhost:4201/remoteEntry.js`,
         },
         exposes: {},
         shared: {
           ...deps,
+          ...devDeps,
           react: {
+            eager: true,
             singleton: true,
             requiredVersion: deps.react,
           },
           "react-dom": {
+            eager: true,
             singleton: true,
             requiredVersion: deps["react-dom"],
           }
