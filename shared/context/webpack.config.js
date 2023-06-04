@@ -73,7 +73,8 @@ module.exports = (_, argv) => {
         remotes: {},
         exposes: {
           "./Store": "./src/Store",
-          "./ErrorHandler": "./src/ErrorHandler"
+          "./ErrorHandler": "./src/ErrorHandler",
+          "./ErrorPage": "./src/pages/ErrorPage"
         },
         shared: {
           ...parentDeps,
