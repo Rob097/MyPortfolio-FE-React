@@ -35,7 +35,7 @@ module.exports = (_, argv) => {
     },
 
     optimization: {
-      runtimeChunk: false
+      runtimeChunk: envKeys['process.env.REACT_RUNTIME_CHUNK']
     },
 
     performance: {
