@@ -4,27 +4,16 @@ import { StoreProvider } from "context/Store";
 import { Suspense } from "react";
 import { createRoot } from 'react-dom/client';
 import {
-  BrowserRouter,
-  Routes,
-  Route
+  RouterProvider
 } from "react-router-dom";
-import { HostRoutes, authRoutes } from "./Routes";
+import Router from "./Routes";
 import "./index.scss";
 
 export const App = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loadingwwwwwwww...</div>}>
       <StoreProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="">
-              {HostRoutes}
-            </Route>
-            <Route path="/auth">
-              {authRoutes}
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={Router} />
       </StoreProvider>
     </Suspense>
   );

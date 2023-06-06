@@ -1,20 +1,15 @@
 import "@common-lib/styles.scss";
 import { createRoot } from 'react-dom/client';
 import {
-  BrowserRouter,
-  Routes
+  RouterProvider
 } from "react-router-dom";
-import { AuthRoutes } from "./Routes";
+import Router from "./Routes";
 import "./styles/index.scss";
 
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {AuthRoutes}
-      </Routes>
-    </BrowserRouter>
+    <RouterProvider router={Router} />
   )
 };
 const root = createRoot(document.getElementById("app"));

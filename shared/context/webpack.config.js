@@ -63,6 +63,11 @@ module.exports = (_, argv) => {
             loader: "babel-loader",
           },
         },
+        {
+          test: /\.m?js$/,
+          enforce: 'pre',
+          use: ['source-map-loader'],
+        },
       ],
     },
 
@@ -74,7 +79,7 @@ module.exports = (_, argv) => {
         exposes: {
           "./Store": "./src/Store",
           "./ErrorHandler": "./src/ErrorHandler",
-          "./ErrorPage": "./src/pages/ErrorPage"
+          "./ErrorPages": "./src/pages/ErrorPages"
         },
         shared: {
           ...parentDeps,

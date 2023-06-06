@@ -1,10 +1,24 @@
-import { Route } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/Home";
 import Login from "./pages/Login";
+import { ErrorPage, PageNotFound } from "context/ErrorPages";
 
-export const PrivateAuthRoutes = [
-        <Route key="auth-home" path="" element={<HomePage></HomePage>} private={true} />,
-        <Route key="auth-login" path="login" element={<Login />} />
-];
+const Router = createBrowserRouter([
+        {
+                path: "/",
+                element: <HomePage />,
+                errorElement: <ErrorPage />
+        },
+        {
+                path: "/login",
+                element: <Login />,
+                errorElement: <ErrorPage />
 
-export const AuthRoutes = PrivateAuthRoutes.filter(route => !route.props.private);
+        },
+        {
+                path: "*",
+                element: <PageNotFound />
+        }
+]);
+
+export default Router;

@@ -63,6 +63,11 @@ module.exports = (_, argv) => {
             loader: "babel-loader",
           },
         },
+        {
+          test: /\.m?js$/,
+          enforce: 'pre',
+          use: ['source-map-loader'],
+        },
       ],
     },
 
@@ -74,7 +79,7 @@ module.exports = (_, argv) => {
           context: `context@http://localhost:4201/remoteEntry.js`
         },
         exposes: {
-          "./AuthRoutes": "./src/Routes"
+          "./Login": "./src/pages/Login"
         },
         shared: {
           ...parentDeps,
