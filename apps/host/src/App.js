@@ -5,21 +5,24 @@ import { Suspense } from "react";
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
-  Routes
+  Routes,
+  Route
 } from "react-router-dom";
-import HostRoutes from "./Routes";
+import { HostRoutes, authRoutes } from "./Routes";
 import "./index.scss";
 
 export const App = () => {
-
-
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <StoreProvider>
         <BrowserRouter>
           <Routes>
-            {HostRoutes}
+            <Route path="">
+              {HostRoutes}
+            </Route>
+            <Route path="/auth">
+              {authRoutes}
+            </Route>
           </Routes>
         </BrowserRouter>
       </StoreProvider>

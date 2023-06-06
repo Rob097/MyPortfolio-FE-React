@@ -1,12 +1,11 @@
 import "@common-lib/styles.scss";
 import { createRoot } from 'react-dom/client';
-import AuthRoutes from "./Routes";
-import "./styles/index.scss";
 import {
   BrowserRouter,
-  Routes,
-  Route
+  Routes
 } from "react-router-dom";
+import { AuthRoutes } from "./Routes";
+import "./styles/index.scss";
 
 
 const App = () => {

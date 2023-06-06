@@ -1,12 +1,15 @@
-import HostHomePage from "./pages/HostHomePage";
 import { Route } from "react-router-dom";
-import React, { Suspense } from "react";
+import HostHomePage from "./pages/HostHomePage";
+const { AuthRoutes } = await import('auth/AuthRoutes');
 
-const Login = React.lazy(() => import('auth/Login'));
+export const authRoutes = AuthRoutes.map((route) => (
+    <Route
+        key={route.props.key}
+        path={route.props.path}
+        element={route.props.element}
+    />
+))
 
-const HostRoutes = [
-    <Route path="/" element={<Suspense fallback="loading..."><HostHomePage /></Suspense>}></Route>,
-    <Route path="/auth/login" element={<Suspense fallback="loading..."><Login /></Suspense>} />
+export const HostRoutes = [
+    <Route path="/" element={<HostHomePage />}></Route>
 ];
-
-export default HostRoutes;

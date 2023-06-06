@@ -74,7 +74,7 @@ module.exports = (_, argv) => {
           context: `context@http://localhost:4201/remoteEntry.js`
         },
         exposes: {
-          "./Login": "./src/pages/Login",
+          "./AuthRoutes": "./src/Routes"
         },
         shared: {
           ...parentDeps,
