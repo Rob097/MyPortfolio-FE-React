@@ -68,6 +68,11 @@ module.exports = (_, argv) => {
           enforce: 'pre',
           use: ['source-map-loader'],
         },
+        {
+          test: /\.json$/,
+          exclude: /(node_modules)/,
+          loader: "json-loader"
+        }
       ],
     },
 

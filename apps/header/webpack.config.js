@@ -65,6 +65,11 @@ module.exports = (_, argv) => {
           enforce: 'pre',
           use: ['source-map-loader'],
         },
+        {
+          test: /\.json$/,
+          exclude: /(node_modules)/,
+          loader: "json-loader"
+        }
       ],
     },
 
@@ -76,6 +81,7 @@ module.exports = (_, argv) => {
         exposes: {
           "./App": "./src/App",
           "./Header": "./src/Header",
+          "./i18n": "./assets/i18n/i18n"
         },
         shared: {
           ...parentDeps,

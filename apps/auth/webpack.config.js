@@ -65,6 +65,11 @@ module.exports = (_, argv) => {
           enforce: 'pre',
           use: ['source-map-loader'],
         },
+        {
+          test: /\.json$/,
+          exclude: /(node_modules)/,
+          loader: "json-loader"
+        }
       ],
     },
 
@@ -76,7 +81,8 @@ module.exports = (_, argv) => {
           context: `context@http://localhost:4201/remoteEntry.js`
         },
         exposes: {
-          "./Login": "./src/pages/Login"
+          "./Login": "./src/pages/Login",
+          "./i18n": "./assets/i18n/i18n"
         },
         shared: {
           ...parentDeps,

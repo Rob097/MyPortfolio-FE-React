@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { faFacebook, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
@@ -7,7 +8,8 @@ import {
   Card,
   Checkbox,
   Label,
-  TextInput
+  TextInput,
+  Alert
 } from 'flowbite-react';
 import jwtDecode from "jwt-decode";
 import { useForm } from 'react-hook-form';
@@ -16,44 +18,54 @@ import Divider from "../components/Divider";
 import { User } from "../models/user";
 import "../styles/index.scss";
 import { login } from '../utilities/AuthService';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
 
-  const [store, dispatch] = useAuthStore();
+  const { t, i18n } = useTranslation("auth");
+  const [dispatch] = useAuthStore();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   async function handleSignIn(data) {
-    const response = await login(data);
-    const bodyResponse = await response.json();
+    setIsProcessing(true);
+    login(data).then(async response => {
+      const bodyResponse = await response.json();
 
-    const decodedToken = jwtDecode(bodyResponse.token);
-    const user = new User(decodedToken);
+      const decodedToken = jwtDecode(bodyResponse.token);
+      const user = new User(decodedToken);
 
-    dispatch({
-      type: "login",
-      payload: {
-        token: bodyResponse.token,
-        user: user
-      }
+      dispatch({
+        type: "login",
+        payload: {
+          token: bodyResponse.token,
+          user: user
+        }
+      });
+
+      setIsProcessing(false);
+
+      navigate('/welcome');
+    }).catch(error => {
+      setIsProcessing(false);
+      setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : "Errore nell'effettuare il login.");
     });
-
-    navigate('/welcome');
-
   }
 
   return (
 
-    <div className='flex items-center justify-center h-full'>
+    <div className='flex items-center justify-center sm:h-full h-fit w-full max-w-md mx-auto'>
       <div className="w-full px-4">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div>
+          <h1>{t('login.welcome')}</h1>
           <img
             className="mx-auto h-12 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-          {store && store.isLoggedIn && <p>Is Logged In {JSON.stringify(store.user)}</p>}
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -62,7 +74,24 @@ const Login = () => {
           </p>
         </div>
 
-        <Card className='w-full max-w-md mx-auto mt-8'>
+        {
+          errorMessage &&
+          <Alert
+            color="failure"
+            icon={() => <ExclamationCircleIcon className="h-5 w-5 text-red-500" />}
+            onDismiss={() => setErrorMessage(null)}
+            rounded
+            className="mt-4"
+          >
+            <span>
+              <p className="ml-2">
+                {errorMessage}
+              </p>
+            </span>
+          </Alert>
+        }
+
+        <Card className='mt-8'>
 
           <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit((data) => handleSignIn(data))}>
             <div>
@@ -104,7 +133,7 @@ const Login = () => {
                 Remember me
               </Label>
             </div>
-            <Button type="submit">
+            <Button type="submit" isProcessing={isProcessing}>
               Submit
             </Button>
           </form>

@@ -1,15 +1,16 @@
-import {createRoot} from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import "./index.css";
 import "common-lib/styles.scss"
+import i18n from "../assets/i18n/i18n";
+import Header from './Header';
 
-
-const App = () => (
-  <div className="container">
-    <h1 className="text-3xl font-bold underline">Name: header</h1>
-    <div>Framework: react</div>
-    <div>Language: JavaScript</div>
-    <div>CSS: Empty CSS</div>
-  </div>
-);
+const App = () => {
+  console.debug("i18n for header initialized: %O", i18n);
+  return (
+    <div className="container">
+      <Header />
+    </div>
+  )
+};
 const root = createRoot(document.getElementById("app"));
 root.render(<App />);
