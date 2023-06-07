@@ -18,10 +18,7 @@ module.exports = (_, argv) => {
     },
 
     resolve: {
-      extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
-      alias: {
-        '@common-lib': path.resolve(__dirname, '../../shared/common'),
-      },
+      extensions: [".tsx", ".ts", ".jsx", ".js", ".json"]
     },
 
     devServer: {

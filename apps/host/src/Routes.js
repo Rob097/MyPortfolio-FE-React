@@ -1,4 +1,4 @@
-import { ROLES as roles } from "@common-lib/constants";
+import { ROLES as roles } from "common-lib/constants";
 import { useAuthStore } from "context/AuthStore";
 import { ErrorPage, NotAllowed, PageNotFound } from "context/ErrorPages";
 import Dashboard from "dashboard/Dashboard";

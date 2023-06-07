@@ -1,0 +1,9 @@
+{
+  "name": "common-lib",
+  "version": "1.0.0",
+  "description": "Shared library for microservices",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Roberto Dellantonio",
+  "license": "ISC"
+}

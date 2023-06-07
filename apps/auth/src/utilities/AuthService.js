@@ -1,4 +1,4 @@
-import { METHODS as methods } from "@common-lib/constants";
+import { METHODS as methods } from "common-lib/constants";
 const BASE_URL = 'https://myportfolio-backend.it/api';
 const AUTH_URL = BASE_URL + '/auth';
 const JSON_HEADER = { "Content-Type": "application/json" }

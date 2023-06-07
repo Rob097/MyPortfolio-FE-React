@@ -1,6 +1,6 @@
 import {createRoot} from 'react-dom/client';
 import "./index.css";
-import "@common-lib/styles.scss"
+import "common-lib/styles.scss"
 
 
 const App = () => (

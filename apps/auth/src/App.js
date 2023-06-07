@@ -1,4 +1,4 @@
-import "@common-lib/styles.scss";
+import "common-lib/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { createRoot } from 'react-dom/client';
 import {

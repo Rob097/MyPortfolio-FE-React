@@ -1,5 +1,5 @@
 
-import "@common-lib/styles.scss";
+import "common-lib/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { StoreProvider } from "context/Store";
 import { Suspense } from "react";
