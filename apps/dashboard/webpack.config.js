@@ -75,7 +75,9 @@ module.exports = (_, argv) => {
       new ModuleFederationPlugin({
         name: "dashboard",
         filename: "remoteEntry.js",
-        remotes: {},
+        remotes: {
+          context: `context@http://localhost:4201/remoteEntry.js`
+        },
         exposes: {
           "./App": "./src/App",
           "./Dashboard": "./src/Dashboard",

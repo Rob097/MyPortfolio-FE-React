@@ -14,5 +14,8 @@
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "@headlessui/react": "^1.7.14",
+    "@heroicons/react": "^2.0.18"
+  }
 }

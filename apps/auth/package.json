@@ -12,8 +12,9 @@
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
   "dependencies": {
-    "react-hook-form": "^7.44.3",
     "flowbite": "^1.6.5",
-    "flowbite-react": "^0.4.7"
+    "flowbite-react": "^0.4.7",
+    "jwt-decode": "^3.1.2",
+    "react-hook-form": "^7.44.3"
   }
 }

@@ -1,3 +1,17 @@
+/*
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+*/
 import React, { useEffect } from 'react'
 import { Fragment, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
@@ -16,7 +30,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 /* import { useTranslation } from 'react-i18next';
 import myAuthUtilsComponent from '../Auth/AuthUtils'; */
 import { useAuthStore } from "context/AuthStore";
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -36,7 +50,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function RootTemplate() {
+export default function Example() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     /* const { t, i18n } = useTranslation();
   
@@ -284,12 +298,11 @@ export default function RootTemplate() {
                                 {/* <h1 onClick={changeLanguageHandler}>{t('welcome-back')}</h1> */}
                             </div>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                                {/* Replace with your content
+                                {/* Replace with your content */}
                                 <div className="py-4">
                                     <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
                                 </div>
-                                End replace */}
-                                <Outlet />
+                                {/* /End replace */}
                             </div>
                         </div>
                     </main>

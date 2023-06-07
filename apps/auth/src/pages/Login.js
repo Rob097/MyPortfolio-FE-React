@@ -1,6 +1,7 @@
 import { faFacebook, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import { useAuthStore } from "context/AuthStore";
 import {
   Button,
   Card,
@@ -8,18 +9,38 @@ import {
   Label,
   TextInput
 } from 'flowbite-react';
+import jwtDecode from "jwt-decode";
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Divider from "../components/Divider";
+import { User } from "../models/user";
 import "../styles/index.scss";
+import { login } from '../utilities/AuthService';
 
 const Login = () => {
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [store, dispatch] = useAuthStore();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+
+  async function handleSignIn(data) {
+    const response = await login(data);
+    const bodyResponse = await response.json();
+
+    const decodedToken = jwtDecode(bodyResponse.token);
+    const user = new User(decodedToken);
+
+    dispatch({
+      type: "login",
+      payload: {
+        token: bodyResponse.token,
+        user: user
+      }
+    });
+
+    navigate('/welcome');
+
+  }
 
   return (
 
@@ -32,6 +53,7 @@ const Login = () => {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+          {store && store.isLoggedIn && <p>Is Logged In {JSON.stringify(store.user)}</p>}
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -42,7 +64,7 @@ const Login = () => {
 
         <Card className='w-full max-w-md mx-auto mt-8'>
 
-          <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit((data) => console.log(data))}>
+          <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit((data) => handleSignIn(data))}>
             <div>
               <div className="mb-2 block">
                 <Label
@@ -77,8 +99,8 @@ const Login = () => {
               />
             </div>
             <div className="flex items-center gap-2">
-              <Checkbox id="remember" {...register("remember")} />
-              <Label htmlFor="remember">
+              <Checkbox id="rememberMe" {...register("rememberMe")} />
+              <Label htmlFor="rememberMe">
                 Remember me
               </Label>
             </div>
