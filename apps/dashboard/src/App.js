@@ -1,4 +1,7 @@
+import { ThemeProvider } from "@mui/material";
+import theme from "assets/theme";
 import "common-lib/styles.scss";
+import { SoftUIControllerProvider } from "context/DashboardStore";
 import { AuthStoreProvider } from "context/AuthStore";
 import { StoreProvider } from "context/Store";
 import React, { Suspense } from 'react';
@@ -8,12 +11,16 @@ import "./index.css";
 
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
-      <StoreProvider>
-        <AuthStoreProvider>
-          <CustomRouterProvider />
-        </AuthStoreProvider>
-      </StoreProvider>
-    </Suspense>
+    <StoreProvider>
+      <AuthStoreProvider>
+        <SoftUIControllerProvider>
+          <ThemeProvider theme={theme}>
+            <CustomRouterProvider />
+          </ThemeProvider>
+        </SoftUIControllerProvider>
+      </AuthStoreProvider>
+    </StoreProvider>
+  </Suspense>
 );
 const root = createRoot(document.getElementById("app"));
 root.render(<App />);

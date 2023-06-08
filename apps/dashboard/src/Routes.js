@@ -1,21 +1,20 @@
 import { useAuthStore } from "context/AuthStore";
 import { ErrorPage, PageNotFound } from "context/ErrorPages";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Welcome from "./pages/Welcome";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 
 const Router = () => {
     return createBrowserRouter([
         {
             path: "/",
-            element: <Dashboard />,
+            element: <Outlet />,
+            errorElement: <ErrorPage />,
             children: [
                 {
-                    path: "",
-                    element: <Welcome />
+                    path: "dashboard",
+                    element: <Dashboard />,
                 }
-            ],
-            errorElement: <ErrorPage />
+            ]
         },
         {
             path: "*",

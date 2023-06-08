@@ -1,5 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");002
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
 const deps = require("./package.json").dependencies;
 const devDeps = require("./package.json").devDependencies;
@@ -18,7 +18,11 @@ module.exports = (_, argv) => {
     },
 
     resolve: {
-      extensions: [".tsx", ".ts", ".jsx", ".js", ".json"]
+      extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+      alias: {
+        'components': path.resolve(__dirname, './src/components'),
+        'assets': path.resolve(__dirname, './src/assets')
+      },
     },
 
     devServer: {
@@ -65,6 +69,14 @@ module.exports = (_, argv) => {
           enforce: 'pre',
           use: ['source-map-loader'],
         },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
       ],
     },
 
@@ -77,7 +89,7 @@ module.exports = (_, argv) => {
         },
         exposes: {
           "./App": "./src/App",
-          "./Dashboard": "./src/Dashboard",
+          "./Dashboard": "./src/pages/Dashboard",
         },
         shared: {
           ...parentDeps,
