@@ -133,7 +133,7 @@ const Login = () => {
                 Remember me
               </Label>
             </div>
-            <Button type="submit" isProcessing={isProcessing}>
+            <Button type="submit" isProcessing={isProcessing} disabled={isProcessing}>
               Submit
             </Button>
           </form>
