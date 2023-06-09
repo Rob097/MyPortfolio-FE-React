@@ -1,13 +1,13 @@
 import { ThemeProvider } from "@mui/material";
 import theme from "assets/theme";
 import "common-lib/styles.scss";
-import { SoftUIControllerProvider } from "context/DashboardStore";
 import { AuthStoreProvider } from "context/AuthStore";
+import { SoftUIControllerProvider } from "context/DashboardStore";
 import { StoreProvider } from "context/Store";
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import CustomRouterProvider from "./Routes";
-import "./index.css";
+import "./index.scss";
 
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>

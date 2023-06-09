@@ -1,46 +1,16 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect } from "react";
-
-// react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
-
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
-
-// @mui material components
-import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
+import Icon from "@mui/material/Icon";
 import Link from "@mui/material/Link";
-import Icon from "components/Icon";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftButton from "components/SoftButton";
-
-// Soft UI Dashboard React examples
+import List from "@mui/material/List";
 import SidenavCollapse from "components/Sidenav/SidenavCollapse";
-
-// Custom styles for the Sidenav
 import SidenavRoot from "components/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "components/Sidenav/styles/sidenav";
-
-// Soft UI Dashboard React context
-import { useSoftUIController, setMiniSidenav } from "context/DashboardStore";
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftTypography from "components/SoftTypography";
+import { setMiniSidenav, useSoftUIController } from "context/DashboardStore";
+import PropTypes from "prop-types";
+import { NavLink, useLocation } from "react-router-dom";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();

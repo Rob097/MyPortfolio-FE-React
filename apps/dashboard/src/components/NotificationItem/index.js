@@ -1,18 +1,10 @@
-import { forwardRef } from "react";
-
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
-
-// @mui material components
+import Icon from "@mui/material/Icon";
 import MenuItem from "@mui/material/MenuItem";
-import Icon from "components/Icon";
-
-// Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-
-// custom styles for the NotificationItem
-import { menuItem, menuImage } from "./styles";
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+import { menuImage, menuItem } from "./styles";
 
 const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref) => (
   <MenuItem {...rest} ref={ref} sx={(theme) => menuItem(theme)}>

@@ -1,41 +1,17 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
-
-// @mui material components
 import Collapse from "@mui/material/Collapse";
+import Icon from "@mui/material/Icon";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Icon from "components/Icon";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-
-// Custom styles for the SidenavCollapse
 import {
-  collapseItem,
-  collapseIconBox,
   collapseIcon,
+  collapseIconBox,
+  collapseItem,
   collapseText,
 } from "components/Sidenav/styles/sidenavCollapse";
-
-// Soft UI Dashboard React context
+import SoftBox from "components/SoftBox";
 import { useSoftUIController } from "context/DashboardStore";
+import PropTypes from "prop-types";
 
 function SidenavCollapse({ color, icon, name, children, active, noCollapse, open, ...rest }) {
   const [controller] = useSoftUIController();

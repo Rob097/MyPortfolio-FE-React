@@ -1,22 +1,22 @@
 
 import Grid from "@mui/material/Grid";
-import { setLayout, useSoftUIController, setMiniSidenav } from "context/DashboardStore";
-import SoftBox from "components/SoftBox";
+import brand from "assets/images/logo-ct.png";
 import Navbar from "components/Navbar";
+import Sidenav from "components/Sidenav";
+import SoftBox from "components/SoftBox";
+import { setLayout, setMiniSidenav, useSoftUIController } from "context/DashboardStore";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import brand from "assets/images/logo-ct.png";
-import Sidenav from "components/Sidenav";
 
 // Soft UI Dashboard React icons
-import Shop from "assets/Icons/Shop";
-import Office from "assets/Icons/Office";
-import Settings from "assets/Icons/Settings";
-import Document from "assets/Icons/Document";
-import SpaceShip from "assets/Icons/SpaceShip";
-import CustomerSupport from "assets/Icons/CustomerSupport";
 import CreditCard from "assets/Icons/CreditCard";
 import Cube from "assets/Icons/Cube";
+import CustomerSupport from "assets/Icons/CustomerSupport";
+import Document from "assets/Icons/Document";
+import Office from "assets/Icons/Office";
+import Settings from "assets/Icons/Settings";
+import Shop from "assets/Icons/Shop";
+import SpaceShip from "assets/Icons/SpaceShip";
 
 const routes = [
   {
@@ -52,15 +52,6 @@ const routes = [
     route: "/virtual-reality",
     icon: <Cube size="12px" />,
     component: <p>virtual-reality</p>,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: <p>rtl</p>,
     noCollapse: true,
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
@@ -136,13 +127,13 @@ function Dashboard() {
     >
       <Navbar />
       <Sidenav
-            color={sidenavColor}
-            brand={brand}
-            brandName="Soft UI Dashboard"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
+        color={sidenavColor}
+        brand={brand}
+        brandName="Soft UI Dashboard"
+        routes={routes}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      />
       <SoftBox py={3} style={{ minHeight: '200vh' }}>
         <SoftBox mb={3}>
           <Outlet />

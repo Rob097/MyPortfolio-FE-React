@@ -1,42 +1,30 @@
-import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-
-// @material-ui core components
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import Icon from "components/Icon";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftInput from "components/SoftInput";
-
-// Soft UI Dashboard React examples
+import Toolbar from "@mui/material/Toolbar";
+import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
+import team2 from "assets/images/team-2.jpg";
+import Breadcrumbs from "components/Breadcrumbs";
 import NotificationItem from "components/NotificationItem";
-
-// Custom styles for Navbar
+import SoftBox from "components/SoftBox";
+import SoftInput from "components/SoftInput";
+import SoftTypography from "components/SoftTypography";
+import {
+  setMiniSidenav,
+  setOpenConfigurator,
+  setTransparentNavbar,
+  useSoftUIController,
+} from "context/DashboardStore";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   navbar,
   navbarContainer,
-  navbarRow,
   navbarIconButton,
   navbarMobileMenu,
+  navbarRow,
 } from "./styles";
-
-// Soft UI Dashboard React context
-import {
-  useSoftUIController,
-  setTransparentNavbar,
-  setMiniSidenav,
-  setOpenConfigurator,
-} from "context/DashboardStore";
-
-// Images
-import team2 from "assets/images/team-2.jpg";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-import Breadcrumbs from "components/Breadcrumbs";
 
 function Navbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
