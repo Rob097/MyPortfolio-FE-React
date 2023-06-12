@@ -1,14 +1,4 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.container {
-  font-size: 3rem;
-  margin: auto;
-  max-width: 800px;
-  margin-top: 20px;
-}
+@import "common-lib/assets/theme/styles.scss";

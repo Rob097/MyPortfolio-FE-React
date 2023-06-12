@@ -1,7 +1,7 @@
 import Icon from "@mui/material/Icon";
 import MenuItem from "@mui/material/MenuItem";
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+import SoftBox from "common-lib/components/SoftBox";
+import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { menuImage, menuItem } from "./styles";

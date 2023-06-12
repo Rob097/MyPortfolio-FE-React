@@ -1,22 +1,22 @@
 
 import Grid from "@mui/material/Grid";
-import brand from "assets/images/logo-ct.png";
+import brand from "common-lib/assets/images/logo-ct.png";
 import Navbar from "components/Navbar";
 import Sidenav from "components/Sidenav";
-import SoftBox from "components/SoftBox";
+import SoftBox from "common-lib/components/SoftBox";
 import { setLayout, setMiniSidenav, useSoftUIController } from "context/DashboardStore";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 // Soft UI Dashboard React icons
-import CreditCard from "assets/Icons/CreditCard";
-import Cube from "assets/Icons/Cube";
-import CustomerSupport from "assets/Icons/CustomerSupport";
-import Document from "assets/Icons/Document";
-import Office from "assets/Icons/Office";
-import Settings from "assets/Icons/Settings";
-import Shop from "assets/Icons/Shop";
-import SpaceShip from "assets/Icons/SpaceShip";
+import CreditCard from "common-lib/assets/Icons/CreditCard";
+import Cube from "common-lib/assets/Icons/Cube";
+import CustomerSupport from "common-lib/assets/Icons/CustomerSupport";
+import Document from "common-lib/assets/Icons/Document";
+import Office from "common-lib/assets/Icons/Office";
+import Settings from "common-lib/assets/Icons/Settings";
+import Shop from "common-lib/assets/Icons/Shop";
+import SpaceShip from "common-lib/assets/Icons/SpaceShip";
 
 const routes = [
   {

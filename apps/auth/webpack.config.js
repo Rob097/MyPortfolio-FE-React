@@ -69,7 +69,15 @@ module.exports = (_, argv) => {
           test: /\.json$/,
           exclude: /(node_modules)/,
           loader: "json-loader"
-        }
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
       ],
     },
 
@@ -81,7 +89,7 @@ module.exports = (_, argv) => {
           context: `context@http://localhost:4201/remoteEntry.js`
         },
         exposes: {
-          "./Login": "./src/pages/Login",
+          "./SignIn": "./src/pages/SignIn",
           "./i18n": "./assets/i18n/i18n"
         },
         shared: {
@@ -98,7 +106,7 @@ module.exports = (_, argv) => {
             eager: true,
             singleton: true,
             requiredVersion: parentDeps["react-dom"],
-          },
+          }
         },
       }),
       new HtmlWebPackPlugin({

@@ -1,8 +1,8 @@
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+import SoftBox from "common-lib/components/SoftBox";
+import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 
 function DefaultInfoCard({ color, icon, title, description, value }) {

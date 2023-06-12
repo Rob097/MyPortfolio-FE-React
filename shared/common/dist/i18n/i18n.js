@@ -1,5 +1,6 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -8,7 +9,6 @@ var _i18next = _interopRequireDefault(require("i18next"));
 var _reactI18next = require("react-i18next");
 var _en = _interopRequireDefault(require("./en.json"));
 var _it = _interopRequireDefault(require("./it.json"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var resources = {
   en: {
     common: _en.default

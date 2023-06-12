@@ -3,13 +3,13 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-import team2 from "assets/images/team-2.jpg";
+import logoSpotify from "common-lib/assets/images/small-logos/logo-spotify.svg";
+import team2 from "common-lib/assets/images/team-2.jpg";
 import Breadcrumbs from "components/Breadcrumbs";
 import NotificationItem from "components/NotificationItem";
-import SoftBox from "components/SoftBox";
-import SoftInput from "components/SoftInput";
-import SoftTypography from "components/SoftTypography";
+import SoftBox from "common-lib/components/SoftBox";
+import SoftInput from "common-lib/components/SoftInput";
+import SoftTypography from "common-lib/components/SoftTypography";
 import {
   setMiniSidenav,
   setOpenConfigurator,

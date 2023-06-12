@@ -9,7 +9,7 @@ import {
   collapseItem,
   collapseText,
 } from "components/Sidenav/styles/sidenavCollapse";
-import SoftBox from "components/SoftBox";
+import SoftBox from "common-lib/components/SoftBox";
 import { useSoftUIController } from "context/DashboardStore";
 import PropTypes from "prop-types";
 

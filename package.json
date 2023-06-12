@@ -66,6 +66,7 @@
     "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
+    "@mui/system": "^5.13.4",
     "chroma-js": "^2.4.2",
     "common-lib": "file:shared/common/dist",
     "flowbite": "^1.6.5",

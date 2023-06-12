@@ -2,10 +2,10 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
-import colors from "assets/theme/base/colors";
-import typography from "assets/theme/base/typography";
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+import colors from "common-lib/assets/theme/base/colors";
+import typography from "common-lib/assets/theme/base/typography";
+import SoftBox from "common-lib/components/SoftBox";
+import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 

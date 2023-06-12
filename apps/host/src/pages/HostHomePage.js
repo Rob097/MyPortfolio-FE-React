@@ -1,6 +1,7 @@
 import { useStore } from "context/Store";
 import React from "react";
 import { Link } from "react-router-dom";
+import SoftBox from "common-lib/components/SoftBox";
 
 
 const HostHomePage = () => {
@@ -8,7 +9,7 @@ const HostHomePage = () => {
     const [store, dispatch] = useStore();
 
     return (
-        <div>
+        <SoftBox>
             <h1 className="text-3xl font-bold underline"><b>Host App</b></h1>
             <p>The app will not gonna work without store</p>
             <footer>
@@ -24,7 +25,7 @@ const HostHomePage = () => {
                 </button>
             </footer>
             <Link to="/auth/login">Go To Login</Link>
-        </div>
+        </SoftBox>
     );
 };
 export default HostHomePage;

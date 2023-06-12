@@ -1,7 +1,6 @@
 import { useAuthStore } from "context/AuthStore";
 import { ErrorPage, PageNotFound } from "context/ErrorPages";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import SignIn from "./auth/sign-in";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 
@@ -19,16 +18,11 @@ const Router = () => {
             ]
         },
         {
-            path: "login",
-            element: <SignIn />,
-        },
-        {
             path: "*",
             element: <PageNotFound />
         }
     ])
 };
-
 
 const CustomRouterProvider = () => {
     const [store, dispatch] = useAuthStore();
