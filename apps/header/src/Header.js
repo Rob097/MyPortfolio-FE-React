@@ -8,7 +8,7 @@ const Header = ({ count = 0 }) => {
   return (
     <header>
       <p className="text-3xl font-bold underline">Remote Header / count: {count}</p>
-      <p>{t('header.welcome')}</p>
+      <h1>{t('header.welcome')}</h1>
     </header>
   )
 };
