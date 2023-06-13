@@ -1,5 +1,5 @@
 import { useAuthStore } from "context/AuthStore";
-import { ErrorPage, PageNotFound } from "context/ErrorPages";
+import { ErrorPage, PageNotFound } from "common-lib/pages/ErrorPages";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";

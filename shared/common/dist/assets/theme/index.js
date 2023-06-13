@@ -75,9 +75,6 @@ var _default = (0, _styles.createTheme)({
     pxToRem: _pxToRem.default,
     rgba: _rgba.default
   },
-  prova: {
-    "Chiave": "valore"
-  },
   components: {
     MuiCssBaseline: {
       styleOverrides: _objectSpread({}, _globals.default)

@@ -1,6 +1,6 @@
 import { ROLES as roles } from "common-lib/constants";
 import { useAuthStore } from "context/AuthStore";
-import { ErrorPage, NotAllowed, PageNotFound } from "context/ErrorPages";
+import { ErrorPage, NotAllowed, PageNotFound } from "common-lib/pages/ErrorPages";
 import Dashboard from "dashboard/Dashboard";
 import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/Home";
 import SignIn from "./pages/SignIn";
-import { ErrorPage, PageNotFound } from "context/ErrorPages";
+import { ErrorPage, PageNotFound } from "common-lib/pages/ErrorPages";
 
 const Router = createBrowserRouter([
         {

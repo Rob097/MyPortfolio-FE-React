@@ -76,8 +76,7 @@ module.exports = (_, argv) => {
         exposes: {
           "./Store": "./src/stores/Store",
           "./AuthStore": "./src/stores/AuthStore",
-          "./DashboardStore": "./src/stores/DashboardStore",
-          "./ErrorPages": "./src/pages/ErrorPages"
+          "./DashboardStore": "./src/stores/DashboardStore"
         },
         shared: {
           ...parentDeps,
