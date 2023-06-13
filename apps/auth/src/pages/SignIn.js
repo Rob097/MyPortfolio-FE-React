@@ -1,4 +1,4 @@
-import Icon from "@mui/material/Icon";
+import Alert from '@mui/material/Alert';
 import Switch from "@mui/material/Switch";
 import curved9 from "common-lib/assets/images/curved-images/curved-6.jpg";
 import SoftBox from "common-lib/components/SoftBox";
@@ -6,9 +6,6 @@ import SoftButton from "common-lib/components/SoftButton";
 import SoftInput from "common-lib/components/SoftInput";
 import SoftTypography from "common-lib/components/SoftTypography";
 import { useAuthStore } from "context/AuthStore";
-import {
-  Alert
-} from 'flowbite-react';
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -59,19 +56,7 @@ function SignIn() {
       {
         errorMessage &&
         <SoftBox mb={2}>
-          <Alert
-            color="failure"
-            icon={() => <Icon color="red">error_outline</Icon>}
-            onDismiss={() => setErrorMessage(null)}
-            rounded
-            className="mt-4"
-          >
-            <span>
-              <p className="ml-2">
-                {errorMessage}
-              </p>
-            </span>
-          </Alert>
+          <Alert className="mt-4" severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
         </SoftBox>
       }
       <SoftBox component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>

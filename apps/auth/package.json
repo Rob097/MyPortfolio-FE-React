@@ -15,8 +15,6 @@
     "file-loader": "^6.2.0"
   },
   "dependencies": {
-    "flowbite": "^1.6.5",
-    "flowbite-react": "^0.4.7",
     "jwt-decode": "^3.1.2",
     "react-hook-form": "^7.44.3"
   }
