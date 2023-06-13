@@ -3,6 +3,8 @@ import { initReactI18next } from "react-i18next";
 import translationEN from './en.json';
 import translationIT from './it.json';
 
+const defaultLang = "en";
+
 const resources = {
   en: {
     common: translationEN
@@ -12,11 +14,19 @@ const resources = {
   }
 };
 
+export const getLang = () => {
+  return localStorage.getItem('lang') || defaultLang;
+}
+
+export const setLang = (lang) => {
+  localStorage.setItem('lang', lang);
+}
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "en",
+    fallbackLng: defaultLang,
     lng: localStorage.getItem('lang'), // language to use
     interpolation: {
       escapeValue: false // react already safes from xss

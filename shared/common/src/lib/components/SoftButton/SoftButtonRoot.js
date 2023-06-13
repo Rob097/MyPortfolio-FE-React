@@ -1,7 +1,7 @@
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from "@mui/material/styles";
 
-export default styled(Button)(({ theme, ownerState }) => {
+export default styled(LoadingButton)(({ theme, ownerState }) => {
   const { palette, functions, borders } = theme;
   const { color, variant, size, circular, iconOnly } = ownerState;
 

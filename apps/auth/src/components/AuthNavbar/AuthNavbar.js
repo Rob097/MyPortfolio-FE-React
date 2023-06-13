@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
+import LanguageSelector from "./LanguageSelector";
 
 function AuthNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -101,7 +102,7 @@ function AuthNavbar({ transparent, light, action }) {
             </SoftBox>
           ) : (
             <SoftBox display={{ xs: "none", lg: "inline-block" }}>
-              <SoftButton
+              {/* <SoftButton
                 component="a"
                 href={action.route}
                 target="_blank"
@@ -112,7 +113,8 @@ function AuthNavbar({ transparent, light, action }) {
                 circular
               >
                 {action.label}
-              </SoftButton>
+              </SoftButton> */}
+              <LanguageSelector />
             </SoftBox>
           ))}
         <SoftBox

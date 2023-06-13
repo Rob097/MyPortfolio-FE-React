@@ -2,6 +2,7 @@ import Menu from "@mui/material/Menu";
 import SoftBox from "common-lib/components/SoftBox";
 import PropTypes from "prop-types";
 import AuthNavbarLink from "./AuthNavbarLink";
+import LanguageSelector from "./LanguageSelector";
 
 function AuthNavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();
@@ -26,6 +27,7 @@ function AuthNavbarMobile({ open, close }) {
         <AuthNavbarLink icon="person" name="profile" route="/profile" />
         <AuthNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
         <AuthNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
+        <LanguageSelector isMobile />
       </SoftBox>
     </Menu>
   );

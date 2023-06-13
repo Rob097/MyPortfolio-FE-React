@@ -14,11 +14,6 @@ import CustomRouterProvider from "./Routes";
 import "./index.scss";
 
 export const App = () => {
-
-  useEffect(() => {
-    console.log("theme: %O", theme);
-  }, [theme]);
-
   console.debug("i18n for host initialized: %O", i18n);
   return (
     <Suspense fallback={<div>Loading...</div>}>

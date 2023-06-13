@@ -23,6 +23,7 @@ function SignIn() {
 
   async function handleSignIn(data) {
     setIsProcessing(true);
+
     login(data).then(async response => {
       const bodyResponse = await response.json();
 
@@ -42,14 +43,15 @@ function SignIn() {
       navigate('/welcome');
     }).catch(error => {
       setIsProcessing(false);
-      setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : "Errore nell'effettuare il login.");
+      setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('login.generic-error'));
     });
+
   }
 
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
+      title={t('login.welcome-back')}
+      description={t('login.instruction')}
       image={curved9}
     >
 
@@ -60,7 +62,6 @@ function SignIn() {
         </SoftBox>
       }
       <SoftBox component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>
-        <h1>{t('login.welcome')}</h1>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -84,17 +85,25 @@ function SignIn() {
             fontWeight="regular"
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
-            &nbsp;&nbsp;Remember me
+            &nbsp;&nbsp;{t('login.remember-me')}
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={4} mb={1}>
-          <SoftButton type="submit" variant="gradient" color="info" fullWidth>
-            sign in
+          <SoftButton
+            type="submit"
+            variant="gradient"
+            color="info"
+            fullWidth
+            loading={isProcessing}
+            loadingPosition="start"
+            startIcon={<span />}
+          >
+            {t('login.sign-in')}
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="submit" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
+            {t('login.no-account')}{" "}
             <SoftTypography
               component={Link}
               to="/authentication/sign-up"
@@ -103,7 +112,7 @@ function SignIn() {
               fontWeight="medium"
               textGradient
             >
-              Sign up
+              {t('login.register')}
             </SoftTypography>
           </SoftTypography>
         </SoftBox>

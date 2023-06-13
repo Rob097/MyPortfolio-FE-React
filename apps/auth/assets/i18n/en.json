@@ -1,5 +1,11 @@
 {
     "login": {
-        "welcome": "Welcome in the login page."
+        "generic-error": "An error occured during login",
+        "welcome-back": "Welcome Back",
+        "instruction": "Enter your email and password to sign in",
+        "remember-me": "Remember me",
+        "sign-in": "Sign In",
+        "no-account": "Don't have an account?",
+        "register": "Sign Up"
     }
 }
