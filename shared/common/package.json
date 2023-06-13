@@ -6,16 +6,12 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-dom": "^18.2.0"
   },
   "browserslist": {
     "production": [
