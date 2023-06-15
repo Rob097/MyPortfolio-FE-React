@@ -88,7 +88,6 @@ module.exports = (_, argv) => {
           context: `context@http://localhost:4201/remoteEntry.js`
         },
         exposes: {
-          "./App": "./src/App",
           "./Dashboard": "./src/pages/Dashboard",
         },
         shared: {

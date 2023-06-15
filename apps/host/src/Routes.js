@@ -1,11 +1,10 @@
 import { ROLES as roles } from "common-lib/constants";
-import { useAuthStore } from "context/AuthStore";
 import { ErrorPage, NotAllowed, PageNotFound } from "common-lib/pages/ErrorPages";
+import { useAuthStore } from "context/AuthStore";
 import Dashboard from "dashboard/Dashboard";
 import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Example from "./components/example";
-import HostHomePage from "./pages/HostHomePage";
 import Welcome from "./pages/Welcome";
 const SignIn = lazy(() => import("auth/SignIn"));
 
@@ -19,18 +18,14 @@ const DashboardRoutes = (isLoggedIn) => [
 const AuthRoutes = (isLoggedIn) => [
     {
         path: "login",
-        element: <ProtectedRoute isAllowed={true}><SignIn /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={!isLoggedIn}><SignIn /></ProtectedRoute>
     }
 ]
 
 const HostRoutes = (authStore) => [
     {
         path: "",
-        element: <HostHomePage />
-    },
-    {
-        path: "welcome",
-        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)}><Example /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect="/auth/login"><Example /></ProtectedRoute>
     }
 ];
 
@@ -69,11 +64,12 @@ const Router = (authStore) => {
 
 const ProtectedRoute = ({
     isAllowed,
-    redirectPath = '/not-allowed',
+    customRedirect,
+    defaultRedirect = '/not-allowed',
     children,
 }) => {
     if (!isAllowed) {
-        return <Navigate to={redirectPath} replace />;
+        return <Navigate to={customRedirect || defaultRedirect} replace />;
     }
 
     return children ? children : <Outlet />;

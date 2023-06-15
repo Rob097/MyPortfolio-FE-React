@@ -1,10 +1,7 @@
 import "common-lib/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { createRoot } from 'react-dom/client';
-import {
-  RouterProvider
-} from "react-router-dom";
-import Router from "./Routes";
+import CustomRouterProvider from "./Routes";
 import "./styles/index.scss";
 import i18n from "../assets/i18n/i18n";
 import { SoftUIControllerProvider } from "context/DashboardStore";
@@ -14,13 +11,20 @@ import { ThemeProvider } from "@mui/material";
 const App = () => {
   console.debug("i18n for auth initialized: %O", i18n);
   return (
-    <AuthStoreProvider>
-      <SoftUIControllerProvider>
-        <ThemeProvider theme={theme}>
-          <RouterProvider router={Router} />
-        </ThemeProvider>
-      </SoftUIControllerProvider>
-    </AuthStoreProvider>
+    // Theme providers
+    <SoftUIControllerProvider>
+      <ThemeProvider theme={theme}>
+
+        {/* Store providers */}
+        <AuthStoreProvider>
+
+          {/* Routes */}
+          <CustomRouterProvider />
+
+        </AuthStoreProvider>
+
+      </ThemeProvider>
+    </SoftUIControllerProvider>
   )
 };
 const root = createRoot(document.getElementById("app"));

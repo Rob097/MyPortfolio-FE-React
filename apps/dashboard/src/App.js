@@ -10,17 +10,22 @@ import CustomRouterProvider from "./Routes";
 import "./index.scss";
 
 const App = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <StoreProvider>
-      <AuthStoreProvider>
-        <SoftUIControllerProvider>
-          <ThemeProvider theme={theme}>
-            <CustomRouterProvider />
-          </ThemeProvider>
-        </SoftUIControllerProvider>
-      </AuthStoreProvider>
-    </StoreProvider>
-  </Suspense>
+  // Theme providers
+  <SoftUIControllerProvider>
+    <ThemeProvider theme={theme}>
+
+      {/* Store providers */}
+      <StoreProvider>
+        <AuthStoreProvider>
+
+          {/* Routes */}
+          <CustomRouterProvider />
+
+        </AuthStoreProvider>
+      </StoreProvider>
+
+    </ThemeProvider>
+  </SoftUIControllerProvider>
 );
 const root = createRoot(document.getElementById("app"));
 root.render(<App />);
