@@ -45,7 +45,7 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
   } else {
     template = (
       <>
-        <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} />
+        <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} inputProps={{autoComplete: rest.id ? rest.id : undefined}} />
         {
           rest && rest.helpertext &&
           <SoftBox mb={1} ml={0.5}>

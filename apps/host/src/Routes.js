@@ -17,6 +17,10 @@ const DashboardRoutes = (isLoggedIn) => [
 
 const AuthRoutes = (isLoggedIn) => [
     {
+        path: "",
+        element: <Navigate to="login" />,
+    },
+    {
         path: "login",
         element: <ProtectedRoute isAllowed={!isLoggedIn}><SignIn /></ProtectedRoute>
     }
@@ -25,7 +29,7 @@ const AuthRoutes = (isLoggedIn) => [
 const HostRoutes = (authStore) => [
     {
         path: "",
-        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect="/auth/login"><Example /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/login"}><Example /></ProtectedRoute>
     }
 ];
 

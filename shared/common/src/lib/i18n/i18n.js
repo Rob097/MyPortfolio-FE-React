@@ -15,7 +15,8 @@ const resources = {
 };
 
 export const getLang = () => {
-  return localStorage.getItem('lang') || defaultLang;
+  const currentLang = localStorage.getItem('lang');
+  return resources[currentLang] ? currentLang : defaultLang;
 }
 
 export const setLang = (lang) => {
