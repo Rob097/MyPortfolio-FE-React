@@ -70,6 +70,11 @@ module.exports = (_, argv) => {
           use: ['source-map-loader'],
         },
         {
+          test: /\.json$/,
+          exclude: /(node_modules)/,
+          loader: "json-loader"
+        },
+        {
           test: /\.(png|jpe?g|gif|svg)$/i,
           use: [
             {
@@ -89,6 +94,8 @@ module.exports = (_, argv) => {
         },
         exposes: {
           "./Dashboard": "./src/pages/Dashboard",
+          "./Home": "./src/pages/Home",
+          "./i18n": "./assets/i18n/i18n"
         },
         shared: {
           ...parentDeps,

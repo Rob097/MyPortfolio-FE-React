@@ -5,13 +5,13 @@ import Dashboard from "dashboard/Dashboard";
 import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Example from "./components/example";
-import Welcome from "./pages/Welcome";
+import Home from "dashboard/Home";
 const SignIn = lazy(() => import("auth/SignIn"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
         path: "",
-        element: <ProtectedRoute isAllowed={isLoggedIn}><Welcome /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={isLoggedIn}><Home /></ProtectedRoute>
     }
 ]
 

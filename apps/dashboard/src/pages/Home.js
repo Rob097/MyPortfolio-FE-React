@@ -1,6 +1,10 @@
+import { useTranslation } from 'react-i18next';
+
 const Home = () => {
+    const { t, i18n } = useTranslation("dashboard");
+
     return (
-        <h1>Welcome to the home page of dashboard</h1>
+        <h1>{t('home.welcome')}</h1>
     );
 }
 

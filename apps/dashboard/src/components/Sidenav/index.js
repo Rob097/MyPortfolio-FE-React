@@ -11,6 +11,7 @@ import SoftTypography from "common-lib/components/SoftTypography";
 import { setMiniSidenav, useSoftUIController } from "context/DashboardStore";
 import PropTypes from "prop-types";
 import { NavLink, useLocation } from "react-router-dom";
+import LanguageSelector from "./LanguageSelector";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -121,6 +122,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           >
             upgrade to pro
           </SoftButton>
+        </SoftBox>
+        <SoftBox mt={2} className="flex justify-center">
+          <LanguageSelector />
         </SoftBox>
       </SoftBox>
     </SidenavRoot>
