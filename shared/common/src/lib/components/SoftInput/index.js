@@ -1,10 +1,12 @@
+import FormHelperText from '@mui/material/FormHelperText';
+import { useSoftUIController } from "context/DashboardStore";
+import PropTypes from "prop-types";
+import { forwardRef } from "react";
+import SoftBox from "../SoftBox";
 import SoftInputIconBoxRoot from "./SoftInputIconBoxRoot";
 import SoftInputIconRoot from "./SoftInputIconRoot";
 import SoftInputRoot from "./SoftInputRoot";
 import SoftInputWithIconRoot from "./SoftInputWithIconRoot";
-import { useSoftUIController } from "context/DashboardStore";
-import PropTypes from "prop-types";
-import { forwardRef } from "react";
 
 const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest }, ref) => {
   let template;
@@ -42,7 +44,15 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
     );
   } else {
     template = (
-      <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} />
+      <>
+        <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} />
+        {
+          rest && rest.helpertext &&
+          <SoftBox mb={1} ml={0.5}>
+            <FormHelperText id={rest.helpertext} style={{ marginLeft: '0' }} error={error}>{rest.helpertext}</FormHelperText>
+          </SoftBox>
+        }
+      </>
     );
   }
 
@@ -58,7 +68,7 @@ SoftInput.defaultProps = {
   },
   error: false,
   success: false,
-  disabled: false,
+  disabled: false
 };
 
 // Typechecking props for the SoftInput

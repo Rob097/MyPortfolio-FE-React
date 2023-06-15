@@ -68,7 +68,7 @@ function SignIn() {
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="email" placeholder="Email" {...register("email", { required: "Email is required." })} />
+          <SoftInput type="email" placeholder="Email" {...register("email", { required: t('login.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -76,7 +76,7 @@ function SignIn() {
               Password
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="password" placeholder="Password" {...register("password", { required: "Password is required." })} />
+          <SoftInput type="password" placeholder="Password" {...register("password", { required: t('login.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch {...register("rememberMe")} />

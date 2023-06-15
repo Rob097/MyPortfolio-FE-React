@@ -6,6 +6,10 @@
         "remember-me": "Ricordami",
         "sign-in": "login",
         "no-account": "Non hai un account?",
-        "register": "Registrati"
+        "register": "Registrati",
+        "validations": {
+            "email-required": "L'email è obbligatoria",
+            "password-required": "La password è obbligatoria"
+        }
     }
 }
