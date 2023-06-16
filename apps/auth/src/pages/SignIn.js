@@ -15,16 +15,25 @@ import { login } from '../utilities/AuthService';
 
 function SignIn() {
   const { t, i18n } = useTranslation("auth");
-  const [dispatch] = useAuthStore();
+  const [store, dispatch] = useAuthStore();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
   async function handleSignIn(data) {
-    setIsProcessing(true);
+    // setIsProcessing(true);
 
-    login(data).then(async response => {
+    dispatch({
+      type: "login",
+      payload: {
+        token: "",
+        user: undefined
+      }
+    });
+    navigate('/');
+
+    /* login(data).then(async response => {
       const bodyResponse = await response.json();
 
       const decodedToken = jwtDecode(bodyResponse.token);
@@ -44,7 +53,7 @@ function SignIn() {
     }).catch(error => {
       setIsProcessing(false);
       setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('login.generic-error'));
-    });
+    }); */
 
   }
 

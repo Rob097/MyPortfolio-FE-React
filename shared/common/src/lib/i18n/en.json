@@ -1,3 +1,5 @@
 {
-    "file-description": "Put inside this json all the shared english translations between microservices"
+    "file-description": "Put inside this json all the shared english translations between microservices",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
 }

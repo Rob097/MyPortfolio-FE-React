@@ -4,48 +4,39 @@
   "description": "",
   "author": "Roberto Dellantonio",
   "scripts": {
-
     "install:all": "concurrently \"cd shared/context && npm install\" \"cd shared/common && npm install\" \"cd apps/dashboard && npm install\" \"cd apps/header && npm install\" \"cd apps/auth && npm install\" \"cd apps/host && npm install\"",
-    
     "start:all:dev": "concurrently \"npm run start:dashboard:dev\" \"npm run start:context:dev\" \"npm run start:header:dev\" \"npm run start:auth:dev\" \"npm run start:host:dev\"",
     "start:all:prod": "concurrently \"npm run start:dashboard:prod\" \"npm run start:context:prod\" \"npm run start:header:prod\" \"npm run start:auth:prod\" \"npm run start:host:prod\"",
     "build:all:dev": "concurrently \"npm run build:dashboard:dev\" \"npm run build:context:dev\" \"npm run build:header:dev\" \"npm run build:auth:dev\" \"npm run build:host:dev\"",
     "build:all:prod": "concurrently \"npm run build:dashboard:prod\" \"npm run build:context:prod\" \"npm run build:header:prod\" \"npm run build:auth:prod\" \"npm run build:host:prod\"",
     "build:all:start": "concurrently \"npm run build:dashboard:start\" \"npm run build:context:start\" \"npm run build:header:start\" \"npm run build:auth:start\" \"npm run build:host:start\"",
-    
     "start:context:dev": "concurrently \"cd shared/context && webpack serve --open --mode development\"",
     "start:context:prod": "concurrently \"cd shared/context && webpack serve --mode production\"",
     "build:context:dev": "concurrently \"cd shared/context && webpack --mode development\"",
     "build:context:prod": "concurrently \"cd shared/context && webpack --mode production\"",
     "build:context:start": "concurrently \"cd shared/context/dist && PORT=4201 npx serve\"",
-    
     "start:dashboard:dev": "concurrently \"cd apps/dashboard && webpack serve --open --mode development\"",
     "start:dashboard:prod": "concurrently \"cd apps/dashboard && webpack serve --mode production\"",
     "build:dashboard:dev": "concurrently \"cd apps/dashboard && webpack --mode development\"",
     "build:dashboard:prod": "concurrently \"cd apps/dashboard && webpack --mode production\"",
     "build:dashboard:start": "concurrently \"cd apps/dashboard/dist && PORT=3004 npx serve\"",
-    
     "start:header:dev": "concurrently \"cd apps/header && webpack serve --open --mode development\"",
     "start:header:prod": "concurrently \"cd apps/header && webpack serve --mode production\"",
     "build:header:dev": "concurrently \"cd apps/header && webpack --mode development\"",
     "build:header:prod": "concurrently \"cd apps/header && webpack --mode production\"",
     "build:header:start": "concurrently \"cd apps/header/dist && PORT=3003 npx serve\"",
-    
     "start:auth:dev": "concurrently \"cd apps/auth && webpack serve --open --mode development\"",
     "start:auth:prod": "concurrently \"cd apps/auth && webpack serve --mode production\"",
     "build:auth:dev": "concurrently \"cd apps/auth && webpack --mode development\"",
     "build:auth:prod": "concurrently \"cd apps/auth && webpack --mode production\"",
     "build:auth:start": "concurrently \"cd apps/auth/dist && PORT=3002 npx serve\"",
-    
     "start:host:dev": "concurrently \"cd apps/host && webpack serve --open --mode development\"",
     "start:host:prod": "concurrently \"cd apps/host && webpack serve --mode production\"",
     "build:host:dev": "concurrently \"cd apps/host && webpack --mode development\"",
     "build:host:prod": "concurrently \"cd apps/host && webpack --mode production\"",
     "build:host:start": "concurrently \"cd apps/host/dist && PORT=3001 npx serve\"",
-    
     "build:common:dev": "concurrently \"cd shared/common && rm -rf dist && NODE_ENV=development ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__\"",
     "build:common:prod": "concurrently \"cd shared/common && rm -rf dist && NODE_ENV=production ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__\""
-
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -63,7 +54,7 @@
     "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.0",
     "tailwindcss": "^3.3.2",
-    "webpack": "^5.57.1",
+    "webpack": "^5.87.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.3.1"
   },

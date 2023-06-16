@@ -1,5 +1,9 @@
 {
     "home": {
         "welcome": "BENVENUTO"
+    },
+    "navbar": {
+        "sign-out-button": "Esci",
+        "sign-out-confirm": "Sei sicuro di voler effettuare il logout?"
     }
 }

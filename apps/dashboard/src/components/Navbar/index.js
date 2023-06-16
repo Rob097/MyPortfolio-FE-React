@@ -1,3 +1,4 @@
+import LogoutIcon from '@mui/icons-material/Logout';
 import AppBar from "@mui/material/AppBar";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
@@ -5,19 +6,23 @@ import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import logoSpotify from "common-lib/assets/images/small-logos/logo-spotify.svg";
 import team2 from "common-lib/assets/images/team-2.jpg";
-import Breadcrumbs from "components/Breadcrumbs";
-import NotificationItem from "components/NotificationItem";
 import SoftBox from "common-lib/components/SoftBox";
 import SoftInput from "common-lib/components/SoftInput";
+import SoftModal from "common-lib/components/SoftModal";
 import SoftTypography from "common-lib/components/SoftTypography";
+import Breadcrumbs from "components/Breadcrumbs";
+import NotificationItem from "components/NotificationItem";
+import { useAuthStore } from "context/AuthStore";
 import {
   setMiniSidenav,
   setOpenConfigurator,
   setTransparentNavbar,
   useSoftUIController,
 } from "context/DashboardStore";
+import * as React from 'react';
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   navbar,
   navbarContainer,
@@ -27,11 +32,14 @@ import {
 } from "./styles";
 
 function Navbar({ absolute, light, isMini }) {
+  const { t, i18n } = useTranslation(["dashboard", "common"]);
+  const navigate = useNavigate();
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const [authStore, authDispatch] = useAuthStore();
 
   useEffect(() => {
     // Setting the navbar type
@@ -63,6 +71,17 @@ function Navbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+
+  const [openSignOutModal, setOpenSignOutModal] = useState(false);
+  const openSignOutConfirm = () => setOpenSignOutModal(true);
+  const closeSignOutModal = () => setOpenSignOutModal(false);
+
+  function handleSignOut() {
+    authDispatch({
+      type: "logout"
+    });
+    navigate('/');
+  }
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -103,6 +122,22 @@ function Navbar({ absolute, light, isMini }) {
     </Menu>
   );
 
+  const SignOutConfirmModal = () => (
+    <SoftModal
+      id="sign-out-modal"
+      open={openSignOutModal}
+      handleClose={closeSignOutModal}
+      handleConfirm={handleSignOut}
+      title="Logout"
+      confirmLabel={t('common:confirm')}
+      closeLabel={t('common:cancel')}
+    >
+      <SoftTypography sx={{ mt: 2 }}>
+        {t('dashboard:navbar.sign-out-confirm')}
+      </SoftTypography>
+    </SoftModal>
+  )
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -122,24 +157,26 @@ function Navbar({ absolute, light, isMini }) {
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/auth/login">
-                <IconButton sx={navbarIconButton} size="small">
-                  <Icon
-                    sx={({ palette: { dark, white } }) => ({
-                      color: light ? white.main : dark.main,
-                    })}
-                  >
-                    account_circle
-                  </Icon>
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Sign in
-                  </SoftTypography>
-                </IconButton>
-              </Link>
+
+              {authStore?.isLoggedIn &&
+                <>
+                  <IconButton sx={navbarIconButton} size="small" onClick={openSignOutConfirm}>
+                    <LogoutIcon
+                      sx={({ palette: { dark, white } }) => ({
+                        color: light ? white.main : dark.main,
+                      })}
+                    />
+                    <SoftTypography
+                      variant="button"
+                      fontWeight="medium"
+                      color={light ? "white" : "dark"}
+                    >
+                      {t('dashboard:navbar.sign-out-button')}
+                    </SoftTypography>
+                  </IconButton>
+                  <SignOutConfirmModal />
+                </>
+              }
               <IconButton
                 size="small"
                 color="inherit"

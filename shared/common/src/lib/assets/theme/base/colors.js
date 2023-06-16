@@ -30,8 +30,8 @@ const colors = {
   },
 
   primary: {
-    main: "#cb0c9f",
-    focus: "#ad0a87",
+    main: "#2152ff",
+    focus: "#1a42d1",
   },
 
   secondary: {
