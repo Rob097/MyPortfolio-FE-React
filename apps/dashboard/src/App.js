@@ -4,28 +4,32 @@ import "common-lib/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { SoftUIControllerProvider } from "context/DashboardStore";
 import { StoreProvider } from "context/Store";
-import React, { Suspense } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
+import i18n from "../assets/i18n/i18n";
 import CustomRouterProvider from "./Routes";
 import "./index.scss";
 
-const App = () => (
-  // Theme providers
-  <SoftUIControllerProvider>
-    <ThemeProvider theme={theme}>
+const App = () => {
+  console.debug("i18n for dashboard initialized: %O", i18n);
+  return (
+    // Theme providers
+    <SoftUIControllerProvider>
+      <ThemeProvider theme={theme}>
 
-      {/* Store providers */}
-      <StoreProvider>
-        <AuthStoreProvider>
+        {/* Store providers */}
+        <StoreProvider>
+          <AuthStoreProvider>
 
-          {/* Routes */}
-          <CustomRouterProvider />
+            {/* Routes */}
+            <CustomRouterProvider />
 
-        </AuthStoreProvider>
-      </StoreProvider>
+          </AuthStoreProvider>
+        </StoreProvider>
 
-    </ThemeProvider>
-  </SoftUIControllerProvider>
-);
+      </ThemeProvider>
+    </SoftUIControllerProvider>
+  )
+};
 const root = createRoot(document.getElementById("app"));
 root.render(<App />);

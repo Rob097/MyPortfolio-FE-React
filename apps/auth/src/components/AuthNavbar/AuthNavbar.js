@@ -76,13 +76,13 @@ function AuthNavbar({ transparent, light, action }) {
           <AuthNavbarLink
             icon="account_circle"
             name="sign up"
-            route="/authentication/sign-up"
+            route="/auth/sign-up"
             light={light}
           />
           <AuthNavbarLink
             icon="key"
             name="sign in"
-            route="/authentication/sign-in"
+            route="/auth/sign-in"
             light={light}
           />
         </SoftBox>

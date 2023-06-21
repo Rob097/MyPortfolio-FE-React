@@ -71,7 +71,7 @@ export default function Example() {
         dispatch({
             type: "logout"
         });
-        navigate('/auth/login');
+        navigate('/auth/sign-in');
     }
 
     return (

@@ -7,6 +7,7 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-rou
 import Example from "./components/example";
 import Home from "dashboard/Home";
 const SignIn = lazy(() => import("auth/SignIn"));
+const SignUp = lazy(() => import("auth/SignUp"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
@@ -18,18 +19,22 @@ const DashboardRoutes = (isLoggedIn) => [
 const AuthRoutes = (isLoggedIn) => [
     {
         path: "",
-        element: <Navigate to="login" />,
+        element: <Navigate to="sign-in" />,
     },
     {
-        path: "login",
+        path: "sign-in",
         element: <ProtectedRoute isAllowed={!isLoggedIn}><SignIn /></ProtectedRoute>
+    },
+    {
+        path: "sign-up",
+        element: <ProtectedRoute isAllowed={!isLoggedIn}><SignUp /></ProtectedRoute>
     }
 ]
 
 const HostRoutes = (authStore) => [
     {
         path: "",
-        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/login"}><Example /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/sign-in"}><Example /></ProtectedRoute>
     }
 ];
 

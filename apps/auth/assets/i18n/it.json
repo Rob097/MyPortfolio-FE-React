@@ -1,5 +1,5 @@
 {
-    "login": {
+    "sign-in": {
         "generic-error": "Errore nell'effettuare il login",
         "welcome-back": "Bentornato",
         "instruction": "Inserisci la tua email e password per accedere",
@@ -8,6 +8,25 @@
         "no-account": "Non hai un account?",
         "register": "Registrati",
         "validations": {
+            "email-required": "L'email è obbligatoria",
+            "password-required": "La password è obbligatoria"
+        }
+    },
+    "sign-up": {
+        "generic-error": "Errore durante la registrazione",
+        "title": "Unisciti a noi",
+        "instruction": "Inserisci il tuo nome, l'email e password per registrarti",
+        "fields": {
+            "name": "Nome",
+            "email": "Email",
+            "password": "Password"
+        },
+        "terms": "Accetto i Termini e le Condizioni",
+        "sign-up": "Registrati",
+        "have-account": "Hai già un account?",
+        "login": "Login",
+        "validations": {
+            "name-required": "Il nome è obbligatorio",
             "email-required": "L'email è obbligatoria",
             "password-required": "La password è obbligatoria"
         }

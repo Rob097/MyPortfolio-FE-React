@@ -90,6 +90,7 @@ module.exports = (_, argv) => {
         },
         exposes: {
           "./SignIn": "./src/pages/SignIn",
+          "./SignUp": "./src/pages/SignUp",
           "./i18n": "./assets/i18n/i18n"
         },
         shared: {

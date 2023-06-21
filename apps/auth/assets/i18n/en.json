@@ -1,5 +1,5 @@
 {
-    "login": {
+    "sign-in": {
         "generic-error": "An error occured during login",
         "welcome-back": "Welcome Back",
         "instruction": "Enter your email and password to sign in",
@@ -8,6 +8,25 @@
         "no-account": "Don't have an account?",
         "register": "Sign Up",
         "validations": {
+            "email-required": "Email is required",
+            "password-required": "Password is required"
+        }
+    },
+    "sign-up": {
+        "generic-error": "An error occured during registration",
+        "title": "Join us today",
+        "instruction": "Enter your name, email and password to register",
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "password": "Password"
+        },
+        "terms": "I agree the Terms and Conditions",
+        "sign-up": "Sign up",
+        "have-account": "Already have an account?",
+        "login": "Sign in",
+        "validations": {
+            "name-required": "Name is required",
             "email-required": "Email is required",
             "password-required": "Password is required"
         }

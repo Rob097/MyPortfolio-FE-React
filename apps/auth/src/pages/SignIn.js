@@ -11,7 +11,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
 import CoverLayout from "../components/CoverLayout";
-import { login } from '../utilities/AuthService';
 
 function SignIn() {
   const { t, i18n } = useTranslation("auth");
@@ -33,7 +32,7 @@ function SignIn() {
     });
     navigate('/');
 
-    /* login(data).then(async response => {
+    /* signIn(data).then(async response => {
       const bodyResponse = await response.json();
 
       const decodedToken = jwtDecode(bodyResponse.token);
@@ -52,15 +51,15 @@ function SignIn() {
       navigate('/welcome');
     }).catch(error => {
       setIsProcessing(false);
-      setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('login.generic-error'));
+      setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-in.generic-error'));
     }); */
 
   }
 
   return (
     <CoverLayout
-      title={t('login.welcome-back')}
-      description={t('login.instruction')}
+      title={t('sign-in.welcome-back')}
+      description={t('sign-in.instruction')}
       image={curved9}
     >
 
@@ -77,7 +76,7 @@ function SignIn() {
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('login.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+          <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-in.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -85,7 +84,7 @@ function SignIn() {
               Password
             </SoftTypography>
           </SoftBox>
-          <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('login.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
+          <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-in.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch {...register("rememberMe")} />
@@ -94,7 +93,7 @@ function SignIn() {
             fontWeight="regular"
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
-            &nbsp;&nbsp;{t('login.remember-me')}
+            &nbsp;&nbsp;{t('sign-in.remember-me')}
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={4} mb={1}>
@@ -107,21 +106,21 @@ function SignIn() {
             loadingPosition="start"
             startIcon={<span />}
           >
-            {t('login.sign-in')}
+            {t('sign-in.sign-in')}
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="submit" color="text" fontWeight="regular">
-            {t('login.no-account')}{" "}
+            {t('sign-in.no-account')}{" "}
             <SoftTypography
               component={Link}
-              to="/authentication/sign-up"
+              to="/auth/sign-up"
               variant="button"
               color="info"
               fontWeight="medium"
               textGradient
             >
-              {t('login.register')}
+              {t('sign-in.register')}
             </SoftTypography>
           </SoftTypography>
         </SoftBox>
