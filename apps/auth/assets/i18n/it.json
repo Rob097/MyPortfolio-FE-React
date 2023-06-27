@@ -17,18 +17,22 @@
         "title": "Unisciti a noi",
         "instruction": "Inserisci il tuo nome, l'email e password per registrarti",
         "fields": {
-            "name": "Nome",
+            "firstName": "Nome",
+            "lastName": "Cognome",
             "email": "Email",
-            "password": "Password"
+            "password": "Password",
+            "matchingPassword": "Conferma password"
         },
         "terms": "Accetto i Termini e le Condizioni",
         "sign-up": "Registrati",
         "have-account": "Hai già un account?",
         "login": "Login",
         "validations": {
-            "name-required": "Il nome è obbligatorio",
+            "firstName-required": "Il nome è obbligatorio",
+            "lastName-required": "Il cognome è obbligatorio",
             "email-required": "L'email è obbligatoria",
-            "password-required": "La password è obbligatoria"
+            "password-required": "La password è obbligatoria",
+            "matchingPassword-required": "Ripeti la tua password"
         }
     }
 }

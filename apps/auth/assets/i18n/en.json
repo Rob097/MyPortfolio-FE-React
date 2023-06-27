@@ -17,18 +17,22 @@
         "title": "Join us today",
         "instruction": "Enter your name, email and password to register",
         "fields": {
-            "name": "Name",
+            "firstName": "First Name",
+            "lastName": "Last Name",
             "email": "Email",
-            "password": "Password"
+            "password": "Password",
+            "matchingPassword": "Matching Password"
         },
         "terms": "I agree the Terms and Conditions",
         "sign-up": "Sign up",
         "have-account": "Already have an account?",
         "login": "Sign in",
         "validations": {
-            "name-required": "Name is required",
+            "firstName-required": "First Name is required",
+            "lastName-required": "Last Name is required",
             "email-required": "Email is required",
-            "password-required": "Password is required"
+            "password-required": "Password is required",
+            "matchingPassword-required": "Repeat your password"
         }
     }
 }

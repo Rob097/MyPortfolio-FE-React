@@ -24,9 +24,11 @@ export function signUp(data) {
             ...JSON_HEADER
         },
         body: JSON.stringify({
-            "firstName": data.name,
+            "firstName": data.firstName,
+            "lastName": data.lastName,
             "email": data.email,
-            "password": data.password
+            "password": data.password,
+            "matchingPassword": data.matchingPassword
         })
     })
 }

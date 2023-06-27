@@ -114,7 +114,7 @@ function SignIn() {
             {t('sign-in.no-account')}{" "}
             <SoftTypography
               component={Link}
-              to="/auth/sign-up"
+              to="../sign-up"
               variant="button"
               color="info"
               fontWeight="medium"

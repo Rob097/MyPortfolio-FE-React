@@ -15,12 +15,13 @@ import CoverLayout from "../components/CoverLayout";
 function SignUp() {
     const { t, i18n } = useTranslation("auth");
     const [store, dispatch] = useAuthStore();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, watch, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
 
     async function handleSignIn(data) {
+        console.log(data);
         // setIsProcessing(true);
 
         /* signUp(data).then(async response => {
@@ -60,14 +61,22 @@ function SignUp() {
                     <Alert className="mt-4" severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
                 </SoftBox>
             }
-            <SoftBox component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>
+            <SoftBox component="form" role="form" onSubmit={handleSubmit(handleSignIn)}>
                 <SoftBox mb={2}>
                     <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.name')}
+                            {t('sign-up.fields.firstName')}
                         </SoftTypography>
                     </SoftBox>
-                    <SoftInput id='name' type="text" placeholder="Name" {...register("name", { required: t('sign-up.validations.name-required') })} error={errors.name && true} helpertext={errors.name?.message} />
+                    <SoftInput id='firstName' type="text" placeholder={t('sign-up.fields.firstName')} {...register("firstName", { required: t('sign-up.validations.firstName-required') })} error={errors.firstName && true} helpertext={errors.firstName?.message} />
+                </SoftBox>
+                <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                            {t('sign-up.fields.lastName')}
+                        </SoftTypography>
+                    </SoftBox>
+                    <SoftInput id='lastName' type="text" placeholder={t('sign-up.fields.lastName')} {...register("lastName", { required: t('sign-up.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} />
                 </SoftBox>
                 <SoftBox mb={2}>
                     <SoftBox mb={1} ml={0.5}>
@@ -85,8 +94,16 @@ function SignUp() {
                     </SoftBox>
                     <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
                 </SoftBox>
+                <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                            {t('sign-up.fields.matchingPassword')}
+                        </SoftTypography>
+                    </SoftBox>
+                    <SoftInput id='matchingPassword' type="password" placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => {if(watch('password') != val) { return "Your passwords do no match"}} })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
+                </SoftBox>
                 <SoftBox display="flex" alignItems="center">
-                    <Switch required {...register("terms", { required: true})}/>
+                    <Switch required {...register("terms", { required: true})} />
                     <SoftTypography
                         variant="button"
                         fontWeight="regular"
@@ -113,7 +130,7 @@ function SignUp() {
                         {t('sign-up.have-account')}{" "}
                         <SoftTypography
                             component={Link}
-                            to="/auth/sign-in"
+                            to="../sign-in"
                             variant="button"
                             color="info"
                             fontWeight="medium"
