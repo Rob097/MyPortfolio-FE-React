@@ -11,6 +11,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
 import CoverLayout from "../components/CoverLayout";
+import { signUp } from "../utilities/AuthService";
+import Icon from "@mui/material/Icon";
 
 function SignUp() {
     const { t, i18n } = useTranslation("auth");
@@ -19,12 +21,17 @@ function SignUp() {
     const navigate = useNavigate();
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
+    const [passwordShown, setPasswordShown] = useState(false);
+
+    const togglePasswordVisiblity = () => {
+        setPasswordShown(passwordShown ? false : true);
+      };
 
     async function handleSignIn(data) {
         console.log(data);
-        // setIsProcessing(true);
+        /*setIsProcessing(true);
 
-        /* signUp(data).then(async response => {
+        signUp(data).then(async response => {
           const bodyResponse = await response.json();
     
           const decodedToken = jwtDecode(bodyResponse.token);
@@ -92,7 +99,7 @@ function SignUp() {
                             {t('sign-up.fields.password')}
                         </SoftTypography>
                     </SoftBox>
-                    <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
+                    <SoftInput id='password' type={passwordShown ? "text" : "password"} placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} icon={{ component: (!passwordShown ? "visibility" : "visibility_off"), direction: "right", onClick: togglePasswordVisiblity }}/>
                 </SoftBox>
                 <SoftBox mb={2}>
                     <SoftBox mb={1} ml={0.5}>
@@ -100,7 +107,7 @@ function SignUp() {
                             {t('sign-up.fields.matchingPassword')}
                         </SoftTypography>
                     </SoftBox>
-                    <SoftInput id='matchingPassword' type="password" placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => {if(watch('password') != val) { return "Your passwords do no match"}} })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
+                    <SoftInput id='matchingPassword' type={passwordShown ? "text" : "password"} placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => {if(watch('password') != val) { return t('sign-up.validations.matchingPassword-notMatch')}} })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
                 </SoftBox>
                 <SoftBox display="flex" alignItems="center">
                     <Switch required {...register("terms", { required: true})} />

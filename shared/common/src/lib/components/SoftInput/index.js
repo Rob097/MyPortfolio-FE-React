@@ -30,22 +30,30 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
     );
   } else if (icon.component && icon.direction === "right") {
     template = (
-      <SoftInputWithIconRoot ref={ref} ownerState={{ error, success, disabled }}>
-        <SoftInputRoot
-          {...rest}
-          ownerState={{ size, error, success, iconDirection, direction, disabled }}
-        />
-        <SoftInputIconBoxRoot ownerState={{ size }}>
-          <SoftInputIconRoot fontSize="small" ownerState={{ size }}>
-            {icon.component}
-          </SoftInputIconRoot>
-        </SoftInputIconBoxRoot>
-      </SoftInputWithIconRoot>
+      <>
+        <SoftInputWithIconRoot ref={ref} ownerState={{ error, success, disabled }}>
+          <SoftInputRoot
+            {...rest}
+            ownerState={{ size, error, success, iconDirection, direction, disabled }}
+          />
+          <SoftInputIconBoxRoot ownerState={{ size }} onClick={icon.onClick}>
+            <SoftInputIconRoot fontSize="small" ownerState={{ size }}>
+              {icon.component}
+            </SoftInputIconRoot>
+          </SoftInputIconBoxRoot>
+        </SoftInputWithIconRoot>
+        {
+          rest && rest.helpertext &&
+          <SoftBox mb={1} ml={0.5}>
+            <FormHelperText id={rest.helpertext} style={{ marginLeft: '0' }} error={error}>{rest.helpertext}</FormHelperText>
+          </SoftBox>
+        }
+      </>
     );
   } else {
     template = (
       <>
-        <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} inputProps={{autoComplete: rest.id ? rest.id : undefined}} />
+        <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} inputProps={{ autoComplete: rest.id ? rest.id : undefined }} />
         {
           rest && rest.helpertext &&
           <SoftBox mb={1} ml={0.5}>

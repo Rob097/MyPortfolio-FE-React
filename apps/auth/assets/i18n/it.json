@@ -32,7 +32,8 @@
             "lastName-required": "Il cognome è obbligatorio",
             "email-required": "L'email è obbligatoria",
             "password-required": "La password è obbligatoria",
-            "matchingPassword-required": "Ripeti la tua password"
+            "matchingPassword-required": "Ripeti la tua password",
+            "matchingPassword-notMatch": "Le password non coincidono"
         }
     }
 }

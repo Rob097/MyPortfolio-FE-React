@@ -32,7 +32,8 @@
             "lastName-required": "Last Name is required",
             "email-required": "Email is required",
             "password-required": "Password is required",
-            "matchingPassword-required": "Repeat your password"
+            "matchingPassword-required": "Repeat your password",
+            "matchingPassword-notMatch": "Your passwords do not match"
         }
     }
 }
