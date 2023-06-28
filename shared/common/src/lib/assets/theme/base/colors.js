@@ -35,7 +35,7 @@ const colors = {
   },
 
   secondary: {
-    main: "#8392ab",
+    main: "#7b74a6",
     focus: "#96a2b8",
   },
 

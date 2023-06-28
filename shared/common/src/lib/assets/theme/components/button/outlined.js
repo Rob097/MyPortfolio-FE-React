@@ -10,8 +10,6 @@ const { buttonBoxShadow } = boxShadows;
 const outlined = {
   base: {
     minHeight: pxToRem(42),
-    color: light.main,
-    borderColor: light.main,
     padding: `${pxToRem(12)} ${pxToRem(24)}`,
 
     "&:hover": {
