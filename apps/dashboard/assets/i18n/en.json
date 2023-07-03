@@ -5,5 +5,66 @@
     "navbar": {
         "sign-out-button": "Sign out",
         "sign-out-confirm": "Are you sure you want to sign out?"
+    },
+    "profile-builder": {
+        "title": "Build Your Profile",
+        "subtitle": "This information will let us know more about you.",
+        "actions": {
+            "back": "Back",
+            "next": "Next",
+            "skip": "Skip",
+            "finish": "Finish",
+            "optional": "Optional"
+        },
+        "completed": {
+            "title": "Well Done! Your profile is completed.",
+            "button": "My Profile"
+        },
+        "first-step": {
+            "name": "About",
+            "title": "Let's start with the basic information",
+            "subtitle": "Let us know your name and email address. Use an address you don't mind other users contacting you at",
+            "fields": {
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "email": "Email"
+            },
+            "validations": {
+                "firstName-required": "First Name is required",
+                "lastName-required": "Last Name is required",
+                "email-required": "Email is required"
+            }
+        },
+        "second-step": {
+            "name": "Address",
+            "title": "Are you living in a nice area?",
+            "subtitle": "One thing I love about the later sunsets is the chance to go for a walk through the neighborhood woods before dinner",
+            "fields": {
+                "nation": "Nation",
+                "nationality": "Nationality",
+                "city": "City",
+                "province": "Province",
+                "address": "Address",
+                "cap": "Cap"
+            },
+            "validations": {
+                "nation-required": "Nation is required",
+                "nationality-required": "Nationality is required",
+                "city-required": "City is required",
+                "province-required": "Province is required",
+                "address-required": "Address is required",
+                "cap-required": "Cap is required"
+            }
+        },
+        "third-step": {
+            "name": "Interest",
+            "title": "What are you doing?",
+            "subtitle": "Give us more details about you. What do you enjoy doing in your spare time?",
+            "types": {
+                "code": "Code",
+                "design": "Design",
+                "other": "Other"
+            }
+        }
     }
 }

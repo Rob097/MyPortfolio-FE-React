@@ -1,11 +1,13 @@
 import { Card, CardActions, CardContent } from '@mui/material';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import SoftBox from "common-lib/components/SoftBox";
+import SoftButton from 'common-lib/components/SoftButton';
+import { useTranslation } from 'react-i18next';
 import { useStepperStore } from './StepperContext';
 
 const CustomStep = (props) => {
     const [store, dispatch] = useStepperStore();
+    const { t, i18n } = useTranslation("dashboard");
 
     const handleBack = () => {
         dispatch({
@@ -33,24 +35,26 @@ const CustomStep = (props) => {
                 {store.activeStep < props.steps.length &&
                     <CardActions sx={{ display: "flex", justifyContent: "center" }}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, width: '80%' }}>
-                            <Button
+                            <SoftButton
                                 disabled={store.activeStep === 0}
                                 onClick={handleBack}
                                 sx={{ mr: 1 }}
-                                variant="outlined" color="secondary" size="medium"
+                                variant="outlined"
+                                color="secondary"
+                                size="medium"
                             >
-                                Back
-                            </Button>
+                                {t('profile-builder.actions.back')}
+                            </SoftButton>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(store.activeStep) && (
-                                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                                    Skip
-                                </Button>
+                                <SoftButton variant="outlined" color="dark" onClick={handleSkip} sx={{ mr: 1 }}>
+                                    {t('profile-builder.actions.skip')}
+                                </SoftButton>
                             )}
 
-                            <Button variant="contained" color="primary" size="medium" className='text-white' type='submit'>
-                                {store.activeStep === props.steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
+                            <SoftButton variant="contained" color="dark" size="medium" type='submit'>
+                                {store.activeStep === props.steps.length - 1 ? t('profile-builder.actions.finish') : t('profile-builder.actions.next')}
+                            </SoftButton>
                         </Box>
                     </CardActions>
                 }

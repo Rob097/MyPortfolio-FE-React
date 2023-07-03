@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import colors from 'common-lib/assets/theme/base/colors';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { useStepperStore } from './StepperContext';
 
 
 const Steps = ({ steps }) => {
     const [store] = useStepperStore();
+    const { t, i18n } = useTranslation("dashboard");
 
     const isStepOptional = (step) => {
         return steps[step].isOptional;
@@ -29,7 +31,7 @@ const Steps = ({ steps }) => {
                 const labelProps = {};
                 if (isStepOptional(index)) {
                     labelProps.optional = (
-                        <Typography variant="caption">Optional</Typography>
+                        <Typography variant="caption">{t('profile-builder.actions.optional')}</Typography>
                     );
                 }
                 if (isStepSkipped(index)) {

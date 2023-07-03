@@ -4,6 +4,67 @@
     },
     "navbar": {
         "sign-out-button": "Esci",
-        "sign-out-confirm": "Sei sicuro di voler effettuare il logout?"
+        "sign-out-confirm": "Sei sicuro di voler uscire?"
+    },
+    "profile-builder": {
+        "title": "Completa il tuo Profilo",
+        "subtitle": "Queste informazioni ci aiuteranno a conoscerti meglio.",
+        "actions": {
+            "back": "Indietro",
+            "next": "Avanti",
+            "skip": "Salta",
+            "finish": "Conferma",
+            "optional": "Opzionale"
+        },
+        "completed": {
+            "title": "Ben fatto! Il tuo profilo è completo.",
+            "button": "Il mio profilo"
+        },
+        "first-step": {
+            "name": "Info",
+            "title": "Iniziamo con le informazioni di base",
+            "subtitle": "Facci sapere il tuo nome e indirizzo email. Usa un indirizzo a cui non ti dispiace che altri utenti ti contattino.",
+            "fields": {
+                "firstName": "Nome",
+                "lastName": "Cognome",
+                "email": "Email"
+            },
+            "validations": {
+                "firstName-required": "Il nome è obbligatorio",
+                "lastName-required": "Il cognome è obbligatorio",
+                "email-required": "L'indirizzo email è obbligatorio"
+            }
+        },
+        "second-step": {
+            "name": "Indirizzo",
+            "title": "Vivi in una bella zona?",
+            "subtitle": "Una cosa che amo dei tramonti tardivi è l'opportunità di fare una passeggiata nei boschi del quartiere prima di cena",
+            "fields": {
+                "nation": "Nazione",
+                "nationality": "Nazionalità",
+                "city": "Città",
+                "province": "Provincia",
+                "address": "Indirizzo",
+                "cap": "CAP"
+            },
+            "validations": {
+                "nation-required": "La nazione è obbligatoria",
+                "nationality-required": "La nazionalità è obbligatoria",
+                "city-required": "La città è obbligatoria",
+                "province-required": "La provincia è obbligatoria",
+                "address-required": "L'indirizzo è obbligatorio",
+                "cap-required": "Il CAP è obbligatorio"
+            }
+        },
+        "third-step": {
+            "name": "Interesse",
+            "title": "Cosa fai?",
+            "subtitle": "Fornisci ulteriori dettagli su di te. Cosa ti piace fare nel tempo libero?",
+            "types": {
+                "code": "Programmazione",
+                "design": "Design",
+                "other": "Altro"
+            }
+        }
     }
 }
