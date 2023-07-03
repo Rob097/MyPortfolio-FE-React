@@ -31,7 +31,7 @@ const inputBase = {
     input: {
       width: "100% !important",
       height: `${pxToRem(22)}`,
-      padding: "0 !important",
+      // padding: "0 !important",
 
       "&::-webkit-input-placeholder": {
         color: `${dark.main} !important`,

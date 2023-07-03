@@ -111,7 +111,7 @@ export default createTheme({
     MuiRadio: { ...radio },
     MuiAutocomplete: { ...autocomplete },
     MuiInput: { ...input },
-    MuiOutlinedInput: { ...input },
+    // MuiOutlinedInput: { ...input },
     MuiFilledInput: { ...input },
     MuiPopover: { ...popover },
     MuiButtonBase: { ...buttonBase },

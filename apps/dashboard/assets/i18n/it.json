@@ -27,11 +27,13 @@
             "fields": {
                 "firstName": "Nome",
                 "lastName": "Cognome",
+                "sex": "Sesso",
                 "email": "Email"
             },
             "validations": {
                 "firstName-required": "Il nome è obbligatorio",
                 "lastName-required": "Il cognome è obbligatorio",
+                "sex-required": "Il sesso è obbligatorio",
                 "email-required": "L'indirizzo email è obbligatorio"
             }
         },

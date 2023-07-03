@@ -1,5 +1,10 @@
 import { Icon } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Grid from '@mui/system/Unstable_Grid';
 import SoftBox from "common-lib/components/SoftBox";
 import SoftButton from 'common-lib/components/SoftButton';
@@ -21,6 +26,7 @@ const ProfileBuilder = () => {
     const { t, i18n } = useTranslation("dashboard");
     const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
     const [type, setType] = useState();
+    const [sex, setSex] = useState("M");
 
     const steps = [
         {
@@ -65,7 +71,6 @@ const ProfileBuilder = () => {
         setValue('type', type);
     }
 
-
     return (
         <CustomStepper steps={steps} title={t('profile-builder.title')} subTitle={t('profile-builder.subtitle')}>
 
@@ -106,6 +111,31 @@ const ProfileBuilder = () => {
                                             </SoftTypography>
                                         </SoftBox>
                                         <SoftInput id='lastName' type="text" placeholder={t('profile-builder.first-step.fields.lastName')} {...register("lastName", { required: t('profile-builder.first-step.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} />
+                                    </SoftBox>
+                                    <SoftBox mb={2}>
+                                        <SoftBox mb={1} ml={0.5}>
+                                            <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                                {t('profile-builder.first-step.fields.sex')}
+                                            </SoftTypography>
+                                        </SoftBox>
+
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth size="small" error={errors.sex}>
+                                                <Select
+                                                    id="sex"
+                                                    value={sex}
+                                                    {...register("sex", { required: t('profile-builder.first-step.validations.sex-required') })}
+                                                    onChange={(event) => { setSex(event.target.value); }}
+                                                >
+                                                    <MenuItem value={"M"} className='mb-2'>Male</MenuItem>
+                                                    <MenuItem value={"F"} className='mb-2'>Female</MenuItem>
+                                                    <MenuItem value={"NB"} className='mb-2'>Non Binary</MenuItem>
+                                                </Select>
+                                                {errors.sex && <SoftBox mb={1} ml={0.5}>
+                                                    <FormHelperText id={errors.sex?.message} style={{ marginLeft: '0' }} error={errors.sex && true}>{errors.sex?.message}</FormHelperText>
+                                                </SoftBox>}
+                                            </FormControl>
+                                        </Box>
                                     </SoftBox>
                                     <SoftBox mb={2}>
                                         <SoftBox mb={1} ml={0.5}>
