@@ -63,6 +63,10 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     component: <p>profile</p>,
     noCollapse: true,
+    navbar: {
+      absolute: true,
+      light: true
+    }
   },
   {
     type: "collapse",
@@ -89,9 +93,11 @@ function Dashboard() {
   const { miniSidenav, sidenavColor } = controller;
   const { pathname } = useLocation();
   const [onMouseEnter, setOnMouseEnter] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState();
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
+    setCurrentRoute(routes.filter(route => route.route===pathname)?.[0]);
   }, [pathname]);
 
   // Open sidenav when mouse enter on mini sidenav
@@ -125,7 +131,7 @@ function Dashboard() {
         },
       })}
     >
-      <Navbar />
+      <Navbar absolute={currentRoute?.navbar?.absolute} light={currentRoute?.navbar?.light} />
       <Sidenav
         color={sidenavColor}
         brand={brand}
@@ -134,7 +140,7 @@ function Dashboard() {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       />
-      <SoftBox py={3} style={{ minHeight: '200vh' }}>
+      <SoftBox py={currentRoute?.navbar?.absolute ? 0 : 3} style={{ minHeight: '200vh' }}>
         <SoftBox mb={3}>
           <Outlet />
         </SoftBox>

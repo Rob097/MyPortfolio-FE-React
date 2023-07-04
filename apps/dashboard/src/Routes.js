@@ -3,6 +3,7 @@ import { useAuthStore } from "context/AuthStore";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import UserProfile from "./pages/UserProfile";
 
 const Router = () => {
     return createBrowserRouter([
@@ -14,6 +15,10 @@ const Router = () => {
                 {
                     path: "home",
                     element: <Home />,
+                },
+                {
+                    path: "profile",
+                    element: <UserProfile />,
                 }
             ]
         },

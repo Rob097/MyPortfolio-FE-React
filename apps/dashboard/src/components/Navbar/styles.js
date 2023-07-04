@@ -26,7 +26,10 @@ function navbar(theme, ownerState) {
 
       return color;
     },
-    top: absolute ? 0 : pxToRem(12),
+    top: absolute ? pxToRem(24) : pxToRem(12),
+    width: absolute ? '97%' : '100%',
+    left: absolute ? '50%' : '0',
+    transform: absolute ? 'translateX(-50%)' : 'none',
     minHeight: pxToRem(75),
     display: "grid",
     alignItems: "center",
