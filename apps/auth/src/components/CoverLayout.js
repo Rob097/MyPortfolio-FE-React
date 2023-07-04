@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import Grid from "@mui/material/Grid";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 import AuthNavbar from "./AuthNavbar/AuthNavbar";
 import PageLayout from "./PageLayout";
@@ -26,15 +26,15 @@ function CoverLayout({ color, header, title, description, image, top, children }
         }}
       >
         <Grid item xs={11} sm={8} md={5} xl={3}>
-          <SoftBox mt={top}>
-            <SoftBox pt={3} px={3}>
+          <Box mt={top}>
+            <Box pt={3} px={3}>
               {!header ? (
                 <>
-                  <SoftBox mb={1}>
+                  <Box mb={1}>
                     <SoftTypography variant="h3" fontWeight="bold" color={color} textGradient>
                       {title}
                     </SoftTypography>
-                  </SoftBox>
+                  </Box>
                   <SoftTypography variant="body2" fontWeight="regular" color="text">
                     {description}
                   </SoftTypography>
@@ -42,12 +42,12 @@ function CoverLayout({ color, header, title, description, image, top, children }
               ) : (
                 header
               )}
-            </SoftBox>
-            <SoftBox p={3}>{children}</SoftBox>
-          </SoftBox>
+            </Box>
+            <Box p={3}>{children}</Box>
+          </Box>
         </Grid>
         <Grid item xs={12} md={5}>
-          <SoftBox
+          <Box
             height="100%"
             display={{ xs: "none", md: "block" }}
             position="relative"
@@ -59,7 +59,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
               borderBottomLeftRadius: ({ borders: { borderRadius } }) => borderRadius.lg,
             }}
           >
-            <SoftBox
+            <Box
               ml={-8}
               height="100%"
               sx={{
@@ -68,7 +68,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
                 transform: "skewX(10deg)",
               }}
             />
-          </SoftBox>
+          </Box>
         </Grid>
       </Grid>
       <Footer />

@@ -18,7 +18,7 @@ import { useLocation } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 
 // Soft UI Dashboard React context
 import { useSoftUIController, setLayout } from "context/DashboardStore";
@@ -32,7 +32,7 @@ function PageLayout({ background, children }) {
   }, [pathname]);
 
   return (
-    <SoftBox
+    <Box
       width="100vw"
       height="100%"
       minHeight="100vh"
@@ -40,7 +40,7 @@ function PageLayout({ background, children }) {
       sx={{ overflowX: "hidden" }}
     >
       {children}
-    </SoftBox>
+    </Box>
   );
 }
 

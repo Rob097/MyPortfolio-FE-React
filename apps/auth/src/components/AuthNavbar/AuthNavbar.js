@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
 import breakpoints from "common-lib/assets/theme/base/breakpoints";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftButton from "common-lib/components/SoftButton";
 import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
 import LanguageSelector from "./LanguageSelector";
+import boxShadows from "common-lib/assets/theme/base/boxShadows"
 
 function AuthNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -45,14 +46,12 @@ function AuthNavbar({ transparent, light, action }) {
 
   return (
     <Container>
-      <SoftBox
+      <Box
         py={1.5}
         px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
         my={2}
         mx={3}
         width="calc(100% - 48px)"
-        borderRadius="section"
-        shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
         display="flex"
         justifyContent="space-between"
@@ -63,14 +62,16 @@ function AuthNavbar({ transparent, light, action }) {
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+          borderRadius: '10rem',
+          boxShadow: transparent ? "none" : boxShadows["md"]
         })}
       >
-        <SoftBox component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
+        <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
           <SoftTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
             Soft UI Dashboard
           </SoftTypography>
-        </SoftBox>
-        <SoftBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+        </Box>
+        <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
           <AuthNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
           <AuthNavbarLink icon="person" name="profile" route="/profile" light={light} />
           <AuthNavbarLink
@@ -85,10 +86,10 @@ function AuthNavbar({ transparent, light, action }) {
             route="/auth/sign-in"
             light={light}
           />
-        </SoftBox>
+        </Box>
         {action &&
           (action.type === "internal" ? (
-            <SoftBox display={{ xs: "none", lg: "inline-block" }}>
+            <Box display={{ xs: "none", lg: "inline-block" }}>
               <SoftButton
                 component={Link}
                 to={action.route}
@@ -99,9 +100,9 @@ function AuthNavbar({ transparent, light, action }) {
               >
                 {action.label}
               </SoftButton>
-            </SoftBox>
+            </Box>
           ) : (
-            <SoftBox display={{ xs: "none", lg: "inline-block" }}>
+            <Box display={{ xs: "none", lg: "inline-block" }}>
               {/* <SoftButton
                 component="a"
                 href={action.route}
@@ -115,9 +116,9 @@ function AuthNavbar({ transparent, light, action }) {
                 {action.label}
               </SoftButton> */}
               <LanguageSelector />
-            </SoftBox>
+            </Box>
           ))}
-        <SoftBox
+        <Box
           display={{ xs: "inline-block", lg: "none" }}
           lineHeight={0}
           py={1.5}
@@ -127,8 +128,8 @@ function AuthNavbar({ transparent, light, action }) {
           onClick={openMobileNavbar}
         >
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
-        </SoftBox>
-      </SoftBox>
+        </Box>
+      </Box>
       {mobileView && <AuthNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
     </Container>
   );

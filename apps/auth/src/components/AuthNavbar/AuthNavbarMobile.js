@@ -1,5 +1,5 @@
 import Menu from "@mui/material/Menu";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import PropTypes from "prop-types";
 import AuthNavbarLink from "./AuthNavbarLink";
 import LanguageSelector from "./LanguageSelector";
@@ -22,13 +22,13 @@ function AuthNavbarMobile({ open, close }) {
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
     >
-      <SoftBox px={0.5}>
+      <Box px={0.5}>
         <AuthNavbarLink icon="donut_large" name="dashboard" route="/dashboard" />
         <AuthNavbarLink icon="person" name="profile" route="/profile" />
         <AuthNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
         <AuthNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
         <LanguageSelector isMobile />
-      </SoftBox>
+      </Box>
     </Menu>
   );
 }

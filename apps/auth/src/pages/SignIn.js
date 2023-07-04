@@ -1,7 +1,7 @@
 import Alert from '@mui/material/Alert';
 import Switch from "@mui/material/Switch";
 import curved9 from "common-lib/assets/images/curved-images/curved-6.jpg";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftButton from "common-lib/components/SoftButton";
 import SoftInput from "common-lib/components/SoftInput";
 import SoftTypography from "common-lib/components/SoftTypography";
@@ -65,28 +65,28 @@ function SignIn() {
 
       {
         errorMessage &&
-        <SoftBox mb={2}>
+        <Box mb={2}>
           <Alert className="mt-4" severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
-        </SoftBox>
+        </Box>
       }
-      <SoftBox component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
+      <Box component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>
+        <Box mb={2}>
+          <Box mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
               Email
             </SoftTypography>
-          </SoftBox>
+          </Box>
           <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-in.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
+        </Box>
+        <Box mb={2}>
+          <Box mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
               Password
             </SoftTypography>
-          </SoftBox>
+          </Box>
           <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-in.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
-        </SoftBox>
-        <SoftBox display="flex" alignItems="center">
+        </Box>
+        <Box display="flex" alignItems="center">
           <Switch {...register("rememberMe")} />
           <SoftTypography
             variant="button"
@@ -95,8 +95,8 @@ function SignIn() {
           >
             &nbsp;&nbsp;{t('sign-in.remember-me')}
           </SoftTypography>
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
+        </Box>
+        <Box mt={4} mb={1}>
           <SoftButton
             type="submit"
             variant="gradient"
@@ -108,8 +108,8 @@ function SignIn() {
           >
             {t('sign-in.sign-in')}
           </SoftButton>
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
+        </Box>
+        <Box mt={3} textAlign="center">
           <SoftTypography variant="submit" color="text" fontWeight="regular">
             {t('sign-in.no-account')}{" "}
             <SoftTypography
@@ -123,8 +123,8 @@ function SignIn() {
               {t('sign-in.register')}
             </SoftTypography>
           </SoftTypography>
-        </SoftBox>
-      </SoftBox>
+        </Box>
+      </Box>
     </CoverLayout>
   );
 }

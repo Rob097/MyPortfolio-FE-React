@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 
 function AuthNavbarLink({ icon, name, route, light }) {
   return (
-    <SoftBox
+    <Box
       component={Link}
       to={route}
       mx={1}
@@ -32,7 +32,7 @@ function AuthNavbarLink({ icon, name, route, light }) {
       >
         &nbsp;{name}
       </SoftTypography>
-    </SoftBox>
+    </Box>
   );
 }
 
