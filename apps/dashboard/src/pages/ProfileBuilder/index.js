@@ -13,14 +13,14 @@ import SoftTypography from "common-lib/components/SoftTypography";
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import partyPopperImage from '../../assets/images/party-popper.png';
-import Completed from '../components/Stepper/Completed';
-import CustomStep from '../components/Stepper/CustomStep';
-import CustomStepper from '../components/Stepper/CustomStepper';
-import { useStepperStore } from '../components/Stepper/StepperContext';
-import Steps from '../components/Stepper/Steps';
-import { User } from '../models/user';
-import { UserService } from '../services/UserService';
+import partyPopperImage from '../../../assets/images/party-popper.png';
+import Completed from '../../components/Stepper/Completed';
+import CustomStep from '../../components/Stepper/CustomStep';
+import CustomStepper from '../../components/Stepper/CustomStepper';
+import { useStepperStore } from '../../components/Stepper/StepperContext';
+import Steps from '../../components/Stepper/Steps';
+import { User } from '../../models/user';
+import { UserService } from '../../services/UserService';
 import styles from './ProfileBuilder.module.scss';
 
 const ProfileBuilder = () => {
