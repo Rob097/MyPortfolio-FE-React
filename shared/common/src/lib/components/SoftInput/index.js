@@ -2,7 +2,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useSoftUIController } from "context/DashboardStore";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
-import SoftBox from "../SoftBox";
+import Box from '@mui/material/Box';
 import SoftInputIconBoxRoot from "./SoftInputIconBoxRoot";
 import SoftInputIconRoot from "./SoftInputIconRoot";
 import SoftInputRoot from "./SoftInputRoot";
@@ -44,9 +44,9 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
         </SoftInputWithIconRoot>
         {
           rest && rest.helpertext &&
-          <SoftBox mb={1} ml={0.5}>
+          <Box mb={1} ml={0.5}>
             <FormHelperText id={rest.helpertext} style={{ marginLeft: '0' }} error={error}>{rest.helpertext}</FormHelperText>
-          </SoftBox>
+          </Box>
         }
       </>
     );
@@ -56,9 +56,9 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
         <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} inputProps={{ autoComplete: rest.id ? rest.id : undefined }} />
         {
           rest && rest.helpertext &&
-          <SoftBox mb={1} ml={0.5}>
+          <Box mb={1} ml={0.5}>
             <FormHelperText id={rest.helpertext} style={{ marginLeft: '0' }} error={error}>{rest.helpertext}</FormHelperText>
-          </SoftBox>
+          </Box>
         }
       </>
     );

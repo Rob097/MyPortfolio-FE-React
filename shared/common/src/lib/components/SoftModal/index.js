@@ -1,7 +1,7 @@
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import borders from "common-lib/assets/theme/base/borders";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftButton from 'common-lib/components/SoftButton';
 import SoftTypography from "common-lib/components/SoftTypography";
 
@@ -28,22 +28,22 @@ const SoftModal = (props) => {
             onClose={props.handleClose}
         >
             <Fade in={props.open}>
-                <SoftBox sx={style} className="max-w-xs md:max-w-lg">
+                <Box sx={style} className="max-w-xs md:max-w-lg">
                     {props.title &&
-                        <SoftBox id="modal-header" className="border-b-2 border-b-sky-700">
+                        <Box id="modal-header" className="border-b-2 border-b-sky-700">
                             <SoftTypography variant="h3" component="h3">
                                 {props.title}
                             </SoftTypography>
-                        </SoftBox>
+                        </Box>
                     }
-                    <SoftBox id="modal-body">
+                    <Box id="modal-body">
                         {props.children}
-                    </SoftBox>
-                    <SoftBox id="modal-footer" sx={{ mt: 2 }}>
+                    </Box>
+                    <Box id="modal-footer" sx={{ mt: 2 }}>
                         <SoftButton color="primary" sx={{ mr: 2 }} onClick={props.handleConfirm}>{props.confirmLabel}</SoftButton>
                         <SoftButton color="secondary" onClick={props.handleClose}>{props.closeLabel}</SoftButton>
-                    </SoftBox>
-                </SoftBox>
+                    </Box>
+                </Box>
             </Fade>
         </Modal>
     );
