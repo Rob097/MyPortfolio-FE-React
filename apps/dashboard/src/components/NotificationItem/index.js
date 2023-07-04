@@ -1,6 +1,6 @@
 import Icon from "@mui/material/Icon";
 import MenuItem from "@mui/material/MenuItem";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
@@ -8,18 +8,17 @@ import { menuImage, menuItem } from "./styles";
 
 const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref) => (
   <MenuItem {...rest} ref={ref} sx={(theme) => menuItem(theme)}>
-    <SoftBox
+    <Box
       width="2.25rem"
       height="2.25rem"
       mt={0.25}
       mr={2}
       mb={0.25}
-      borderRadius="lg"
       sx={(theme) => menuImage(theme, { color })}
     >
       {image}
-    </SoftBox>
-    <SoftBox>
+    </Box>
+    <Box>
       <SoftTypography variant="button" textTransform="capitalize" fontWeight="regular">
         <strong>{title[0]}</strong> {title[1]}
       </SoftTypography>
@@ -44,7 +43,7 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
         </SoftTypography>
         {date}
       </SoftTypography>
-    </SoftBox>
+    </Box>
   </MenuItem>
 ));
 

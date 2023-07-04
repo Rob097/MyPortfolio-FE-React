@@ -41,6 +41,7 @@ function menuImage(theme, ownerState) {
     backgroundImage: gradients[color]
       ? linearGradient(gradients[color].main, gradients[color].state)
       : linearGradient(gradients.dark.main, gradients.dark.state),
+      borderRadius: '12px',
 
     "& img": {
       width: "100%",

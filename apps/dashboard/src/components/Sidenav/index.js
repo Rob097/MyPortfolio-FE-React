@@ -5,7 +5,7 @@ import List from "@mui/material/List";
 import SidenavCollapse from "components/Sidenav/SidenavCollapse";
 import SidenavRoot from "components/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "components/Sidenav/styles/sidenav";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftButton from "common-lib/components/SoftButton";
 import SoftTypography from "common-lib/components/SoftTypography";
 import { setMiniSidenav, useSoftUIController } from "context/DashboardStore";
@@ -81,8 +81,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
-        <SoftBox
+      <Box pt={3} pb={1} px={4} textAlign="center">
+        <Box
           display={{ xs: "block", xl: "none" }}
           position="absolute"
           top={0}
@@ -94,23 +94,23 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           <SoftTypography variant="h6" color="secondary">
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
-        </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
-          <SoftBox
+        </Box>
+        <Box component={NavLink} to="/" display="flex" alignItems="center">
+          {brand && <Box component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
+          <Box
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
             <SoftTypography component="h6" variant="button" fontWeight="medium">
               {brandName}
             </SoftTypography>
-          </SoftBox>
-        </SoftBox>
-      </SoftBox>
+          </Box>
+        </Box>
+      </Box>
       <Divider />
       <List>{renderRoutes}</List>
-      <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SoftBox mt={2}>
+      <Box pt={2} my={2} mx={2} mt="auto">
+        <Box mt={2}>
           <SoftButton
             component="a"
             href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
@@ -122,11 +122,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           >
             upgrade to pro
           </SoftButton>
-        </SoftBox>
-        <SoftBox mt={2} className="flex justify-center">
+        </Box>
+        <Box mt={2} className="flex justify-center">
           <LanguageSelector />
-        </SoftBox>
-      </SoftBox>
+        </Box>
+      </Box>
     </SidenavRoot>
   );
 }

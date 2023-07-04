@@ -1,6 +1,6 @@
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import Icon from "@mui/material/Icon";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
 
   return (
-    <SoftBox mr={{ xs: 0, xl: 8 }}>
+    <Box mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
@@ -62,7 +62,7 @@ function Breadcrumbs({ icon, title, route, light }) {
       >
         {title.replace("-", " ")}
       </SoftTypography>
-    </SoftBox>
+    </Box>
   );
 }
 

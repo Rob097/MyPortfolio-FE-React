@@ -1,15 +1,15 @@
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 
 function DefaultInfoCard({ color, icon, title, description, value }) {
   return (
     <Card>
-      <SoftBox p={2} mx={3} display="flex" justifyContent="center">
-        <SoftBox
+      <Box p={2} mx={3} display="flex" justifyContent="center">
+        <Box
           display="grid"
           justifyContent="center"
           alignItems="center"
@@ -18,13 +18,15 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
           width="4rem"
           height="4rem"
           shadow="md"
-          borderRadius="lg"
           variant="gradient"
+          sx={{
+            borderRadius: "12px"
+          }}
         >
           <Icon fontSize="default">{icon}</Icon>
-        </SoftBox>
-      </SoftBox>
-      <SoftBox pb={2} px={2} textAlign="center" lineHeight={1.25}>
+        </Box>
+      </Box>
+      <Box pb={2} px={2} textAlign="center" lineHeight={1.25}>
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
@@ -39,7 +41,7 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
             {value}
           </SoftTypography>
         )}
-      </SoftBox>
+      </Box>
     </Card>
   );
 }

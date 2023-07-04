@@ -1,6 +1,5 @@
 import { Card, CardActions, CardContent } from '@mui/material';
 import Box from '@mui/material/Box';
-import SoftBox from "common-lib/components/SoftBox";
 import SoftButton from 'common-lib/components/SoftButton';
 import { useTranslation } from 'react-i18next';
 import { useStepperStore } from './StepperContext';
@@ -26,7 +25,7 @@ const CustomStep = (props) => {
 
     return (
         <Card p={10}>
-            <SoftBox component="form" role="form" onSubmit={props.onSubmit} >
+            <Box component="form" role="form" onSubmit={props.onSubmit} >
                 <CardContent>
                     <Box mt={2}>
                         {props.children}
@@ -58,7 +57,7 @@ const CustomStep = (props) => {
                         </Box>
                     </CardActions>
                 }
-            </SoftBox>
+            </Box>
         </Card>
     );
 }

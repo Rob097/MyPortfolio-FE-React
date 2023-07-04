@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import brand from "common-lib/assets/images/logo-ct.png";
 import Navbar from "components/Navbar";
 import Sidenav from "components/Sidenav";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import { setLayout, setMiniSidenav, useSoftUIController } from "context/DashboardStore";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -117,7 +117,7 @@ function Dashboard() {
   };
 
   return (
-    <SoftBox
+    <Box
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
         p: 3,
         position: "relative",
@@ -140,11 +140,11 @@ function Dashboard() {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       />
-      <SoftBox py={currentRoute?.navbar?.absolute ? 0 : 3} style={{ minHeight: '200vh' }}>
-        <SoftBox mb={3}>
+      <Box py={currentRoute?.navbar?.absolute ? 0 : 3} style={{ minHeight: '200vh' }}>
+        <Box mb={3}>
           <Outlet />
-        </SoftBox>
-        <SoftBox mb={3}>
+        </Box>
+        <Box mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               {/* <MiniStatisticsCard
@@ -161,23 +161,23 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
             </Grid>
           </Grid>
-        </SoftBox>
-        <SoftBox mb={3}>
+        </Box>
+        <Box mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
             </Grid>
             <Grid item xs={12} lg={5}>
             </Grid>
           </Grid>
-        </SoftBox>
+        </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
           </Grid>
         </Grid>
-      </SoftBox>
-    </SoftBox>
+      </Box>
+    </Box>
   );
 }
 

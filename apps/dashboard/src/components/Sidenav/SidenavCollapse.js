@@ -9,7 +9,7 @@ import {
   collapseItem,
   collapseText,
 } from "components/Sidenav/styles/sidenavCollapse";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import { useSoftUIController } from "context/DashboardStore";
 import PropTypes from "prop-types";
 
@@ -20,7 +20,7 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse, open
   return (
     <>
       <ListItem component="li">
-        <SoftBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav })}>
+        <Box {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav })}>
           <ListItemIcon
             sx={(theme) => collapseIconBox(theme, { active, transparentSidenav, color })}
           >
@@ -35,7 +35,7 @@ function SidenavCollapse({ color, icon, name, children, active, noCollapse, open
             primary={name}
             sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active })}
           />
-        </SoftBox>
+        </Box>
       </ListItem>
       {children && (
         <Collapse in={open} unmountOnExit>

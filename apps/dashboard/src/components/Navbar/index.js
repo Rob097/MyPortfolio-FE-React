@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import logoSpotify from "common-lib/assets/images/small-logos/logo-spotify.svg";
 import team2 from "common-lib/assets/images/team-2.jpg";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftInput from "common-lib/components/SoftInput";
 import SoftModal from "common-lib/components/SoftModal";
 import SoftTypography from "common-lib/components/SoftTypography";
@@ -145,18 +145,18 @@ function Navbar({ absolute, light, isMini }) {
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+        <Box color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </SoftBox>
+        </Box>
         {isMini ? null : (
-          <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SoftBox pr={1}>
+          <Box sx={(theme) => navbarRow(theme, { isMini })}>
+            <Box pr={1}>
               <SoftInput
                 placeholder="Type here..."
                 icon={{ component: "search", direction: "left" }}
               />
-            </SoftBox>
-            <SoftBox color={light ? "white" : "inherit"}>
+            </Box>
+            <Box color={light ? "white" : "inherit"}>
 
               {authStore?.isLoggedIn &&
                 <>
@@ -207,8 +207,8 @@ function Navbar({ absolute, light, isMini }) {
                 <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
               </IconButton>
               {renderMenu()}
-            </SoftBox>
-          </SoftBox>
+            </Box>
+          </Box>
         )}
       </Toolbar>
     </AppBar>

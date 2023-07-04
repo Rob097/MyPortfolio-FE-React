@@ -6,7 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 // Soft UI Dashboard React components
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 // import SoftAvatar from "common-lib/components/SoftAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -53,13 +53,12 @@ function Header() {
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
-    <SoftBox position="relative">
-      <SoftBox
+    <Box position="relative">
+      <Box
         display="flex"
         alignItems="center"
         position="relative"
         minHeight="18.75rem"
-        borderRadius="xl"
         sx={{
           backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
             `${linearGradient(
@@ -69,6 +68,7 @@ function Header() {
           backgroundSize: "cover",
           backgroundPosition: "50%",
           overflow: "hidden",
+          borderRadius: "1rem"
         }}
       />
       <Card
@@ -95,14 +95,14 @@ function Header() {
             />
           </Grid>
           <Grid item>
-            <SoftBox height="100%" mt={0.5} lineHeight={1}>
+            <Box height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
                 {store.user?.firstName} {store.user?.lastName}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 CEO / Co-Founder
               </SoftTypography>
-            </SoftBox>
+            </Box>
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
             <AppBar position="static">
@@ -120,7 +120,7 @@ function Header() {
           </Grid>
         </Grid>
       </Card>
-    </SoftBox>
+    </Box>
   );
 }
 

@@ -4,7 +4,7 @@ import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 import colors from "common-lib/assets/theme/base/colors";
 import typography from "common-lib/assets/theme/base/typography";
-import SoftBox from "common-lib/components/SoftBox";
+import Box from '@mui/material/Box';
 import SoftTypography from "common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -32,19 +32,19 @@ function ProfileInfoCard({ title, description, info, social, action }) {
 
   // Render the card info items
   const renderItems = labels.map((label, key) => (
-    <SoftBox key={label} display="flex" py={1} pr={2}>
+    <Box key={label} display="flex" py={1} pr={2}>
       <SoftTypography variant="button" fontWeight="bold" textTransform="capitalize">
         {label}: &nbsp;
       </SoftTypography>
       <SoftTypography variant="button" fontWeight="regular" color="text">
         &nbsp;{values[key]}
       </SoftTypography>
-    </SoftBox>
+    </Box>
   ));
 
   // Render the card social media icons
   const renderSocial = social.map(({ link, icon, color }) => (
-    <SoftBox
+    <Box
       key={color}
       component="a"
       href={link}
@@ -57,12 +57,12 @@ function ProfileInfoCard({ title, description, info, social, action }) {
       lineHeight={1}
     >
       {icon}
-    </SoftBox>
+    </Box>
   ));
 
   return (
     <Card sx={{ height: "100%" }}>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
@@ -71,26 +71,26 @@ function ProfileInfoCard({ title, description, info, social, action }) {
             <Icon>edit</Icon>
           </Tooltip>
         </SoftTypography>
-      </SoftBox>
-      <SoftBox p={2}>
-        <SoftBox mb={2} lineHeight={1}>
+      </Box>
+      <Box p={2}>
+        <Box mb={2} lineHeight={1}>
           <SoftTypography variant="button" color="text" fontWeight="regular">
             {description}
           </SoftTypography>
-        </SoftBox>
-        <SoftBox opacity={0.3}>
+        </Box>
+        <Box opacity={0.3}>
           <Divider />
-        </SoftBox>
-        <SoftBox>
+        </Box>
+        <Box>
           {renderItems}
-          <SoftBox display="flex" py={1} pr={2}>
+          <Box display="flex" py={1} pr={2}>
             <SoftTypography variant="button" fontWeight="bold" textTransform="capitalize">
               social: &nbsp;
             </SoftTypography>
             {renderSocial}
-          </SoftBox>
-        </SoftBox>
-      </SoftBox>
+          </Box>
+        </Box>
+      </Box>
     </Card>
   );
 }
