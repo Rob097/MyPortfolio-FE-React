@@ -27,8 +27,13 @@
             "fields": {
                 "firstName": "Nome",
                 "lastName": "Cognome",
-                "sex": "Sesso",
-                "email": "Email"
+                "email": "Email",
+                "sex": {
+                    "label": "Sesso",
+                    "male": "Uomo",
+                    "female": "Donna",
+                    "non-binary": "Non Binario"
+                }
             },
             "validations": {
                 "firstName-required": "Il nome è obbligatorio",

@@ -19,6 +19,8 @@ import CustomStep from '../components/Stepper/CustomStep';
 import CustomStepper from '../components/Stepper/CustomStepper';
 import { useStepperStore } from '../components/Stepper/StepperContext';
 import Steps from '../components/Stepper/Steps';
+import { User } from '../models/user';
+import { UserService } from '../services/UserService';
 import styles from './ProfileBuilder.module.scss';
 
 const ProfileBuilder = () => {
@@ -47,12 +49,16 @@ const ProfileBuilder = () => {
         if (store.activeStep === steps.length) {
             console.log("Final Submit");
             handleSubmit((data) => {
-                console.log(data);
+                const user = new User(data);
+                UserService.update(user).then(async response => {
+                    const bodyResponse = await response.json();
+                    console.log(bodyResponse);
+                });
             })();
         }
     }, [store.activeStep]);
 
-    async function handleNext(data) {
+    const handleNext = (data) => {
         dispatch({
             type: "next"
         });
@@ -115,7 +121,7 @@ const ProfileBuilder = () => {
                                     <SoftBox mb={2}>
                                         <SoftBox mb={1} ml={0.5}>
                                             <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                                {t('profile-builder.first-step.fields.sex')}
+                                                {t('profile-builder.first-step.fields.sex.label')}
                                             </SoftTypography>
                                         </SoftBox>
 
@@ -127,9 +133,9 @@ const ProfileBuilder = () => {
                                                     {...register("sex", { required: t('profile-builder.first-step.validations.sex-required') })}
                                                     onChange={(event) => { setSex(event.target.value); }}
                                                 >
-                                                    <MenuItem value={"M"} className='mb-2'>Male</MenuItem>
-                                                    <MenuItem value={"F"} className='mb-2'>Female</MenuItem>
-                                                    <MenuItem value={"NB"} className='mb-2'>Non Binary</MenuItem>
+                                                    <MenuItem value={"M"} className='mb-2'>{t('profile-builder.first-step.fields.sex.male')}</MenuItem>
+                                                    <MenuItem value={"F"} className='mb-2'>{t('profile-builder.first-step.fields.sex.female')}</MenuItem>
+                                                    <MenuItem value={"NB"} className='mb-2'>{t('profile-builder.first-step.fields.sex.non-binary')}</MenuItem>
                                                 </Select>
                                                 {errors.sex && <SoftBox mb={1} ml={0.5}>
                                                     <FormHelperText id={errors.sex?.message} style={{ marginLeft: '0' }} error={errors.sex && true}>{errors.sex?.message}</FormHelperText>
