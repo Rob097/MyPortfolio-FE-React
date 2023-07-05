@@ -18,8 +18,8 @@ import CustomStep from '../../components/Stepper/CustomStep';
 import CustomStepper from '../../components/Stepper/CustomStepper';
 import { useStepperStore } from '../../components/Stepper/StepperContext';
 import Steps from '../../components/Stepper/Steps';
-import { User } from '../../models/user';
-import { UserService } from '../../services/UserService';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 import styles from './ProfileBuilder.module.scss';
 
 const ProfileBuilder = () => {

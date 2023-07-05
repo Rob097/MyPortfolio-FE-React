@@ -58,11 +58,16 @@ module.exports = (_, argv) => {
           use: ["style-loader", "css-loader", "postcss-loader"],
         },
         {
-          test: /\.(ts|tsx|js|jsx)$/,
+          test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
           },
+        },
+        {
+          test: /\.(ts|tsx)$/,
+          exclude: /node_modules/,
+          use: 'ts-loader',
         },
         {
           test: /\.m?js$/,
