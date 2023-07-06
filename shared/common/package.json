@@ -29,7 +29,8 @@
     "@babel/cli": "^7.22.5",
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
-    "@babel/preset-react": "^7.22.5"
+    "@babel/preset-react": "^7.22.5",
+    "react-router-dom": "^6.11.2"
   },
   "peerDependencies": {
     "react": "^18.2.0",
