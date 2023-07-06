@@ -100,6 +100,7 @@ module.exports = (_, argv) => {
         exposes: {
           "./Dashboard": "./src/pages/Dashboard",
           "./Home": "./src/pages/Home",
+          "./UserProfile": "./src/pages/UserProfile",
           "./i18n": "./assets/i18n/i18n"
         },
         shared: {

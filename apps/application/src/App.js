@@ -1,14 +1,13 @@
+import "common-lib/styles.scss";
 import { createRoot } from 'react-dom/client';
-import "./index.css";
-import "common-lib/styles.scss"
 import i18n from "../assets/i18n/i18n";
-import Header from './Header';
+import "./index.css";
 
 const App = () => {
-  console.debug("i18n for header initialized: %O", i18n);
+  console.debug("i18n for application initialized: %O", i18n);
   return (
     <div className="container">
-      <Header />
+      <h1 className="mt-4">CIAO</h1>
     </div>
   )
 };

@@ -75,12 +75,11 @@ module.exports = (_, argv) => {
 
     plugins: [
       new ModuleFederationPlugin({
-        name: "header",
+        name: "application",
         filename: "remoteEntry.js",
         remotes: {},
         exposes: {
           "./App": "./src/App",
-          "./Header": "./src/Header",
           "./i18n": "./assets/i18n/i18n"
         },
         shared: {

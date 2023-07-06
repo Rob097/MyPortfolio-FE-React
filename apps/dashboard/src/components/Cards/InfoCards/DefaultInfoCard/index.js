@@ -13,7 +13,7 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
           display="grid"
           justifyContent="center"
           alignItems="center"
-          bgColor={color}
+          bgcolor={color}
           color="white"
           width="4rem"
           height="4rem"

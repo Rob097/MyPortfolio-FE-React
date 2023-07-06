@@ -6,13 +6,18 @@ import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Example from "./components/example";
 import Home from "dashboard/Home";
+import UserProfile from "dashboard/UserProfile";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
-        path: "",
+        path: "home",
         element: <ProtectedRoute isAllowed={isLoggedIn}><Home /></ProtectedRoute>
+    },
+    {
+        path: "profile",
+        element: <ProtectedRoute isAllowed={isLoggedIn}><UserProfile /></ProtectedRoute>
     }
 ]
 

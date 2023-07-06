@@ -82,7 +82,7 @@ module.exports = (_, argv) => {
         filename: "remoteEntry.js",
         remotes: {
           auth: `auth@http://localhost:3002/remoteEntry.js`,
-          header: `header@http://localhost:3003/remoteEntry.js`,
+          application: `application@http://localhost:3003/remoteEntry.js`,
           dashboard: `dashboard@http://localhost:3004/remoteEntry.js`,
           context: `context@http://localhost:4201/remoteEntry.js`,
         },

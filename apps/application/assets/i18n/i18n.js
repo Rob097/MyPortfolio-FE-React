@@ -5,16 +5,16 @@ import { initReactI18next } from "react-i18next";
 
 const resources = {
     en: {
-        header: translationEN
+        application: translationEN
     },
     it: {
-        header: translationIT
+        application: translationIT
     }
 };
 
-const headerInstance = i18n.createInstance();
+const applicationInstance = i18n.createInstance();
 
-headerInstance
+applicationInstance
     .use(initReactI18next)
     .init({
         fallbackLng: "en",
@@ -25,4 +25,4 @@ headerInstance
         resources: resources,
     });
 
-export default headerInstance;
+export default applicationInstance;
