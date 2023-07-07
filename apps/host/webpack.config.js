@@ -83,7 +83,7 @@ module.exports = (_, argv) => {
         remotes: {
           auth: `auth@http://localhost:3002/remoteEntry.js`,
           application: `application@http://localhost:3003/remoteEntry.js`,
-          application_next: `application_next@http://localhost:3000/_next/static/chunks/remoteEntry.js`,
+          remote: `remote@http://localhost:3000/_next/static/chunks/remoteEntry.js`,
           dashboard: `dashboard@http://localhost:3004/remoteEntry.js`,
           context: `context@http://localhost:4201/remoteEntry.js`,
         },

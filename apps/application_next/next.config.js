@@ -1,11 +1,41 @@
 /** @type {import('next').NextConfig} */
-const deps = require("./package.json").dependencies;
+
+const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+
+/* const deps = require("./package.json").dependencies;
 const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
 const getEnvKeys = require('common-lib/environments/utils');
-const envKeys = getEnvKeys('development');
+const envKeys = getEnvKeys('development'); */
 
+
+module.exports = {
+    reactStrictMode: true,
+    webpack(config, options) {
+        Object.assign(config.experiments, { topLevelAwait: true });
+
+        if (!options.isServer) {
+            config.plugins.push(
+                new NextFederationPlugin({
+                    name: 'remote',
+                    remotes: {
+                        context: 'context@http://localhost:4201/remoteEntry.js',
+                    },
+                    exposes: {
+                        './nextjs-remote-component': './components/nextjs-remote-component.js',
+                    },
+                    shared: {},
+                    filename: 'static/chunks/remoteEntry.js'
+                }),
+            );
+        }
+        return config;
+    },
+};
+
+
+/*
 const nextConfig = {
 
     webpack: (config, options) => { // webpack configurations
@@ -50,7 +80,7 @@ const nextConfig = {
     reactStrictMode: true
 }
 
-module.exports = nextConfig;
+module.exports = nextConfig;*/
 
 
 /*
