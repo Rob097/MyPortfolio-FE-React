@@ -9,6 +9,7 @@ import Home from "dashboard/Home";
 import UserProfile from "dashboard/UserProfile";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
+const Test = lazy(() => import("application_next/page"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
@@ -40,6 +41,10 @@ const HostRoutes = (authStore) => [
     {
         path: "",
         element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/sign-in"}><Example /></ProtectedRoute>
+    },
+    {
+        path: "/test",
+        element: <ProtectedRoute isAllowed={true}><Test /></ProtectedRoute>
     }
 ];
 

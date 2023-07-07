@@ -1,0 +1,16 @@
+{
+  "name": "application-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@module-federation/nextjs-mf": "^7.0.2",
+    "next": "13.4.8",
+    "sass": "^1.63.6"
+  }
+}

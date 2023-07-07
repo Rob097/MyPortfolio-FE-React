@@ -25,6 +25,7 @@
     "build:application:dev": "concurrently \"cd apps/application && webpack --mode development\"",
     "build:application:prod": "concurrently \"cd apps/application && webpack --mode production\"",
     "build:application:start": "concurrently \"cd apps/application/dist && PORT=3003 npx serve\"",
+    "start:application_next:dev": "concurrently \"cd apps/application_next && npm run dev\"",
     "start:auth:dev": "concurrently \"cd apps/auth && webpack serve --open --mode development\"",
     "start:auth:prod": "concurrently \"cd apps/auth && webpack serve --mode production\"",
     "build:auth:dev": "concurrently \"cd apps/auth && webpack --mode development\"",
