@@ -1,14 +1,22 @@
 import '@/styles/globals.css';
+import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import theme from "common-lib/assets/theme";
-import { Suspense } from 'react';
+import "common-lib/assets/theme/styles.scss";
+import Head from "next/head";
+import createEmotionCache from "../components/createEmotionCache";
 
-export default function App({ Component, pageProps }) {
+
+const clientSideEmotionCache = createEmotionCache();
+export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
   return (
-    <Suspense fallback="loading">
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Component {...pageProps} theme={theme} />
       </ThemeProvider>
-    </Suspense>
+    </CacheProvider>
   )
 }

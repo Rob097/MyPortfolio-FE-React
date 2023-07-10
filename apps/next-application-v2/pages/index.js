@@ -5,8 +5,8 @@ import SoftTypography from "common-lib/components/SoftTypography";
 const HomePage = () => {
     const theme = useTheme();
     return (
-        <Box theme={theme} height="100%" mt={0.5} lineHeight={1}>
-            <SoftTypography theme={theme} variant="h2" color="text" fontWeight="medium">
+        <Box bgcolor='success.main' height="100%" mt={0.5} lineHeight={1}>
+            <SoftTypography theme={theme} variant="h1" color="text" fontWeight="medium">
                 Home Page
             </SoftTypography>
         </Box>

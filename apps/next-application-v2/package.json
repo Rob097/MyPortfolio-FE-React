@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/cache": "latest",
     "@emotion/react": "^11.11.1",
+    "@emotion/server": "latest",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.5",
-    "next": "12.3.4"
+    "next": "12.3.4",
+    "sass": "^1.63.6"
   }
 }
