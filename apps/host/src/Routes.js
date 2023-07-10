@@ -9,7 +9,6 @@ import Home from "dashboard/Home";
 import UserProfile from "dashboard/UserProfile";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
-const NextjsRemoteComponent = lazy(() => import("remote/nextjs-remote-component"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
@@ -44,7 +43,7 @@ const HostRoutes = (authStore) => [
     },
     {
         path: "/test",
-        element: <ProtectedRoute isAllowed={true}><NextjsRemoteComponent /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={true}><p>TEST</p></ProtectedRoute>
     }
 ];
 
