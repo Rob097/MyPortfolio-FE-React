@@ -24,6 +24,7 @@ module.exports = {
                     },
                     exposes: {
                         './nextjs-remote-component': './components/nextjs-remote-component.js',
+                        './NewsPage': './pages/news.js',
                     },
                     shared: {},
                     filename: 'static/chunks/remoteEntry.js'
