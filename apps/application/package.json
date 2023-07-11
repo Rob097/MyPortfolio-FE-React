@@ -1,18 +1,22 @@
 {
   "name": "application",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "author": "Roberto Dellantonio",
-  "license": "ISC",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development",
-    "build:start": "cd dist && PORT=3003 npx serve",
-    "start": "webpack serve --open --mode development",
-    "start:live": "webpack serve --open --mode development --live-reload --hot"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "@emotion/cache": "latest",
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "latest",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.5",
+    "i18next": "^23.2.8",
+    "next": "12.3.4",
+    "next-i18next": "^14.0.0",
+    "sass": "^1.63.6"
+  }
 }
