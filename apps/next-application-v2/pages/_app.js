@@ -3,12 +3,13 @@ import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import theme from "common-lib/assets/theme";
 import "common-lib/assets/theme/styles.scss";
+import { appWithTranslation } from 'next-i18next';
 import Head from "next/head";
 import createEmotionCache from "../components/createEmotionCache";
 
 
 const clientSideEmotionCache = createEmotionCache();
-export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
+function App({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -20,3 +21,5 @@ export default function App({ Component, emotionCache = clientSideEmotionCache, 
     </CacheProvider>
   )
 }
+
+export default appWithTranslation(App);

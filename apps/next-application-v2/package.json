@@ -14,7 +14,9 @@
     "@emotion/server": "latest",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.5",
+    "i18next": "^23.2.8",
     "next": "12.3.4",
+    "next-i18next": "^14.0.0",
     "sass": "^1.63.6"
   }
 }

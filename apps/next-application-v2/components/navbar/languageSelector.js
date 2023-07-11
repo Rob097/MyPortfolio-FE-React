@@ -1,41 +1,77 @@
-import { setLang } from '@/public/locales/i18n';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import itFlag from "common-lib/assets/images/flags/IT.svg";
 import usFlag from "common-lib/assets/images/flags/US.svg";
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import itFlag from "common-lib/assets/images/flags/IT.svg";
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo, useState } from 'react';
 
-const LanguageSelector = ({ isMobile }) => {
-    const { t, i18n } = useTranslation("common");
-    const [langState, setLangState] = useState('en');
+const LanguageSelector = ({ onChange, isMobile }) => {
+    const { i18n } = useTranslation("common");
+    const { language: currentLanguage } = i18n;
+    const router = useRouter();
+    const locales = router.locales ?? [currentLanguage];
 
-    function languageChengeHandler(event) {
-        i18n.changeLanguage(event.target.value.toLowerCase());
-        setLang(event.target.value);
-    }
+    const languageNames = useMemo(() => {
+        return new Intl.DisplayNames([currentLanguage], {
+            type: 'language',
+        });
+    }, [currentLanguage]);
 
-    useEffect(() => {
-        if (i18n.resolvedLanguage) {
-            setLangState(i18n.resolvedLanguage);
-        }
-    }, [i18n.resolvedLanguage]);
+    const [value, setValue] = useState(i18n.language);
+
+    const switchToLocale = useCallback(
+        (locale) => {
+            const path = router.asPath;
+
+            return router.push(path, path, { locale });
+        },
+        [router]
+    );
+
+    const languageChanged = useCallback(
+        async (event) => {
+            const locale = event.target.value;
+
+            setValue(locale);
+            localStorage.setItem("lang", locale);
+
+            if (onChange) {
+                onChange(locale);
+            }
+
+            await switchToLocale(locale);
+        },
+        [switchToLocale, onChange]
+    );
 
     return (
-        <FormControl className={isMobile ? "mx-auto" : ""} style={isMobile ? { display: 'table' } : {}}>
-            <Select
-                labelId="language-selector"
-                id="language-selector"
-                value={langState}
-                onChange={languageChengeHandler}
-                autoWidth
-            >
-                <MenuItem value={"it"} style={{ marginBottom: '0.5rem' }}><span style={{ display: 'flex' }}><img src={itFlag.src} style={{ maxWidth: '25px', marginRight: '0.5rem', float: 'left' }} />{t('ita')}</span></MenuItem>
-                <MenuItem value={"en"} style={{ marginTop: '0.5rem' }}><span style={{ display: 'flex' }}><img src={usFlag.src} style={{ maxWidth: '25px', marginRight: '0.5rem', float: 'left' }} />English</span></MenuItem>
-            </Select>
-        </FormControl>
+        <>
+            <FormControl className={isMobile ? "mx-auto" : ""} style={isMobile ? { display: 'table' } : {}}>
+                <Select
+                    labelId="language-selector"
+                    id="language-selector"
+                    value={value}
+                    onChange={languageChanged}
+                    autoWidth
+                >
+                    {
+                        locales.map((locale) => {
+                            const label = capitalize(languageNames.of(locale) ?? locale);
+                            const flag = locale.toUpperCase() === 'IT' ? itFlag : usFlag;
+
+                            return <MenuItem key={locale} value={locale} style={{ marginBottom: '0.5rem' }}><span style={{ display: 'flex' }}><img src={flag.src} style={{ maxWidth: '25px', marginRight: '0.5rem', float: 'left' }} />{label}</span></MenuItem>
+                        })
+                    }
+                </Select>
+            </FormControl>
+        </>
     );
+}
+
+function capitalize(lang) {
+    return lang.slice(0, 1).toUpperCase() + lang.slice(1);
 }
 
 export default LanguageSelector;
