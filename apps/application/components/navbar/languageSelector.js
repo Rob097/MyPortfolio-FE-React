@@ -14,7 +14,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
     const locales = router.locales ?? [currentLanguage];
 
     const languageNames = useMemo(() => {
-        return new Intl.DisplayNames([currentLanguage], {
+        return new Intl.DisplayNames([currentLanguage ?? 'en'], {
             type: 'language',
         });
     }, [currentLanguage]);
@@ -32,16 +32,18 @@ const LanguageSelector = ({ onChange, isMobile }) => {
 
     const languageChanged = useCallback(
         async (event) => {
-            const locale = event.target.value;
+            // setTimeout(async () => {
+                const locale = event.target.value;
 
-            setValue(locale);
-            localStorage.setItem("lang", locale);
+                setValue(locale);
+                localStorage.setItem("lang", locale);
 
-            if (onChange) {
-                onChange(locale);
-            }
+                if (onChange) {
+                    onChange(locale);
+                }
 
-            await switchToLocale(locale);
+                await switchToLocale(locale);
+            // }, 5000);
         },
         [switchToLocale, onChange]
     );

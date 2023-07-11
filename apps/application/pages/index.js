@@ -1,4 +1,3 @@
-import CoverLayout from '@/components/layouts/CoverLayout';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/system';
 import SoftTypography from "common-lib/components/SoftTypography";
@@ -10,14 +9,12 @@ const HomePage = () => {
     const { t } = useTranslation();
 
     return (
-        <CoverLayout>
-            <Box bgcolor='success.main' height="100%" mt={0.5} lineHeight={1}>
-                <SoftTypography theme={theme} variant="h1" color="text" fontWeight="medium">
-                    Home Page
-                </SoftTypography>
-                <h1>{t("helloWorld")}</h1>
-            </Box>
-        </CoverLayout>
+        <Box bgcolor='success.main' height="100%" mt={0.5} lineHeight={1}>
+            <SoftTypography theme={theme} variant="h1" color="text" fontWeight="medium">
+                Home Page
+            </SoftTypography>
+            <h1>{t("helloWorld")}</h1>
+        </Box>
     )
 }
 
