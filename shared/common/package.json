@@ -9,9 +9,6 @@
     "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "browserslist": {
     "production": [
@@ -27,13 +24,6 @@
   },
   "dependencies": {
     "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
-    "@babel/preset-react": "^7.22.5",
     "react-router-dom": "^6.11.2"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   }
 }

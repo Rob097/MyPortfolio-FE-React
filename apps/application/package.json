@@ -1,22 +1,32 @@
 {
   "name": "application",
-  "version": "0.1.0",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "dependencies": {
     "@emotion/cache": "latest",
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "latest",
     "@emotion/server": "latest",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.5",
-    "i18next": "^23.2.8",
-    "next": "12.3.4",
-    "next-i18next": "^14.0.0",
+    "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/lab": "latest",
+    "@mui/material": "latest",
+    "common-lib": "file:../../shared/common/dist",
+    "next": "latest",
+    "next-i18next": "latest",
+    "prop-types": "latest",
+    "react": "latest",
+    "react-dom": "latest",
     "sass": "^1.63.6"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest"
   }
 }

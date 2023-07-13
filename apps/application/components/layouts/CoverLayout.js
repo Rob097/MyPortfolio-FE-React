@@ -11,7 +11,7 @@ function CoverLayout(props) {
           type: "external",
           route: "https://creative-tim.com/product/soft-ui-dashboard-react",
           label: "free download",
-          color: "success",
+          color: "dark",
         }}
       />
       <Box sx={{
