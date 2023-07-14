@@ -42,7 +42,7 @@ const typography = {
   fontWeightBold: baseProperties.fontWeightBold,
 
   h1: {
-    fontSize: pxToRem(48),
+    fontSize: pxToRem(75),
     lineHeight: 1.25,
     ...baseHeadingProperties,
   },

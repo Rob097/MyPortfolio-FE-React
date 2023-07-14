@@ -13,7 +13,7 @@ const outlined = {
     padding: `${pxToRem(12)} ${pxToRem(24)}`,
 
     "&:hover": {
-      opacity: 0.75,
+      opacity: 1,
       backgroundColor: transparent.main,
     },
 

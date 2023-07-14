@@ -12,6 +12,7 @@ import NavbarMobile from "./navbarMobile";
 import LanguageSelector from "./languageSelector";
 import boxShadows from "common-lib/assets/theme/base/boxShadows"
 import { useTheme } from '@mui/system';
+import styles from './navbar.module.css';
 
 function Navbar({ transparent, light, action }) {
   const theme = useTheme();
@@ -47,7 +48,7 @@ function Navbar({ transparent, light, action }) {
   }, []);
 
   return (
-    <Container>
+    <Container className={styles.navbarContainer}>
       <Box
         py={1.5}
         px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
@@ -74,8 +75,8 @@ function Navbar({ transparent, light, action }) {
           </SoftTypography>
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <NavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <NavbarLink icon="person" name="profile" route="/profile" light={light} />
+          <NavbarLink icon="donut_large" name="dashboard" route="/" light={light} />
+          <NavbarLink icon="person" name="profile" route="/users/user1/home" light={light} />
           <NavbarLink
             icon="account_circle"
             name="sign up"

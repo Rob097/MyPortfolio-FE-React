@@ -7,6 +7,7 @@
 const colors = {
   background: {
     default: "#f8f9fa",
+    white: "#ffffff"
   },
 
   text: {

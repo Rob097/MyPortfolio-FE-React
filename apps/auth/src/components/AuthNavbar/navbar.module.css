@@ -1,0 +1,35 @@
+.navbarContainer {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 100% !important;
+    position: relative;
+  }
+  
+  @media (min-width: 576px) {
+    .navbarContainer {
+      max-width: 540px !important;
+    }
+  }
+  @media (min-width: 768px) {
+    .navbarContainer {
+      max-width: 720px !important;
+    }
+  }
+  @media (min-width: 992px) {
+    .navbarContainer {
+      max-width: 960px !important;
+    }
+  }
+  @media (min-width: 1200px) {
+    .navbarContainer {
+      max-width: 1140px !important;
+    }
+  }
+  @media (min-width: 1400px) {
+    .navbarContainer {
+      max-width: 1320px !important;
+    }
+  }
+  

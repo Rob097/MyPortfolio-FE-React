@@ -19,7 +19,7 @@ const root = {
   userSelect: "none",
   backgroundSize: "150% !important",
   backgroundPositionX: "25% !important",
-  transition: `all 150ms ease-in`,
+  transition: `all 500ms ease !important`,
 
   "&:hover": {
     transform: "scale(1.02)",

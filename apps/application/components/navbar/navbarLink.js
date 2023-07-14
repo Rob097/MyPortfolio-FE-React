@@ -1,4 +1,4 @@
-import { Link } from "next/link";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from '@mui/material/Box';
@@ -10,7 +10,7 @@ function NavbarLink({ icon, name, route, light }) {
   return (
     <Box
       component={Link}
-      to={route}
+      href={route}
       mx={1}
       p={1}
       display="flex"

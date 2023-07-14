@@ -5,7 +5,7 @@ import PageLayout from "./PageLayout";
 
 function CoverLayout(props) {
   return (
-    <PageLayout background="white">
+    <PageLayout background="#ffffff">
       <Navbar
         action={{
           type: "external",
@@ -17,7 +17,7 @@ function CoverLayout(props) {
       <Box sx={{
         minHeight: "75vh",
         margin: 0,
-        padding: 3,
+        padding: 0,
         marginTop: props.top
       }}>{props.children}</Box>
 

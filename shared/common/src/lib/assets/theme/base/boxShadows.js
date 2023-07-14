@@ -52,6 +52,7 @@ const boxShadows = {
   },
   tabsBoxShadow: {
     indicator: boxShadow([0, 1], [5, 1], tabs.indicator.boxShadow, 1),
+    large: boxShadow([0, 0], [50, 0], black.main, 0.1)
   },
 };
 

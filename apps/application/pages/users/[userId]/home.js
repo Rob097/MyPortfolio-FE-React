@@ -1,31 +1,33 @@
-import SoftButton from '@/components/SoftButton';
 import SoftTypography from '@/components/SoftTypography';
-import { Box, Container, Grid } from '@mui/material';
-import { useTheme } from '@mui/system';
+import HeroSection from "@/components/sections/HeroSection";
+import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
+import styles from "@/pages/users/[userId]/home.module.css";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import borders from "common-lib/assets/theme/base/borders";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
 
-const UserHome = (props) => {
-    const router = useRouter();
+const UserHome = () => {
+
     const theme = useTheme();
+    const greaterThanXl = useMediaQuery(theme.breakpoints.up("xl"));
 
     return (
         <>
-            <Box id='hero-section' component='section' bgcolor="#fdf8f7">
-                <Container>
-                    <Grid container columnSpacing={10} justifyContent="center">
-                        <Grid item sm={6} alignSelf="center">
-                            <SoftTypography variant="h3" color="primary" fontWeight="bold">Hi, I'm</SoftTypography>
-                            <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom>Mary Hardy</SoftTypography>
-                            <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Digital Marketing Expert</SoftTypography>
-                            <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments</SoftTypography>
-                            <SoftButton variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }}>Download CV</SoftButton>
-                        </Grid>
-                        <Grid item sm={6} alignSelf="center">
-                            <img src="https://dora-react.vercel.app/images/hero-person-img.png" />
-                        </Grid>
-                    </Grid>
-                </Container>
+            <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" bgColor="#fdf8f7" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}>
+                <SoftTypography variant="h3" color="primary" fontWeight="bold">Hi, I'm</SoftTypography>
+                <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{width: greaterThanXl ? '120%' : 'fit-content'}}>Roberto Dellantonio</SoftTypography>
+                <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</SoftTypography>
+                <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments</SoftTypography>
+            </HeroSection>
+
+            <MicroHighlightSection moveUp>
+                <SingleElement avatar="1" title="Java" caption="Back-end development" />
+                <SingleElement avatar="2" title="React" caption="Front-end development" />
+                <SingleElement avatar="3" title="Docker" caption="Devops management" />
+            </MicroHighlightSection>
+
+            <Box id='next-section' component='section'>
+                <Box height={"20vh"}></Box>
             </Box>
         </>
     );
