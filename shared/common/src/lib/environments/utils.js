@@ -23,9 +23,9 @@ module.exports = function getEnvironmentKeys(environment) {
         prev[`process.env.${next}`] = fileEnv[next];
         if (fileEnv[next] === 'true' || fileEnv[next] === 'false') {
             prev[`process.env.${next}`] = fileEnv[next] === 'true';
-        } else if(fileEnv[next].includes(":")){
+        }/* else if(fileEnv[next].includes(":")){
             prev[`process.env.${next}`] = JSON.stringify(fileEnv[next]);
-        }
+        }*/
         return prev;
     }, {});
 

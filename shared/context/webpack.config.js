@@ -14,7 +14,7 @@ module.exports = (_, argv) => {
 
   return {
     output: {
-      publicPath: "http://localhost:4201/",
+      publicPath: `${envKeys['process.env.CONTEXT_URL']}/`,
     },
 
     resolve: {
@@ -22,7 +22,7 @@ module.exports = (_, argv) => {
     },
 
     devServer: {
-      port: 4201,
+      port: envKeys['process.env.CONTEXT_PORT'],
       historyApiFallback: true,
       headers: {
         "Access-Control-Allow-Origin": "*",

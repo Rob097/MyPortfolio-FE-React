@@ -14,7 +14,7 @@ module.exports = (_, argv) => {
 
   return {
     output: {
-      publicPath: "http://localhost:3002/",
+      publicPath: `${envKeys['process.env.AUTH_URL']}/`,
     },
 
     resolve: {
@@ -22,7 +22,7 @@ module.exports = (_, argv) => {
     },
 
     devServer: {
-      port: 3002,
+      port: envKeys['process.env.AUTH_PORT'],
       historyApiFallback: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -86,7 +86,7 @@ module.exports = (_, argv) => {
         name: "auth",
         filename: "remoteEntry.js",
         remotes: {
-          context: `context@http://localhost:4201/remoteEntry.js`
+          context: `context@${envKeys['process.env.CONTEXT_URL']}/remoteEntry.js`
         },
         exposes: {
           "./SignIn": "./src/pages/SignIn",

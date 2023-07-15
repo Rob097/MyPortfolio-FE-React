@@ -1,0 +1,174 @@
+{
+  "hosting": [
+    {
+      "target": "host",
+      "public": "./apps/host/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "dashboard",
+      "public": "./apps/dashboard/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "context",
+      "public": "./shared/context/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "auth",
+      "public": "./apps/auth/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "application",
+      "public": "./apps/application/.next",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Access-Control-Allow-Methods",
+              "value": "GET"
+            },
+            {
+              "key": "Access-Control-Allow-Headers",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -14,7 +14,7 @@ module.exports = (_, argv) => {
 
   return {
     output: {
-      publicPath: "http://localhost:3004/",
+      publicPath: `${envKeys['process.env.DASHBOARD_URL']}/`,
     },
 
     resolve: {
@@ -26,7 +26,7 @@ module.exports = (_, argv) => {
     },
 
     devServer: {
-      port: 3004,
+      port: `${envKeys['process.env.DASHBOARD_PORT']}`,
       historyApiFallback: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -95,7 +95,7 @@ module.exports = (_, argv) => {
         name: "dashboard",
         filename: "remoteEntry.js",
         remotes: {
-          context: `context@http://localhost:4201/remoteEntry.js`
+          context: `context@${envKeys['process.env.CONTEXT_URL']}/remoteEntry.js`
         },
         exposes: {
           "./Dashboard": "./src/pages/Dashboard",

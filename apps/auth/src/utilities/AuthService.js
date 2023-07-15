@@ -1,5 +1,5 @@
 import { METHODS as methods, BASE_URL } from "common-lib/constants";
-const AUTH_URL = BASE_URL + '/auth';
+const AUTH_URL = BASE_URL/* 'https://myportfolio-backend.it/api' */ + '/auth';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function signIn(data) {

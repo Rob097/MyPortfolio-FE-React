@@ -11,6 +11,9 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
 import CoverLayout from "../components/CoverLayout";
+import { signIn } from "../utilities/AuthService";
+import { User } from "../models/user";
+import jwtDecode from "jwt-decode";
 
 function SignIn() {
   const { t, i18n } = useTranslation("auth");
@@ -21,18 +24,18 @@ function SignIn() {
   const [errorMessage, setErrorMessage] = useState();
 
   async function handleSignIn(data) {
-    // setIsProcessing(true);
+    setIsProcessing(true);
 
-    dispatch({
+/*     dispatch({
       type: "login",
       payload: {
         token: "",
         user: undefined
       }
     });
-    navigate('/');
+    navigate('/'); */
 
-    /* signIn(data).then(async response => {
+    signIn(data).then(async response => {
       const bodyResponse = await response.json();
 
       const decodedToken = jwtDecode(bodyResponse.token);
@@ -48,11 +51,11 @@ function SignIn() {
 
       setIsProcessing(false);
 
-      navigate('/welcome');
+      navigate('/dashboard');
     }).catch(error => {
       setIsProcessing(false);
       setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-in.generic-error'));
-    }); */
+    });
 
   }
 
