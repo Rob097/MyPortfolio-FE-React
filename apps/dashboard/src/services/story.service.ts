@@ -1,5 +1,5 @@
-const constants = require('common-new/constants');
-import { View } from "common-new/criteria.model";
+const constants = require('common-lib/constants');
+import { View } from "common-lib/criteria.model";
 import { Story, StoryQ } from "../models/story.model";
 import { BaseService } from "./base.service";
 const STORIES_URL = constants.BASE_URL + '/core/stories';

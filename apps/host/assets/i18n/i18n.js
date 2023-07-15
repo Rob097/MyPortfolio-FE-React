@@ -1,4 +1,4 @@
-import i18n from "common-new/i18n/i18n";
+import i18n from "common-lib/i18n/i18n";
 import authInstance from "auth/i18n";
 import dashboardInstance from "dashboard/i18n";
 

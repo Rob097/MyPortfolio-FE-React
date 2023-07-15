@@ -5,7 +5,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import colors from 'common-new/assets/theme/base/colors';
+import colors from 'common-lib/assets/theme/base/colors';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useStepperStore } from './StepperContext';

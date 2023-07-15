@@ -72,7 +72,7 @@
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.14.0",
     "chroma-js": "^2.4.2",
-    "common-new": "file:shared/common/dist",
+    "common-lib": "file:shared/common/dist",
     "i18next": "^22.5.1",
     "json-loader": "^0.5.7",
     "react": "^18.2.0",

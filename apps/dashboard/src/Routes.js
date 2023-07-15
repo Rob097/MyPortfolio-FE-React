@@ -1,4 +1,4 @@
-import { ErrorPage, PageNotFound } from "common-new/pages/ErrorPages";
+import { ErrorPage, PageNotFound } from "common-lib/pages/ErrorPages";
 import { useAuthStore } from "context/AuthStore";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";

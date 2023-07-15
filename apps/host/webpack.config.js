@@ -6,7 +6,7 @@ const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
 const webpack = require('webpack');
-const getEnvKeys = require('common-new/environments/utils.js');
+const getEnvKeys = require('common-lib/environments/utils.js');
 
 module.exports = (_, argv) => {
 
@@ -20,7 +20,7 @@ module.exports = (_, argv) => {
     resolve: {
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
       // alias: {
-      //   '@common-new': path.resolve(__dirname, '../../shared/common')
+      //   '@common-lib': path.resolve(__dirname, '../../shared/common')
       // },
     },
 
