@@ -1,4 +1,4 @@
-import { Filters } from "common-lib/criteria.model";
+import { Filters } from "common-new/criteria.model";
 
 export interface BaseService {
     getById(id: number, view?: string): Promise<any>;

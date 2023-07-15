@@ -3,7 +3,7 @@ import styled from "@/components/navbar/navbar.module.css";
 import ShowIf from '@/components/showIf';
 import styles from "@/pages/users/[userId]/home.module.css";
 import { Avatar, Box, Container, Grid, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
-import boxShadows from "common-lib/assets/theme/base/boxShadows";
+import boxShadows from "common-new/assets/theme/base/boxShadows";
 
 const MicroHighlightSection = (props) => {
 

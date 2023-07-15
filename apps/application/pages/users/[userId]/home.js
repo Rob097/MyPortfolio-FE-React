@@ -3,7 +3,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import styles from "@/pages/users/[userId]/home.module.css";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import borders from "common-lib/assets/theme/base/borders";
+import borders from "common-new/assets/theme/base/borders";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const UserHome = () => {

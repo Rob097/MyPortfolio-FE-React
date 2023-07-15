@@ -1,6 +1,6 @@
 import { Card, CardActions, CardContent } from '@mui/material';
 import Box from '@mui/material/Box';
-import SoftButton from 'common-lib/components/SoftButton';
+import SoftButton from 'common-new/components/SoftButton';
 import { useTranslation } from 'react-i18next';
 import { useStepperStore } from './StepperContext';
 

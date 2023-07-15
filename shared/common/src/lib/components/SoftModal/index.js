@@ -1,9 +1,9 @@
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
-import borders from "common-lib/assets/theme/base/borders";
+import borders from "common-new/assets/theme/base/borders";
 import Box from '@mui/material/Box';
-import SoftButton from 'common-lib/components/SoftButton';
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftButton from 'common-new/components/SoftButton';
+import SoftTypography from "common-new/components/SoftTypography";
 
 const SoftModal = (props) => {
 

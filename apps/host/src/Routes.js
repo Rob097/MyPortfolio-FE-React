@@ -1,5 +1,5 @@
-import { ROLES as roles } from "common-lib/constants";
-import { ErrorPage, NotAllowed, PageNotFound } from "common-lib/pages/ErrorPages";
+import { ROLES as roles } from "common-new/constants";
+import { ErrorPage, NotAllowed, PageNotFound } from "common-new/pages/ErrorPages";
 import { useAuthStore } from "context/AuthStore";
 import Dashboard from "dashboard/Dashboard";
 import { lazy } from "react";

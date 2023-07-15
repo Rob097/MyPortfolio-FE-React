@@ -1,4 +1,4 @@
-import { Filters } from 'common-lib/criteria.model';
+import { Filters } from 'common-new/criteria.model';
 import { Skill } from './skill.model';
 import { User } from './user.model';
 

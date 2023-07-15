@@ -1,10 +1,10 @@
 import Alert from '@mui/material/Alert';
 import Switch from "@mui/material/Switch";
-import curved9 from "common-lib/assets/images/curved-images/curved-6.jpg";
+import curved9 from "common-new/assets/images/curved-images/curved-6.jpg";
 import Box from '@mui/material/Box';
-import SoftButton from "common-lib/components/SoftButton";
-import SoftInput from "common-lib/components/SoftInput";
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftButton from "common-new/components/SoftButton";
+import SoftInput from "common-new/components/SoftInput";
+import SoftTypography from "common-new/components/SoftTypography";
 import { useAuthStore } from "context/AuthStore";
 import { useState } from "react";
 import { useForm } from 'react-hook-form';

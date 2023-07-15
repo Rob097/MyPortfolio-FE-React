@@ -1,11 +1,11 @@
-import "common-lib/styles.scss";
+import "common-new/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { createRoot } from 'react-dom/client';
 import CustomRouterProvider from "./Routes";
 import "./styles/index.scss";
 import i18n from "../assets/i18n/i18n";
 import { SoftUIControllerProvider } from "context/DashboardStore";
-import theme from "common-lib/assets/theme";
+import theme from "common-new/assets/theme";
 import { ThemeProvider } from "@mui/material";
 
 const App = () => {

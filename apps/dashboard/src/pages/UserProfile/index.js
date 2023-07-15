@@ -1,4 +1,4 @@
-import { Criteria, Operation, View } from "common-lib/criteria.model";
+import { Criteria, Operation, View } from "common-new/criteria.model";
 import React, { useRef } from 'react';
 import TinyEditorComponent from "../../components/TinyEditorComponent";
 import { UserQ } from "../../models/user.model";
