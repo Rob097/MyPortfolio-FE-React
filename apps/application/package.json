@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "postinstall": "npm link ../../shared/common/;",
+    "postupdate": "npm link ../../shared/common/;"
   },
   "dependencies": {
     "@emotion/cache": "latest",
@@ -17,7 +19,6 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
-    "common-lib": "file:../../shared/common/dist",
     "next": "latest",
     "next-i18next": "latest",
     "prop-types": "latest",
