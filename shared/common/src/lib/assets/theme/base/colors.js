@@ -6,8 +6,8 @@
 
 const colors = {
   background: {
-    default: "#f8f9fa",
-    white: "#ffffff"
+    default: "#fdf8f7",
+    white: "#ffffff",
   },
 
   text: {
@@ -31,33 +31,33 @@ const colors = {
   },
 
   primary: {
-    main: "#2152ff",
-    focus: "#1a42d1",
+    main: "#ff8500",
+    focus: "#ff6200",
   },
 
   secondary: {
-    main: "#8392ab",
-    focus: "#96a2b8",
+    main: "#e69500",
+    focus: "#ff8500",
   },
 
   info: {
-    main: "#17c1e8",
-    focus: "#3acaeb",
+    main: "#ff8f00",
+    focus: "#ffaa00",
   },
 
   success: {
-    main: "#82d616",
-    focus: "#95dc39",
+    main: "#ffb700",
+    focus: "#ffcd00",
   },
 
   warning: {
-    main: "#fbcf33",
-    focus: "#fcd652",
+    main: "#ff4f00",
+    focus: "#ff6200",
   },
 
   error: {
-    main: "#ea0606",
-    focus: "#c70505",
+    main: "#ff1900",
+    focus: "#ff3200",
   },
 
   light: {
@@ -84,33 +84,33 @@ const colors = {
 
   gradients: {
     primary: {
-      main: "#7928ca",
-      state: "#ff0080",
+      main: "#ff8500",
+      state: "#ff6200",
     },
 
     secondary: {
-      main: "#627594",
-      state: "#a8b8d8",
+      main: "#e69500",
+      state: "#ff8500",
     },
 
     info: {
-      main: "#2152ff",
-      state: "#21d4fd",
+      main: "#ff8f00",
+      state: "#ffaa00",
     },
 
     success: {
-      main: "#17ad37",
-      state: "#98ec2d",
+      main: "#ffb700",
+      state: "#ffcd00",
     },
 
     warning: {
-      main: "#f53939",
-      state: "#fbcf33",
+      main: "#ff4f00",
+      state: "#ff6200",
     },
 
     error: {
-      main: "#ea0606",
-      state: "#ff667c",
+      main: "#ff1900",
+      state: "#ff3200",
     },
 
     light: {
@@ -188,38 +188,38 @@ const colors = {
 
   alertColors: {
     primary: {
-      main: "#7928ca",
-      state: "#d6006c",
+      main: "#ff8500",
+      state: "#ff6200",
       border: "#efb6e2",
     },
 
     secondary: {
-      main: "#627594",
-      state: "#8ca1cb",
+      main: "#e69500",
+      state: "#ff8500",
       border: "#dadee6",
     },
 
     info: {
-      main: "#2152ff",
-      state: "#02c6f3",
+      main: "#ff8f00",
+      state: "#ffaa00",
       border: "#b9ecf8",
     },
 
     success: {
-      main: "#17ad37",
-      state: "#84dc14",
+      main: "#ffb700",
+      state: "#ffcd00",
       border: "#daf3b9",
     },
 
     warning: {
-      main: "#f53939",
-      state: "#fac60b",
+      main: "#ff4f00",
+      state: "#ff6200",
       border: "#fef1c2",
     },
 
     error: {
-      main: "#ea0606",
-      state: "#ff3d59",
+      main: "#ff1900",
+      state: "#ff3200",
       border: "#f9b4b4",
     },
 
@@ -238,7 +238,7 @@ const colors = {
 
   badgeColors: {
     primary: {
-      background: "#f883dd",
+      background: "#ff9e48",
       text: "#a3017e",
     },
 
@@ -279,10 +279,10 @@ const colors = {
   },
 
   inputColors: {
-    borderColor: { main: "#d2d6da", focus: "#35d1f5" },
+    borderColor: { main: "#d2d6da", focus: "#ff8500" },
     boxShadow: "#81e3f9",
-    error: "#fd5c70",
-    success: "#66d432",
+    error: "#ff1900",
+    success: "#ffb700",
   },
 
   sliderColors: {

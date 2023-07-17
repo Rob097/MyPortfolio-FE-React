@@ -4,7 +4,7 @@ import '@/styles/globals.scss';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from "@rob097/common-lib/assets/theme";
+import theme from "common-lib/assets/theme";
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import PropTypes from 'prop-types';

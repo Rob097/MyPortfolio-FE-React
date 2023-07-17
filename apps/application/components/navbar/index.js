@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
-import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
+import breakpoints from "common-lib/assets/theme/base/breakpoints";
 import Box from '@mui/material/Box';
 import SoftTypography from '../SoftTypography';
 import SoftButton from "../SoftButton";
@@ -10,7 +10,7 @@ import { Link } from "next/link";
 import NavbarLink from "./navbarLink";
 import NavbarMobile from "./navbarMobile";
 import LanguageSelector from "./languageSelector";
-import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
+import boxShadows from "common-lib/assets/theme/base/boxShadows";
 import { useTheme } from '@mui/system';
 import styles from './navbar.module.css';
 

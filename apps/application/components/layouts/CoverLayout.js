@@ -5,7 +5,7 @@ import PageLayout from "./PageLayout";
 
 function CoverLayout(props) {
   return (
-    <PageLayout background="#ffffff">
+    <PageLayout background="background.white">
       <Navbar
         action={{
           type: "external",

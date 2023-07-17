@@ -3,13 +3,13 @@ import styled from "@/components/navbar/navbar.module.css";
 import ShowIf from '@/components/showIf';
 import styles from "@/pages/users/[userId]/home.module.css";
 import { Avatar, Box, Container, Grid, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
-import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
+import boxShadows from "common-lib/assets/theme/base/boxShadows";
 
 const MicroHighlightSection = (props) => {
 
     const theme = useTheme();
 
-    const greaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
+    const greaterThanMd = useMediaQuery(theme.breakpoints.up("md"), {defaultMatches: true});
     const smallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
     const greaterThanLg = useMediaQuery(theme.breakpoints.up("lg"));
     const smallerThanLg = useMediaQuery(theme.breakpoints.down("lg"));
@@ -19,25 +19,24 @@ const MicroHighlightSection = (props) => {
     if (!elements || (elements.length !== 3 && elements.length !== 4)) {
         throw new Error("MicroHighlightSection must have 3 or 4 children");
     }
-
+    
     return (
         <Box id='support-section' component='section' position="relative" className={props.moveUp && greaterThanXl ? styles.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
-
             <Container disableGutters={smallerThanLg} className={greaterThanLg ? styled.navbarContainer : ''}>
                 <ShowIf condition={greaterThanMd}>
                     <WhiteBox>
                         <Grid container py={2}>
-                            <Grid item md={12 / elements.length} borderRight={'1px solid #d7d7d7'}>
+                            <Grid item md={12 / elements.length} borderRight={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
                                 {elements[0]}
                             </Grid>
-                            <Grid item md={12 / elements.length} borderRight={'1px solid #d7d7d7'}>
+                            <Grid item md={12 / elements.length} borderRight={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
                                 {elements[1]}
                             </Grid>
                             <Grid item md={12 / elements.length}>
                                 {elements[2]}
                             </Grid>
                             <ShowIf condition={elements.length === 4}>
-                                <Grid item md={12 / elements.length} borderLeft={'1px solid #d7d7d7'}>
+                                <Grid item md={12 / elements.length} borderLeft={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
                                     {elements[3]}
                                 </Grid>
                             </ShowIf>

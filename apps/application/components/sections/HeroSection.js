@@ -11,7 +11,7 @@ const HeroSection = (props) => {
     const greaterThanLg = useMediaQuery(theme.breakpoints.up("lg"));
 
     return (
-        <Box id='hero-section' component='section' sx={{ backgroundImage: 'linear-gradient(180deg, #ffffff, #fdf8f7 50%);' }}>
+        <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${theme.palette.background.white}, ${theme.palette.background.default} 50%);` }}>
             <Container sx={{ padding: smallerThanLg && "0.5rem" }} disableGutters={smallerThanMd} className={greaterThanLg ? styled.navbarContainer : ''}>
                 <Grid container columnSpacing={10} justifyContent="center">
                     <Grid item md={6} alignSelf="center" width="100%">
@@ -24,7 +24,7 @@ const HeroSection = (props) => {
                                     <SoftButton variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }}>{props.buttons[0].label}</SoftButton>
                                 </ShowIf>
                                 <ShowIf condition={props.buttons[1] != null}>
-                                    <SoftButton variant="outlined" color="dark" size="medium"  className="ml-2" sx={{ borderRadius: '50px' }}>{props.buttons[1].label}</SoftButton>
+                                    <SoftButton variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{props.buttons[1].label}</SoftButton>
                                 </ShowIf>
                             </Box>
                         </ShowIf>
