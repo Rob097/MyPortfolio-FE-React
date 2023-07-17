@@ -23,8 +23,8 @@ function NavbarMobile({ open, close }) {
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
     >
       <Box px={0.5}>
-        <NavbarLink icon="donut_large" name="dashboard" route="/dashboard" />
-        <NavbarLink icon="person" name="profile" route="/profile" />
+        <NavbarLink icon="donut_large" name="dashboard" route="/" />
+        <NavbarLink icon="person" name="profile" route="/users/user1/home" />
         <NavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
         <NavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
         <LanguageSelector isMobile />
