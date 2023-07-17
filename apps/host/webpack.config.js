@@ -70,7 +70,6 @@ module.exports = (_, argv) => {
         },
         {
           test: /\.json$/,
-          exclude: /(node_modules)/,
           loader: "json-loader"
         }
       ],

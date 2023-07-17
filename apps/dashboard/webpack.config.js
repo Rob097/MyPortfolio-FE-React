@@ -66,8 +66,8 @@ module.exports = (_, argv) => {
         },
         {
           test: /\.(ts|tsx)$/,
-          exclude: /node_modules/,
-          use: 'ts-loader',
+          loader: 'ts-loader',
+          options: { allowTsInNodeModules: true }
         },
         {
           test: /\.m?js$/,
@@ -76,7 +76,6 @@ module.exports = (_, argv) => {
         },
         {
           test: /\.json$/,
-          exclude: /(node_modules)/,
           loader: "json-loader"
         },
         {

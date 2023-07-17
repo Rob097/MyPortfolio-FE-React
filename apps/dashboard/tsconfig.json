@@ -8,6 +8,7 @@
       "esModuleInterop": true
     },
     "include": [
-      "./src/**/*"
+      "./src/**/*",
+      "node_modules/@rob097/common-lib/**/*"
     ]
   }
