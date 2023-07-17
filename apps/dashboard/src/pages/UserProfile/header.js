@@ -7,21 +7,21 @@ import Tab from "@mui/material/Tab";
 
 // Soft UI Dashboard React components
 import Box from '@mui/material/Box';
-import SoftTypography from "common-lib/components/SoftTypography";
-// import SoftAvatar from "common-lib/components/SoftAvatar";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
+// import SoftAvatar from "@rob097/common-lib/components/SoftAvatar";
 import Avatar from "@mui/material/Avatar";
 
 // Soft UI Dashboard React icons
-import Cube from "common-lib/assets/Icons/Cube";
-import Document from "common-lib/assets/Icons/Document";
-import Settings from "common-lib/assets/Icons/Settings";
+import Cube from "@rob097/common-lib/assets/Icons/Cube";
+import Document from "@rob097/common-lib/assets/Icons/Document";
+import Settings from "@rob097/common-lib/assets/Icons/Settings";
 
 // Soft UI Dashboard React base styles
-import breakpoints from "common-lib/assets/theme/base/breakpoints";
+import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "common-lib/assets/images/bruce-mars.jpg";
-import curved0 from "common-lib/assets/images/curved-images/curved0.jpg";
+import burceMars from "@rob097/common-lib/assets/images/bruce-mars.jpg";
+import curved0 from "@rob097/common-lib/assets/images/curved-images/curved0.jpg";
 
 import { useAuthStore } from "context/AuthStore";
 

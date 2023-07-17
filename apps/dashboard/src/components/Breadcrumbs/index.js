@@ -1,7 +1,7 @@
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import Box from '@mui/material/Box';
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 

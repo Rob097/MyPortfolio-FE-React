@@ -1,6 +1,6 @@
 
 import Grid from "@mui/material/Grid";
-import brand from "common-lib/assets/images/logo-ct.png";
+import brand from "@rob097/common-lib/assets/images/logo-ct.png";
 import Navbar from "components/Navbar";
 import Sidenav from "components/Sidenav";
 import Box from '@mui/material/Box';
@@ -9,14 +9,14 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 // Soft UI Dashboard React icons
-import CreditCard from "common-lib/assets/Icons/CreditCard";
-import Cube from "common-lib/assets/Icons/Cube";
-import CustomerSupport from "common-lib/assets/Icons/CustomerSupport";
-import Document from "common-lib/assets/Icons/Document";
-import Office from "common-lib/assets/Icons/Office";
-import Settings from "common-lib/assets/Icons/Settings";
-import Shop from "common-lib/assets/Icons/Shop";
-import SpaceShip from "common-lib/assets/Icons/SpaceShip";
+import CreditCard from "@rob097/common-lib/assets/Icons/CreditCard";
+import Cube from "@rob097/common-lib/assets/Icons/Cube";
+import CustomerSupport from "@rob097/common-lib/assets/Icons/CustomerSupport";
+import Document from "@rob097/common-lib/assets/Icons/Document";
+import Office from "@rob097/common-lib/assets/Icons/Office";
+import Settings from "@rob097/common-lib/assets/Icons/Settings";
+import Shop from "@rob097/common-lib/assets/Icons/Shop";
+import SpaceShip from "@rob097/common-lib/assets/Icons/SpaceShip";
 
 const routes = [
   {

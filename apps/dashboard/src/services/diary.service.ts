@@ -1,5 +1,5 @@
-const constants = require('common-lib/constants');
-import { View } from "common-lib/criteria.model";
+const constants = require('@rob097/common-lib/constants');
+import { View } from "@rob097/common-lib/criteria.model";
 import { Diary, DiaryQ } from "../models/diary.model";
 import { BaseService } from "./base.service";
 const DIARIES_URL = constants.BASE_URL + '/core/diaries';

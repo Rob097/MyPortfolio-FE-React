@@ -1,16 +1,16 @@
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
-import breakpoints from "common-lib/assets/theme/base/breakpoints";
+import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
 import Box from '@mui/material/Box';
-import SoftButton from "common-lib/components/SoftButton";
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftButton from "@rob097/common-lib/components/SoftButton";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
 import LanguageSelector from "./LanguageSelector";
-import boxShadows from "common-lib/assets/theme/base/boxShadows"
+import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows"
 import styles from './navbar.module.css';
 
 function AuthNavbar({ transparent, light, action }) {

@@ -1,6 +1,6 @@
 {
   "name": "@rob097/common-lib",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "author": "",
   "license": "ISC",
@@ -22,7 +22,8 @@
   "dependencies": {
     "@babel/cli": "^7.22.5",
     "react-router-dom": "^6.11.2",
-    "chroma-js": "^2.4.2"
+    "chroma-js": "^2.4.2",
+    "json-loader": "^0.5.7"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.15.8",

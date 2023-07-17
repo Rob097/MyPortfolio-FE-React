@@ -5,7 +5,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import Box from '@mui/material/Box';
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 
 function Footer() {
   return (

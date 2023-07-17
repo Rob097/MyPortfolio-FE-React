@@ -1,7 +1,7 @@
 
 import { ThemeProvider } from "@mui/material";
-import theme from "common-lib/assets/theme";
-import "common-lib/styles.scss";
+import theme from "@rob097/common-lib/assets/theme";
+import "@rob097/common-lib/styles.scss";
 import { AuthStoreProvider } from "context/AuthStore";
 import { SoftUIControllerProvider } from "context/DashboardStore";
 import { StoreProvider } from "context/Store";

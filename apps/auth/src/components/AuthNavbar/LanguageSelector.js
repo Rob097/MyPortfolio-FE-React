@@ -1,9 +1,9 @@
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import itFlag from "common-lib/assets/images/flags/IT.svg";
-import usFlag from "common-lib/assets/images/flags/US.svg";
-import { getLang, setLang } from 'common-lib/i18n/i18n';
+import itFlag from "@rob097/common-lib/assets/images/flags/IT.svg";
+import usFlag from "@rob097/common-lib/assets/images/flags/US.svg";
+import { getLang, setLang } from '@rob097/common-lib/i18n/i18n';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSelector = ({ isMobile }) => {

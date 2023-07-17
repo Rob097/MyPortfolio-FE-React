@@ -1,4 +1,4 @@
-import { Filters } from 'common-lib/criteria.model';
+import { Filters } from '@rob097/common-lib/criteria.model';
 import { Story } from './story.model';
 import { User } from './user.model';
 

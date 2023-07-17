@@ -1,5 +1,5 @@
-const constants = require('common-lib/constants');
-import { View } from "common-lib/criteria.model";
+const constants = require('@rob097/common-lib/constants');
+import { View } from "@rob097/common-lib/criteria.model";
 import { Experience, ExperienceQ } from "../models/experience.model";
 import { BaseService } from "./base.service";
 const EXPERIENCES_URL = constants.BASE_URL + '/core/experiences';

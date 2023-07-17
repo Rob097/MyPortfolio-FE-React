@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/system/Unstable_Grid';
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 
 const CustomStepper = (props) => {
     return (

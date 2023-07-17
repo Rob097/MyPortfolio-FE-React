@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from '@mui/material/Box';
-import SoftTypography from "common-lib/components/SoftTypography";
+import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 
 function AuthNavbarLink({ icon, name, route, light }) {
   return (

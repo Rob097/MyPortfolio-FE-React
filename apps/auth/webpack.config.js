@@ -6,7 +6,7 @@ const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
 const webpack = require('webpack');
-const getEnvKeys = require('common-lib/environments/utils.js');
+const getEnvKeys = require('@rob097/common-lib/environments/utils.js');
 
 module.exports = (_, argv) => {
 

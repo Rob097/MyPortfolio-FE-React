@@ -1,7 +1,7 @@
 import { CardActions, CardContent } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import SoftButton from 'common-lib/components/SoftButton';
+import SoftButton from '@rob097/common-lib/components/SoftButton';
 
 const Completed = (props) => {
 
