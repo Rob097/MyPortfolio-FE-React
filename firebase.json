@@ -135,40 +135,6 @@
           ]
         }
       ]
-    },
-    {
-      "target": "application",
-      "public": "./apps/application/.next",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ],
-      "headers": [
-        {
-          "source": "**",
-          "headers": [
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            },
-            {
-              "key": "Access-Control-Allow-Methods",
-              "value": "GET"
-            },
-            {
-              "key": "Access-Control-Allow-Headers",
-              "value": "*"
-            }
-          ]
-        }
-      ]
     }
   ]
 }

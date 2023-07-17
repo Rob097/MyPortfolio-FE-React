@@ -5,18 +5,6 @@
   "targets": {
     "myportfolio-react-1d481": {
       "hosting": {
-        "myp-auth": [
-          "auth"
-        ],
-        "myp-context": [
-          "context"
-        ],
-        "myp-dashboard": [
-          "dashboard"
-        ],
-        "myp-host": [
-          "host"
-        ],
         "host": [
           "myp-host"
         ],

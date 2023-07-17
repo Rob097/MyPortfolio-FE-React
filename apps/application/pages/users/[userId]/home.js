@@ -17,7 +17,7 @@ const UserHome = () => {
                 <SoftTypography variant="h3" color="primary" fontWeight="bold">Hi, I'm</SoftTypography>
                 <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{width: greaterThanXl ? '120%' : 'fit-content'}}>Roberto Dellantonio</SoftTypography>
                 <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</SoftTypography>
-                <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments</SoftTypography>
+                <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments.</SoftTypography>
             </HeroSection>
 
             <MicroHighlightSection moveUp>
