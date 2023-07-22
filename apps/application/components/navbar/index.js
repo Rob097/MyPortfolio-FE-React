@@ -12,7 +12,7 @@ import NavbarMobile from "./navbarMobile";
 import LanguageSelector from "./languageSelector";
 import boxShadows from "common-lib/assets/theme/base/boxShadows";
 import { useTheme } from '@mui/system';
-import styles from './navbar.module.css';
+import styles from './navbar.module.scss';
 
 function Navbar({ transparent, light, action }) {
   const theme = useTheme();

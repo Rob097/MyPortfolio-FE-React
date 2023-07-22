@@ -1,3 +1,5 @@
+@import 'common-lib/assets/theme/base/breakpoints.scss';
+
 .navbarContainer {
     padding-right: 1.5rem !important;
     padding-left: 1.5rem !important;
@@ -7,27 +9,27 @@
     position: relative;
   }
   
-  @media (min-width: 576px) {
+  @media (min-width: $sm) {
     .navbarContainer {
       max-width: 540px !important;
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: ($md)) {
     .navbarContainer {
       max-width: 720px !important;
     }
   }
-  @media (min-width: 992px) {
+  @media (min-width: ($lg)) {
     .navbarContainer {
       max-width: 960px !important;
     }
   }
-  @media (min-width: 1200px) {
+  @media (min-width: ($xl)) {
     .navbarContainer {
       max-width: 1140px !important;
     }
   }
-  @media (min-width: 1400px) {
+  @media (min-width: ($xxl)) {
     .navbarContainer {
       max-width: 1320px !important;
     }

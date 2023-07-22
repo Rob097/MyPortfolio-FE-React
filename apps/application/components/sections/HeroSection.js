@@ -1,18 +1,16 @@
 import SoftButton from '@/components/SoftButton';
-import styled from "@/components/navbar/navbar.module.css";
-import { Box, Container, Grid, useMediaQuery, useTheme } from "@mui/material";
+import styled from "@/components/navbar/navbar.module.scss";
+import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { Box, Container, Grid, useTheme } from "@mui/material";
 import ShowIf from "../showIf";
 
 const HeroSection = (props) => {
-    const theme = useTheme();
-
-    const smallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
-    const smallerThanLg = useMediaQuery(theme.breakpoints.down("lg"));
-    const greaterThanLg = useMediaQuery(theme.breakpoints.up("lg"));
+    const { palette } = useTheme();
+    const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
     return (
-        <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${theme.palette.background.white}, ${theme.palette.background.default} 50%);` }}>
-            <Container sx={{ padding: smallerThanLg && "0.5rem" }} disableGutters={smallerThanMd} className={greaterThanLg ? styled.navbarContainer : ''}>
+        <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
+            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem" }} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
                 <Grid container columnSpacing={10} justifyContent="center">
                     <Grid item md={6} alignSelf="center" width="100%">
 

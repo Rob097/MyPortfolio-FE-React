@@ -11,7 +11,7 @@ import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
 import LanguageSelector from "./LanguageSelector";
 import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows"
-import styles from './navbar.module.css';
+import styles from './navbar.module.scss';
 
 function AuthNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);

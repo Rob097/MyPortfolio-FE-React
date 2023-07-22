@@ -1,3 +1,11 @@
 .moveUp {
   top: -4rem;
 }
+
+/* Timeline styles */
+.customSeparator {
+  min-width: 31.2px;
+}
+.customDot {
+  align-self: center;
+}

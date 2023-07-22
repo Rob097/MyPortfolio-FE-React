@@ -1,42 +1,37 @@
 import SoftTypography from '@/components/SoftTypography';
-import styled from "@/components/navbar/navbar.module.css";
+import styled from "@/components/navbar/navbar.module.scss";
 import ShowIf from '@/components/showIf';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import styles from "@/pages/users/[userId]/home.module.css";
-import { Avatar, Box, Container, Grid, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Avatar, Box, Container, Grid, useTheme } from '@mui/material';
 import boxShadows from "common-lib/assets/theme/base/boxShadows";
 
 const MicroHighlightSection = (props) => {
-
-    const theme = useTheme();
-
-    const greaterThanMd = useMediaQuery(theme.breakpoints.up("md"), {defaultMatches: true});
-    const smallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
-    const greaterThanLg = useMediaQuery(theme.breakpoints.up("lg"));
-    const smallerThanLg = useMediaQuery(theme.breakpoints.down("lg"));
-    const greaterThanXl = useMediaQuery(theme.breakpoints.up("xl"));
+    const { palette } = useTheme();
+    const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
     const elements = props.children;
     if (!elements || (elements.length !== 3 && elements.length !== 4)) {
         throw new Error("MicroHighlightSection must have 3 or 4 children");
     }
-    
+
     return (
-        <Box id='support-section' component='section' position="relative" className={props.moveUp && greaterThanXl ? styles.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
-            <Container disableGutters={smallerThanLg} className={greaterThanLg ? styled.navbarContainer : ''}>
-                <ShowIf condition={greaterThanMd}>
+        <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? styles.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
+            <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
+                <ShowIf condition={isGreaterThan('md')}>
                     <WhiteBox>
                         <Grid container py={2}>
-                            <Grid item md={12 / elements.length} borderRight={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
+                            <Grid item md={12 / elements.length} borderRight={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
                                 {elements[0]}
                             </Grid>
-                            <Grid item md={12 / elements.length} borderRight={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
+                            <Grid item md={12 / elements.length} borderRight={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
                                 {elements[1]}
                             </Grid>
                             <Grid item md={12 / elements.length}>
                                 {elements[2]}
                             </Grid>
                             <ShowIf condition={elements.length === 4}>
-                                <Grid item md={12 / elements.length} borderLeft={`1px solid ${theme.palette.sliderColors.thumb.borderColor}`}>
+                                <Grid item md={12 / elements.length} borderLeft={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
                                     {elements[3]}
                                 </Grid>
                             </ShowIf>
@@ -45,7 +40,7 @@ const MicroHighlightSection = (props) => {
 
                 </ShowIf>
 
-                <ShowIf condition={smallerThanMd}>
+                <ShowIf condition={isSmallerThan('md')}>
                     <Grid container justifyContent="center">
                         <Grid item md={6} justifyContent="center" display="flex" >
                             <WhiteBox>
@@ -103,14 +98,13 @@ export const WhiteBox = ({ children }) => (
 );
 
 export const SingleElement = (props) => {
-    const theme = useTheme();
-    const greaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
+    const { isGreaterThan } = useBreakpoints();
 
     // Check if props.avatar is a path or a number
     const isAvatarPath = isNaN(props.avatar);
 
     return (
-        <Grid container justifyContent="center" flexWrap={greaterThanMd ? 'nowrap' : 'wrap'}>
+        <Grid container justifyContent="center" flexWrap={isGreaterThan('md') ? 'nowrap' : 'wrap'}>
             <Grid item mr={2}>
                 <ShowIf condition={isAvatarPath}>
                     <Avatar src={props.avatar} sx={{ width: { lg: 100, xs: 60 }, height: "auto" }} variant="rounded" />
