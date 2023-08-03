@@ -12,7 +12,7 @@ function PageLayout(props) {
       height="100%"
       minHeight="100vh"
       bgcolor={background}
-      sx={{ overflowX: "hidden" }}
+      sx={{ display: 'flow-root', overflowX: { xs: 'hidden', md:"visible" } }}
     >
       {props.children}
     </Box>

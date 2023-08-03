@@ -1,4 +1,6 @@
+import SoftInput from '@/components/SoftInput';
 import SoftTypography from '@/components/SoftTypography';
+import CarouselItem from '@/components/carousel/carouselItem';
 import navbarStyled from "@/components/navbar/navbar.module.scss";
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
@@ -16,16 +18,26 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import homeStyled from "./home.module.css";
+import { useForm } from 'react-hook-form';
+import Carousel from 'react-material-ui-carousel';
 import classes from "../../userProfile.module.scss";
-import Paper from '@mui/material/Paper';
+import homeStyled from "./home.module.css";
+import SoftButton from '@/components/SoftButton';
+import SoftTextArea from '@/components/SoftTextArea';
 
 
 const UserHome = () => {
     const { t } = useTranslation();
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
+    const { palette } = useTheme();
+    const { register, handleSubmit, formState: { errors } } =  useForm();
+    
+    async function handleContact(data) {
+        console.log(data);
+    }
 
     return (
         <>
@@ -42,11 +54,11 @@ const UserHome = () => {
                 <SingleElement avatar="3" title="Docker" caption="Devops management" />
             </MicroHighlightSection>
 
-            <Box id='next-section' component='section' mb={10} >
+            <Box id='next-section' component='section'>
                 <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? navbarStyled.navbarContainer : ''}>
                     <Grid container>
                         <Grid item md={6} width="100%">
-                            <Box display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6}>
+                            <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={classes.stickyContainer}>
                                 <Box textAlign="center">
                                     <SoftTypography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >My Story</SoftTypography>
                                     <SoftTypography variant="subtitle1" color="text" fontWeight="bold" style={{ fontStyle: 'italic' }} >Staying hard I did all of that...</SoftTypography>
@@ -61,15 +73,9 @@ const UserHome = () => {
                                     },
                                     display: 'block',
                                     maxHeight: '60vh',
-                                    overflowY: 'scroll',
-                                    // hide scrollbar style
-                                    '&::-webkit-scrollbar': {
-                                        width: '0.4em'
-                                    },
-                                    // light black overlay at the bottom of the box
-                                        boxShadow: 'inset 0px -20px 20px 0px rgb(0 0 0 / 34%)',
-                                        webkitBoxShadow: 'inset 0px -20px 20px 0px rgb(0 0 0 / 34%)',
+                                    overflowY: 'scroll'
                                 }}
+                                className={classes.scrollGradient + " hide-scrollbar"}
                             >
                                 <TimelineItem>
                                     <TimelineOppositeContent color="text.secondary">
@@ -185,55 +191,42 @@ const UserHome = () => {
                             <SoftTypography variant="h4" gutterBottom>
                                 Diary
                             </SoftTypography>
-                            <Grid container spacing={3}>
-                                {/* Diary Card 1 */}
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Moving to a New City
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Date: July 5, 2022
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities
-                                            and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change
-                                            and make the most of every experience that comes my way.
-                                        </SoftTypography>
-                                    </Paper>
-                                </Grid>
 
-                                {/* Diary Card 2 */}
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Completing My First Marathon
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Date: October 15, 2022
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Today is a day of immense pride and accomplishment. I completed my first marathon, and it's a feeling like no
-                                            other. The journey to this point has been filled with determination, dedication, and hard work, but crossing
-                                            that finish line made it all worthwhile.
-                                        </SoftTypography>
-                                    </Paper>
+                            <Carousel animation="slide" duration={2000} height={330} autoPlay={false} swipe={isSmallerThan('md')}>
+                                <Grid container spacing={5} padding={2}>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
                                 </Grid>
-
-                                {/* Add more diary cards here */}
-                                {/* Diary Card 3, Diary Card 4, etc. */}
-                            </Grid>
+                                <Grid container spacing={3} padding={2}>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+                                    </Grid>
+                                </Grid>
+                            </Carousel>
                         </Container>
                     </div>
 
-                    {/* Education and Experience Section */}
+                    {/* Education and Experience Section
                     <div className={classes.section}>
                         <Container maxWidth="lg">
                             <SoftTypography variant="h4" gutterBottom>
                                 Education and Experience
                             </SoftTypography>
                             <Grid container spacing={3}>
-                                {/* Education Card 1 */}
+                                {/* Education Card 1 
                                 <Grid item xs={12} sm={6}>
                                     <Paper className={classes.storyCard}>
                                         <SoftTypography variant="h5" gutterBottom>
@@ -253,7 +246,7 @@ const UserHome = () => {
                                     </Paper>
                                 </Grid>
 
-                                {/* Experience Card 1 */}
+                                {/* Experience Card 1 
                                 <Grid item xs={12} sm={6}>
                                     <Paper className={classes.storyCard}>
                                         <SoftTypography variant="h5" gutterBottom>
@@ -271,20 +264,20 @@ const UserHome = () => {
                                     </Paper>
                                 </Grid>
 
-                                {/* Add more education and experience cards here */}
-                                {/* Education Card 2, Experience Card 2, etc. */}
+                                {/* Add more education and experience cards here 
+                                {/* Education Card 2, Experience Card 2, etc. 
                             </Grid>
                         </Container>
                     </div>
 
-                    {/* Projects Section */}
+                    {/* Projects Section 
                     <div className={classes.section}>
                         <Container maxWidth="lg">
                             <SoftTypography variant="h4" gutterBottom>
                                 Projects
                             </SoftTypography>
                             <Grid container spacing={3}>
-                                {/* Project Card 1 */}
+                                {/* Project Card 1 
                                 <Grid item xs={12} sm={6}>
                                     <Paper className={classes.storyCard}>
                                         <SoftTypography variant="h5" gutterBottom>
@@ -302,7 +295,7 @@ const UserHome = () => {
                                     </Paper>
                                 </Grid>
 
-                                {/* Project Card 2 */}
+                                {/* Project Card 2 
                                 <Grid item xs={12} sm={6}>
                                     <Paper className={classes.storyCard}>
                                         <SoftTypography variant="h5" gutterBottom>
@@ -319,12 +312,68 @@ const UserHome = () => {
                                     </Paper>
                                 </Grid>
 
-                                {/* Add more project cards here */}
-                                {/* Project Card 3, Project Card 4, etc. */}
+                                {/* Add more project cards here 
+                                {/* Project Card 3, Project Card 4, etc. 
                             </Grid>
                         </Container>
-                    </div>
+                    </div>*/}
 
+                </Container>
+            </Box>
+
+            {/* Contact Me Section */}
+            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
+                <Container maxWidth="lg" className='px-12 lg:px-6'>
+                    <SoftTypography variant="h4" gutterBottom>
+                        Contact Me
+                    </SoftTypography>
+                    <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={6}>
+                                <Box mb={2}>
+                                    <Box mb={1} ml={0.5}>
+                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                            Name
+                                        </SoftTypography>
+                                    </Box>
+                                    <SoftInput id='name' type="text" placeholder="Name" {...register("name", { required: t('contact-me.validations.name-required') })} error={errors.name && true} helpertext={errors.name?.message} />
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Box mb={2}>
+                                    <Box mb={1} ml={0.5}>
+                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                            Email
+                                        </SoftTypography>
+                                    </Box>
+                                    <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('contact-me.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Box mb={2}>
+                                    <Box mb={1} ml={0.5}>
+                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                            Message
+                                        </SoftTypography>
+                                    </Box>
+                                    <SoftTextArea 
+                                        id='message'
+                                        placeholder="Message"
+                                        {...register("message", { required: t('contact-me.validations.message-required'), maxLength: {value: 500, message: t('contact-me.validations.message-length', {maxLength: '500'})} })} error={errors.message && true} helpertext={errors.message?.message}
+                                        minRows={3}
+                                        maxLength={500}
+                                    />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                        <Box mb={2}>
+                            <SoftButton type="submit" variant="contained" color="primary" size="large" fullWidth>
+                                Send Message
+                            </SoftButton>
+                        </Box>
+                    </Box>
                 </Container>
             </Box>
         </>

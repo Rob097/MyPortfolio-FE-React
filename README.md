@@ -29,7 +29,7 @@ Each story should have a title, date, description, and a list of associated educ
 
 
 ## Frontend Requirements:
-We need the design of the visible-to-the-public pages.
+We need the design of the visible-to-the-public pages (not dashboard).
 These pages are designed to showcase the user's stories and present them in an engaging and visually appealing manner. \
 Specifically, we need the design of the following pages:
 
