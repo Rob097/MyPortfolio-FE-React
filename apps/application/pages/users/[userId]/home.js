@@ -1,4 +1,6 @@
+import SoftButton from '@/components/SoftButton';
 import SoftInput from '@/components/SoftInput';
+import SoftTextArea from '@/components/SoftTextArea';
 import SoftTypography from '@/components/SoftTypography';
 import CarouselItem from '@/components/carousel/carouselItem';
 import navbarStyled from "@/components/navbar/navbar.module.scss";
@@ -25,24 +27,50 @@ import { useForm } from 'react-hook-form';
 import Carousel from 'react-material-ui-carousel';
 import classes from "../../userProfile.module.scss";
 import homeStyled from "./home.module.css";
-import SoftButton from '@/components/SoftButton';
-import SoftTextArea from '@/components/SoftTextArea';
 
 
 const UserHome = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['user-home', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const { palette } = useTheme();
-    const { register, handleSubmit, formState: { errors } } =  useForm();
-    
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const isGreaterThanMd = isGreaterThan('md');
+    const isGreaterThanSm = isGreaterThan('sm');
+
     async function handleContact(data) {
         console.log(data);
+    }
+
+    /* DIARY CAROUSEL ELEMENTS */
+    const diaryElements = [
+        <CarouselItem title="Moving to a New City 1" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem title="Moving to a New City 2" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem title="Moving to a New City 3" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem title="Moving to a New City 4" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem title="Moving to a New City 5" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem title="Moving to a New City 6" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+    ];
+    const sliderItems = isGreaterThanMd ? 3 : isGreaterThanSm ? 2 : 1;
+    const items = [];
+    for (let i = 0; i < diaryElements.length; i += sliderItems) {
+        if (i % sliderItems === 0) {
+            items.push(
+                <Grid container spacing={5} padding={2}>
+                    {diaryElements.slice(i, i + sliderItems).map((diaryElement, index) => (
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                            {diaryElement}
+                        </Grid>
+                    ))}
+                </Grid>
+            );
+        }
     }
 
     return (
         <>
             <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}>
-                <SoftTypography variant="h3" color="primary" fontWeight="bold">{t("whoamI")}</SoftTypography>
+                <SoftTypography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</SoftTypography>
                 <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>Roberto Dellantonio</SoftTypography>
                 <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</SoftTypography>
                 <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments.</SoftTypography>
@@ -60,7 +88,7 @@ const UserHome = () => {
                         <Grid item md={6} width="100%">
                             <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={classes.stickyContainer}>
                                 <Box textAlign="center">
-                                    <SoftTypography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >My Story</SoftTypography>
+                                    <SoftTypography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >{t('my-story')}</SoftTypography>
                                     <SoftTypography variant="subtitle1" color="text" fontWeight="bold" style={{ fontStyle: 'italic' }} >Staying hard I did all of that...</SoftTypography>
                                 </Box>
                             </Box>
@@ -193,130 +221,10 @@ const UserHome = () => {
                             </SoftTypography>
 
                             <Carousel animation="slide" duration={2000} height={330} autoPlay={false} swipe={isSmallerThan('md')}>
-                                <Grid container spacing={5} padding={2}>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={3} padding={2}>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <CarouselItem title="Moving to a New City" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
-                                    </Grid>
-                                </Grid>
+                                {items}
                             </Carousel>
                         </Container>
                     </div>
-
-                    {/* Education and Experience Section
-                    <div className={classes.section}>
-                        <Container maxWidth="lg">
-                            <SoftTypography variant="h4" gutterBottom>
-                                Education and Experience
-                            </SoftTypography>
-                            <Grid container spacing={3}>
-                                {/* Education Card 1 
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Bachelor of Science in Computer Science
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Institution: XYZ University
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Duration: September 2015 - May 2019
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Description: During my time at XYZ University, I immersed myself in the world of computer science and gained a
-                                            strong foundation in programming, data structures, algorithms, and software development. The hands-on projects
-                                            and engaging coursework provided valuable experiences that set the stage for my career in technology.
-                                        </SoftTypography>
-                                    </Paper>
-                                </Grid>
-
-                                {/* Experience Card 1 
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Software Engineer at Tech Solutions Inc.
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Duration: June 2019 - Present
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Description: Joining Tech Solutions Inc. as a software engineer has been a transformative experience. From my
-                                            early days as a junior developer to my current role as a full-stack engineer, I've had the opportunity to
-                                            contribute to impactful projects, collaborate with talented teams, and continuously learn and grow in a dynamic
-                                            tech environment.
-                                        </SoftTypography>
-                                    </Paper>
-                                </Grid>
-
-                                {/* Add more education and experience cards here 
-                                {/* Education Card 2, Experience Card 2, etc. 
-                            </Grid>
-                        </Container>
-                    </div>
-
-                    {/* Projects Section 
-                    <div className={classes.section}>
-                        <Container maxWidth="lg">
-                            <SoftTypography variant="h4" gutterBottom>
-                                Projects
-                            </SoftTypography>
-                            <Grid container spacing={3}>
-                                {/* Project Card 1 
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Project: E-Commerce Website
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Duration: February 2020 - August 2020
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Description: Building an E-Commerce website from scratch was an ambitious project that taught me a great deal
-                                            about full-stack development and user experience. The platform allows users to browse products, add them to
-                                            their cart, and complete secure transactions. Implementing features like user authentication, product search,
-                                            and payment integration challenged me to think creatively and efficiently.
-                                        </SoftTypography>
-                                    </Paper>
-                                </Grid>
-
-                                {/* Project Card 2 
-                                <Grid item xs={12} sm={6}>
-                                    <Paper className={classes.storyCard}>
-                                        <SoftTypography variant="h5" gutterBottom>
-                                            Project: Blogging Platform
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Duration: January 2021 - April 2021
-                                        </SoftTypography>
-                                        <SoftTypography variant="body1" paragraph>
-                                            Description: Creating a blogging platform was a passion project that allowed me to combine my love for writing
-                                            with my technical skills. The platform enables users to create and publish their blogs, customize their
-                                            profiles, and engage with the community through comments and likes.
-                                        </SoftTypography>
-                                    </Paper>
-                                </Grid>
-
-                                {/* Add more project cards here 
-                                {/* Project Card 3, Project Card 4, etc. 
-                            </Grid>
-                        </Container>
-                    </div>*/}
 
                 </Container>
             </Box>
@@ -325,7 +233,7 @@ const UserHome = () => {
             <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6'>
                     <SoftTypography variant="h4" gutterBottom>
-                        Contact Me
+                        {t("contact-me.title")}
                     </SoftTypography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>
                         <Grid container spacing={3}>
@@ -333,20 +241,20 @@ const UserHome = () => {
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            Name
+                                            {t("contact-me.fields.name")}
                                         </SoftTypography>
                                     </Box>
-                                    <SoftInput id='name' type="text" placeholder="Name" {...register("name", { required: t('contact-me.validations.name-required') })} error={errors.name && true} helpertext={errors.name?.message} />
+                                    <SoftInput id='name' type="text" placeholder={t("contact-me.fields.name")} {...register("name", { required: t('contact-me.validations.name-required') })} error={errors.name && true} helpertext={errors.name?.message} />
                                 </Box>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            Email
+                                            {t("contact-me.fields.email")}
                                         </SoftTypography>
                                     </Box>
-                                    <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('contact-me.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+                                    <SoftInput id='email' type="email" placeholder={t("contact-me.fields.email")} {...register("email", { required: t('contact-me.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
                                 </Box>
                             </Grid>
                         </Grid>
@@ -355,13 +263,13 @@ const UserHome = () => {
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            Message
+                                            {t("contact-me.fields.message")}
                                         </SoftTypography>
                                     </Box>
-                                    <SoftTextArea 
+                                    <SoftTextArea
                                         id='message'
-                                        placeholder="Message"
-                                        {...register("message", { required: t('contact-me.validations.message-required'), maxLength: {value: 500, message: t('contact-me.validations.message-length', {maxLength: '500'})} })} error={errors.message && true} helpertext={errors.message?.message}
+                                        placeholder={t("contact-me.fields.message")}
+                                        {...register("message", { required: t('contact-me.validations.message-required'), maxLength: { value: 500, message: t('contact-me.validations.message-length', { maxLength: '500' }) } })} error={errors.message && true} helpertext={errors.message?.message}
                                         minRows={3}
                                         maxLength={500}
                                     />
@@ -370,7 +278,7 @@ const UserHome = () => {
                         </Grid>
                         <Box mb={2}>
                             <SoftButton type="submit" variant="contained" color="primary" size="large" fullWidth>
-                                Send Message
+                                {t("contact-me.submit")}
                             </SoftButton>
                         </Box>
                     </Box>

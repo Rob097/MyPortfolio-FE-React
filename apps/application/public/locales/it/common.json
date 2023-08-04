@@ -1,12 +1,4 @@
 {
     "helloWorld": "Ciao Mondo!",
-    "whoamI": "Ciao, sono ",
-    "contact-me": {
-        "validations": {
-            "name-required": "Il nome è obbligatorio",
-            "email-required": "L'email è obbligatoria",
-            "message-required": "Il messaggio è obbligatorio",
-            "message-length": "Il messaggio deve essere lungo massimo {{maxLength}} caratteri"
-        }
-    }
+    "whoamI": "Ciao, sono "
 }

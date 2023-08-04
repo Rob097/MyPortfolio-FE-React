@@ -1,13 +1,4 @@
 {
     "helloWorld": "Hello World!",
-    "whoamI": "Hi, I'm ",
-    "contact-me": {
-        "validations": {
-            "name-required": "Name is required",            
-            "email-required": "Email is required",
-            "message-required": "Message is required",
-            "message-length": "Message must be at most {{maxLength}} characters long"
-        }
-    }
-
+    "whoamI": "Hi, I'm "
 }

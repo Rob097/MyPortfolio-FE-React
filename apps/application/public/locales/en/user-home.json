@@ -1,0 +1,18 @@
+{
+    "my-story": "My Story",
+    "contact-me": {
+        "title": "Contact Me",
+        "submit": "Send Message",
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "message": "Message"
+        },
+        "validations": {
+            "name-required": "Name is required",
+            "email-required": "Email is required",
+            "message-required": "Message is required",
+            "message-length": "Message must be at most {{maxLength}} characters long"
+        }
+    }
+}
