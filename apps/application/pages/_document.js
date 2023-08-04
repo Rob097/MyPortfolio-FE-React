@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '@/components/createEmotionCache';
-import colors from "common-lib/assets/theme/base/colors";
+import colors from "@rob097/common-lib/assets/theme/base/colors";
 
 export default function MyDocument(props) {
   const { emotionStyleTags } = props;

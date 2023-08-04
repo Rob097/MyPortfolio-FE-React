@@ -4,7 +4,7 @@ import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import styles from "@/pages/users/[userId]/home.module.css";
 import { Avatar, Box, Container, Grid, useTheme } from '@mui/material';
-import boxShadows from "common-lib/assets/theme/base/boxShadows";
+import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
 
 const MicroHighlightSection = (props) => {
     const { palette } = useTheme();

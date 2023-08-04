@@ -17,15 +17,15 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
-    "common-lib": "file:../../shared/common/dist",
+    "@rob097/common-lib": "^1.0.13",
     "next": "latest",
     "next-i18next": "latest",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.44.3",
     "react-material-ui-carousel": "latest",
     "react-use-draggable-scroll": "^0.4.7",
-    "react-hook-form": "^7.44.3",
     "sass": "^1.63.6"
   },
   "devDependencies": {

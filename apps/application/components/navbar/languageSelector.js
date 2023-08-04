@@ -1,8 +1,8 @@
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import usFlag from "common-lib/assets/images/flags/US.svg";
-import itFlag from "common-lib/assets/images/flags/IT.svg";
+import usFlag from "@rob097/common-lib/assets/images/flags/US.svg";
+import itFlag from "@rob097/common-lib/assets/images/flags/IT.svg";
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';

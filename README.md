@@ -1,5 +1,6 @@
 https://dev.to/devsmitra/the-complete-guide-to-micro-frontend-with-reactjs-for-2022-36b2
 
+DEPLOY FROM ROOT FOLDER:
 To deploy microfrontends to firebase: \
 firebase deploy --only hosting \
 or \
@@ -9,6 +10,13 @@ To deploy application to vercel: \
 vercel \
 or \
 vercel --prod
+
+IMPORTANT FOR APPLICATION DEPLOYMENT: \
+If there was a change in the common library, first of all we need to update the version in the package.json, build, copy package.json in dist folder and inside dist folder run "npm publish". \
+Then if we are pointing to our local common library in application package.json we need to change it from ""common-lib": "file:../../shared/common/dist"" to ""@rob097/common-lib": "^1.0.13""
+Also we need to change the imports from "common-lib/assets/..." to "@rob097/common-lib/assets/...".
+Then we need to update the version in the package.json of the microfrontend that uses the common library and run "npm install" to update the common library. \
+Finally we can deploy the microfrontend.
 
 
 # MyPortfolio

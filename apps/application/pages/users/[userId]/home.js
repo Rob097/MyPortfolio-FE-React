@@ -56,9 +56,9 @@ const UserHome = () => {
     for (let i = 0; i < diaryElements.length; i += sliderItems) {
         if (i % sliderItems === 0) {
             items.push(
-                <Grid container spacing={5} padding={2}>
+                <Grid container spacing={5} padding={2} key={"c-"+i}>
                     {diaryElements.slice(i, i + sliderItems).map((diaryElement, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Grid item xs={12} sm={6} md={4} key={"i-"+i}>
                             {diaryElement}
                         </Grid>
                     ))}
