@@ -1,4 +1,4 @@
-import SoftButton from '@/components/SoftButton';
+import SoftButton from '@rob097/common-lib/components/SoftButton';
 import styled from "@/components/navbar/navbar.module.scss";
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Box, Container, Grid, useTheme } from "@mui/material";

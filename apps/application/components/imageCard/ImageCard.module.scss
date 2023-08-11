@@ -1,0 +1,40 @@
+.card {
+    width: auto;
+    height: 220px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.overlay {
+    background-size: cover;
+    background-blend-mode: color;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: 0.5s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay:hover {
+    transform: scale(1.1);
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+.header {
+    font-size: 3.5rem;
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: fit-content;
+    margin: auto;
+    text-shadow: 0 0 25px black;
+}

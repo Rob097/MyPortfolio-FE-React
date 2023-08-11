@@ -1,5 +1,5 @@
-import SoftButton from '@/components/SoftButton';
-import SoftTypography from '@/components/SoftTypography';
+import SoftButton from '@rob097/common-lib/components/SoftButton';
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';

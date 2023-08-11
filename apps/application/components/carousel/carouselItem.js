@@ -1,7 +1,7 @@
 // CarouselItem component
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { useTheme } from '@mui/material/styles';
-import SoftTypography from '@/components/SoftTypography';
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { Box, Paper } from '@mui/material';
 import classes from "../../pages/userProfile.module.scss";
 import Chip from '@mui/material/Chip';

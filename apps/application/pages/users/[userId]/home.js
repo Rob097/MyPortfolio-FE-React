@@ -1,32 +1,21 @@
-import SoftButton from '@/components/SoftButton';
-import SoftInput from '@/components/SoftInput';
-import SoftTextArea from '@/components/SoftTextArea';
-import SoftTypography from '@/components/SoftTypography';
 import CarouselItem from '@/components/carousel/carouselItem';
+import ImageCard from '@/components/imageCard/ImageCard';
 import navbarStyled from "@/components/navbar/navbar.module.scss";
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import Timeline from '@mui/lab/Timeline';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineOppositeContent, {
-    timelineOppositeContentClasses,
-} from '@mui/lab/TimelineOppositeContent';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
+import SoftButton from '@rob097/common-lib/components/SoftButton';
+import SoftInput from '@rob097/common-lib/components/SoftInput';
+import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useForm } from 'react-hook-form';
-import Carousel from 'react-material-ui-carousel';
 import classes from "../../userProfile.module.scss";
-import homeStyled from "./home.module.css";
 
 
 const UserHome = () => {
@@ -44,21 +33,21 @@ const UserHome = () => {
 
     /* DIARY CAROUSEL ELEMENTS */
     const diaryElements = [
-        <CarouselItem title="Moving to a New City 1" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
-        <CarouselItem title="Moving to a New City 2" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
-        <CarouselItem title="Moving to a New City 3" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
-        <CarouselItem title="Moving to a New City 4" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
-        <CarouselItem title="Moving to a New City 5" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
-        <CarouselItem title="Moving to a New City 6" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
+        <CarouselItem key="CI-1" title="Moving to a New City 1" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem key="CI-2" title="Moving to a New City 2" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem key="CI-3" title="Moving to a New City 3" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem key="CI-4" title="Moving to a New City 4" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem key="CI-5" title="Moving to a New City 5" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />,
+        <CarouselItem key="CI-6" title="Moving to a New City 6" subtitle="July 5, 2022" description="Today marks the beginning of a new chapter in my life. I've moved to a new city to pursue new opportunities and challenge myself. The excitement and nervousness are both overwhelming, but I'm eager to embrace this change and make the most of every experience that comes my way." />
     ];
     const sliderItems = isGreaterThanMd ? 3 : isGreaterThanSm ? 2 : 1;
     const items = [];
     for (let i = 0; i < diaryElements.length; i += sliderItems) {
         if (i % sliderItems === 0) {
             items.push(
-                <Grid container spacing={5} padding={2} key={"c-"+i}>
+                <Grid container spacing={5} padding={2} key={"c-" + i}>
                     {diaryElements.slice(i, i + sliderItems).map((diaryElement, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={"i-"+i}>
+                        <Grid item xs={12} sm={6} md={4} key={diaryElement.key}>
                             {diaryElement}
                         </Grid>
                     ))}
@@ -82,7 +71,27 @@ const UserHome = () => {
                 <SingleElement avatar="3" title="Docker" caption="Devops management" />
             </MicroHighlightSection>
 
-            <Box id='next-section' component='section'>
+            <Box id='cards-section' component='section'>
+                <Box width='fit-content' m='auto' mb={4}>
+                    <SoftTypography variant="h2" fontWeight="bold">{t('about-me')}</SoftTypography>
+                </Box>
+                <Container className={navbarStyled.navbarContainer}>
+                    <Grid container spacing={4}>
+                        <Grid item sm={12} md={4}>
+                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Diary" />
+                        </Grid>
+                        <Grid item sm={12} md={4}>
+                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Experience" />
+                        </Grid>
+                        <Grid item sm={12} md={4}>
+                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Projects" />
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Box>
+
+            <div>
+                {/* <Box id='timeline-section' component='section'>
                 <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? navbarStyled.navbarContainer : ''}>
                     <Grid container>
                         <Grid item md={6} width="100%">
@@ -213,7 +222,14 @@ const UserHome = () => {
                         </Grid>
                     </Grid>
 
-                    {/* Diary Section */}
+
+
+                </Container>
+            </Box>
+
+            <Box id="diary-section" component='section'>
+                <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? navbarStyled.navbarContainer : ''}>
+                    {/* Diary Section
                     <div className={classes.section}>
                         <Container maxWidth="lg">
                             <SoftTypography variant="h4" gutterBottom>
@@ -225,14 +241,14 @@ const UserHome = () => {
                             </Carousel>
                         </Container>
                     </div>
-
                 </Container>
-            </Box>
+            </Box> */}
+            </div>
 
             {/* Contact Me Section */}
             <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6'>
-                    <SoftTypography variant="h4" gutterBottom>
+                    <SoftTypography variant="h2" sx={{textAlign: 'center'}} gutterBottom>
                         {t("contact-me.title")}
                     </SoftTypography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>

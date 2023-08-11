@@ -1,5 +1,4 @@
 import FormHelperText from '@mui/material/FormHelperText';
-import { useSoftUIController } from "context/DashboardStore";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import Box from '@mui/material/Box';
@@ -10,8 +9,7 @@ import SoftInputWithIconRoot from "./SoftInputWithIconRoot";
 
 const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest }, ref) => {
   let template;
-  const [controller] = useSoftUIController();
-  const { direction } = controller;
+  const direction = rest?.direction;
   const iconDirection = icon.direction;
 
   if (icon.component && icon.direction === "left") {

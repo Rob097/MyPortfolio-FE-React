@@ -2,7 +2,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from '@mui/material/Box';
-import SoftTypography from '../SoftTypography';
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { useTheme } from '@mui/system';
 
 function NavbarLink({ icon, name, route, light }) {

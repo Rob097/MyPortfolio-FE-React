@@ -12,8 +12,20 @@ function PageLayout(props) {
       height="100%"
       minHeight="100vh"
       bgcolor={background}
-      sx={{ display: 'flow-root', overflowX: { xs: 'hidden', md:"visible" } }}
+      sx={{ display: 'flow-root', overflowX: { xs: 'hidden', md: "visible" } }}
     >
+      <div>
+        <div style={{ position: 'absolute', left: 0, top: 0 }}>
+          <img src="/images/Vector.png" style={{width: '35em', maxWidth: '100%'}} />
+        </div>
+        <div style={{ position: 'absolute', left: 0, top: 0 }}>
+          <img src="/images/Vector-1.png" style={{width: '35em', maxWidth: '100%'}} />
+        </div>
+        <div style={{ position: 'absolute', left: 0, top: 0 }}>
+          <img src="/images/Vector-2.png" style={{width: '35em', maxWidth: '100%'}} />
+        </div>
+      </div>
+
       {props.children}
     </Box>
   );

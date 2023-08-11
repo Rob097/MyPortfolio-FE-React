@@ -1,4 +1,4 @@
-import SoftTypography from '@/components/SoftTypography';
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import styled from "@/components/navbar/navbar.module.scss";
 import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';

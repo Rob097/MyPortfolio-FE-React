@@ -2,8 +2,8 @@ import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
 import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
 import Box from '@mui/material/Box';
-import SoftTypography from '../SoftTypography';
-import SoftButton from "../SoftButton";
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import SoftButton from "@rob097/common-lib/components/SoftButton";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "next/link";
@@ -48,7 +48,7 @@ function Navbar({ transparent, light, action }) {
   }, []);
 
   return (
-    <Container className={styles.navbarContainer}>
+    <Container className={styles.navbarContainer} style={{position: 'fixed', zIndex: 9, transform: 'translateX(-50%)', left: '50%'}}>
       <Box
         py={1.5}
         px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
@@ -70,8 +70,8 @@ function Navbar({ transparent, light, action }) {
         })}
       >
         <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
-          <SoftTypography theme={theme} variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Soft UI Dashboard
+          <SoftTypography theme={theme} variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>
+            My<span style={{color: theme.palette.primary.main}}>Portfolio</span>
           </SoftTypography>
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
