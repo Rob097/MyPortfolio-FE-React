@@ -18,9 +18,31 @@ function Navbar({ transparent, light, action }) {
   const theme = useTheme();
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
+  const [show, setShow] = useState(true);
 
   const openMobileNavbar = ({ currentTarget }) => setMobileNavbar(currentTarget.parentNode);
   const closeMobileNavbar = () => setMobileNavbar(false);
+
+  useEffect(() => {
+    let previousScrollPosition = 0;
+    let currentScrollPosition = 0;
+
+    window.addEventListener('scroll', function (e) {
+
+      // Get the new Value
+      currentScrollPosition = window.scrollY;
+
+      //Subtract the two and conclude
+      if (previousScrollPosition - currentScrollPosition < 0) {
+        setShow(false);
+      } else if (previousScrollPosition - currentScrollPosition > 0) {
+        setShow(true);
+      }
+
+      // Update the previous value
+      previousScrollPosition = currentScrollPosition;
+    });
+  }, []);
 
   useEffect(() => {
     // A function that sets the display state for the NavbarMobile.
@@ -48,7 +70,7 @@ function Navbar({ transparent, light, action }) {
   }, []);
 
   return (
-    <Container className={styles.navbarContainer} style={{position: 'fixed', zIndex: 9, transform: 'translateX(-50%)', left: '50%'}}>
+    <Container className={styles.navbarContainer} style={{opacity: (show ? 1 : 0), position: 'fixed', zIndex: 9, transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s'}}>
       <Box
         py={1.5}
         px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}

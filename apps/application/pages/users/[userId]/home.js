@@ -71,20 +71,47 @@ const UserHome = () => {
                 <SingleElement avatar="3" title="Docker" caption="Devops management" />
             </MicroHighlightSection>
 
+            <Box id='main-story-section' component='section' className='mt-12 xl:mt-0'>
+                <Grid container>
+                    {/* <Grid item xs={12} md={4} className='flex justify-end flex-col'> */}
+                        
+                    {/* </Grid> */}
+                    <Grid item xs={12}/*  md={8} */ height='25em' marginBottom={8}>
+                        <Box className='flex justify-end'>
+                            <div className='w-3/5 md:w-2/5 h-1/2 max-h-96 absolute rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
+                        </Box>
+                        <Box className='flex h-full justify-center items-end'>
+                            <div className='relative flex flex-col w-4/5 md:w-3/5 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', maxHeight: '60%', minHeight: '40%' }}>
+                                <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
+                                <SoftTypography variant="h5" fontWeight="bold" color="primary" className=''>Something about me</SoftTypography>
+                                <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
+                                    <SoftTypography variant="body2" className='leading-7'>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                    </SoftTypography>
+                                </div>
+                                <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
+                            </div>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Box>
+
             <Box id='cards-section' component='section'>
                 <Box width='fit-content' m='auto' mb={4}>
                     <SoftTypography variant="h2" fontWeight="bold">{t('about-me')}</SoftTypography>
                 </Box>
                 <Container className={navbarStyled.navbarContainer}>
                     <Grid container spacing={4}>
-                        <Grid item sm={12} md={4}>
-                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Diary" />
+                        <Grid item xs={12} md={4}>
+                            <ImageCard image="/images/Rectangle-22952.png" title="Diary" />
                         </Grid>
-                        <Grid item sm={12} md={4}>
-                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Experience" />
+                        <Grid item xs={12} md={4}>
+                            <ImageCard image="/images/Rectangle-22953.png" title="Experience" />
                         </Grid>
-                        <Grid item sm={12} md={4}>
-                            <ImageCard image="https://mui.com/static/images/cards/contemplative-reptile.jpg" title="Projects" />
+                        <Grid item xs={12} md={4}>
+                            <ImageCard image="/images/Rectangle-22954.png" title="Projects" />
                         </Grid>
                     </Grid>
                 </Container>
@@ -246,9 +273,9 @@ const UserHome = () => {
             </div>
 
             {/* Contact Me Section */}
-            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
-                <Container maxWidth="lg" className='px-12 lg:px-6'>
-                    <SoftTypography variant="h2" sx={{textAlign: 'center'}} gutterBottom>
+            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);`}}>
+                <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{zIndex: 1}}>
+                    <SoftTypography variant="h2" sx={{ textAlign: 'center' }} gutterBottom>
                         {t("contact-me.title")}
                     </SoftTypography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>

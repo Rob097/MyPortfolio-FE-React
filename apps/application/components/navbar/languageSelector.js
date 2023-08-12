@@ -57,6 +57,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
                     value={value}
                     onChange={languageChanged}
                     autoWidth
+                    inputProps={{MenuProps: {disableScrollLock: true}}}
                 >
                     {
                         locales.map((locale) => {

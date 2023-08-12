@@ -1,6 +1,8 @@
 import { useTheme } from "@mui/material";
 import Box from '@mui/material/Box';
 import PropTypes from "prop-types";
+import classes from './PageLayout.module.scss';
+
 function PageLayout(props) {
   const theme = useTheme();
   const { palette } = theme;
@@ -14,19 +16,11 @@ function PageLayout(props) {
       bgcolor={background}
       sx={{ display: 'flow-root', overflowX: { xs: 'hidden', md: "visible" } }}
     >
-      <div>
-        <div style={{ position: 'absolute', left: 0, top: 0 }}>
-          <img src="/images/Vector.png" style={{width: '35em', maxWidth: '100%'}} />
-        </div>
-        <div style={{ position: 'absolute', left: 0, top: 0 }}>
-          <img src="/images/Vector-1.png" style={{width: '35em', maxWidth: '100%'}} />
-        </div>
-        <div style={{ position: 'absolute', left: 0, top: 0 }}>
-          <img src="/images/Vector-2.png" style={{width: '35em', maxWidth: '100%'}} />
-        </div>
-      </div>
+      <BgVector up />
 
       {props.children}
+
+      <BgVector/>
     </Box>
   );
 }
@@ -42,3 +36,19 @@ PageLayout.propTypes = {
 };
 
 export default PageLayout;
+
+const BgVector = (props) => {
+  return (
+    <div style={{position: 'relative', zIndex: 0}}>
+      <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
+        <img src="/images/Vector.png" style={{width: '35em', maxWidth: '100%'}} />
+      </div>
+      <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
+        <img src="/images/Vector-1.png" style={{width: '35em', maxWidth: '100%'}} />
+      </div>
+      <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
+        <img src="/images/Vector-2.png" style={{width: '35em', maxWidth: '100%'}} />
+      </div>
+    </div>
+  )
+}

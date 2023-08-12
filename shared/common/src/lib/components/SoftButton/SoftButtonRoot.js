@@ -23,7 +23,7 @@ export default styled(LoadingButton)(({ theme, ownerState }) => {
       : boxShadow([0, 0], [0, 3.2], dark.main, 0.5);
 
     // color value
-    let colorValue = white.main;
+    let colorValue = backgroundValue;
 
     if (color === "white" || !palette[color]) {
       colorValue = text.main;
@@ -42,10 +42,12 @@ export default styled(LoadingButton)(({ theme, ownerState }) => {
 
     return {
       background: backgroundValue,
-      color: colorValue,
+      color: white.main,
 
       "&:hover": {
-        backgroundColor: backgroundValue,
+        backgroundColor: transparent.main,
+        border: `1px solid ${colorValue}`,
+        color: colorValue,
       },
 
       "&:focus:not(:hover)": {
@@ -86,8 +88,9 @@ export default styled(LoadingButton)(({ theme, ownerState }) => {
       borderColor: borderColorValue,
 
       "&:hover": {
-        background: transparent.main,
-        borderColor: colorValue,
+        background: colorValue,
+        borderColor: transparent.main,
+        color: white.main,
       },
 
       "&:focus:not(:hover)": {

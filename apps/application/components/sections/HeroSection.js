@@ -10,11 +10,13 @@ const HeroSection = (props) => {
 
     return (
         <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
-            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem" }} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
+            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem"}} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
                 <Grid container columnSpacing={10} justifyContent="center">
                     <Grid item md={6} alignSelf="center" width="100%">
 
-                        {props.children}
+                        <div style={{zIndex: 1, position: 'relative'}}>
+                            {props.children}
+                        </div>
 
                         <ShowIf condition={props.buttons != null}>
                             <Box id="call-to-action" mt={4} mb={8}>

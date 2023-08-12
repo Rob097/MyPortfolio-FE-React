@@ -17,7 +17,7 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
-    "@rob097/common-lib": "^1.0.15",
+    "@rob097/common-lib": "^1.0.18",
     "next": "latest",
     "next-i18next": "latest",
     "prop-types": "latest",

@@ -21,6 +21,7 @@ function NavbarMobile({ open, close }) {
       open={Boolean(open)}
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
+      inputProps={{MenuProps: {disableScrollLock: true}}}
     >
       <Box px={0.5}>
         <NavbarLink icon="donut_large" name="dashboard" route="/" />
