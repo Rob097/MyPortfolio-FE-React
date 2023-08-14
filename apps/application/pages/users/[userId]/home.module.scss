@@ -1,0 +1,23 @@
+@import '@rob097/common-lib/assets/theme/base/breakpoints.scss';
+
+.moveUp {
+  top: -4rem;
+}
+
+/* Timeline styles */
+.customSeparator {
+  min-width: 31.2px;
+}
+.customDot {
+  align-self: center;
+}
+
+.personalCard {
+  box-shadow: rgb(0 0 0 / 20%) -2px -2px 10px 1px inset;
+  border-radius: 1rem;
+}
+@media (min-width: $sm) {
+  .personalCard {
+    border-radius: 10rem 4rem 4rem 10rem;
+  }
+}

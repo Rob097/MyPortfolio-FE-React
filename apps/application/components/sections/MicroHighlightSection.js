@@ -2,7 +2,7 @@ import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import styled from "@/components/navbar/navbar.module.scss";
 import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import styles from "@/pages/users/[userId]/home.module.css";
+import styles from "@/pages/users/[userId]/home.module.scss";
 import { Avatar, Box, Container, Grid, useTheme } from '@mui/material';
 import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
 

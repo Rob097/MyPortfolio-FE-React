@@ -4,7 +4,7 @@ import navbarStyled from "@/components/navbar/navbar.module.scss";
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { Box } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
@@ -16,6 +16,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useForm } from 'react-hook-form';
 import classes from "../../userProfile.module.scss";
+import styled from "@/components/navbar/navbar.module.scss";
+import homeStyles from "@/pages/users/[userId]/home.module.scss";
 
 
 const UserHome = () => {
@@ -72,15 +74,79 @@ const UserHome = () => {
             </MicroHighlightSection>
 
             <Box id='main-story-section' component='section' className='mt-12 xl:mt-0'>
-                <Grid container>
-                    {/* <Grid item xs={12} md={4} className='flex justify-end flex-col'> */}
-                        
-                    {/* </Grid> */}
-                    <Grid item xs={12}/*  md={8} */ height='25em' marginBottom={8}>
+                <Box className='absolute w-full h-96'>
+                    <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
+                </Box>
+                <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
+                    <PersonalCard />
+
+                    <Grid container >
+                        <Grid item xs={12} height='25em' marginBottom={2} className='flex justify-center items-center'>
+                            <Box className='flex justify-center h-fit items-end'>
+                                <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8 mx-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
+                                    <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
+                                    <SoftTypography variant="h5" fontWeight="bold" color="primary" className=''>Something about me</SoftTypography>
+                                    <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
+                                        <SoftTypography variant="body2" className='leading-7'>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                        </SoftTypography>
+                                    </div>
+                                    <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
+                                </div>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+
+
+
+
+
+
+
+
+
+
+                {/* <Grid container>
+                    <Grid item xs={12} md={8} className='flex justify-end h-full'>
+                        <Container >
+                            <div className='relative flex flex-row align-center w-3/5 bg-white mt-8 mr-0 ml-auto h-fit' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', borderRadius: '10rem 4rem 4rem 10rem' }}>
+                                <Avatar src='https://mui.com/static/images/avatar/1.jpg' sx={{ width: 100, height: 100 }} variant='circular' />
+                                <div className='ml-10 my-auto'>
+                                    <SoftTypography variant='body2' color='text' >+39-3343281120</SoftTypography>
+                                    <SoftTypography variant='body2' color='text' >dellantonio47@gmail.com</SoftTypography>
+                                    <SoftTypography variant='body2' color='text' >Predazzo, Italy</SoftTypography>
+                                </div>
+                            </div>
+                        </Container>
+                    </Grid>
+                    <Grid item xs={12} md={4} /* height='25em'  * marginBottom={8}>
                         <Box className='flex justify-end'>
                             <div className='w-3/5 md:w-2/5 h-1/2 max-h-96 absolute rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
                         </Box>
-                        <Box className='flex h-full justify-center items-end'>
+                        /* <Box className='flex h-full justify-center items-end'>
+                            <div className='relative flex flex-col w-4/5 md:w-3/5 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', maxHeight: '60%', minHeight: '40%' }}>
+                                <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
+                                <SoftTypography variant="h5" fontWeight="bold" color="primary" className=''>Something about me</SoftTypography>
+                                <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
+                                    <SoftTypography variant="body2" className='leading-7'>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                    </SoftTypography>
+                                </div>
+                                <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
+                            </div>
+                        </Box> *}
+                    </Grid>
+                </Grid>
+
+                <Grid container>
+                    <Grid item xs={12} height='25em' marginBottom={2}>
+                        <Box className='flex h-4/5 mt-4 justify-center items-end pb-12'>
                             <div className='relative flex flex-col w-4/5 md:w-3/5 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', maxHeight: '60%', minHeight: '40%' }}>
                                 <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
                                 <SoftTypography variant="h5" fontWeight="bold" color="primary" className=''>Something about me</SoftTypography>
@@ -95,7 +161,7 @@ const UserHome = () => {
                             </div>
                         </Box>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </Box>
 
             <Box id='cards-section' component='section'>
@@ -273,8 +339,8 @@ const UserHome = () => {
             </div>
 
             {/* Contact Me Section */}
-            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);`}}>
-                <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{zIndex: 1}}>
+            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
+                <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{ zIndex: 1 }}>
                     <SoftTypography variant="h2" sx={{ textAlign: 'center' }} gutterBottom>
                         {t("contact-me.title")}
                     </SoftTypography>
@@ -371,3 +437,25 @@ export async function getStaticProps(context) {
 }
 
 export default UserHome;
+
+
+
+
+
+
+const PersonalCard = () => (
+    <div className={homeStyles.personalCard + ' relative align-center w-fit bg-white md:ml-8 m-auto mt-8 h-fit xs:rounded-2xl'}>
+        <Grid container className='sm:py-0 py-2'>
+            <Grid item xs={12} sm={3} className='flex justify-center sm:justify-start items-center'>
+                <Avatar src='https://mui.com/static/images/avatar/1.jpg' sx={{ width: 100, height: 100 }} variant='circular' />
+            </Grid>
+            <Grid item xs={12} sm={9} className='flex justify-center items-center'>
+                <div className='ml-auto mr-auto sm:ml-8 text-center sm:text-left'>
+                    <SoftTypography variant='body2' color='text' >+39-3343281120</SoftTypography>
+                    <SoftTypography variant='body2' color='text' >dellantonio47@gmail.com</SoftTypography>
+                    <SoftTypography variant='body2' color='text' >Predazzo, Italy</SoftTypography>
+                </div>
+            </Grid>
+        </Grid>
+    </div>
+)
