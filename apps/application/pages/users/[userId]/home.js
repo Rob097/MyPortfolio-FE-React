@@ -17,6 +17,11 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useForm } from 'react-hook-form';
 import classes from "../../userProfile.module.scss";
+import { useEffect, useState } from 'react';
+import ShowIf from '@/components/showIf';
+import Icon from "@mui/material/Icon";
+import Link from 'next/link';
+import PersonalCard from '@/components/personalCard';
 
 
 const UserHome = () => {
@@ -78,7 +83,7 @@ const UserHome = () => {
                     <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
                 </Box>
                 <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
-                    <PersonalCard />
+                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone='+39-3343281120' email='dellantonio47@gmail.com' city='Predazzo, Italy' sectionToScrollTo='#contact-section'/>
 
                     <Grid container >
                         <Grid item xs={12} height='25em' marginBottom={2} className='flex justify-center items-center'>
@@ -439,19 +444,3 @@ export async function getStaticProps(context) {
 export default UserHome;
 
 
-const PersonalCard = () => (
-    <div className={homeStyles.personalCard + ' relative align-center w-fit bg-white md:ml-8 m-auto mt-8 h-fit xs:rounded-2xl'}>
-        <Grid container className='sm:py-0 py-2'>
-            <Grid item xs={12} sm={3} className='flex justify-center sm:justify-start items-center'>
-                <Avatar src='https://mui.com/static/images/avatar/1.jpg' sx={{ width: 100, height: 100 }} variant='circular' />
-            </Grid>
-            <Grid item xs={12} sm={9} className='flex justify-center items-center'>
-                <div className='ml-auto mr-auto sm:ml-8 text-center sm:text-left'>
-                    <SoftTypography variant='body2' color='text' >+39-3343281120</SoftTypography>
-                    <SoftTypography variant='body2' color='text' >dellantonio47@gmail.com</SoftTypography>
-                    <SoftTypography variant='body2' color='text' >Predazzo, Italy</SoftTypography>
-                </div>
-            </Grid>
-        </Grid>
-    </div>
-)

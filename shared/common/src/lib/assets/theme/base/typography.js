@@ -4,6 +4,8 @@
  * You can customized the typography styles for the entire Soft UI Dashboard React using thie file.
  */
 import colors from "../../theme/base/colors";import pxToRem from "../../theme/functions/pxToRem";
+import { createTheme } from "@mui/material/styles";
+
 
 const { dark } = colors;
 
@@ -34,6 +36,8 @@ const baseDisplayProperties = {
   lineHeight: 1.2,
 };
 
+const defaultTheme = createTheme({})
+const { breakpoints } = defaultTheme
 const typography = {
   fontFamily: baseProperties.fontFamily,
   fontWeightLight: baseProperties.fontWeightLight,
@@ -43,7 +47,11 @@ const typography = {
 
   h1: {
     fontSize: pxToRem(75),
-    lineHeight: 1.25,
+    lineHeight: pxToRem(75),
+    [breakpoints.down("md")]: {
+      fontSize: pxToRem(60),
+      lineHeight: pxToRem(60),
+    },
     ...baseHeadingProperties,
   },
 
