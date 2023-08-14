@@ -15,7 +15,7 @@ function CoverLayout(props) {
         }}
       />
       <Box sx={{
-        minHeight: "75vh",
+        minHeight: `calc(100vh - 80px)`,
         margin: 0,
         padding: 0,
         marginTop: props.top

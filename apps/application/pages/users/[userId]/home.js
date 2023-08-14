@@ -1,9 +1,10 @@
 import CarouselItem from '@/components/carousel/carouselItem';
 import ImageCard from '@/components/imageCard/ImageCard';
-import navbarStyled from "@/components/navbar/navbar.module.scss";
+import { default as navbarStyled, default as styled } from "@/components/navbar/navbar.module.scss";
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import homeStyles from "@/pages/users/[userId]/home.module.scss";
 import { Avatar, Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -16,8 +17,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useForm } from 'react-hook-form';
 import classes from "../../userProfile.module.scss";
-import styled from "@/components/navbar/navbar.module.scss";
-import homeStyles from "@/pages/users/[userId]/home.module.scss";
 
 
 const UserHome = () => {
@@ -60,7 +59,8 @@ const UserHome = () => {
 
     return (
         <>
-            <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}>
+            {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
+            <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}>
                 <SoftTypography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</SoftTypography>
                 <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>Roberto Dellantonio</SoftTypography>
                 <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</SoftTypography>
@@ -437,10 +437,6 @@ export async function getStaticProps(context) {
 }
 
 export default UserHome;
-
-
-
-
 
 
 const PersonalCard = () => (

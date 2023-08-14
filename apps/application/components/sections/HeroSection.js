@@ -1,7 +1,7 @@
-import SoftButton from '@rob097/common-lib/components/SoftButton';
 import styled from "@/components/navbar/navbar.module.scss";
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Box, Container, Grid, useTheme } from "@mui/material";
+import SoftButton from '@rob097/common-lib/components/SoftButton';
 import ShowIf from "../showIf";
 
 const HeroSection = (props) => {
@@ -29,8 +29,8 @@ const HeroSection = (props) => {
                             </Box>
                         </ShowIf>
                     </Grid>
-                    <Grid item md={6} alignSelf="center">
-                        <img width="100%" height="auto" src={props.img} />
+                    <Grid item md={6} alignSelf="center" className='flex justify-center items-center'>
+                        <img src={props.img} style={{height: '30em', borderRadius: '1rem'}}/>
                     </Grid>
                 </Grid>
             </Container>
