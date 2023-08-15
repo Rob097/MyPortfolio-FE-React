@@ -24,7 +24,7 @@ const HeroSection = (props) => {
                                     <SoftButton variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }}>{props.buttons[0].label}</SoftButton>
                                 </ShowIf>
                                 <ShowIf condition={props.buttons[1] != null}>
-                                    <SoftButton variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{props.buttons[1].label}</SoftButton>
+                                    <SoftButton href={props.buttons[1].link} variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{props.buttons[1].label}</SoftButton>
                                 </ShowIf>
                             </Box>
                         </ShowIf>

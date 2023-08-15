@@ -6,7 +6,7 @@ const ImageCard = ({ image, title }) => (
         <div className={classes.overlay} style={{
             backgroundImage: `url("${image}")`
         }}>
-            <SoftTypography className={classes.header} variant="h2" >{title}</SoftTypography>
+            <SoftTypography className={classes.header} variant="h2">{title}</SoftTypography>
         </div>
     </div>
 );

@@ -1,6 +1,10 @@
 {
     "my-story": "My Story",
-    "about-me": "About Me",
+    "download-cv": "Download CV",
+    "about-me": {
+        "title": "Something about me",
+        "more": "Something more"
+    },
     "contact-me": {
         "title": "Contact Me",
         "submit": "Send Message",
@@ -15,5 +19,10 @@
             "message-required": "Message is required",
             "message-length": "Message must be at most {{maxLength}} characters long"
         }
+    },
+    "cards": {
+        "diary": "Diary",
+        "experiences": "Experiences",
+        "projects": "Projects"
     }
 }

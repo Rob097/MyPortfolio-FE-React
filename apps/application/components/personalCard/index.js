@@ -7,8 +7,10 @@ import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import classes from './personalCard.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const PersonalCard = (props) => {
+    const { t } = useTranslation(['user-home']);
     const [isAvatarMoved, setIsAvatarMoved] = useState(undefined);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanSm = isGreaterThan('sm') ?? false;
@@ -65,7 +67,7 @@ const PersonalCard = (props) => {
                             >
                                 email
                             </Icon>
-                            <SoftTypography variant='body2' color='primary' fontWeight="bold" className='ml-2' >Contattami!</SoftTypography>
+                            <SoftTypography variant='body2' color='primary' fontWeight="bold" className='ml-2' >{t('contact-me.title')}!</SoftTypography>
                         </div>
                         </Link>
                     </Grid>

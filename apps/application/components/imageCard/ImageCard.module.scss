@@ -1,3 +1,5 @@
+@import '@rob097/common-lib/assets/theme/base/breakpoints.scss';
+
 .card {
     width: auto;
     height: 220px;
@@ -26,7 +28,7 @@
 }
 
 .header {
-    font-size: 3.5rem;
+    font-size: 3em;
     color: white;
     text-align: center;
     position: absolute;
@@ -37,4 +39,22 @@
     height: fit-content;
     margin: auto;
     text-shadow: 0 0 25px black;
+}
+
+@media (max-width: $xl) {
+    .header {
+        font-size: 2.5em;
+    }
+}
+
+@media (max-width: $lg) {
+    .header {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: $sm) {
+    .header {
+        font-size: 1.5em;
+    }
 }
