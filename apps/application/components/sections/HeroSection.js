@@ -1,4 +1,4 @@
-import styled from "@/components/navbar/navbar.module.scss";
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { Box, Container, Grid, useTheme } from "@mui/material";
 import SoftButton from '@rob097/common-lib/components/SoftButton';
@@ -10,7 +10,7 @@ const HeroSection = (props) => {
 
     return (
         <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
-            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem"}} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
+            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem"}} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                 <Grid container columnSpacing={10} justifyContent="center">
                     <Grid item md={6} alignSelf="center" width="100%">
 

@@ -1,4 +1,4 @@
-import { default as navbarStyled } from "@/components/navbar/navbar.module.scss";
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import classes from "@/pages/userProfile.module.scss";
 import homeStyled from "@/pages/users/[userId]/home.module.scss";
@@ -50,7 +50,7 @@ export const timeline_carousel = () => {
     return (
         <div>
                 <Box id='timeline-section' component='section'>
-                <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? navbarStyled.navbarContainer : ''}>
+                <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                     <Grid container>
                         <Grid item md={6} width="100%">
                             <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={classes.stickyContainer}>
@@ -186,7 +186,7 @@ export const timeline_carousel = () => {
             </Box>
 
             <Box id="diary-section" component='section'>
-                <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? navbarStyled.navbarContainer : ''}>
+                <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                     {/* Diary Section */}
                     <div className={classes.section}>
                         <Container maxWidth="lg">

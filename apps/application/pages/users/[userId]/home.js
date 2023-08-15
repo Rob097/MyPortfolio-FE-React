@@ -1,5 +1,5 @@
 import ImageCard from '@/components/imageCard/ImageCard';
-import { default as navbarStyled, default as styled } from "@/components/navbar/navbar.module.scss";
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import PersonalCard from '@/components/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
@@ -14,6 +14,7 @@ import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
 import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import classes from "../../userProfile.module.scss";
 
@@ -26,7 +27,7 @@ const UserHome = () => {
 
     async function handleContact(data) {
         console.log(data);
-    }    
+    }
 
     return (
         <>
@@ -48,8 +49,8 @@ const UserHome = () => {
                 <Box className='absolute w-full h-96'>
                     <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
                 </Box>
-                <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
-                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone='+39-3343281120' email='dellantonio47@gmail.com' city='Predazzo, Italy' sectionToScrollTo='#contact-section'/>
+                <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
+                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone='+39-3343281120' email='dellantonio47@gmail.com' city='Predazzo, Italy' sectionToScrollTo='#contact-section' />
 
                     <Grid container >
                         <Grid item xs={12} height='25em' marginBottom={2} className='flex justify-center items-center'>
@@ -77,10 +78,12 @@ const UserHome = () => {
                 <Box width='fit-content' m='auto' mb={4}>
                     <SoftTypography variant="h2" fontWeight="bold">{t('about-me.more')}</SoftTypography>
                 </Box>
-                <Container className={navbarStyled.navbarContainer}>
+                <Container className={whiteBarClasses.customContainer}>
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={4}>
-                            <ImageCard image="/images/Rectangle-22952.png" title={t('cards.diary')} />
+                            <Link href='/users/user1/diary'>
+                                <ImageCard image="/images/Rectangle-22952.png" title={t('cards.diary')} />
+                            </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />

@@ -1,18 +1,16 @@
-import Container from "@mui/material/Container";
-import Icon from "@mui/material/Icon";
-import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
 import Box from '@mui/material/Box';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import Icon from "@mui/material/Icon";
+import { useTheme } from '@mui/system';
+import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
 import SoftButton from "@rob097/common-lib/components/SoftButton";
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import { Link } from "next/link";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { Link } from "next/link";
+import WhiteBar from "../whiteBar";
+import LanguageSelector from "./languageSelector";
 import NavbarLink from "./navbarLink";
 import NavbarMobile from "./navbarMobile";
-import LanguageSelector from "./languageSelector";
-import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
-import { useTheme } from '@mui/system';
-import styles from './navbar.module.scss';
 
 function Navbar({ transparent, light, action }) {
   const theme = useTheme();
@@ -70,30 +68,14 @@ function Navbar({ transparent, light, action }) {
   }, []);
 
   return (
-    <Container className={styles.navbarContainer} style={{opacity: (show ? 1 : 0), position: 'fixed', zIndex: 9, transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s'}}>
-      <Box
-        py={1.5}
-        px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
-        my={2}
-        mx={3}
-        width="calc(100% - 48px)"
-        color={light ? "white" : "dark"}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        position="absolute"
-        left={0}
-        zIndex={3}
-        sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
-          backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
-          borderRadius: '10rem',
-          boxShadow: transparent ? "none" : boxShadows["md"]
-        })}
+
+    <>
+      <WhiteBar
+        containerStyles={{ opacity: (show ? 1 : 0), position: 'fixed', zIndex: 9, transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s' }}
       >
         <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
           <SoftTypography theme={theme} variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>
-            My<span style={{color: theme.palette.primary.main}}>Portfolio</span>
+            My<span style={{ color: theme.palette.primary.main }}>Portfolio</span>
           </SoftTypography>
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
@@ -115,7 +97,7 @@ function Navbar({ transparent, light, action }) {
         {action &&
           (action.type === "internal" ? (
             <Box display={{ xs: "none", lg: "inline-block" }}>
-              <SoftButton 
+              <SoftButton
                 theme={theme}
                 component={Link}
                 to={action.route}
@@ -155,9 +137,9 @@ function Navbar({ transparent, light, action }) {
         >
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
         </Box>
-      </Box>
-      {mobileView && <NavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
-    </Container>
+        {mobileView && <NavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
+      </WhiteBar>
+    </>
   );
 }
 

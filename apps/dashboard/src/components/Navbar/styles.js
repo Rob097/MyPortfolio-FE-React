@@ -59,7 +59,7 @@ function navbar(theme, ownerState) {
   };
 }
 
-const navbarContainer = ({ breakpoints }) => ({
+const customContainer = ({ breakpoints }) => ({
   flexDirection: "column",
   alignItems: "flex-start",
   justifyContent: "space-between",
@@ -118,4 +118,4 @@ const navbarMobileMenu = ({ breakpoints }) => ({
   },
 });
 
-export { navbar, navbarContainer, navbarRow, navbarIconButton, navbarMobileMenu };
+export { navbar, customContainer, navbarRow, navbarIconButton, navbarMobileMenu };

@@ -1,10 +1,10 @@
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
-import styled from "@/components/navbar/navbar.module.scss";
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import styles from "@/pages/users/[userId]/home.module.scss";
 import { Avatar, Box, Container, Grid, useTheme } from '@mui/material';
-import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows";
+import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import WhiteBar from '../whiteBar';
 
 const MicroHighlightSection = (props) => {
     const { palette } = useTheme();
@@ -17,9 +17,9 @@ const MicroHighlightSection = (props) => {
 
     return (
         <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? styles.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
-            <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? styled.navbarContainer : ''}>
+            <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                 <ShowIf condition={isGreaterThan('md')}>
-                    <WhiteBox>
+                    <WhiteBar>
                         <Grid container py={2}>
                             <Grid item md={12 / elements.length} borderRight={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
                                 {elements[0]}
@@ -36,34 +36,34 @@ const MicroHighlightSection = (props) => {
                                 </Grid>
                             </ShowIf>
                         </Grid>
-                    </WhiteBox>
+                    </WhiteBar>
 
                 </ShowIf>
 
                 <ShowIf condition={isSmallerThan('md')}>
                     <Grid container justifyContent="center">
                         <Grid item md={6} justifyContent="center" display="flex" >
-                            <WhiteBox>
+                            <WhiteBar>
                                 {elements[0]}
-                            </WhiteBox>
+                            </WhiteBar>
                         </Grid>
                         <Grid item md={6} justifyContent="center" display="flex">
-                            <WhiteBox>
+                            <WhiteBar>
                                 {elements[1]}
-                            </WhiteBox>
+                            </WhiteBar>
                         </Grid>
                     </Grid>
                     <Grid container justifyContent="center">
                         <Grid item md={elements.length === 4 ? 6 : 12} justifyContent="center" display="flex">
-                            <WhiteBox>
+                            <WhiteBar>
                                 {elements[2]}
-                            </WhiteBox>
+                            </WhiteBar>
                         </Grid>
                         <ShowIf condition={elements.length === 4}>
                             <Grid item md={6} justifyContent="center" display="flex">
-                                <WhiteBox>
+                                <WhiteBar>
                                     {elements[3]}
-                                </WhiteBox>
+                                </WhiteBar>
                             </Grid>
                         </ShowIf>
                     </Grid>
@@ -74,28 +74,6 @@ const MicroHighlightSection = (props) => {
 }
 
 export default MicroHighlightSection;
-
-export const WhiteBox = ({ children }) => (
-    <Box
-        py={1.3}
-        px={{ xs: 3, sm: 3, lg: 3 }}
-        my={2}
-        mx={2}
-        color={"white"}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        left={0}
-        zIndex={3}
-        sx={({ palette: { white }, functions: { rgba } }) => ({
-            backgroundColor: rgba(white.main, 0.8),
-            backdropFilter: `saturate(200%) blur(30px)`,
-            borderRadius: '10rem',
-            boxShadow: boxShadows.tabsBoxShadow.large,
-            width: { md: "calc(100% - 48px)", xs: "fit-content" }
-        })}
-    >{children}</Box>
-);
 
 export const SingleElement = (props) => {
     const { isGreaterThan } = useBreakpoints();

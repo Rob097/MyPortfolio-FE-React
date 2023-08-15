@@ -11,7 +11,7 @@ import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
 import LanguageSelector from "./LanguageSelector";
 import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows"
-import styles from './navbar.module.scss';
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 
 function AuthNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -46,7 +46,7 @@ function AuthNavbar({ transparent, light, action }) {
   }, []);
 
   return (
-    <Container className={styles.navbarContainer}>
+    <Container className={whiteBarClasses.customContainer}>
       <Box
         py={1.5}
         px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
