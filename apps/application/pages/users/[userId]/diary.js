@@ -18,11 +18,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import classes from "../../userProfile.module.scss";
 
-const categoryNames = [
-    'Professional Experiences',
-    'Personal Projects',
-    'Educations'
-];
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home']);
@@ -31,8 +26,14 @@ const Diary = () => {
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
 
+    const categoriesMock = [
+        { id: 1, name: t('categories.list.professional-experiences') },
+        { id: 2, name: t('categories.list.personal-projects') },
+        { id: 3, name: t('categories.list.educations') },
+    ];
+
     const [filterBy, setFilterBy] = useState('');
-    const [categories, setCategories] = useState(categoryNames);
+    const [categories, setCategories] = useState(categoriesMock.map(({ id }) => id));
 
     const handleChange = (event) => {
         setFilterBy(event.target.value);
@@ -64,8 +65,8 @@ const Diary = () => {
                                 <SoftTypography variant="subtitle1" fontWeight="bold" color="dark">Predazzo, TN</SoftTypography>
                                 <SoftTypography variant="subtitle2" fontWeight="bold" color="text" mt={2}>Software Engineer</SoftTypography>
                                 <Box mt={3}>
-                                    <SoftButton variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>Hire Me</SoftButton>
-                                    <SoftButton variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>Following</SoftButton>
+                                    <SoftButton variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('hire-me')}</SoftButton>
+                                    <SoftButton variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('follow-me')}</SoftButton>
                                 </Box>
                             </Box>
                         </Box>
@@ -95,57 +96,60 @@ const Diary = () => {
 
             <Divider variant="middle" className='opacity-100' />
 
-            <WhiteBar height='6rem'>
-                <Box className='flex items-center w-full h-full'>
-                    <Box className='ml-2'>
-                        <FormControl sx={{ m: 1, width: 300 }}>
+            <WhiteBar height={{ xs: "fit-content", md: "6rem" }} containerClasses='mt-12'>
+                <Box className='flex flex-col md:flex-row items-center w-full h-full'>
+                    <Box className='md:ml-2'>
+                        <FormControl sx={{ m: 1, minWidth: 150, maxWidth: 300 }}>
                             <InputLabel id="categories-select-label"
                                 sx={({ palette: { text }, functions: { rgba } }) => ({
                                     color: rgba(text.main, 0.9),
                                 })}
-                            >Categories</InputLabel>
+                            >{t('categories.title')}</InputLabel>
                             <Select
                                 labelId="categories-select-label"
                                 id="categories-select"
                                 multiple
                                 value={categories}
                                 onChange={handleChangeCategory}
-                                renderValue={(selected) => selected.length === categoryNames.length ? 'All' : selected.join(', ')}
+                                renderValue={(selected) => selected.length === categoriesMock.length ? t('categories.list.all') : categoriesMock.filter(({ id }) => selected.indexOf(id) > -1).map(({ name }) => name).join(', ')}
                                 inputProps={{ MenuProps: { disableScrollLock: true } }}
                             >
-                                {categoryNames.map((name) => (
-                                    <MenuItem key={name} value={name}>
-                                        <Checkbox checked={categories.indexOf(name) > -1} />
+                                {categoriesMock.map(({ id, name }) => (
+                                    <MenuItem key={'cate-' + id} value={id}>
+                                        <Checkbox checked={categories.indexOf(id) > -1} />
                                         <ListItemText primary={name} />
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Box>
-                    <Box className="ml-2">
-                        <SoftInput placeholder='Search by name' size="small" />
+                    <Box className="md:ml-2">
+                        <SoftInput placeholder={t('filters.by-name')} size="small" />
                     </Box>
-                    <Box className="absolute right-0 top-0 h-full flex items-center mr-8">
-                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Box className="md:ml-2">
+                        <SoftInput placeholder={t('filters.by-skills')} size="small" />
+                    </Box>
+                    <Box className="md:absolute md:right-0 md:top-0 md:mr-8 h-full flex items-center">
+                        <FormControl sx={{ m: 1, minWidth: 150 }}>
                             <InputLabel id="sort-select-label"
                                 sx={({ palette: { text }, functions: { rgba } }) => ({
                                     color: rgba(text.main, 0.9),
                                 })}
-                            >Sort</InputLabel>
+                            >{t('sort.title')}</InputLabel>
                             <Select
                                 labelId="sort-select-label"
                                 id="sort-select"
                                 value={filterBy}
-                                label="Age"
+                                label={t('sort.title')}
                                 onChange={handleChange}
                                 inputProps={{ MenuProps: { disableScrollLock: true } }}
                             >
                                 <MenuItem value="">
-                                    <em>None</em>
+                                    <em>{t('sort.list.none')}</em>
                                 </MenuItem>
-                                <MenuItem value={'dateUp'}>Date Up</MenuItem>
-                                <MenuItem value={'dateDown'}>Date Down</MenuItem>
-                                <MenuItem value={'name'}>Name</MenuItem>
+                                <MenuItem value={'dateUp'}>{t('sort.list.dateUp')}</MenuItem>
+                                <MenuItem value={'dateDown'}>{t('sort.list.dateDown')}</MenuItem>
+                                <MenuItem value={'name'}>{t('sort.list.name')}</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -154,10 +158,10 @@ const Diary = () => {
 
 
             <Box id="diary-stories" component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${palette.background.default} 90%);` }}>
-                <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
+                <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'mx-8'}>
-                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>My Professional Experiences</SoftTypography>
+                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.professional-experiences')}</SoftTypography>
 
                         <Grid container className='mt-4' spacing={2}>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
@@ -198,8 +202,8 @@ const Diary = () => {
 
                 <Box id='personal-projects-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
-                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>My Personal Projects</SoftTypography>
+                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</SoftTypography>
 
                         <Grid container className='mt-4' spacing={2}>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
@@ -237,8 +241,8 @@ const Diary = () => {
 
                 <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
-                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>My Educations</SoftTypography>
+                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                        <SoftTypography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.educations')}</SoftTypography>
 
                         <Grid container className='mt-4' spacing={2}>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>

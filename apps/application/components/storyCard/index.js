@@ -37,7 +37,7 @@ const StoryCard = (props) => {
 
                 <ShowIf condition={props.skills?.length > 0}>
                     <Typography variant="h5" componend="div" mt={2}>
-                        Skills
+                        {t('skills')}
                     </Typography>
                     <DraggableBox>
                         {props.skills?.map((skill) => (

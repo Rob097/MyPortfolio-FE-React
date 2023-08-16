@@ -19,7 +19,7 @@ const WhiteBar = (props) => {
                 sx={({ palette: { white }, functions: { rgba } }) => ({
                     backgroundColor: rgba(white.main, 0.6),
                     backdropFilter: `saturate(200%) blur(30px)`,
-                    borderRadius: '9999px',
+                    borderRadius: {xs: '1rem', md: '9999px'},
                     boxShadow: boxShadows["md"]
                 })}
             >

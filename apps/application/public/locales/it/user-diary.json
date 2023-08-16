@@ -1,3 +1,28 @@
 {
-    "title": "Diario"
+    "title": "Diario",
+    "hire-me": "Assumimi",
+    "follow-me": "Seguimi",
+    "categories": {
+        "title": "Categorie",
+        "list": {
+            "all": "Tutte",
+            "professional-experiences": "Esperienze professionali",
+            "personal-projects": "Progetti personali",
+            "educations": "Educazione"
+        }
+    },
+    "sort": {
+        "title": "Ordina per",
+        "list": {
+            "none": "Nessuno",
+            "dateUp": "Data su",
+            "dateDown": "Data giù",
+            "name": "Nome"
+        }
+    },
+    "filters": {
+        "by-name": "Cerca per nome",
+        "by-skills": "Cerca per competenze"
+    }
+
 }
