@@ -2,11 +2,4 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "@rob097/common-lib/assets/theme/styles.scss";
-
-.hide-scrollbar{
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-    &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera*/
-    }
-}
+@import "@rob097/common-lib/styles.scss";

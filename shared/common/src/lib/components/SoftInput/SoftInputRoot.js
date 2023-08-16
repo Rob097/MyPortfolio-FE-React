@@ -23,7 +23,7 @@ export default styled(InputBase)(({ theme, ownerState }) => {
   });
 
   // styles for the focused state of the input
-  let focusedBorderColorValue = inputColors.borderColor.focus;
+  let focusedBorderColorValue;
 
   if (error) {
     focusedBorderColorValue = inputColors.error;

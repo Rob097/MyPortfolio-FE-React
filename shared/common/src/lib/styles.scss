@@ -5,3 +5,17 @@ body {
     line-height: 1.625;
     letter-spacing: 0.00938em;
 }
+
+.hide-scrollbar{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
+}
+
+.MuiInputLabel-root:not(.MuiFormLabel-filled) {
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%) translateX(0);
+}

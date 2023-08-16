@@ -13,6 +13,7 @@ const menuItem = {
       minWidth: pxToRem(160),
       minHeight: "unset",
       padding: `${pxToRem(4.8)} ${pxToRem(16)}`,
+      marginBlock: `${pxToRem(4.8)}`,
       borderRadius: borderRadius.md,
       fontSize: size.sm,
       color: text.main,
