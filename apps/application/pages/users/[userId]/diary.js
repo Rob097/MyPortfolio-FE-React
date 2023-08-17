@@ -90,8 +90,8 @@ const Diary = () => {
                             <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
                                 <Avatar id="personalCardAvatar" src="https://mui.com/static/images/avatar/1.jpg" sx={{ width: 150, height: 150 }} variant='circular' />
                                 <SoftTypography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>Roberto Dellantonio</SoftTypography>
-                                <SoftTypography variant="subtitle1" fontWeight="bold" color="dark">Predazzo, TN</SoftTypography>
-                                <SoftTypography variant="subtitle2" fontWeight="bold" color="text" mt={2}>Software Engineer</SoftTypography>
+                                <SoftTypography variant="subtitle1" fontWeight="bold" color="dark">Software Engineer</SoftTypography>
+                                <SoftTypography variant="subtitle2" fontWeight="bold" color="text" mt={2}>Predazzo, TN</SoftTypography>
                                 <Box mt={3}>
                                     <SoftButton variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('hire-me')}</SoftButton>
                                     <SoftButton variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('follow-me')}</SoftButton>
@@ -271,7 +271,7 @@ const Diary = () => {
                             </Grid>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='black' fontSize='large' />
+                                    <ArrowForwardIosIcon color='black' fontSize='large' className='z-10' />
                                 </Avatar>
                             </Grid>
                         </Grid>
@@ -311,7 +311,7 @@ const Diary = () => {
                             </Grid>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='black' fontSize='large' />
+                                    <ArrowForwardIosIcon color='black' fontSize='large' className='z-10' />
                                 </Avatar>
                             </Grid>
                         </Grid>
@@ -352,7 +352,7 @@ const Diary = () => {
                             </Grid>
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='black' fontSize='large' />
+                                    <ArrowForwardIosIcon color='black' fontSize='large' className='z-10' />
                                 </Avatar>
                             </Grid>
                         </Grid>

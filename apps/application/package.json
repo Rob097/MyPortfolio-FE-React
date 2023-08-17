@@ -18,6 +18,7 @@
     "@mui/lab": "latest",
     "@mui/material": "latest",
     "@rob097/common-lib": "^1.0.21",
+    "lodash": "^4.17.21",
     "next": "latest",
     "next-i18next": "latest",
     "prop-types": "latest",
