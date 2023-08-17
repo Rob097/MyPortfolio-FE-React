@@ -21,6 +21,7 @@
         }
     },
     "filters": {
+        "apply": "Apply filters",
         "by-name": "Search by name",
         "by-skills": "Search by skills"
     }

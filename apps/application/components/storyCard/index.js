@@ -17,7 +17,7 @@ const StoryCard = (props) => {
     };
 
     return (
-        <Card sx={{ maxWidth: 345 }} className='shadow-lg z-10'>
+        <Card sx={{ maxWidth: 345 }} className={(!props.image ? storyCardClasses.customCard : '') + ' shadow-lg z-10'}>
 
             <ShowIf condition={props.image !== undefined}>
                 <CardMedia

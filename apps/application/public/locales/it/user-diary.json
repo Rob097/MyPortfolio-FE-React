@@ -21,6 +21,7 @@
         }
     },
     "filters": {
+        "apply": "Applica filtri",
         "by-name": "Cerca per nome",
         "by-skills": "Cerca per competenze"
     }
