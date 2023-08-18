@@ -2,12 +2,13 @@ import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import styles from "@/pages/users/[userId]/home.module.scss";
-import { Avatar, Box, Container, Grid, useTheme } from '@mui/material';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import { Avatar, Box, Container, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import WhiteBar from '../whiteBar';
+import tailwindConfig from '@/tailwind.config.js';
 
 const MicroHighlightSection = (props) => {
-    const { palette } = useTheme();
+    const { theme } = tailwindConfig;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
     const elements = props.children;
@@ -21,17 +22,17 @@ const MicroHighlightSection = (props) => {
                 <ShowIf condition={isGreaterThan('md')}>
                     <WhiteBar>
                         <Grid container py={2}>
-                            <Grid item md={12 / elements.length} borderRight={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
+                            <Grid item md={12 / elements.length} className='border-0 border-r border-solid'>
                                 {elements[0]}
                             </Grid>
-                            <Grid item md={12 / elements.length} borderRight={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
+                            <Grid item md={12 / elements.length} className='border-0 border-r border-solid'>
                                 {elements[1]}
                             </Grid>
                             <Grid item md={12 / elements.length}>
                                 {elements[2]}
                             </Grid>
                             <ShowIf condition={elements.length === 4}>
-                                <Grid item md={12 / elements.length} borderLeft={`1px solid ${palette.sliderColors.thumb.borderColor}`}>
+                                <Grid item md={12 / elements.length} className='border-0 border-l border-solid'>
                                     {elements[3]}
                                 </Grid>
                             </ShowIf>
@@ -89,13 +90,13 @@ export const SingleElement = (props) => {
                 </ShowIf>
                 <ShowIf condition={!isAvatarPath}>
                     <Box sx={{ width: { lg: 100, xs: 60 }, height: { lg: 100, xs: 60 }, fontSize: '5rem' }} className='flex justify-center items-center'>
-                        <SoftTypography variant="span" color="primary" fontWeight="bold" m={0} textAlign="center">{props.avatar}</SoftTypography>
+                        <Typography variant="span" color="primary" fontWeight="bold" m={0} textAlign="center">{props.avatar}</Typography>
                     </Box>
                 </ShowIf>
             </Grid>
             <Grid item alignSelf="center">
-                <SoftTypography variant="h4" fontWeight="bold" m={0} textAlign="center">{props.title}</SoftTypography>
-                <SoftTypography paragraph m={0} textAlign="center">{props.caption}</SoftTypography>
+                <Typography variant="h4" fontWeight="bold" m={0} textAlign="center">{props.title}</Typography>
+                <Typography paragraph m={0} textAlign="center">{props.caption}</Typography>
             </Grid>
         </Grid>
     )

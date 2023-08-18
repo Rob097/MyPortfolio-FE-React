@@ -1,20 +1,20 @@
 import ImageCard from '@/components/imageCard/ImageCard';
-import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import PersonalCard from '@/components/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { Box } from "@mui/material";
+import tailwindConfig from '@/tailwind.config.js';
+import { Box, TextField } from "@mui/material";
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material/styles';
-import SoftButton from '@rob097/common-lib/components/SoftButton';
-import SoftInput from '@rob097/common-lib/components/SoftInput';
+import Typography from '@mui/material/Typography';
 import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import classes from "../../userProfile.module.scss";
 
@@ -22,8 +22,11 @@ import classes from "../../userProfile.module.scss";
 const UserHome = () => {
     const { t } = useTranslation(['user-home', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
-    const { palette } = useTheme();
+    const { colors } = tailwindConfig.theme;
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const router = useRouter();
+    const { userId } = router.query;
 
     async function handleContact(data) {
         console.log(data);
@@ -33,10 +36,10 @@ const UserHome = () => {
         <>
             {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
             <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]}>
-                <SoftTypography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</SoftTypography>
-                <SoftTypography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>Roberto Dellantonio</SoftTypography>
-                <SoftTypography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</SoftTypography>
-                <SoftTypography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments.</SoftTypography>
+                <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
+                <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>Roberto Dellantonio</Typography>
+                <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</Typography>
+                <Typography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments.</Typography>
             </HeroSection>
 
             <MicroHighlightSection moveUp>
@@ -47,7 +50,7 @@ const UserHome = () => {
 
             <Box id='main-story-section' component='section' className='mt-12 xl:mt-0'>
                 <Box className='absolute w-full h-96'>
-                    <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl' style={{ backgroundColor: palette.dark.main, opacity: 0.9 }} ></div>
+                    <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl bg-dark-main' style={{ opacity: 0.9 }} ></div>
                 </Box>
                 <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                     <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone='+39-3343281120' email='dellantonio47@gmail.com' city='Predazzo, Italy' sectionToScrollTo='#contact-section' />
@@ -57,13 +60,13 @@ const UserHome = () => {
                             <Box className='flex justify-center h-fit items-end'>
                                 <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8 mx-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
                                     <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
-                                    <SoftTypography variant="h5" fontWeight="bold" color="primary">{t('about-me.title')}</SoftTypography>
+                                    <Typography variant="h5" fontWeight="bold" color="primary">{t('about-me.title')}</Typography>
                                     <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
-                                        <SoftTypography variant="body2" className='leading-7'>
+                                        <Typography variant="body2" className='leading-7'>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                        </SoftTypography>
+                                        </Typography>
                                     </div>
                                     <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
                                 </div>
@@ -76,17 +79,19 @@ const UserHome = () => {
             {/* TODO: Cambiare le immagini delle tre cards */}
             <Box id='cards-section' component='section'>
                 <Box width='fit-content' m='auto' mb={4}>
-                    <SoftTypography variant="h2" fontWeight="bold">{t('about-me.more')}</SoftTypography>
+                    <Typography variant="h2" fontWeight="bold" color='dark'>{t('about-me.more')}</Typography>
                 </Box>
                 <Container className={whiteBarClasses.customContainer}>
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/user1/diary'>
+                            <Link href='/users/[userId]/diary' as={`/users/${userId}/diary`}>
                                 <ImageCard image="/images/Rectangle-22952.png" title={t('cards.diary')} />
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
+                            <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
+                                <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
+                            </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
@@ -96,31 +101,31 @@ const UserHome = () => {
             </Box>
 
             {/* Contact Me Section */}
-            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${palette.background.white}, ${palette.background.default} 50%);` }}>
+            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{ zIndex: 1 }}>
-                    <SoftTypography variant="h2" sx={{ textAlign: 'center' }} gutterBottom>
+                    <Typography variant="h2" sx={{ textAlign: 'center' }} gutterBottom color='dark'>
                         {t("contact-me.title")}
-                    </SoftTypography>
+                    </Typography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={6}>
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
-                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                        <Typography component="label" variant="caption" fontWeight="bold">
                                             {t("contact-me.fields.name")}
-                                        </SoftTypography>
+                                        </Typography>
                                     </Box>
-                                    <SoftInput id='name' type="text" placeholder={t("contact-me.fields.name")} {...register("name", { required: t('contact-me.validations.name-required') })} error={errors.name && true} helpertext={errors.name?.message} />
+                                    <TextField id='name' type="text" size="small" placeholder={t("contact-me.fields.name")} {...register("name", { required: t('contact-me.validations.name-required') })} error={errors.name && true} helperText={errors.name?.message} color='info' className='w-full' />
                                 </Box>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
-                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                        <Typography component="label" variant="caption" fontWeight="bold">
                                             {t("contact-me.fields.email")}
-                                        </SoftTypography>
+                                        </Typography>
                                     </Box>
-                                    <SoftInput id='email' type="email" placeholder={t("contact-me.fields.email")} {...register("email", { required: t('contact-me.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+                                    <TextField id='email' type="email" size="small" placeholder={t("contact-me.fields.email")} {...register("email", { required: t('contact-me.validations.email-required') })} error={errors.email && true} helperText={errors.email?.message} color='info' className='w-full' />
                                 </Box>
                             </Grid>
                         </Grid>
@@ -128,9 +133,9 @@ const UserHome = () => {
                             <Grid item xs={12}>
                                 <Box mb={2}>
                                     <Box mb={1} ml={0.5}>
-                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                        <Typography component="label" variant="caption" fontWeight="bold">
                                             {t("contact-me.fields.message")}
-                                        </SoftTypography>
+                                        </Typography>
                                     </Box>
                                     <SoftTextArea
                                         id='message'
@@ -143,9 +148,9 @@ const UserHome = () => {
                             </Grid>
                         </Grid>
                         <Box mb={2}>
-                            <SoftButton type="submit" variant="contained" color="primary" size="large" fullWidth>
+                            <Button type="submit" variant="contained" color="primary" size="large" fullWidth>
                                 {t("contact-me.submit")}
-                            </SoftButton>
+                            </Button>
                         </Box>
                     </Box>
                 </Container>

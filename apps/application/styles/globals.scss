@@ -1,11 +1,63 @@
 @import "tailwindcss/base";
+
+@layer base {
+  /*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    /* 1 */
+    border-width: 0;
+    /* 2 */
+    border-style: solid;
+    /* 2 */
+    border-color: theme('borderColor.DEFAULT', currentColor);
+    /* 2 */
+  }
+
+  ::before,
+  ::after {
+    --tw-content: '';
+  }
+  
+  [type='search'] {
+    -webkit-appearance: textfield;
+    /* 1 */
+    outline-offset: -2px;
+    /* 2 */
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+    /* 1 */
+    color: theme('colors.gray.400', #9ca3af);
+    /* 2 */
+  }
+}
+
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "@rob097/common-lib/assets/theme/styles.scss";
-@import "@rob097/common-lib/styles.scss";
 
 
-/** HIDE SCROLLBAR **/
+/** SCROLLBAR STYLES **/
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+
+  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
+  }
+}
+
 /* Firefox */
 * {
   scrollbar-width: thin;
@@ -45,6 +97,23 @@
 }
 
 /** HIDE highlight **/
-html, body {
+html,
+body {
   -webkit-tap-highlight-color: transparent;
+}
+
+/** MUI INPUT **/
+.MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%) translateX(0);
+}
+
+li.MuiMenuItem-root {
+  margin: 8px;
+  border-radius: 8px;
+}
+
+a {
+  text-decoration: none;
 }

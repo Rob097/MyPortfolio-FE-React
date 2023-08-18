@@ -1,7 +1,6 @@
 import { Card, CardActions, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import SoftButton from '@rob097/common-lib/components/SoftButton';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import Button from '@mui/material/Button';
 import { useTranslation } from 'next-i18next';
 import DraggableBox from '../draggableBox';
 import ShowIf from '../showIf';
@@ -17,7 +16,7 @@ const StoryCard = (props) => {
     };
 
     return (
-        <Card sx={{ maxWidth: 345 }} className={(!props.image ? storyCardClasses.customCard : '') + ' shadow-lg z-10'}>
+        <Card sx={{ maxWidth: 345 }} className={(!props.image ? storyCardClasses.customCard : '') + ' shadow-lg z-10 rounded-lg'}>
 
             <ShowIf condition={props.image !== undefined}>
                 <CardMedia
@@ -31,9 +30,9 @@ const StoryCard = (props) => {
                 <Typography gutterBottom variant="h4">
                     {props.title}
                 </Typography>
-                <SoftTypography variant="body2" className='overflow-hidden text-ellipsis' sx={{ display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", color: ({ palette: { text } }) => (text.secondary) }}>
+                <Typography variant="body2" className='overflow-hidden text-ellipsis' sx={{ display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", color: ({ palette: { text } }) => (text.secondary) }}>
                     {props.preview}
-                </SoftTypography>
+                </Typography>
 
                 <ShowIf condition={props.skills?.length > 0}>
                     <Typography variant="h5" componend="div" mt={2}>
@@ -50,15 +49,15 @@ const StoryCard = (props) => {
 
                 <Grid container mx={2}>
                     <Grid item xs={12} lg={6} className="flex items-center lg:justify-start justify-center">
-                        <SoftTypography variant="caption" color="primary" fontWeight='bold'>
+                        <Typography variant="caption" color="primary" fontWeight='bold'>
                             {props.date}
-                        </SoftTypography>
+                        </Typography>
 
                     </Grid>
                     <Grid item xs={12} lg={6} className="flex items-center lg:justify-end justify-center">
-                        <SoftButton variant="contained" color="primary" size="small" className='rounded-full whitespace-nowrap' >
+                        <Button variant="contained" color="primary" size="small" className='rounded-full whitespace-nowrap' >
                             {t('read-more')}
-                        </SoftButton>
+                        </Button>
                     </Grid>
                 </Grid>
             </CardActions>

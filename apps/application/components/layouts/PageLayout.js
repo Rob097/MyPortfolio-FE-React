@@ -1,19 +1,15 @@
-import { useTheme } from "@mui/material";
 import Box from '@mui/material/Box';
 import PropTypes from "prop-types";
 import classes from './PageLayout.module.scss';
+import tailwindConfig from '@/tailwind.config.js';
 
 function PageLayout(props) {
-  const theme = useTheme();
-  const { palette } = theme;
-  const background = palette[props.background] ? palette[props.background] : props.background;
-
   return (
     <Box
       width="100%"
       height="100%"
       minHeight="100vh"
-      bgcolor={background}
+      bgcolor={tailwindConfig.theme.colors.white}
       sx={{ display: 'flow-root', overflowX: { xs: 'hidden', md: "visible" } }}
     >
       <BgVector up />

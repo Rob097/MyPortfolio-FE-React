@@ -1,12 +1,12 @@
 import classes from "./ImageCard.module.scss";
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import Typography from '@mui/material/Typography';
 
 const ImageCard = ({ image, title }) => (
     <div className={classes.card}>
         <div className={classes.overlay} style={{
             backgroundImage: `url("${image}")`
         }}>
-            <SoftTypography className={classes.header} variant="h2">{title}</SoftTypography>
+            <Typography className={classes.header} variant="h2">{title}</Typography>
         </div>
     </div>
 );

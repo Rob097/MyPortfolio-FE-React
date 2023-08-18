@@ -4,7 +4,7 @@ import '@/styles/globals.scss';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from "@rob097/common-lib/assets/theme";
+import theme from "@/MUI/theme";
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ function MyApp(props) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto&display=swap" rel="stylesheet" />
       </Head>
       <ThemeProvider theme={theme}>
         <CoverLayout>

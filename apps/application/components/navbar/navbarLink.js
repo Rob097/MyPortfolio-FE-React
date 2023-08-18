@@ -2,11 +2,9 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 import Box from '@mui/material/Box';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
-import { useTheme } from '@mui/system';
+import Typography from '@mui/material/Typography';
 
 function NavbarLink({ icon, name, route, light }) {
-  const theme = useTheme();
   return (
     <Box
       component={Link}
@@ -19,14 +17,13 @@ function NavbarLink({ icon, name, route, light }) {
     >
       <Icon
         sx={{
-          color: ({ palette: { white, secondary } }) => (light ? white.main : secondary.main),
+          color: ({ palette: { white, secondary } }) => (light ? white : secondary.main),
           verticalAlign: "middle",
         }}
       >
         {icon}
       </Icon>
-      <SoftTypography 
-        theme={theme}
+      <Typography 
         variant="button"
         fontWeight="regular"
         color={light ? "white" : "dark"}
@@ -34,7 +31,7 @@ function NavbarLink({ icon, name, route, light }) {
         sx={{ width: "100%", lineHeight: 0 }}
       >
         &nbsp;{name}
-      </SoftTypography>
+      </Typography>
     </Box>
   );
 }

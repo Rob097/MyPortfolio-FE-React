@@ -1,4 +1,7 @@
-@import '@rob097/common-lib/assets/theme/base/breakpoints.scss';
+$--screen-xl: theme('screens.xl');
+$--screen-lg: theme('screens.lg');
+$--screen-sm: theme('screens.sm');
+
 
 .card {
     width: auto;
@@ -41,19 +44,19 @@
     text-shadow: 0 0 25px black;
 }
 
-@media (max-width: $xl) {
+@media (max-width: $--screen-xl) {
     .header {
         font-size: 2.5em;
     }
 }
 
-@media (max-width: $lg) {
+@media (max-width: $--screen-lg) {
     .header {
         font-size: 2em;
     }
 }
 
-@media (max-width: $sm) {
+@media (max-width: $--screen-sm) {
     .header {
         font-size: 1.5em;
     }

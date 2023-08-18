@@ -1,4 +1,4 @@
-@import '@rob097/common-lib/assets/theme/base/breakpoints.scss';
+$--screen-sm: theme('screens.sm');
 
 .moveUp {
   top: -4rem;
@@ -26,7 +26,7 @@
   box-shadow: rgb(255 133 0 / 10%) 0px 0px 20px 20px;
 }
 
-@media (min-width: $sm) {
+@media (min-width: $--screen-sm) {
   .personalCard {
     border-radius: 10rem 4rem 4rem 10rem;
   }

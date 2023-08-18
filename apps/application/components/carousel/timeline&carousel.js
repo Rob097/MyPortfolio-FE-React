@@ -10,7 +10,7 @@ import {
 import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'next-i18next';
 import Carousel from 'react-material-ui-carousel';
 import { CarouselItem } from './CarouselItem';
@@ -55,8 +55,8 @@ export const timeline_carousel = () => {
                         <Grid item md={6} width="100%">
                             <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={classes.stickyContainer}>
                                 <Box textAlign="center">
-                                    <SoftTypography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >{t('my-story')}</SoftTypography>
-                                    <SoftTypography variant="subtitle1" color="text" fontWeight="bold" style={{ fontStyle: 'italic' }} >Staying hard I did all of that...</SoftTypography>
+                                    <Typography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >{t('my-story')}</Typography>
+                                    <Typography variant="subtitle1" color="text" fontWeight="bold" style={{ fontStyle: 'italic' }} >Staying hard I did all of that...</Typography>
                                 </Box>
                             </Box>
                         </Grid>
@@ -190,9 +190,9 @@ export const timeline_carousel = () => {
                     {/* Diary Section */}
                     <div className={classes.section}>
                         <Container maxWidth="lg">
-                            <SoftTypography variant="h4" gutterBottom>
+                            <Typography variant="h4" gutterBottom>
                                 Diary
-                            </SoftTypography>
+                            </Typography>
 
                             <Carousel animation="slide" duration={2000} height={330} autoPlay={false} swipe={isSmallerThan('md')}>
                                 {items}

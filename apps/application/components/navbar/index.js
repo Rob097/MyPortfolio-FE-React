@@ -1,9 +1,7 @@
 import Box from '@mui/material/Box';
 import Icon from "@mui/material/Icon";
-import { useTheme } from '@mui/system';
-import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
-import SoftButton from "@rob097/common-lib/components/SoftButton";
-import SoftTypography from '@rob097/common-lib/components/SoftTypography';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { Link } from "next/link";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -11,15 +9,18 @@ import WhiteBar from "../whiteBar";
 import LanguageSelector from "./languageSelector";
 import NavbarLink from "./navbarLink";
 import NavbarMobile from "./navbarMobile";
+import tailwindConfig from '@/tailwind.config';
 
 function Navbar({ transparent, light, action }) {
-  const theme = useTheme();
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const [show, setShow] = useState(true);
 
   const openMobileNavbar = ({ currentTarget }) => setMobileNavbar(currentTarget.parentNode);
   const closeMobileNavbar = () => setMobileNavbar(false);
+
+  const { screens } = tailwindConfig.theme;
+  const lgBreakpoint = parseInt(screens.lg.replace('px', ''));
 
   useEffect(() => {
     let previousScrollPosition = 0;
@@ -45,7 +46,7 @@ function Navbar({ transparent, light, action }) {
   useEffect(() => {
     // A function that sets the display state for the NavbarMobile.
     function displayMobileNavbar() {
-      if (window.innerWidth < breakpoints.values.lg) {
+      if (window.innerWidth < lgBreakpoint) {
         setMobileView(true);
         setMobileNavbar(false);
       } else {
@@ -74,9 +75,9 @@ function Navbar({ transparent, light, action }) {
         containerStyles={{ opacity: (show ? 1 : 0), position: 'fixed', zIndex: 999, transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s' }}
       >
         <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
-          <SoftTypography theme={theme} variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>
-            My<span style={{ color: theme.palette.primary.main }}>Portfolio</span>
-          </SoftTypography>
+          <Typography variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>
+          <span className='text-primary-main'>My</span><span className='text-dark-main'>Portfolio</span>
+          </Typography>
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
           <NavbarLink icon="donut_large" name="dashboard" route="/" light={light} />
@@ -97,8 +98,7 @@ function Navbar({ transparent, light, action }) {
         {action &&
           (action.type === "internal" ? (
             <Box display={{ xs: "none", lg: "inline-block" }}>
-              <SoftButton
-                theme={theme}
+              <Button
                 component={Link}
                 to={action.route}
                 variant="gradient"
@@ -107,11 +107,11 @@ function Navbar({ transparent, light, action }) {
                 circular
               >
                 {action.label}
-              </SoftButton>
+              </Button>
             </Box>
           ) : (
             <Box display={{ xs: "none", lg: "inline-block" }}>
-              {/* <SoftButton
+              {/* <Button
                 component="a"
                 href={action.route}
                 target="_blank"
@@ -122,7 +122,7 @@ function Navbar({ transparent, light, action }) {
                 circular
               >
                 {action.label}
-              </SoftButton> */}
+              </Button> */}
               <LanguageSelector />
             </Box>
           ))}
