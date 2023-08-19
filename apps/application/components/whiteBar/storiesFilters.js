@@ -1,13 +1,19 @@
 import WhiteBar from '@/components/whiteBar';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Button, Checkbox, Chip, FormControl, Grid, InputLabel, ListItemText, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Chip, FormControl, FormHelperText, Grid, InputLabel, ListItemText, MenuItem, Select, Stack, TextField } from '@mui/material';
 import _without from 'lodash/without';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
-
+import { useForm } from 'react-hook-form';
+import ShowIf from '@/components/utils/showIf';
 
 const StoriesFilters = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    async function handleFilters(data) {
+        console.log(data);
+    }
 
     const skills = [
         'Angular',
@@ -60,7 +66,7 @@ const StoriesFilters = () => {
 
     return (
         <WhiteBar height={{ xs: "fit-content", md: "6rem" }} containerClasses='mt-12'>
-            <Grid container className='items-center'>
+            <Grid container className='items-center' component="form" role="form" onSubmit={handleSubmit((data) => handleFilters(data))}>
                 <Grid item xs={12} lg={10} className='flex flex-col sm:flex-row justify-center md:justify-start items-center w-full h-full'>
                     <Box className='flex flex-col md:flex-row justify-center md:justify-start items-center'>
                         <Box className='md:ml-2'>
@@ -71,6 +77,8 @@ const StoriesFilters = () => {
                                     })}
                                 >{t('categories.title')}</InputLabel>
                                 <Select
+                                    {...register("categories", { required: 'Seleziona almeno una categoria' })}
+                                    error={errors.categories !== undefined}
                                     labelId="categories-select-label"
                                     id="categories-select"
                                     multiple
@@ -97,6 +105,7 @@ const StoriesFilters = () => {
                                     })}
                                 >{t('common:skills')}</InputLabel>
                                 <Select
+                                    {...register("skills")}
                                     labelId="filters-by-skills-label"
                                     id="filters-by-skills"
                                     multiple
@@ -138,7 +147,7 @@ const StoriesFilters = () => {
                     </Box>
                     <Box className='flex flex-col md:flex-row justify-center md:justify-start items-center'>
                         <Box className="md:ml-2">
-                            <TextField placeholder={t('filters.by-name')} size="small" className='my-2' variant="outlined" />
+                            <TextField placeholder={t('filters.by-name')} size="small" className='my-2' variant="outlined" {...register('name')} />
                         </Box>
                         <Box className="md:ml-2">
                             <FormControl sx={{ m: 1, minWidth: 150 }}>
@@ -148,6 +157,7 @@ const StoriesFilters = () => {
                                     })}
                                 >{t('sort.title')}</InputLabel>
                                 <Select
+                                    {...register("sort")}
                                     labelId="sort-select-label"
                                     id="sort-select"
                                     value={filterBy}
@@ -168,9 +178,14 @@ const StoriesFilters = () => {
                 </Grid>
                 <Grid item xs={12} lg={2} className='flex justify-center lg:justify-end items-center w-full h-full'>
                     <Box className="h-full flex items-center">
-                        <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }} className='whitespace-nowrap text-white'>{t('filters.apply')}</Button>
+                        <Button type='submit' variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }} className='text-white'>{t('filters.apply')}</Button>
                     </Box>
                 </Grid>
+                <ShowIf condition={errors !== undefined}>
+                    <Box className='ml-4'>
+                        <FormHelperText error={errors !== undefined}>{Object.keys(errors).filter(key => errors[key].message).map(key => errors[key].message).join(', ')}</FormHelperText>                        
+                    </Box>
+                </ShowIf>
             </Grid>
         </WhiteBar>
     )

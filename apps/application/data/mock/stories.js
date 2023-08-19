@@ -25,9 +25,22 @@ export const experienceStories = [
         id: 4,
         title: 'My Fourth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
-        date: '13/08/2023',
-        image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
+        date: '13/08/2023'
     },
+    {
+        id: 5,
+        title: 'My Fifth Experience',
+        preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
+        date: '14/08/2023'
+    },
+    {
+        id: 6,
+        title: 'My Sixth Experience',
+        preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
+        date: '15/08/2023',
+        skills: ['Java', 'React', 'Spring boot', 'Docker', 'Kubernetes'],
+        image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
+    }
 ];
 
 export const projectStories = [

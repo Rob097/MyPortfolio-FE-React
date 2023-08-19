@@ -7,6 +7,7 @@ import tailwindConfig from '@/tailwind.config.js';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { Pagination } from '@mui/material';
 
 
 const Experiences = () => {
@@ -39,35 +40,42 @@ const Experiences = () => {
             </Box>
 
             <Box id='timeline-section' component='section' className='mt-12 xl:mt-0 pt-10'>
-                <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                    <Typography variant="h2">Timeline</Typography>
-                    <Box className="w-full h-4 mt-20 bg-white shadow-xl rounded-lg">
+                <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
+                    <Box className={isSmallerThanLg ? 'mx-8' : ''}>
+                        <Typography variant="h2">Timeline</Typography>
+                        <Box className="w-full h-4 mt-20 bg-white shadow-xl rounded-lg">
+                        </Box>
                     </Box>
                 </Container>
             </Box>
 
             <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
-                <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
+                    <Box className={isSmallerThanLg ? 'mx-8' : ''}>
 
-                    <StoriesFilters />
+                        <StoriesFilters />
 
-                    <Typography variant="h2" className='mt-10'>Stories</Typography>
-                    <Box className="w-full mt-20">
-                        <Grid container className='mt-4' spacing={2}>
-                            {
-                                experienceStories.map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                        <StoryCard
-                                            image={image}
-                                            title={title}
-                                            preview={preview}
-                                            date={date}
-                                            skills={skills}
-                                        />
-                                    </Grid>
-                                ))
-                            }
-                        </Grid>
+                        <Typography variant="h2" className='mt-10'>Stories</Typography>
+                        <Box className="w-full mt-8 mb-20">
+                            <Grid container className='mt-4' spacing={2}>
+                                {
+                                    experienceStories.map(({ id, title, preview, date, skills, image }) => (
+                                        <Grid key={id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
+                                            <StoryCard
+                                                image={image}
+                                                title={title}
+                                                preview={preview}
+                                                date={date}
+                                                skills={skills}
+                                            />
+                                        </Grid>
+                                    ))
+                                }
+                            </Grid>
+                        </Box>
+
+                        <Pagination count={10} variant="outlined" color="primary" className='relative z-10' />
+
                     </Box>
                 </Container>
             </Box>
