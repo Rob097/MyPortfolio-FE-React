@@ -47,3 +47,65 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 8px;
 }
+
+
+
+
+
+
+
+
+
+
+
+.firstAbsolute:before {
+  content: url("/images/arrow.png") !important;
+}
+
+
+
+.firstElement:before,
+.firstElement:after {
+  content: "";
+  flex: 1;
+  background: white;
+  height: 100px;
+  text-align: center;
+}
+.firstElement:after {
+  content: "";
+  background: transparent;
+  height: 100px;  
+}
+
+.lastElement:before,
+.lastElement:after {
+  content: '';
+  flex: 1;
+  background: white;
+  height: 100px;
+  text-align: center;
+}
+.lastElement:before {
+  content: "";
+  background: transparent;
+  height: 100px;  
+}
+
+/* 
+
+.timeline {
+  transform: rotate(90deg);
+}
+.timelineContentContainer {
+  text-align: left;
+}
+.timelineContent {
+  display: inline-block;
+  transform: rotate(-90deg);
+  text-align: center;
+  min-width: 50;
+}
+.timelineIcon {
+  transform: rotate(-90deg);
+} */

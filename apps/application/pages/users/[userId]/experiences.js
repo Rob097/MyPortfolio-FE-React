@@ -1,13 +1,14 @@
 import StoryCard from '@/components/storyCard';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
-import { experienceStories } from '@/data/mock/stories';
+import { experienceStories, educationStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { Pagination } from '@mui/material';
+import TimelineCustom from '@/components/carousel/gptTimeline';
 
 
 const Experiences = () => {
@@ -20,6 +21,9 @@ const Experiences = () => {
 
     const router = useRouter();
     const { userId } = router.query;
+
+    const stories = [...experienceStories, ...educationStories];
+    const pages = Math.ceil(stories.length / 6);
 
     return (
         <Box className='py-20'>
@@ -43,7 +47,8 @@ const Experiences = () => {
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
                     <Box className={isSmallerThanLg ? 'mx-8' : ''}>
                         <Typography variant="h2">Timeline</Typography>
-                        <Box className="w-full h-4 mt-20 bg-white shadow-xl rounded-lg">
+                        <Box className="w-full mt-20 bg-white shadow-xl rounded-lg">
+                            <TimelineCustom />
                         </Box>
                     </Box>
                 </Container>
@@ -59,7 +64,7 @@ const Experiences = () => {
                         <Box className="w-full mt-8 mb-20">
                             <Grid container className='mt-4' spacing={2}>
                                 {
-                                    experienceStories.map(({ id, title, preview, date, skills, image }) => (
+                                    stories.slice(0,6).map(({ id, title, preview, date, skills, image }) => (
                                         <Grid key={id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                             <StoryCard
                                                 image={image}
@@ -74,7 +79,7 @@ const Experiences = () => {
                             </Grid>
                         </Box>
 
-                        <Pagination count={10} variant="outlined" color="primary" className='relative z-10' />
+                        <Pagination count={pages} variant="outlined" color="primary" className='relative z-10' />
 
                     </Box>
                 </Container>

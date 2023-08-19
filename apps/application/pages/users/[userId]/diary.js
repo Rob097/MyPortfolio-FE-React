@@ -11,7 +11,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import userClasses from './styles/shared.module.scss';
-
+import ShowIf from '@/components/utils/showIf';
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -79,7 +81,7 @@ const Diary = () => {
 
                             {
                                 experienceStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
+                                    <Grid key={id} item xs={12} sm={6} lg={experienceStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
                                             image={image}
                                             title={title}
@@ -91,13 +93,17 @@ const Diary = () => {
                                 ))
                             }
 
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
-                                    <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                        <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                    </Avatar>
-                                </Link>
-                            </Grid>
+                            <ShowIf condition={experienceStories.length > 3}>
+                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Tooltip title={experienceStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
+                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                            </Avatar>
+                                        </Link>
+                                    </Tooltip>
+                                </Grid>
+                            </ShowIf>
                         </Grid>
 
                     </Container>
@@ -113,7 +119,7 @@ const Diary = () => {
 
                             {
                                 projectStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
+                                    <Grid key={id} item xs={12} sm={6} lg={projectStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
                                             image={image}
                                             title={title}
@@ -125,11 +131,17 @@ const Diary = () => {
                                 ))
                             }
 
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                </Avatar>
-                            </Grid>
+                            <ShowIf condition={projectStories.length > 3}>
+                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Tooltip title={projectStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/projects' as={`/users/${userId}/experiences`}>
+                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                            </Avatar>
+                                        </Link>
+                                    </Tooltip>
+                                </Grid>
+                            </ShowIf>
                         </Grid>
                     </Container>
 
@@ -144,7 +156,7 @@ const Diary = () => {
 
                             {
                                 educationStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
+                                    <Grid key={id} item xs={12} sm={6} lg={educationStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
                                             image={image}
                                             title={title}
@@ -156,11 +168,17 @@ const Diary = () => {
                                 ))
                             }
 
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                </Avatar>
-                            </Grid>
+                            <ShowIf condition={educationStories.length > 3}>
+                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Tooltip title={educationStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
+                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                            </Avatar>
+                                        </Link>
+                                    </Tooltip>
+                                </Grid>
+                            </ShowIf>
                         </Grid>
                     </Container>
                 </Box>

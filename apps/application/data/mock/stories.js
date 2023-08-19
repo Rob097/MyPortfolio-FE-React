@@ -65,14 +65,7 @@ export const projectStories = [
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '12/08/2023',
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
-    },
-    {
-        id: 4,
-        title: 'My Fourth Project',
-        preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
-        date: '13/08/2023',
-        image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
-    },
+    }
 ];
 
 export const educationStories = [
