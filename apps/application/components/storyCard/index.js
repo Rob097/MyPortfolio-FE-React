@@ -1,15 +1,12 @@
-import { Card, CardActions, CardContent, CardMedia, Chip, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { Button, Card, CardActions, CardContent, CardMedia, Chip, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import DraggableBox from '../draggableBox';
-import ShowIf from '../showIf';
+import ShowIf from '@/components/utils/showIf';
 import storyCardClasses from './storyCard.module.scss';
 
 
 const StoryCard = (props) => {
     const { t } = useTranslation(['common']);
-
 
     const handleClick = (event) => {
         console.info('You clicked the Chip: ', event.target.id);

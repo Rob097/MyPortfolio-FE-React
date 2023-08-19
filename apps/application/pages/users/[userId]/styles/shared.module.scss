@@ -1,0 +1,15 @@
+.section {
+    padding: 4rem 0;
+  }
+
+  .scrollGradientMainStory {
+    background:
+      linear-gradient(#ffffff 33%, rgba(67, 211, 151, 0)),
+      linear-gradient(rgba(67, 211, 151, 0), #ffffff 66%) 0 100%,
+      radial-gradient(farthest-side at 50% 0, rgba(34, 34, 34, 0.8), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 50% 100%, rgba(34, 34, 34, 0.8), rgba(0, 0, 0, 0)) 0 100%;
+    background-repeat: no-repeat;
+    background-attachment: local, local, scroll, scroll;
+    background-size: 100% 40px, 100% 40px, 100% 20px, 100% 20px;
+    background-color: white;
+  }

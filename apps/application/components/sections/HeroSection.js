@@ -1,9 +1,8 @@
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { Box, Container, Grid } from "@mui/material";
-import Button from '@mui/material/Button';
-import ShowIf from "../showIf";
 import tailwindConfig from '@/tailwind.config.js';
+import { Box, Button, Container, Grid } from "@mui/material";
+import ShowIf from '@/components/utils/showIf';
 
 const HeroSection = (props) => {
     const { colors } = tailwindConfig.theme;
@@ -11,11 +10,11 @@ const HeroSection = (props) => {
 
     return (
         <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
-            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem"}} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
+            <Container sx={{ padding: isSmallerThan('lg') && "0.5rem" }} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                 <Grid container columnSpacing={10} justifyContent="center">
                     <Grid item md={6} alignSelf="center" width="100%">
 
-                        <div style={{zIndex: 1, position: 'relative'}}>
+                        <div style={{ zIndex: 1, position: 'relative' }}>
                             {props.children}
                         </div>
 
@@ -31,7 +30,7 @@ const HeroSection = (props) => {
                         </ShowIf>
                     </Grid>
                     <Grid item md={6} alignSelf="center" className='flex justify-center items-center'>
-                        <img src={props.img} style={{maxHeight: '30em', maxWidth: '100%', borderRadius: '1rem'}}/>
+                        <img src={props.img} style={{ maxHeight: '30em', maxWidth: '100%', borderRadius: '1rem' }} />
                     </Grid>
                 </Grid>
             </Container>

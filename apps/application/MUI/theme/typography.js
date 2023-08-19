@@ -12,19 +12,19 @@ const baseProperties = {
     fontWeightRegular: tailwindConfig.theme.fontWeight.normal,
     fontWeightMedium: tailwindConfig.theme.fontWeight.medium,
     fontWeightBold: tailwindConfig.theme.fontWeight.bold,
-  };
+};
 
-  const baseHeadingProperties = {
+const baseHeadingProperties = {
     fontFamily: baseProperties.fontFamily,
     color: colors.dark.main,
     fontWeight: baseProperties.fontWeightMedium,
-  };
+};
 
-  const baseBodyProperties = {
+const baseBodyProperties = {
     fontFamily: baseProperties.fontFamily,
     color: colors.text.main,
     fontWeight: baseProperties.fontWeightRegular,
-  };
+};
 
 const typography = {
     fontFamily: baseProperties.fontFamily,

@@ -5,18 +5,14 @@ import MicroHighlightSection, { SingleElement } from '@/components/sections/Micr
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
-import { Box, TextField } from "@mui/material";
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import classes from "../../userProfile.module.scss";
+import userClasses from './styles/shared.module.scss';
 
 
 const UserHome = () => {
@@ -61,7 +57,7 @@ const UserHome = () => {
                                 <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8 mx-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
                                     <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
                                     <Typography variant="h5" fontWeight="bold" color="primary">{t('about-me.title')}</Typography>
-                                    <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
+                                    <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
                                         <Typography variant="body2" className='leading-7'>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
@@ -101,7 +97,7 @@ const UserHome = () => {
             </Box>
 
             {/* Contact Me Section */}
-            <Box id='contact-section' component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
+            <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{ zIndex: 1 }}>
                     <Typography variant="h2" sx={{ textAlign: 'center' }} gutterBottom color='dark'>
                         {t("contact-me.title")}

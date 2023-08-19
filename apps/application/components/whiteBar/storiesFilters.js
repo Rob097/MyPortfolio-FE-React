@@ -1,21 +1,13 @@
 import WhiteBar from '@/components/whiteBar';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import Chip from '@mui/material/Chip';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Button, Checkbox, Chip, FormControl, Grid, InputLabel, ListItemText, MenuItem, Select, Stack, TextField } from '@mui/material';
 import _without from 'lodash/without';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
-import tailwindConfig from '@/tailwind.config.js';
 
 
 const StoriesFilters = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
-    const { colors } = tailwindConfig.theme;
 
     const skills = [
         'Angular',
@@ -64,7 +56,7 @@ const StoriesFilters = () => {
         e.preventDefault();
         setFilteredSkills((current) => _without(current, value));
     };
-    
+
 
     return (
         <WhiteBar height={{ xs: "fit-content", md: "6rem" }} containerClasses='mt-12'>

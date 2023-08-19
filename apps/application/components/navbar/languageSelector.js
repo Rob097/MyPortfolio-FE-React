@@ -1,8 +1,8 @@
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import usFlag from "@rob097/common-lib/assets/images/flags/US.svg";
 import itFlag from "@rob097/common-lib/assets/images/flags/IT.svg";
+import usFlag from "@rob097/common-lib/assets/images/flags/US.svg";
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
@@ -33,16 +33,16 @@ const LanguageSelector = ({ onChange, isMobile }) => {
     const languageChanged = useCallback(
         async (event) => {
             // setTimeout(async () => {
-                const locale = event.target.value;
+            const locale = event.target.value;
 
-                setValue(locale);
-                localStorage.setItem("lang", locale);
+            setValue(locale);
+            localStorage.setItem("lang", locale);
 
-                if (onChange) {
-                    onChange(locale);
-                }
+            if (onChange) {
+                onChange(locale);
+            }
 
-                await switchToLocale(locale);
+            await switchToLocale(locale);
             // }, 5000);
         },
         [switchToLocale, onChange]
@@ -57,7 +57,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
                     value={value}
                     onChange={languageChanged}
                     autoWidth
-                    inputProps={{MenuProps: {disableScrollLock: true}}}
+                    inputProps={{ MenuProps: { disableScrollLock: true } }}
                     size="small"
                 >
                     {

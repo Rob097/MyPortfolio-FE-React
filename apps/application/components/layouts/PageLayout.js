@@ -1,7 +1,7 @@
+import tailwindConfig from '@/tailwind.config.js';
 import Box from '@mui/material/Box';
 import PropTypes from "prop-types";
 import classes from './PageLayout.module.scss';
-import tailwindConfig from '@/tailwind.config.js';
 
 function PageLayout(props) {
   return (
@@ -16,7 +16,7 @@ function PageLayout(props) {
 
       {props.children}
 
-      <BgVector/>
+      <BgVector />
     </Box>
   );
 }
@@ -35,15 +35,15 @@ export default PageLayout;
 
 const BgVector = (props) => {
   return (
-    <div style={{position: 'relative', zIndex: 0}}>
+    <div style={{ position: 'relative', zIndex: 0 }}>
       <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
-        <img src="/images/Vector.png" style={{width: '35em', maxWidth: '100%'}} />
+        <img src="/images/Vector.png" style={{ width: '35em', maxWidth: '100%' }} />
       </div>
       <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
-        <img src="/images/Vector-1.png" style={{width: '35em', maxWidth: '100%'}} />
+        <img src="/images/Vector-1.png" style={{ width: '35em', maxWidth: '100%' }} />
       </div>
       <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
-        <img src="/images/Vector-2.png" style={{width: '35em', maxWidth: '100%'}} />
+        <img src="/images/Vector-2.png" style={{ width: '35em', maxWidth: '100%' }} />
       </div>
     </div>
   )

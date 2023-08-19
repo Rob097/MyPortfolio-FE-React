@@ -1,22 +1,24 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
-import createEmotionServer from '@emotion/server/create-instance';
-import createEmotionCache from '@/components/createEmotionCache';
+import createEmotionCache from '@/components/utils/createEmotionCache';
 import tailwindConfig from '@/tailwind.config';
+import createEmotionServer from '@emotion/server/create-instance';
+import { useTranslation } from 'next-i18next';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import PropTypes from 'prop-types';
 
 export default function MyDocument(props) {
   const { emotionStyleTags } = props;
   const { colors } = tailwindConfig.theme;
+  const { i18n } = useTranslation();
 
   return (
-    <Html lang="en">
+    <Html lang={i18n.language}>
       <Head>
         {/* PWA primary color */}
         <meta name="theme-color" content={colors.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="emotion-insertion-point" content="" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto&display=swap" rel="stylesheet" />
         {emotionStyleTags}
       </Head>
       <body>

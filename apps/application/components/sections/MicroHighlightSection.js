@@ -1,14 +1,11 @@
+import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
-import ShowIf from '@/components/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import styles from "@/pages/users/[userId]/home.module.scss";
-import { Avatar, Box, Container, Grid } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Avatar, Box, Container, Grid, Typography } from '@mui/material';
 import WhiteBar from '../whiteBar';
-import tailwindConfig from '@/tailwind.config.js';
+import sectionsClasses from "./sections.module.scss";
 
 const MicroHighlightSection = (props) => {
-    const { theme } = tailwindConfig;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
     const elements = props.children;
@@ -17,7 +14,7 @@ const MicroHighlightSection = (props) => {
     }
 
     return (
-        <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? styles.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
+        <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? sectionsClasses.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
             <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                 <ShowIf condition={isGreaterThan('md')}>
                     <WhiteBar>

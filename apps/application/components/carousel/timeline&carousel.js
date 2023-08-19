@@ -1,7 +1,6 @@
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import classes from "@/pages/userProfile.module.scss";
-import homeStyled from "@/pages/users/[userId]/home.module.scss";
+import timelineClasses from "./timeline.module.scss";
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab';
 import {
@@ -49,11 +48,11 @@ export const timeline_carousel = () => {
 
     return (
         <div>
-                <Box id='timeline-section' component='section'>
+            <Box id='timeline-section' component='section'>
                 <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                     <Grid container>
                         <Grid item md={6} width="100%">
-                            <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={classes.stickyContainer}>
+                            <Box id="sticky-container" display={isSmallerThan('md') ? "block" : "flex"} justifyContent="right" mr={isSmallerThan('md') ? 0 : 6} mt={6} className={timelineClasses.stickyContainer}>
                                 <Box textAlign="center">
                                     <Typography variant="h1" color="primary" fontWeight="bold" style={{ fontStyle: 'italic' }} >{t('my-story')}</Typography>
                                     <Typography variant="subtitle1" color="text" fontWeight="bold" style={{ fontStyle: 'italic' }} >Staying hard I did all of that...</Typography>
@@ -70,7 +69,7 @@ export const timeline_carousel = () => {
                                     maxHeight: '60vh',
                                     overflowY: 'scroll'
                                 }}
-                                className={classes.scrollGradient + " hide-scrollbar"}
+                                className={timelineClasses.scrollGradient + " hide-scrollbar"}
                             >
                                 <TimelineItem>
                                     <TimelineOppositeContent color="text.secondary">
@@ -90,8 +89,8 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2021 2022
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
-                                        <TimelineDot className={homeStyled.customDot} />
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
+                                        <TimelineDot className={timelineClasses.customDot} />
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent>
@@ -102,7 +101,7 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2023
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
                                         <TimelineDot color="primary">
                                             <LaptopMacIcon />
                                         </TimelineDot>
@@ -116,8 +115,8 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2024 2025
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
-                                        <TimelineDot className={homeStyled.customDot} />
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
+                                        <TimelineDot className={timelineClasses.customDot} />
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent>
@@ -142,8 +141,8 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2021 2022
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
-                                        <TimelineDot className={homeStyled.customDot} />
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
+                                        <TimelineDot className={timelineClasses.customDot} />
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent>
@@ -154,7 +153,7 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2023
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
                                         <TimelineDot color="primary">
                                             <LaptopMacIcon />
                                         </TimelineDot>
@@ -168,8 +167,8 @@ export const timeline_carousel = () => {
                                     <TimelineOppositeContent color="text.secondary">
                                         2024 2025
                                     </TimelineOppositeContent>
-                                    <TimelineSeparator className={homeStyled.customSeparator} >
-                                        <TimelineDot className={homeStyled.customDot} />
+                                    <TimelineSeparator className={timelineClasses.customSeparator} >
+                                        <TimelineDot className={timelineClasses.customDot} />
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent>
@@ -188,7 +187,7 @@ export const timeline_carousel = () => {
             <Box id="diary-section" component='section'>
                 <Container disableGutters={isGreaterThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                     {/* Diary Section */}
-                    <div className={classes.section}>
+                    <div className={timelineClasses.section}>
                         <Container maxWidth="lg">
                             <Typography variant="h4" gutterBottom>
                                 Diary
@@ -201,6 +200,6 @@ export const timeline_carousel = () => {
                     </div>
                 </Container>
             </Box>
-            </div>
+        </div>
     );
 }

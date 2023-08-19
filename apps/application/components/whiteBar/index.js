@@ -1,6 +1,6 @@
-import { Box, Container } from '@mui/material';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import tailwindConfig from '@/tailwind.config.js';
+import { Box, Container } from '@mui/material';
 
 const WhiteBar = (props) => {
     const { boxShadow } = tailwindConfig.theme;
@@ -20,7 +20,7 @@ const WhiteBar = (props) => {
                 sx={({ palette: { white }, functions: { rgba } }) => ({
                     backgroundColor: rgba(white, 0.6),
                     backdropFilter: `saturate(200%) blur(30px)`,
-                    borderRadius: {xs: '1rem', md: '9999px'},
+                    borderRadius: { xs: '1rem', md: '9999px' },
                     boxShadow: boxShadow.md
                 })}
             >

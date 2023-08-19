@@ -1,5 +1,5 @@
-import { useMediaQuery } from '@mui/material';
 import { theme } from '@/tailwind.config'; // Your tailwind config
+import { useMediaQuery } from '@mui/material';
 
 const breakpoints = theme.screens;
 

@@ -1,19 +1,13 @@
-import { Box } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import { useBreakpoints } from '@/hooks/useBreakpoints';
-import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
-import Container from '@mui/material/Container';
 import StoryCard from '@/components/storyCard';
-import { experienceStories } from '@/data/mock/stories';
-import Link from 'next/link';
-import Avatar from '@mui/material/Avatar';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useRouter } from 'next/router';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
+import { experienceStories } from '@/data/mock/stories';
+import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+
 
 const Experiences = () => {
 
@@ -54,7 +48,7 @@ const Experiences = () => {
 
             <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                    
+
                     <StoriesFilters />
 
                     <Typography variant="h2" className='mt-10'>Stories</Typography>

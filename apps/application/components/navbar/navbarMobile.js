@@ -1,8 +1,8 @@
-import Menu from "@mui/material/Menu";
 import Box from '@mui/material/Box';
+import Menu from "@mui/material/Menu";
 import PropTypes from "prop-types";
-import NavbarLink from "./navbarLink";
 import LanguageSelector from "./languageSelector";
+import NavbarLink from "./navbarLink";
 
 function NavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();
@@ -21,7 +21,7 @@ function NavbarMobile({ open, close }) {
       open={Boolean(open)}
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
-      inputProps={{MenuProps: {disableScrollLock: true}}}
+      inputProps={{ MenuProps: { disableScrollLock: true } }}
     >
       <Box px={0.5}>
         <NavbarLink icon="donut_large" name="dashboard" route="/" />

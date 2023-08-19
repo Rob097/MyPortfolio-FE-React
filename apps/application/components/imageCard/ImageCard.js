@@ -1,5 +1,5 @@
-import classes from "./ImageCard.module.scss";
 import Typography from '@mui/material/Typography';
+import classes from "./ImageCard.module.scss";
 
 const ImageCard = ({ image, title }) => (
     <div className={classes.card}>

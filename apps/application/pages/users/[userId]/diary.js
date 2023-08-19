@@ -1,41 +1,17 @@
 import StoryCard from '@/components/storyCard';
-import WhiteBar from '@/components/whiteBar';
+import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
+import { educationStories, experienceStories, projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import tailwindConfig from '@/tailwind.config.js';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Checkbox from '@mui/material/Checkbox';
-import Chip from '@mui/material/Chip';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Input from '@mui/material/Input';
-import Typography from '@mui/material/Typography';
-import _without from 'lodash/without';
+import { Avatar, Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import classes from "../../userProfile.module.scss";
 import Link from 'next/link';
-import { experienceStories } from '@/data/mock/stories';
-import StoriesFilters from '@/components/whiteBar/storiesFilters';
-import tailwindConfig from '@/tailwind.config.js';
-import { useTheme } from "@mui/material";
+import { useRouter } from 'next/router';
+import userClasses from './styles/shared.module.scss';
 
-const skills = [
-    'Angular',
-    'React',
-    'Vue',
-    'Java',
-    'Spring boot',
-    'Docker',
-    'Kubernetes'
-];
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -43,44 +19,6 @@ const Diary = () => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
-
-    const categoriesMock = [
-        { id: 1, name: t('categories.list.professional-experiences') },
-        { id: 2, name: t('categories.list.personal-projects') },
-        { id: 3, name: t('categories.list.educations') },
-    ];
-
-    const [filterBy, setFilterBy] = useState('');
-    const [filteredSkills, setFilteredSkills] = useState([]);
-    const [categories, setCategories] = useState(categoriesMock.map(({ id }) => id));
-
-    const handleChange = (event) => {
-        setFilterBy(event.target.value);
-    };
-
-    const handleChangeCategory = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setCategories(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-
-    const handleChangeSkills = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setFilteredSkills(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-    const handleDeleteSkill = (e, value) => {
-        e.preventDefault();
-        setFilteredSkills((current) => _without(current, value));
-    };
 
     const router = useRouter();
     const { userId } = router.query;
@@ -113,7 +51,7 @@ const Diary = () => {
                             <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
                                 <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
                                 <Typography variant="h5" fontWeight="bold" color="primary">{t('user-home:about-me.title')}</Typography>
-                                <div className={classes.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
+                                <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
                                     <Typography variant="body2" className='leading-7'>
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
@@ -131,7 +69,7 @@ const Diary = () => {
 
             <StoriesFilters />
 
-            <Box id="diary-stories" component='section' className={classes.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${colors.background.main} 90%);` }}>
+            <Box id="diary-stories" component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${colors.background.main} 90%);` }}>
                 <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
                     <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
@@ -152,12 +90,12 @@ const Diary = () => {
                                     </Grid>
                                 ))
                             }
-                            
+
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
-                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                </Avatar>
+                                    <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                        <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                    </Avatar>
                                 </Link>
                             </Grid>
                         </Grid>
@@ -172,29 +110,21 @@ const Diary = () => {
                         <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
 
                         <Grid container className='mt-4' spacing={2}>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    title="My First Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="10/08/2023"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    title="My Second Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="11/08/2023"
-                                    skills={['Design', 'Rendering']}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                                    title="My Third Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="12/08/2023"
-                                />
-                            </Grid>
+
+                            {
+                                projectStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
+                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
+                                        <StoryCard
+                                            image={image}
+                                            title={title}
+                                            preview={preview}
+                                            date={date}
+                                            skills={skills}
+                                        />
+                                    </Grid>
+                                ))
+                            }
+
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                     <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
@@ -211,31 +141,21 @@ const Diary = () => {
                         <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.educations')}</Typography>
 
                         <Grid container className='mt-4' spacing={2}>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                                    title="My First Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="10/08/2023"
-                                    skills={['Java', 'React', 'Spring boot', 'Docker', 'Kubernetes']}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    title="My Second Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="11/08/2023"
-                                    skills={['Design', 'Rendering']}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
-                                <StoryCard
-                                    image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                                    title="My Third Experience"
-                                    preview="Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica."
-                                    date="12/08/2023"
-                                />
-                            </Grid>
+
+                            {
+                                educationStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
+                                    <Grid key={id} item xs={12} sm={6} lg={3} className='flex justify-center sm:justify-start items-start'>
+                                        <StoryCard
+                                            image={image}
+                                            title={title}
+                                            preview={preview}
+                                            date={date}
+                                            skills={skills}
+                                        />
+                                    </Grid>
+                                ))
+                            }
+
                             <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                     <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />

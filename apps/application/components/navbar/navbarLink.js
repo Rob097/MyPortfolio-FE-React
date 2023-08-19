@@ -1,8 +1,8 @@
+import Box from '@mui/material/Box';
+import Icon from "@mui/material/Icon";
+import Typography from '@mui/material/Typography';
 import Link from "next/link";
 import PropTypes from "prop-types";
-import Icon from "@mui/material/Icon";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 function NavbarLink({ icon, name, route, light }) {
   return (
@@ -23,7 +23,7 @@ function NavbarLink({ icon, name, route, light }) {
       >
         {icon}
       </Icon>
-      <Typography 
+      <Typography
         variant="button"
         fontWeight="regular"
         color={light ? "white" : "dark"}
