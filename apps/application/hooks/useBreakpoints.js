@@ -1,12 +1,8 @@
-import { theme } from '@/tailwind.config'; // Your tailwind config
 import { useMediaQuery } from '@mui/material';
 
-const breakpoints = theme.screens;
-
 export function useBreakpoints() {
-    const isGreaterThan = (breakpointKey) => useMediaQuery(`(min-width: ${breakpoints[breakpointKey]})`);
-    const isSmallerThan = (breakpointKey) => useMediaQuery(`(max-width: ${breakpoints[breakpointKey]})`);
-
+    const isGreaterThan = (breakpointKey) => useMediaQuery((theme) => theme.breakpoints.up(breakpointKey));
+    const isSmallerThan = (breakpointKey) => useMediaQuery((theme) => theme.breakpoints.down(breakpointKey));
     return {
         isGreaterThan,
         isSmallerThan

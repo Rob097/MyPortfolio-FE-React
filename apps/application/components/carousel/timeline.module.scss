@@ -55,8 +55,14 @@
 
 
 
+.circle{
+  max-width: 100px;
+}
 
-
+.circle:after {
+  content: '';
+  padding-top: 100%;
+}
 
 .firstAbsolute:before {
   content: url("/images/arrow.png") !important;

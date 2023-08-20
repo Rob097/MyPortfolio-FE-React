@@ -47,7 +47,7 @@ const Experiences = () => {
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
                     <Box className={isSmallerThanLg ? 'mx-8' : ''}>
                         <Typography variant="h2">Timeline</Typography>
-                        <Box className="w-full mt-20 bg-white shadow-xl rounded-lg">
+                        <Box className="w-full mt-20 bg-white shadow-xl rounded-lg" minHeight={'30vw'}>
                             <TimelineCustom />
                         </Box>
                     </Box>
