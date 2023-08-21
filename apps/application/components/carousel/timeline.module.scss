@@ -98,20 +98,34 @@
   height: 100px;  
 }
 
-/* 
 
-.timeline {
-  transform: rotate(90deg);
+// TODO: Set as max height 90vh
+// and in this case ricalculate the background steps
+
+$boxHeight: 40em;
+$gradientTopHeight: 5em;
+$gradientBottomHeight: 35em;
+
+.customTimelineContainer {
+  position: relative;
+  height: $boxHeight;
+  overflow-y: hidden;
+  z-index: 1;
 }
-.timelineContentContainer {
-  text-align: left;
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $boxHeight;
+  pointer-events: none;
+  z-index: 20;
+  background-image: linear-gradient(rgba(34, 34, 34, 0.5), transparent $gradientTopHeight, transparent $gradientBottomHeight, rgba(34, 34, 34, 0.5)),
 }
-.timelineContent {
-  display: inline-block;
-  transform: rotate(-90deg);
-  text-align: center;
-  min-width: 50;
+.content {
+  position: relative;
+  z-index: 10;
+  overflow-y: scroll;
+  height: $boxHeight;
 }
-.timelineIcon {
-  transform: rotate(-90deg);
-} */

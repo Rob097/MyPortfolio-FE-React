@@ -1,14 +1,13 @@
+import TimelineCustom from '@/components/carousel/gptTimeline';
 import StoryCard from '@/components/storyCard';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
-import { experienceStories, educationStories } from '@/data/mock/stories';
+import { educationStories, experienceStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Pagination, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { Pagination } from '@mui/material';
-import TimelineCustom from '@/components/carousel/gptTimeline';
 
 
 const Experiences = () => {
@@ -47,9 +46,7 @@ const Experiences = () => {
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
                     <Box className={isSmallerThanLg ? 'mx-8' : ''}>
                         <Typography variant="h2">Timeline</Typography>
-                        <Box className="w-full mt-20 bg-white shadow-xl rounded-lg" minHeight={'30vw'}>
-                            <TimelineCustom />
-                        </Box>
+                        <TimelineCustom />
                     </Box>
                 </Container>
             </Box>
@@ -64,7 +61,7 @@ const Experiences = () => {
                         <Box className="w-full mt-8 mb-20">
                             <Grid container className='mt-4' spacing={2}>
                                 {
-                                    stories.slice(0,6).map(({ id, title, preview, date, skills, image }) => (
+                                    stories.slice(0, 6).map(({ id, title, preview, date, skills, image }) => (
                                         <Grid key={id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                             <StoryCard
                                                 image={image}
