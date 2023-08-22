@@ -103,12 +103,14 @@
 // and in this case ricalculate the background steps
 
 $boxHeight: 40em;
+$maxHeight: 90vh;
 $gradientTopHeight: 5em;
 $gradientBottomHeight: 35em;
 
 .customTimelineContainer {
   position: relative;
   height: $boxHeight;
+  max-height: $maxHeight;
   overflow-y: hidden;
   z-index: 1;
 }
@@ -119,13 +121,14 @@ $gradientBottomHeight: 35em;
   left: 0;
   right: 0;
   height: $boxHeight;
+  max-height: $maxHeight;
   pointer-events: none;
   z-index: 20;
-  background-image: linear-gradient(rgba(34, 34, 34, 0.5), transparent $gradientTopHeight, transparent $gradientBottomHeight, rgba(34, 34, 34, 0.5)),
 }
 .content {
   position: relative;
   z-index: 10;
   overflow-y: scroll;
   height: $boxHeight;
+  max-height: $maxHeight;
 }

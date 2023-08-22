@@ -32,10 +32,10 @@ const Experiences = () => {
                     <Box className="mt-20">
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6} className='flex justify-center md:justify-end items-center'>
-                                <Button variant="contained" color="secondary" size="large" sx={{ borderRadius: '50px' }}>Timeline</Button>
+                                <Button href='#timeline-section' variant="contained" color="secondary" size="large" sx={{ borderRadius: '50px' }}>Timeline</Button>
                             </Grid>
                             <Grid item xs={12} md={6} className='flex justify-center md:justify-start items-center'>
-                                <Button variant="contained" color="secondary" size="large" sx={{ borderRadius: '50px' }}>Stories</Button>
+                                <Button href='#stories-section' variant="contained" color="secondary" size="large" sx={{ borderRadius: '50px' }}>Stories</Button>
                             </Grid>
                         </Grid>
                     </Box>
@@ -45,7 +45,7 @@ const Experiences = () => {
             <Box id='timeline-section' component='section' className='mt-12 xl:mt-0 pt-10'>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
                     <Box className={isSmallerThanLg ? 'mx-8' : ''}>
-                        <Typography variant="h2">Timeline</Typography>
+                        <Typography variant="h2" fontWeight='bold' className='mt-20 mb-10'>Timeline</Typography>
                         <TimelineCustom />
                     </Box>
                 </Container>
@@ -57,7 +57,7 @@ const Experiences = () => {
 
                         <StoriesFilters />
 
-                        <Typography variant="h2" className='mt-10'>Stories</Typography>
+                        <Typography variant="h2" fontWeight='bold' className='mt-10'>Stories</Typography>
                         <Box className="w-full mt-8 mb-20">
                             <Grid container className='mt-4' spacing={2}>
                                 {

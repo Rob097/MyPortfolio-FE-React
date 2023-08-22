@@ -114,7 +114,7 @@ const StoriesFilters = () => {
                                     onChange={handleChangeSkills}
                                     size="small"
                                     renderValue={(selected) => (
-                                        <Stack direction="row" spacing={1} width={'95%'} >
+                                        <Stack direction="row" spacing={1} className='overflow-x-hidden' >
                                             {selected.map((value) => (
                                                 <Chip
                                                     key={value}

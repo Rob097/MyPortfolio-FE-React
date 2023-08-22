@@ -4,7 +4,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box, Grid, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Collapse from '@mui/material/Collapse';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShowIf from "../utils/showIf";
 import timelineClasses from "./timeline.module.scss";
 
@@ -13,6 +13,7 @@ const SHOW_ARROW = true;
 
 // Main component of the "S-shaped" timeline
 const TimelineCustom = () => {
+
 
     if (!experienceStories || experienceStories.length < 3) {
         return <h2 className='text-center'>Nessun dato trovato</h2>;
@@ -40,10 +41,12 @@ const TimelineCustom = () => {
     }
 
     return (
-        <Box className={timelineClasses.customTimelineContainer + " w-full mt-20 bg-white shadow-xl rounded-lg"} /* minHeight={'30em'} */>
-            <Box className={timelineClasses.background}></Box>
-            <Box className={timelineClasses.content}>
-                {rows}
+        <Box className={timelineClasses.customTimelineContainer + " w-full bg-background-main shadow-2xl rounded-lg"} /* minHeight={'30em'} */>
+            <TimelineBackground />
+            <Box id='timeline-content' className={timelineClasses.content + ' lg:p-4'}>
+                <Box>
+                    {rows}
+                </Box>
             </Box>
         </Box>
     );
@@ -51,6 +54,41 @@ const TimelineCustom = () => {
 
 export default TimelineCustom;
 
+const TimelineBackground = () => {
+
+    const [topOpacity, setTopOpacity] = useState(0);
+    const [bottomOpacity, setBottomOpacity] = useState(0);
+    const backgroundImage = `linear-gradient(rgba(34, 34, 34, ${topOpacity}), transparent 12.5%, transparent 87.5%, rgba(34, 34, 34, ${bottomOpacity}))`;
+
+    useEffect(() => {
+        const timelineContent = document.getElementById('timeline-content');
+        const maxOpacity = 0.2; 
+        let fraction = timelineContent.firstChild.offsetHeight/2;
+
+        function updateOpacity() {
+            let scrollTop = timelineContent.scrollTop;
+            const topOpacity = scrollTop / fraction > maxOpacity ? maxOpacity : scrollTop / fraction;
+            const bottomOpacity = 1 - scrollTop / fraction > maxOpacity ? maxOpacity : 1 - scrollTop / fraction;
+            setTopOpacity(topOpacity);
+            setBottomOpacity(bottomOpacity);
+        }
+
+        updateOpacity();
+
+        timelineContent.addEventListener("scroll", function () {
+            updateOpacity();
+        }); 
+
+        timelineContent.addEventListener("resize", function () {
+            fraction = timelineContent.firstChild.offsetHeight/2;
+        });
+
+    }, []);
+
+    return (
+        <Box className={timelineClasses.background} style={{ backgroundImage: backgroundImage }}></Box>
+    )
+}
 
 // Represents a single element of the timeline (the circle with the year or the "Cooming Soon" text)
 const Element = ({ text, showArrow, isRowEven }) => {
@@ -74,7 +112,7 @@ const Element = ({ text, showArrow, isRowEven }) => {
                 />
             </ShowIf>
             <Avatar variant='rounding' className={timelineClasses.circle + ' border-4 border-primary-main bg-white text-dark-main shadow-xl w-full h-auto m-2 lg:m-2'}>
-                <Typography variant="h4" textAlign='center' fontSize={isCoomingSoon && '0.8rem'} lineHeight={isCoomingSoon && '1rem'}>{text}</Typography>
+                <Typography variant="h4" textAlign='center' fontSize={isCoomingSoon && '0.8rem !important'} lineHeight={isCoomingSoon && '1rem !important'} className='lg:text-base xl:text-lg 2xl:text-2xl' >{text}</Typography>
             </Avatar>
             <ShowIf condition={SHOW_ARROW && showArrow && !isRowEven}>
                 <ArrowForwardIosIcon color='primary' fontSize='large' className='z-10 absolute left-1/2 lg:right-0 lg:left-auto'
@@ -172,9 +210,9 @@ const PreviewElement = ({ title, preview }) => {
     }
 
     return (
-        <Box className='max-w-sm sm:w-96 lg:w-full bh-white shadow-lg rounded-lg m-2' sx={{ direction: 'ltr' }} >
-            <Box className='w-full bh-white shadow-lg rounded-lg cursor-pointer' onClick={() => handleExpandClick()}>
-                <Typography variant="h5" className='p-2' textAlign='center'>{title}</Typography>
+        <Box className='max-w-sm sm:w-96 lg:w-full bg-white shadow-lg rounded-lg m-2' sx={{ direction: 'ltr' }} >
+            <Box className='w-full shadow-lg rounded-lg cursor-pointer' onClick={() => handleExpandClick()}>
+                <Typography variant="h3" className='p-2 text-xl' textAlign='center'>{title}</Typography>
             </Box>
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -211,7 +249,7 @@ const MiddleLine = ({ isFirstLine, rowItems, isRowEven }) => {
                 {
                     // for loop from 0 to 2 through rowItems array:
                     [...Array(3).keys()].map((index) => (
-                        <Grid item xs={12} lg={3.25} className='relative flex justify-center items-end z-10'>
+                        <Grid item key={"middle-line-"+index} xs={12} lg={3.25} className='relative flex justify-center items-end z-10'>
                             <ShowIf condition={isGreaterThanLg}>
                                 <ShowIf condition={rowItems[index] !== undefined}>
                                     <PreviewElement title={rowItems[index]?.title} preview={rowItems[index]?.preview} key={'preview-' + rowItems[index]?.id} />

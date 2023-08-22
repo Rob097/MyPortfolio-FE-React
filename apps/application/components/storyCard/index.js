@@ -24,7 +24,7 @@ const StoryCard = (props) => {
                 />
             </ShowIf>
             <CardContent className={(props.image === undefined ? 'mt-4' : '')}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h3">
                     {props.title}
                 </Typography>
                 <Typography variant="body2" className='overflow-hidden text-ellipsis' sx={{ display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", color: ({ palette: { text } }) => (text.secondary) }}>

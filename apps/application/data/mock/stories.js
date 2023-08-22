@@ -1,7 +1,7 @@
 export const experienceStories = [
     {
         id: 1,
-        year: 2021,
+        year: '01/2021',
         title: 'My First Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '10/08/2023',
@@ -10,7 +10,7 @@ export const experienceStories = [
     },
     {
         id: 2,
-        year: 2022,
+        year: '02/2022',
         title: 'My Second Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '11/08/2023',
@@ -18,7 +18,7 @@ export const experienceStories = [
     },
     {
         id: 3,
-        year: 2023,
+        year: '03/2023',
         title: 'My Third Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '12/08/2023',
@@ -40,7 +40,7 @@ export const experienceStories = [
     },
     {
         id: 6,
-        year: 2026,
+        year: '06/2026',
         title: 'My Sixth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '15/08/2023',
@@ -107,6 +107,14 @@ export const experienceStories = [
         id: 14,
         year: 2027,
         title: 'My Seventh Experience',
+        preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
+        date: '16/08/2023',
+        skills: ['Design', 'Rendering']
+    },
+    {
+        id: 15,
+        year: 2028,
+        title: 'My Eight Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '16/08/2023',
         skills: ['Design', 'Rendering']

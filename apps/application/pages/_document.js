@@ -11,7 +11,7 @@ export default function MyDocument(props) {
   const { i18n } = useTranslation();
 
   return (
-    <Html lang={i18n.language}>
+    <Html lang={i18n.language} style={{scrollBehavior:'smooth'}}>
       <Head>
         {/* PWA primary color */}
         <meta name="theme-color" content={colors.primary.main} />
