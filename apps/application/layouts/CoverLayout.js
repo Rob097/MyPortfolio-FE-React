@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
 import PropTypes from "prop-types";
-import Navbar from "../navbar";
+import Navbar from "@/components/navbar";
 import PageLayout from "./PageLayout";
 
 function CoverLayout(props) {
@@ -19,7 +20,11 @@ function CoverLayout(props) {
         margin: 0,
         padding: 0,
         marginTop: props.top
-      }}>{props.children}</Box>
+      }}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        {props.children}
+      </Box>
 
     </PageLayout>
   );

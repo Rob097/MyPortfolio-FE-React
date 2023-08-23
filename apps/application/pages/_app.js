@@ -1,9 +1,9 @@
 import theme from "@/MUI/theme";
 import createEmotionCache from '@/components/utils/createEmotionCache';
-import CoverLayout from '@/components/layouts/CoverLayout';
+import CoverLayout from '@/layouts/CoverLayout';
+import '@/styles/animations.scss';
 import '@/styles/globals.scss';
 import { CacheProvider } from '@emotion/react';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
@@ -22,11 +22,7 @@ function MyApp(props) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        <CoverLayout>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </CoverLayout>
+        <Layout Component={Component} pageProps={pageProps} />
       </ThemeProvider>
     </CacheProvider>
   );
@@ -35,6 +31,19 @@ function MyApp(props) {
 const SuspApp = (props) => {
   return <React.Suspense fallback={<div>Loading...</div>}><MyApp {...props} /></React.Suspense>
 }
+
+const Layout = ({ Component, pageProps }) => {
+
+  let content;
+
+  if (Component.getLayout) {
+    content = Component.getLayout(<Component {...pageProps} />);
+  } else {
+    content = <Component {...pageProps} />;
+  }
+
+  return <CoverLayout>{content}</CoverLayout>
+};
 
 export default appWithTranslation(SuspApp);
 

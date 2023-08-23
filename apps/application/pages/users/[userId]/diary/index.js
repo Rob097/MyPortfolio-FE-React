@@ -10,10 +10,11 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import userClasses from './styles/shared.module.scss';
+import userClasses from '../styles/shared.module.scss';
 import ShowIf from '@/components/utils/showIf';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import DiaryLayout from '@/layouts/DiaryLayout';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -27,7 +28,7 @@ const Diary = () => {
 
     return (
         <>
-            <Box id='main-story-section' component='section' className='mt-12 xl:mt-0 pt-10 flex justify-center' sx={{ backgroundImage: `linear-gradient(180deg, transparent, ${colors.background.main} 50%);` }}>
+            {/* <Box id='main-story-section' component='section' className='mt-12 xl:mt-0 pt-10 flex justify-center' sx={{ backgroundImage: `linear-gradient(180deg, transparent, ${colors.background.main} 50%);` }}>
 
                 <Grid container className='mx-8' sx={({ breakpoints }) => ({ maxWidth: breakpoints.values['2xl'] })}>
                     <Grid item xs={12} md={4} height='25em' marginBottom={2} className='h-fit md:h-full' style={{ zIndex: '1' }}>
@@ -69,7 +70,7 @@ const Diary = () => {
 
             <Divider variant="middle" className='opacity-100' />
 
-            <StoriesFilters />
+            <StoriesFilters /> */}
 
             <Box id="diary-stories" component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${colors.background.main} 90%);` }}>
                 <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
@@ -95,8 +96,8 @@ const Diary = () => {
 
                             <ShowIf condition={experienceStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={experienceStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
+                                    <Tooltip title={experienceStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -133,8 +134,8 @@ const Diary = () => {
 
                             <ShowIf condition={projectStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={projectStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/projects' as={`/users/${userId}/experiences`}>
+                                    <Tooltip title={projectStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/projects' as={`/users/${userId}/diary/experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -170,8 +171,8 @@ const Diary = () => {
 
                             <ShowIf condition={educationStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={educationStories.length + " storie"} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/experiences' as={`/users/${userId}/experiences`}>
+                                    <Tooltip title={educationStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -226,6 +227,14 @@ export async function getStaticProps(context) {
             ...(await serverSideTranslations(locale)),
         },
     }
+}
+
+Diary.getLayout = (page) => {
+    return (
+        <DiaryLayout title={"Diary"}>
+            {page}
+        </DiaryLayout>
+    )
 }
 
 export default Diary;
