@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-const DiaryLayout = ({ children, title }) => {
+const DiaryLayout = ({ children, title, id }) => {
 
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
@@ -60,7 +60,7 @@ const DiaryLayout = ({ children, title }) => {
             <Divider variant="middle" className='opacity-100' />
 
             <ShowIf condition={title !== undefined && title !== ''}>
-                <Box className='pt-10'>
+                <Box id={id} className='pt-10'>
                     <Typography variant="h1" textAlign='center'>{title}</Typography>
                 </Box>
             </ShowIf>

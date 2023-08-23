@@ -57,7 +57,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
                     value={value}
                     onChange={languageChanged}
                     autoWidth
-                    inputProps={{ MenuProps: { disableScrollLock: true } }}
+                    inputprops={{ MenuProps: { disableScrollLock: true } }}
                     size="small"
                 >
                     {

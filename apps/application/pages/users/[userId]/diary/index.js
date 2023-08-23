@@ -97,7 +97,7 @@ const Diary = () => {
                             <ShowIf condition={experienceStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                     <Tooltip title={experienceStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
+                                        <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>

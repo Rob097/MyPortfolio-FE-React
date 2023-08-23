@@ -81,7 +81,7 @@ export const SingleElement = (props) => {
 
     return (
         <Grid container justifyContent="center" flexWrap={isGreaterThan('md') ? 'nowrap' : 'wrap'}>
-            <Grid item mr={2}>
+            <Grid item mx={'auto'}>
                 <ShowIf condition={isAvatarPath}>
                     <Avatar src={props.avatar} sx={{ width: { lg: 100, xs: 60 }, height: "auto" }} variant="rounded" />
                 </ShowIf>

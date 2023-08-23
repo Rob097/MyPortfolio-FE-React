@@ -135,7 +135,7 @@ export async function getStaticProps(context) {
 
 Experiences.getLayout = (page) => {
     return (
-        <DiaryLayout title='Experiences & Educations'>
+        <DiaryLayout title='Experiences & Educations' id='experiences'>
             {page}
         </DiaryLayout>
     )

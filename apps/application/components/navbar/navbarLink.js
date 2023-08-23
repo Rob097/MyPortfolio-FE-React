@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Link from "next/link";
 import PropTypes from "prop-types";
 
-function NavbarLink({ icon, name, route, light }) {
+function NavbarLink({ icon, name, route, light, closeMobileNavbar }) {
   return (
     <Box
       component={Link}
@@ -14,6 +14,7 @@ function NavbarLink({ icon, name, route, light }) {
       display="flex"
       alignItems="center"
       sx={{ cursor: "pointer", userSelect: "none" }}
+      onClick={closeMobileNavbar}
     >
       <Icon
         sx={{

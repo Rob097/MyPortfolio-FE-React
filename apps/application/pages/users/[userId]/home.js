@@ -85,7 +85,7 @@ const UserHome = () => {
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
+                            <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
                                 <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
                             </Link>
                         </Grid>

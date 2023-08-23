@@ -21,13 +21,13 @@ function NavbarMobile({ open, close }) {
       open={Boolean(open)}
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
-      inputProps={{ MenuProps: { disableScrollLock: true } }}
+      inputprops={{ MenuProps: { disableScrollLock: true } }}
     >
       <Box px={0.5}>
-        <NavbarLink icon="donut_large" name="dashboard" route="/" />
-        <NavbarLink icon="person" name="profile" route="/users/user1/home" />
-        <NavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
-        <NavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
+        <NavbarLink icon="donut_large" name="dashboard" route="/" closeMobileNavbar={close} />
+        <NavbarLink icon="person" name="profile" route="/users/user1/home" closeMobileNavbar={close} />
+        <NavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" closeMobileNavbar={close} />
+        <NavbarLink icon="key" name="sign in" route="/authentication/sign-in" closeMobileNavbar={close} />
         <LanguageSelector isMobile />
       </Box>
     </Menu>
