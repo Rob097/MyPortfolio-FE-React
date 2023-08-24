@@ -90,7 +90,9 @@ const UserHome = () => {
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
+                        <Link href='/users/[userId]/diary/projects#projects' as={`/users/${userId}/diary/projects#projects`}>
                             <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
+                        </Link>
                         </Grid>
                     </Grid>
                 </Container>

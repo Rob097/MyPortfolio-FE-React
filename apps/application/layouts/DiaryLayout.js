@@ -103,6 +103,11 @@ const NextBreadcrumbs = () => {
             // Capitalize subpath:
             subpath = subpath.charAt(0).toUpperCase() + subpath.slice(1);
 
+            // if subpath has the character '#' followed by some text, we want to remove it
+            if (subpath.includes("#")) {
+                subpath = subpath.split("#")[0];
+            }
+
             return { href, text: subpath };
         })
 

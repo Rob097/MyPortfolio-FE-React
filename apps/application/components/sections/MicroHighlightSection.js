@@ -91,7 +91,7 @@ export const SingleElement = (props) => {
                     </Box>
                 </ShowIf>
             </Grid>
-            <Grid item alignSelf="center">
+            <Grid item alignSelf="center" mr={{md: 2}}>
                 <Typography variant="h4" fontWeight="bold" m={0} textAlign="center">{props.title}</Typography>
                 <Typography paragraph m={0} textAlign="center">{props.caption}</Typography>
             </Grid>
