@@ -6,11 +6,12 @@ import DiaryLayout from '@/layouts/DiaryLayout';
 import { Box, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 const Projects = () => {
 
+    const { t } = useTranslation(['user-diary', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
-
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
 
@@ -27,7 +28,7 @@ const Projects = () => {
                     <Box className={isSmallerThanLg ? 'mx-8' : ''}>
 
                         <Stack direction='row' spacing={2} className='items-end my-10'>
-                            <Typography variant="h2" fontWeight='bold'>Stories</Typography>
+                            <Typography variant="h2" fontWeight='bold'>{t('common:stories')}</Typography>
                         </Stack>
                         <Box className="w-full mt-8 mb-20">
                             <Grid container className='mt-4' spacing={2}>
@@ -96,8 +97,10 @@ export async function getStaticProps(context) {
 }
 
 Projects.getLayout = (page) => {
+    const { t } = useTranslation('user-diary');
+
     return (
-        <DiaryLayout title='Personal Projects' id='projects'>
+        <DiaryLayout title={t('categories.list.personal-projects')} id='projects'>
             {page}
         </DiaryLayout>
     )

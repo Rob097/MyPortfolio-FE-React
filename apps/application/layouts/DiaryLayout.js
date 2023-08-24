@@ -61,7 +61,11 @@ const DiaryLayout = ({ children, title, id }) => {
 
             <ShowIf condition={title !== undefined && title !== ''}>
                 <Box id={id} className='pt-10'>
-                    <Typography variant="h1" textAlign='center'>{title}</Typography>
+                    <Typography variant="h1" textAlign='center'>
+                        {
+                            title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                        }
+                    </Typography>
                 </Box>
             </ShowIf>
 
@@ -83,9 +87,12 @@ export default DiaryLayout;
 
 
 const NextBreadcrumbs = () => {
+
     // Gives us ability to load the current route details
     const router = useRouter();
     const { userId } = router.query;
+
+    const { t, i18n } = useTranslation('user-diary', {lng: router.locale});
 
     const breadcrumbs = useMemo(function generateBreadcrumbs() {
         const asPathWithoutQuery = router.asPath.split("?")[0];
@@ -100,13 +107,16 @@ const NextBreadcrumbs = () => {
                 return { href: `/users/${userId}/home`, text: "Home" };
             }
 
-            // Capitalize subpath:
-            subpath = subpath.charAt(0).toUpperCase() + subpath.slice(1);
-
             // if subpath has the character '#' followed by some text, we want to remove it
             if (subpath.includes("#")) {
                 subpath = subpath.split("#")[0];
             }
+
+            // translate subpath:
+            subpath = i18n.exists('user-diary:'+subpath) ? t(subpath) : (i18n.exists('user-diary:'+'categories.list.' + subpath) ? t('categories.list.' + subpath) : subpath);
+
+            // Capitalize subpath:
+            subpath = subpath.charAt(0).toUpperCase() + subpath.slice(1);
 
             return { href, text: subpath };
         })
@@ -118,7 +128,7 @@ const NextBreadcrumbs = () => {
         );
 
         return [...uniqueCrumblist];
-    }, [router.asPath]);
+    }, [router.asPath, router.locale, t]);
 
     return (
         /* The old breadcrumb ending with '/>' was converted into this */

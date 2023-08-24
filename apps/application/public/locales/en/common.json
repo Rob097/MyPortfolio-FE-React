@@ -3,5 +3,8 @@
     "whoamI": "Hi, I'm ",
     "read-more": "Read more",
     "skills": "Skills",
-    "stories": "Stories"
+    "stories": "Stories",
+    "errors": {
+        "no-data-found": "No data found"
+    }
 }

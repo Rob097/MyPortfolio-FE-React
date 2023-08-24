@@ -1,5 +1,6 @@
 {
     "title": "Diary",
+    "diary": "Diary",
     "hire-me": "Hire me",
     "follow-me": "Follow me",
     "categories": {
@@ -7,8 +8,10 @@
         "list": {
             "all": "All",
             "professional-experiences": "Professional experiences",
+            "experiences": "Experiences",
             "personal-projects": "Personal projects",
-            "educations": "Educations"
+            "educations": "Educations",
+            "projects": "Projects"
         }
     },
     "sort": {
@@ -24,6 +27,8 @@
         "apply": "Apply filters",
         "by-name": "Search by name",
         "by-skills": "Search by skills"
-    }
+    },
+    "view-as-timeline": "View as timeline",
+    "view-as-list": "View as list"
 
 }

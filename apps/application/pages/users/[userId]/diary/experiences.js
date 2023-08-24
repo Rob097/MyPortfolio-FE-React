@@ -11,9 +11,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import experiencesClasses from '../styles/experiences.module.scss';
+import { useTranslation } from 'next-i18next';
 
 const Experiences = () => {
 
+    const { t } = useTranslation(['user-diary', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const { colors } = tailwindConfig.theme;
     const [showTimeline, setShowTimeline] = useState(false);
@@ -44,10 +46,10 @@ const Experiences = () => {
                         <Box className={isSmallerThanLg ? 'mx-8' : ''}>
 
                             <Stack direction='row' spacing={2} className='items-end my-10'>
-                                <Typography variant="h2" fontWeight='bold'>Stories</Typography>
+                                <Typography variant="h2" fontWeight='bold'>{t('common:stories')}</Typography>
                                 <Box className={experiencesClasses.container}>
                                     <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
-                                        View As Timeline
+                                        {t('view-as-timeline')}
                                     </Button>
                                 </Box>
                             </Stack>
@@ -82,9 +84,9 @@ const Experiences = () => {
                         <Box className={isSmallerThanLg ? 'mx-8' : ''}>
                             <Stack direction='row' spacing={2} className='items-end my-10'>
                                 <Typography variant="h2" fontWeight='bold'>Timeline</Typography>
-                                <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>View As Stories</Button>
+                                <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>{t('view-as-list')}</Button>
                             </Stack>
-                            <TimelineCustom />
+                            <TimelineCustom stories={stories} />
                         </Box>
                     </Container>
                 </Box>
@@ -134,8 +136,10 @@ export async function getStaticProps(context) {
 }
 
 Experiences.getLayout = (page) => {
+    const { t } = useTranslation('user-diary');
+    
     return (
-        <DiaryLayout title='Experiences & Educations' id='experiences'>
+        <DiaryLayout title={t('categories.list.experiences') + ' & ' + t('categories.list.educations')} id='experiences'>
             {page}
         </DiaryLayout>
     )

@@ -1,6 +1,6 @@
 export const experienceStories = [
     {
-        id: 1,
+        id: 'exp-1',
         year: '01/2021',
         title: 'My First Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -9,7 +9,7 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 2,
+        id: 'exp-2',
         year: '02/2022',
         title: 'My Second Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -17,7 +17,7 @@ export const experienceStories = [
         skills: ['Design', 'Rendering']
     },
     {
-        id: 3,
+        id: 'exp-3',
         year: '03/2023',
         title: 'My Third Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -25,21 +25,21 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 4,
+        id: 'exp-4',
         year: 2024,
         title: 'My Fourth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '13/08/2023'
     },
     {
-        id: 5,
+        id: 'exp-5',
         year: 2025,
         title: 'My Fifth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '14/08/2023'
     },
     {
-        id: 6,
+        id: 'exp-6',
         year: '06/2026',
         title: 'My Sixth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -48,7 +48,7 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 7,
+        id: 'exp-7',
         year: 2027,
         title: 'My Seventh Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -56,7 +56,7 @@ export const experienceStories = [
         skills: ['Design', 'Rendering']
     },
     {
-        id: 8,
+        id: 'exp-8',
         year: 2021,
         title: 'My First Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -65,7 +65,7 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 9,
+        id: 'exp-9',
         year: 2022,
         title: 'My Second Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -73,7 +73,7 @@ export const experienceStories = [
         skills: ['Design', 'Rendering']
     },
     {
-        id: 10,
+        id: 'exp-10',
         year: 2023,
         title: 'My Third Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -81,21 +81,21 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 11,
+        id: 'exp-11',
         year: 2024,
         title: 'My Fourth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '13/08/2023'
     },
     {
-        id: 12,
+        id: 'exp-12',
         year: 2025,
         title: 'My Fifth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '14/08/2023'
     },
     {
-        id: 13,
+        id: 'exp-13',
         year: 2026,
         title: 'My Sixth Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -104,7 +104,7 @@ export const experienceStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 14,
+        id: 'exp-14',
         year: 2027,
         title: 'My Seventh Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -112,7 +112,7 @@ export const experienceStories = [
         skills: ['Design', 'Rendering']
     },
     {
-        id: 15,
+        id: 'exp-15',
         year: 2028,
         title: 'My Eight Experience',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
@@ -143,12 +143,20 @@ export const projectStories = [
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '12/08/2023',
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
+    },
+    {
+        id: 4,
+        title: 'My Fourth Project',
+        preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
+        date: '13/08/2023',
+        image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     }
 ];
 
 export const educationStories = [
     {
-        id: 1,
+        id: 'ed-1',
+        year: '01/2021',
         title: 'My First Education',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '10/08/2023',
@@ -156,21 +164,24 @@ export const educationStories = [
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 2,
+        id: 'ed-2',
+        year: '02/2022',
         title: 'My Second Education',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '11/08/2023',
         skills: ['Design', 'Rendering']
     },
     {
-        id: 3,
+        id: 'ed-3',
+        year: '03/2023',
         title: 'My Third Education',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica. Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '12/08/2023',
         image: 'https://mui.com/static/images/cards/contemplative-reptile.jpg'
     },
     {
-        id: 4,
+        id: 'ed-4',
+        year: '04/2024',
         title: 'My Fourth Education',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '13/08/2023',

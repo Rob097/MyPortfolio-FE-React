@@ -1,4 +1,3 @@
-import { experienceStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box, Grid, Typography } from "@mui/material";
@@ -7,35 +6,37 @@ import Collapse from '@mui/material/Collapse';
 import { useEffect, useState } from "react";
 import ShowIf from "../utils/showIf";
 import timelineClasses from "./timeline.module.scss";
+import { useTranslation } from 'next-i18next';
 
 const COOMING_SOON = 'Cooming Soon';
 const SHOW_ARROW = true;
 
 // Main component of the "S-shaped" timeline
-const TimelineCustom = () => {
+const TimelineCustom = ({stories}) => {
+    const { t } = useTranslation('common');
 
 
-    if (!experienceStories || experienceStories.length < 3) {
-        return <h2 className='text-center'>Nessun dato trovato</h2>;
+    if (!stories || stories.length < 3) {
+        return <h2 className='text-center'>{t('errors.no-data-found')}</h2>;
     }
 
     // Display 3 elements per row:
     const rows = [];
-    for (let i = 0; i < experienceStories.length; i += 3) {
+    for (let i = 0; i < stories.length; i += 3) {
         rows.push(
             <Box key={"ROW-" + i}>
-                <MiddleLine isFirstLine={i === 0} rowItems={experienceStories.slice(i, i + 3)} isRowEven={i % 2 === 0} />
-                <ElementsLine isFirst={i === 0} rowItems={experienceStories.slice(i, i + 3)} isRowEven={i % 2 === 0} />
+                <MiddleLine isFirstLine={i === 0} rowItems={stories.slice(i, i + 3)} isRowEven={i % 2 === 0} />
+                <ElementsLine isFirst={i === 0} rowItems={stories.slice(i, i + 3)} isRowEven={i % 2 === 0} stories={stories} />
             </Box>
         );
     }
 
-    // If the last item of experienceStories is the last of a row, add a MiddleLine and a ElementsLine:
-    if (experienceStories.length % 3 === 0) {
+    // If the last item of stories is the last of a row, add a MiddleLine and a ElementsLine:
+    if (stories.length % 3 === 0) {
         rows.push(
-            <Box key={"ROW-" + experienceStories.length}>
+            <Box key={"ROW-" + stories.length}>
                 <MiddleLine isFirstLine={false} rowItems={[]} isRowEven={rows.length % 2 === 0} />
-                <ElementsLine isFirst={false} rowItems={[]} isRowEven={rows.length % 2 === 0} />
+                <ElementsLine isFirst={false} rowItems={[]} isRowEven={rows.length % 2 === 0} stories={stories} />
             </Box>
         );
     }
@@ -203,6 +204,7 @@ const Line = ({ type, hasPreview, isEnd, isTop, isRight }) => {
 
 // Represents the preview of a story with title, preview text and a "Read All" button
 const PreviewElement = ({ title, preview }) => {
+    const { t } = useTranslation('common');
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = (forceTo) => {
@@ -220,7 +222,7 @@ const PreviewElement = ({ title, preview }) => {
                     {preview}
                 </Typography>
                 <Box className='w-full flex justify-between items-center mb-2'>
-                    <Typography variant="caption" color='primary' className='ml-2 cursor-pointer'>Read All</Typography>
+                    <Typography variant="caption" color='primary' className='ml-2 cursor-pointer'>{t('read-more')}</Typography>
                     <Typography variant="caption" color='primary' className='mr-2 cursor-pointer' onClick={() => handleExpandClick(false)} >X</Typography>
                 </Box>
             </Collapse>
@@ -266,19 +268,17 @@ const MiddleLine = ({ isFirstLine, rowItems, isRowEven }) => {
 }
 
 // Represents a single line of the timeline (the one with the 3 elements plus the column and connector lines)
-const ElementsLine = ({ isFirst, rowItems, isRowEven }) => {
+const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
 
     const isCoomingSoon = rowItems.length === 0;
-    const isAbsoluteLast = !isCoomingSoon && rowItems[rowItems.length - 1]?.id === experienceStories[experienceStories.length - 1]?.id ? rowItems.length - 1 : -1;
+    const isAbsoluteLast = !isCoomingSoon && rowItems[rowItems.length - 1]?.id === stories[stories.length - 1]?.id ? rowItems.length - 1 : -1;
 
     const ColumnLine = ({ index }) => (
         <Grid item xs={12} lg={2.25} className={'relative flex flex-col justify-center items-center z-10 lg:px-2'}>
-            {/* <ShowIf condition={!isCoomingSoon}> */}
-
             <ShowIf condition={!isCoomingSoon && isSmallerThanLg && (isAbsoluteLast === -1 || isAbsoluteLast >= index)}>
                 <Line type="column" hasPreview />
                 <PreviewElement title={rowItems[index]?.title} preview={rowItems[index]?.preview} key={rowItems[index]?.id} />
@@ -291,8 +291,6 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven }) => {
             <ShowIf condition={!isCoomingSoon && (isAbsoluteLast === -1 || isAbsoluteLast > index)}>
                 <Line type="column" hasPreview />
             </ShowIf>
-
-            {/* </ShowIf> */}
         </Grid>
     );
 
