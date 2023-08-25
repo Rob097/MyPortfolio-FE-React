@@ -1,4 +1,4 @@
-import StoryCard from '@/components/storyCard';
+import StoryCard from '@/components/cards/storyCard';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { educationStories, experienceStories, projectStories } from '@/data/mock/stories';
@@ -81,14 +81,10 @@ const Diary = () => {
                         <Grid container className='mt-4' spacing={2}>
 
                             {
-                                experienceStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={experienceStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                experienceStories.slice(0, 3).map((story) => (
+                                    <Grid key={story.id} item xs={12} sm={6} lg={experienceStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
-                                            image={image}
-                                            title={title}
-                                            preview={preview}
-                                            date={date}
-                                            skills={skills}
+                                            story={story}
                                         />
                                     </Grid>
                                 ))
@@ -119,14 +115,10 @@ const Diary = () => {
                         <Grid container className='mt-4' spacing={2}>
 
                             {
-                                projectStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={projectStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                projectStories.slice(0, 3).map((story) => (
+                                    <Grid key={story.id} item xs={12} sm={6} lg={projectStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
-                                            image={image}
-                                            title={title}
-                                            preview={preview}
-                                            date={date}
-                                            skills={skills}
+                                            story={story}
                                         />
                                     </Grid>
                                 ))
@@ -156,14 +148,10 @@ const Diary = () => {
                         <Grid container className='mt-4' spacing={2}>
 
                             {
-                                educationStories.slice(0, 3).map(({ id, title, preview, date, skills, image }) => (
-                                    <Grid key={id} item xs={12} sm={6} lg={educationStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                educationStories.slice(0, 3).map((story) => (
+                                    <Grid key={story.id} item xs={12} sm={6} lg={educationStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
-                                            image={image}
-                                            title={title}
-                                            preview={preview}
-                                            date={date}
-                                            skills={skills}
+                                            story={story}
                                         />
                                     </Grid>
                                 ))
@@ -172,7 +160,7 @@ const Diary = () => {
                             <ShowIf condition={educationStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                     <Tooltip title={educationStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
+                                        <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -231,7 +219,7 @@ export async function getStaticProps(context) {
 
 Diary.getLayout = (page) => {
     return (
-        <DiaryLayout title={"Diary"}>
+        <DiaryLayout title={"Diary"} showStoryFilters showBreadcrumbs>
             {page}
         </DiaryLayout>
     )

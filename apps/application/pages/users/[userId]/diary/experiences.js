@@ -1,5 +1,5 @@
 import TimelineCustom from '@/components/carousel/gptTimeline';
-import StoryCard from '@/components/storyCard';
+import StoryCard from '@/components/cards/storyCard';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { educationStories, experienceStories } from '@/data/mock/stories';
@@ -38,7 +38,7 @@ const Experiences = () => {
 
     return (
 
-        <Box className='pb-20'>
+        <Box id='experiences-section' component='section' className='pb-20'>
 
             <ShowIf condition={!showTimeline}>
                 <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
@@ -56,14 +56,10 @@ const Experiences = () => {
                             <Box className="w-full mt-8 mb-20">
                                 <Grid container className='mt-4' spacing={2}>
                                     {
-                                        stories.slice(0, 6).map(({ id, title, preview, date, skills, image }) => (
-                                            <Grid key={id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
+                                        stories.slice(0, 6).map((story) => (
+                                            <Grid key={story.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                                 <StoryCard
-                                                    image={image}
-                                                    title={title}
-                                                    preview={preview}
-                                                    date={date}
-                                                    skills={skills}
+                                                    story={story}
                                                 />
                                             </Grid>
                                         ))
@@ -139,7 +135,7 @@ Experiences.getLayout = (page) => {
     const { t } = useTranslation('user-diary');
     
     return (
-        <DiaryLayout title={t('categories.list.experiences') + ' & ' + t('categories.list.educations')} id='experiences'>
+        <DiaryLayout title={t('categories.list.experiences') + ' & ' + t('categories.list.educations')} id='experiences' showStoryFilters showBreadcrumbs>
             {page}
         </DiaryLayout>
     )

@@ -72,7 +72,7 @@ function Navbar({ transparent, light, action }) {
 
     <>
       <WhiteBar
-        containerStyles={{ opacity: (show ? 1 : 0), position: 'fixed', zIndex: (show ? 999 : 0), transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s' }}
+        containerStyles={{ opacity: (show ? 1 : 0), position: 'fixed', zIndex: (show ? 40 : 0), transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s' }}
       >
         <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
           <Typography variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>

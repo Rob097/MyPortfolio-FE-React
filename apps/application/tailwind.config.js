@@ -198,7 +198,8 @@ module.exports = {
         main: '#67748e'
       },
       background: {
-        main: '#fdf8f7'
+        main: '#fdf8f7',
+        secondary: '#f5f7fa'
       }
     },
     columns: {
@@ -1045,6 +1046,5 @@ module.exports = {
   plugins: [],
   corePlugins: {
     preflight: false,
-  },
-  // important: '#__next',
+  }
 }

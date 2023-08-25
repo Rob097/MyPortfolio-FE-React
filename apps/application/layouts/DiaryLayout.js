@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-const DiaryLayout = ({ children, title, id }) => {
+const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs }) => {
 
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
@@ -63,19 +63,23 @@ const DiaryLayout = ({ children, title, id }) => {
                 <Box id={id} className='pt-10'>
                     <Typography variant="h1" textAlign='center'>
                         {
-                            title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                            title && title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
                         }
                     </Typography>
                 </Box>
             </ShowIf>
 
-            <Box id="diary-breadcrumbs" className={(title === undefined ? 'mt-10' : 'mt-8') + ' w-fit mx-auto'}>
-                <NextBreadcrumbs />
-            </Box>
+            <ShowIf condition={showBreadcrumbs === true}>
+                <Box id="diary-breadcrumbs" className={(title === undefined ? 'mt-10' : 'mt-8') + ' w-fit mx-auto'}>
+                    <NextBreadcrumbs />
+                </Box>
+            </ShowIf>
 
-            <Box id="diary-stories-filter">
-                <StoriesFilters />
-            </Box>
+            <ShowIf condition={showStoryFilters === true}>
+                <Box id="diary-stories-filter">
+                    <StoriesFilters />
+                </Box>
+            </ShowIf>
 
             {children}
 
@@ -92,7 +96,7 @@ const NextBreadcrumbs = () => {
     const router = useRouter();
     const { userId } = router.query;
 
-    const { t, i18n } = useTranslation('user-diary', {lng: router.locale});
+    const { t, i18n } = useTranslation('user-diary', { lng: router.locale });
 
     const breadcrumbs = useMemo(function generateBreadcrumbs() {
         const asPathWithoutQuery = router.asPath.split("?")[0];
@@ -113,7 +117,7 @@ const NextBreadcrumbs = () => {
             }
 
             // translate subpath:
-            subpath = i18n.exists('user-diary:'+subpath) ? t(subpath) : (i18n.exists('user-diary:'+'categories.list.' + subpath) ? t('categories.list.' + subpath) : subpath);
+            subpath = i18n.exists('user-diary:' + subpath) ? t(subpath) : (i18n.exists('user-diary:' + 'categories.list.' + subpath) ? t('categories.list.' + subpath) : subpath);
 
             // Capitalize subpath:
             subpath = subpath.charAt(0).toUpperCase() + subpath.slice(1);
@@ -146,8 +150,8 @@ const NextBreadcrumbs = () => {
 
 // Each individual "crumb" in the breadcrumbs list
 function Crumb({ text, href, last = false }) {
-    
     const { colors } = tailwindConfig.theme;
+    const isHome = text === "Home";
 
     // The last crumb is rendered as normal text since we are already on the page
     if (last) {
@@ -156,7 +160,7 @@ function Crumb({ text, href, last = false }) {
 
     // All other crumbs will be rendered as links that can be visited
     return (
-        <Link underline="hover" href={href}>
+        <Link underline="hover" href={href} scroll={isHome}>
             <Typography color={colors.text.main}>{text}</Typography>
         </Link>
     );

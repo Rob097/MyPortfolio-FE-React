@@ -1,45 +1,19 @@
-# Material UI - Next.js example
+PROPOSTA DI STRUTTURA PER LE STORIE / I PROGETTI --> Esempio: https://developers.chargetrip.com/api-reference/routes/mutate-route
 
-## How to use
+Nel momento in cui un utente desidera creare una nuova storia sul proprio profilo, in particolare per quanto concerne i progetti, si delineano due opzioni fondamentali:
+    1. Creazione di una Storia Semplice: Questa opzione consente all'utente di redigere una storia contenente un titolo esplicativo e una descrizione dettagliata del contenuto.
+    2. Creazione di una Storia Strutturata: In alternativa, l'utente ha la possibilità di sviluppare una storia più articolata, suddivisa in sezioni e sottosezioni.
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+Indipendentemente dalla scelta effettuata, si potranno aggiungere due sezioni affiancate nella parte destra dell'interfaccia.
+Queste sezioni rappresentano una soluzione ideale per inserire parti specifiche di codice, definizioni rilevanti o, più in generale, porzioni di testo da evidenziare.
 
-<!-- #default-branch-switch -->
+Nel contesto dell'esperienza mobile, tali sezioni si compatteranno in basso sullo schermo, accessibili tramite un'icona centrale a forma di trattino (-) che, 
+con un semplice trascinamento verso l'alto, permetterà di espandere una tendina contenente le due sezioni precedentemente collocate di fianco.
 
-```bash
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/material-next
-cd material-next
-```
+Per quanto concerne le storie strutturate, all'inizio del post verrà integrata una sorta di barra di navigazione. 
+Sul lato destro di questa barra, saranno presenti pulsanti "Avanti" e "Indietro", agevolando così la navigazione tra le diverse sezioni e sottosezioni della storia. 
+Tali pulsanti saranno etichettati con i titoli delle rispettive sezioni e sottosezioni.
 
-Install it and run:
-
-```bash
-npm install
-npm run dev
-```
-
-or:
-
-<!-- #default-branch-switch -->
-
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/material-next)
-
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/material-next)
-
-## The idea behind the example
-
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v5.
-If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
-
-## The Link component
-
-The [example folder](https://github.com/mui/material-ui/tree/HEAD/examples/material-next-ts) provides an adapter for the use of [Next.js's Link component](https://nextjs.org/docs/api-reference/next/link) with MUI.
-More information [in the documentation](https://mui.com/material-ui/guides/routing/#next-js).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation and continue by browsing the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+Sulla parte sinistra della barra di navigazione, sarà collocato un "breadcrumb" che permetterà di visualizzare chiaramente la sezione in cui ci si trova attualmente. 
+Questo sarà preceduto da un'icona a forma di indice. Premendo l'icona, verrà attivata una modale in cui, sulla sinistra, ci sarà l'elenco completo delle sezioni. 
+Selezionando una sezione dall'elenco, sulla parte destra della modale si apriranno le sottosezioni ad essa associate. Nel caso in cui non vi siano sottosezioni, sarà visibile solamente la scritta "Home".

@@ -1,5 +1,5 @@
-import ImageCard from '@/components/imageCard/ImageCard';
-import PersonalCard from '@/components/personalCard';
+import ImageCard from '@/components/cards/imageCard/ImageCard';
+import PersonalCard from '@/components/cards/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
@@ -85,14 +85,14 @@ const UserHome = () => {
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
+                            <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
                                 <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                        <Link href='/users/[userId]/diary/projects#projects' as={`/users/${userId}/diary/projects#projects`}>
-                            <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
-                        </Link>
+                            <Link href='/users/[userId]/diary/projects' as={`/users/${userId}/diary/projects`}>
+                                <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
+                            </Link>
                         </Grid>
                     </Grid>
                 </Container>
