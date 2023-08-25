@@ -6,7 +6,7 @@ const WhiteBar = (props) => {
     const { boxShadow } = tailwindConfig.theme;
 
     return (
-        <Container className={whiteBarClasses.customContainer + " " + props.containerClasses} style={{ zIndex: 1, ...props.containerStyles }} {...props.containerProps}>
+        <Container id={props.id ?? ''} className={whiteBarClasses.customContainer + " " + props.containerClasses} style={{ zIndex: 1, ...props.containerStyles }} {...props.containerProps}>
             <Box
                 width={{ md: "100%" }}
                 height={props.height || "auto"}

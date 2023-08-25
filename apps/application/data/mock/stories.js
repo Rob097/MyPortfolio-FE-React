@@ -138,7 +138,7 @@ export const projectStories = [
         relevantSections: [
             {
                 title: "The Quest",
-                text: "<h2>Unveiling the Quest for Innovation</h2>\n\n<p>Venturing into uncharted territory, my pursuit begins with unearthing the essence of the project. Navigating through the intricate labyrinth of coding paradigms, I seek to decipher the optimal path forward. This journey is not merely about writing lines of code; it's an expedition into the heart of creativity.</p>\n\n<p>With curiosity as my compass and logic as my guide, I navigate through unexplored concepts and novel approaches. Each line typed resonates with purpose, driving me to uncover innovative solutions that will set the stage for the grand symphony that is my project.</p>"
+                text: "<h2>Unveiling the Quest for Innovation</h2>\n\n<Typography paragraph variant='body1' color='primary'>This is a test</Typography>\n<p>Venturing into uncharted territory, my pursuit begins with unearthing the essence of the project. Navigating through the intricate labyrinth of coding paradigms, I seek to decipher the optimal path forward. This journey is not merely about writing lines of code; it's an expedition into the heart of creativity.</p>\n\n<p>With curiosity as my compass and logic as my guide, I navigate through unexplored concepts and novel approaches. Each line typed resonates with purpose, driving me to uncover innovative solutions that will set the stage for the grand symphony that is my project.</p>"
             },
             {
                 title: "The Epiphany",

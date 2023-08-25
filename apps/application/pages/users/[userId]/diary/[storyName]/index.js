@@ -1,23 +1,19 @@
 import SectionCard from '@/components/cards/sectionCard';
+import SwipeableEdgeDrawer from '@/components/drawer/swipeableEdgeDrawer';
+import StoryNavbar from '@/components/navbar/storyNavbar';
 import HtmlContent from '@/components/utils/htmlContent';
-import ConditionalWrapper from '@/components/utils/conditionalWrapper';
-import ShowIf from '@/components/utils/showIf';
 import WhiteBar from '@/components/whiteBar';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import ListIcon from '@mui/icons-material/List';
-import { Box, Container, Grid, Tooltip, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import StoryNavbarClasses from '@/components/navbar/storyNavbar/storyNavbar.module.scss';
 
 /**
  * 
@@ -38,16 +34,41 @@ const Story = ({ story }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
+    const isGreaterThanMd = isGreaterThan('md');
 
     const [openIndex, setOpenIndex] = useState(false);
     const toggleOpenIndex = () => setOpenIndex(!openIndex);
 
+    const RelevantSections = ({ isMobile }) => (
+        <Box>
+            {
+                story.relevantSections?.map((section) => (
+                    <SectionCard key={section.title} title={section.title} className='my-6 overflow-y-hidden' style={{ height: isMobile ? '75vh' : `calc((100vh - 145px)/${story.relevantSections.length})` }}>
+                        <HtmlContent>
+                            {section.text}
+                        </HtmlContent>
+                    </SectionCard>
+                ))
+            }
+        </Box>
+    );
+
     return (
         <>
-            <Box id='mainStorySection' component='section' className='relative flex z-50 bg-background-secondary'>
+            <Box id='mainStorySection' component='section' className='relative flex md:z-50 bg-background-secondary'>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoryNavbar userId={userId} storyName={storyName} toggleOpenIndex={toggleOpenIndex} />
+                    {isGreaterThanMd ?
+                        <WhiteBar id={StoryNavbarClasses["storyNavbar"]} containerClasses='sticky top-0 pt-4 !px-0 bg-background-secondary' white px={2}>
+                            <StoryNavbar userId={userId} storyName={storyName} toggleOpenIndex={toggleOpenIndex} />
+                        </WhiteBar>
+
+                        :
+
+                        <SwipeableEdgeDrawer pullerContent={<StoryNavbar userId={userId} storyName={storyName} toggleOpenIndex={toggleOpenIndex} />}>
+                            <RelevantSections isMobile />
+                        </SwipeableEdgeDrawer>
+                    }
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6'>
@@ -62,17 +83,7 @@ const Story = ({ story }) => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
-                            <Box>
-                                {
-                                    story.relevantSections?.map((section) => (
-                                        <SectionCard key={section.title} title={section.title} className='my-6 overflow-y-hidden' style={{ height: `calc((100vh - 145px)/${story.relevantSections.length})` }}>
-                                            <HtmlContent>
-                                                {section.text}
-                                            </HtmlContent>
-                                        </SectionCard>
-                                    ))
-                                }
-                            </Box>
+                            {isGreaterThanMd ? <RelevantSections /> : <></>}
                         </Grid>
                     </Grid>
                 </Container>
@@ -83,60 +94,6 @@ const Story = ({ story }) => {
 
         </>
     );
-}
-
-const StoryNavbar = ({ userId, storyName, toggleOpenIndex }) => {
-    const { isGreaterThan, isSmallerThan } = useBreakpoints();
-    const isGreaterThanMd = isGreaterThan('md');
-    const isSmallerThanMd = isSmallerThan('md');
-
-    // From projectStories get the previous and next story based on the current story:
-    const previousStory = projectStories.find((story, index) => projectStories[index + 1]?.slug === storyName);
-    const nextStory = projectStories.find((story, index) => projectStories[index - 1]?.slug === storyName);
-
-    return (
-        <ConditionalWrapper
-            condition={true}
-            wrapper={children =>
-                isGreaterThanMd
-                    ? <WhiteBar containerClasses='sticky top-0 pt-4 !px-0 bg-background-secondary' white px={2}>{children}</WhiteBar>
-                    : <Box className='fixed bottom-0 w-full p-4 bg-white rounded-t-2xl shadow-lgTop'>{children}</Box>
-            }
-        >
-
-            <Box className="w-full flex flex-row justify-between items-center">
-                <Button onClick={toggleOpenIndex} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white' >
-                    API Reference / Routes
-                </Button>
-                <Box className='flex flex-row justify-end'>
-                    <ShowIf condition={previousStory !== undefined}>
-                        <ConditionalWrapper
-                            condition={isSmallerThanMd}
-                            wrapper={children => <Tooltip title={previousStory?.title}>{children}</Tooltip>}
-                        >
-                            <Link href='/users/[userId]/diary/[storyName]#mainStorySection' as={`/users/${userId}/diary/${previousStory?.slug}#mainStorySection`}>
-                                <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowLeftIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                    {isGreaterThanMd ? previousStory?.title : <KeyboardArrowLeftIcon />}
-                                </Button>
-                            </Link>
-                        </ConditionalWrapper>
-                    </ShowIf>
-                    <ShowIf condition={nextStory !== undefined}>
-                        <ConditionalWrapper
-                            condition={isSmallerThanMd}
-                            wrapper={children => <Tooltip title={nextStory?.title}>{children}</Tooltip>}
-                        >
-                            <Link href='/users/[userId]/diary/[storyName]#mainStorySection' as={`/users/${userId}/diary/${nextStory?.slug}#mainStorySection`}>
-                                <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                    {isGreaterThanMd ? nextStory?.title : <KeyboardArrowRightIcon />}
-                                </Button>
-                            </Link>
-                        </ConditionalWrapper>
-                    </ShowIf>
-                </Box>
-            </Box>
-        </ConditionalWrapper>
-    )
 }
 
 const IndexModal = ({ open, toggleOpenIndex }) => {
