@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import PropTypes from "prop-types";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/headerNavbar";
 import PageLayout from "./PageLayout";
 
 function CoverLayout(props) {

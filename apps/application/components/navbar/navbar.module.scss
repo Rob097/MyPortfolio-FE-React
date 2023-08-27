@@ -3,3 +3,18 @@ $--screen-xl: theme('screens.xl');
 $--screen-lg: theme('screens.lg');
 $--screen-md: theme('screens.md');
 $--screen-sm: theme('screens.sm');
+$--background-secondary: theme('colors.background.secondary');
+
+#storyNavbar::after {
+    display: block;
+    background: $--background-secondary;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-inline: auto;
+    width: 99vw;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: -1;
+}

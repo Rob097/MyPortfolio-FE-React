@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from "next/link";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import WhiteBar from "../whiteBar";
+import WhiteBar from "@/components/whiteBar";
 import LanguageSelector from "./languageSelector";
 import NavbarLink from "./navbarLink";
 import NavbarMobile from "./navbarMobile";

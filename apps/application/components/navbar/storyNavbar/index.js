@@ -8,7 +8,6 @@ import ListIcon from '@mui/icons-material/List';
 import { Box, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
-import StoryNavbarClasses from './storyNavbar.module.scss';
 
 const StoryNavbar = ({ userId, storyName, toggleOpenIndex }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();

@@ -13,14 +13,11 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import StoryNavbarClasses from '@/components/navbar/storyNavbar/storyNavbar.module.scss';
+import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
 
 /**
  * 
  * TODO:
- * 
- * https://mui.com/material-ui/react-drawer/#swipeable-edge
- * Usare questo drawer per nascondere le sezioni in evidenza se mobile
  * 
  * https://mui.com/material-ui/react-drawer/#responsive-drawer
  * Usare questo drawer per visualizzare le sezioni nella modale dell'indice
@@ -43,7 +40,7 @@ const Story = ({ story }) => {
         <Box>
             {
                 story.relevantSections?.map((section) => (
-                    <SectionCard key={section.title} title={section.title} className='my-6 overflow-y-hidden' style={{ height: isMobile ? '75vh' : `calc((100vh - 145px)/${story.relevantSections.length})` }}>
+                    <SectionCard key={section.title} title={section.title} className='my-6 overflow-y-hidden' style={{ height: isMobile ? 'auto' : `calc((100vh - 145px)/${story.relevantSections.length})`, maxHeight: isMobile ? '75vh' : '' }}>
                         <HtmlContent>
                             {section.text}
                         </HtmlContent>
