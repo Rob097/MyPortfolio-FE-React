@@ -29,7 +29,7 @@ export default createTheme({
         pxToRem,
         rgba,
     },
-
+    rounded: tailwindConfig.theme.borderRadius,
     components: {
         MuiButton: {
             styleOverrides: {

@@ -1,5 +1,7 @@
 import SectionCard from '@/components/cards/sectionCard';
 import SwipeableEdgeDrawer from '@/components/drawer/swipeableEdgeDrawer';
+import StoryIndexModal from '@/components/modals/storyIndexModal';
+import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
 import StoryNavbar from '@/components/navbar/storyNavbar';
 import HtmlContent from '@/components/utils/htmlContent';
 import WhiteBar from '@/components/whiteBar';
@@ -8,21 +10,9 @@ import { projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
-
-/**
- * 
- * TODO:
- * 
- * https://mui.com/material-ui/react-drawer/#responsive-drawer
- * Usare questo drawer per visualizzare le sezioni nella modale dell'indice
- * 
- */
 
 const Story = ({ story }) => {
     const router = useRouter();
@@ -35,6 +25,7 @@ const Story = ({ story }) => {
 
     const [openIndex, setOpenIndex] = useState(false);
     const toggleOpenIndex = () => setOpenIndex(!openIndex);
+    const closeIndexModal = () => setOpenIndex(false);
 
     const RelevantSections = ({ isMobile }) => (
         <Box>
@@ -57,18 +48,24 @@ const Story = ({ story }) => {
 
                     {isGreaterThanMd ?
                         <WhiteBar id={StoryNavbarClasses["storyNavbar"]} containerClasses='sticky top-0 pt-4 !px-0 bg-background-secondary' white px={2}>
-                            <StoryNavbar userId={userId} storyName={storyName} toggleOpenIndex={toggleOpenIndex} />
+                            <StoryNavbar userId={userId} storyName={storyName} toggleIndexModal={toggleOpenIndex} />
                         </WhiteBar>
 
                         :
 
-                        <SwipeableEdgeDrawer pullerContent={<StoryNavbar userId={userId} storyName={storyName} toggleOpenIndex={toggleOpenIndex} />}>
-                            <RelevantSections isMobile />
-                        </SwipeableEdgeDrawer>
+                        <SwipeableEdgeDrawer
+                            pullerContent={<StoryNavbar userId={userId} storyName={storyName} indexModalState={openIndex} toggleIndexModal={toggleOpenIndex} />}
+                            drawerContent={[
+                                <RelevantSections isMobile />,
+                                <>CIAO</>
+                            ]}
+                            indexModalState={openIndex}
+                            closeIndexModal={closeIndexModal}
+                        />
                     }
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
-                        <Grid item xs={12} md={7} className='h-full !px-6'>
+                        <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
                             <Box>
                                 <Typography variant="h1" fontWeight='bold'>{story.title}</Typography>
 
@@ -87,34 +84,10 @@ const Story = ({ story }) => {
 
             </Box>
 
-            <IndexModal open={openIndex} toggleOpenIndex={toggleOpenIndex} />
+            <StoryIndexModal story={story} open={isGreaterThanMd && openIndex} toggleModal={toggleOpenIndex} />
 
         </>
     );
-}
-
-const IndexModal = ({ open, toggleOpenIndex }) => {
-    return (
-        <Modal
-            open={open}
-            onClose={toggleOpenIndex}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box className='absolute top-1/2 left-1/2 w-1/3 h-2/5 rounded-xl bg-background-main shadow-xl p-4' sx={{ transform: 'translate(-50%, -50%)' }}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.vDuis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-
-                </Typography>
-            </Box>
-        </Modal>
-    )
 }
 
 export async function getStaticPaths(context) {
@@ -165,8 +138,6 @@ export async function getStaticProps(context) {
 }
 
 Story.getLayout = (page) => {
-    const { t } = useTranslation('user-diary');
-
     return (
         <DiaryLayout>
             {page}

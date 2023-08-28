@@ -9,7 +9,7 @@ import { Box, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 
-const StoryNavbar = ({ userId, storyName, toggleOpenIndex }) => {
+const StoryNavbar = ({ userId, storyName, indexModalState, toggleIndexModal }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanMd = isGreaterThan('md');
     const isSmallerThanMd = isSmallerThan('md');
@@ -21,8 +21,13 @@ const StoryNavbar = ({ userId, storyName, toggleOpenIndex }) => {
     return (
 
         <Box className="w-full flex flex-row justify-between items-center">
-            <Button onClick={toggleOpenIndex} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white' >
-                API Reference / Routes
+            <Button onClick={toggleIndexModal} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white' >
+                {
+                    indexModalState ?
+                        'Relevant Sections'
+                        :
+                        'API Reference / Routes'
+                }
             </Button>
             <Box className='flex flex-row justify-end'>
                 <ShowIf condition={previousStory !== undefined}>

@@ -147,18 +147,22 @@ export const projectStories = [
         ],
         sections: [
             {
-                title: "Section 1: Inception",
+                id: 1,
+                title: "Inception",
                 text: "<h2>The Genesis of Innovation</h2>\n\n<p>The journey commences with the inception phase, where ideas converge and concepts crystallize. Here, React emerges as the brush, with which I paint the canvas of user experience. The virtual DOM dances in tandem with my creativity, birthing interfaces that evoke awe.</p>\n\n<p>As I mold the UI elements like clay in an artisan's hands, I visualize the end user's interaction. It's not just about aesthetics; it's about crafting an immersive digital environment that welcomes users with open arms.</p>"
             },
             {
-                title: "Section 2: Unveiling the Layers",
+                id: 2,
+                title: "Unveiling the Layers",
                 subSections: [
                     {
-                        title: "Sub Section 1: Microservices Galore",
+                        id: 1,
+                        title: "Microservices Galore",
                         text: "<h3>The Symphony of Microservices</h3>\n\n<p>Embracing the world of microservices, Docker and Kubernetes weave a tapestry of scalability and reliability. Containers become vessels of innovation, encapsulating the essence of each service, ready to traverse the seas of deployment. It's akin to orchestrating an ensemble of instruments, each contributing to the overall symphony.</p>\n\n<p>From orchestration to load balancing, every microservice is a note that harmonizes with others, creating a melodious performance that adapts to the audience's needs. With Docker's versatility and Kubernetes' prowess, I create an infrastructure that's not just functional but captivating in its elegance.</p>"
                     },
                     {
-                        title: "Sub Section 2: Reacting to Challenges",
+                        id: 2,
+                        title: "Reacting to Challenges",
                         text: "<h3>Navigating Stormy Waters</h3>\n\n<p>As challenges arise, React's flexibility becomes a shield and a sword. Through context providers and hooks, I orchestrate the dance of data, crafting responsive user interfaces that seamlessly adapt to the dynamic rhythm of user interactions. It's akin to choreographing a captivating dance, where every step is in harmony with the music of user intent.</p>\n\n<p>Context providers become the choreographers, ensuring that every component knows its role and follows the beat. Hooks, like nimble dancers, respond to cues and effortlessly transform the user's desires into visual marvels. With React as my partner, I navigate the challenges with grace and determination.</p>"
                     }
                 ]

@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
@@ -28,6 +27,9 @@ function SwipeableEdgeDrawer(props) {
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
+        if (!newOpen && props.closeIndexModal) {
+            props.closeIndexModal();
+        }
     };
 
     // This is used only for the example
@@ -66,7 +68,7 @@ function SwipeableEdgeDrawer(props) {
 
                     <StyledBox sx={{
                         position: 'absolute',
-                        top: 15,
+                        top: props.pullerContent ? 15 : 25,
                         borderTopLeftRadius: 8,
                         borderTopRightRadius: 8,
                         visibility: 'visible',
@@ -75,7 +77,9 @@ function SwipeableEdgeDrawer(props) {
                         zIndex: 1,
                         pointerEvents: 'all'
                     }}>
-                        <Box sx={{ p: 2.5, pointerEvents: 'all' }}>{props.pullerContent ?? '\u00A0'}</Box>
+                        <Box sx={{ p: 2.5, pointerEvents: 'all' }} onClick={toggleDrawer(true)} >
+                            {props.pullerContent ?? '\u00A0'}
+                        </Box>
                     </StyledBox>
                 </StyledBox>
                 <StyledBox
@@ -86,8 +90,12 @@ function SwipeableEdgeDrawer(props) {
                         overflow: 'auto',
                     }}
                 >
-                    {/* <Skeleton variant="rectangular" height="100%" /> */}
-                    {props.children}
+                    {
+                        !props.indexModalState ?
+                            props.drawerContent[0]
+                            :
+                            props.drawerContent[1]
+                    }
                 </StyledBox>
             </SwipeableDrawer>
         </>
