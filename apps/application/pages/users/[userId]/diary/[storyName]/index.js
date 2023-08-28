@@ -4,6 +4,7 @@ import StoryIndexModal from '@/components/modals/storyIndexModal';
 import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
 import StoryNavbar from '@/components/navbar/storyNavbar';
 import HtmlContent from '@/components/utils/htmlContent';
+import ShowIf from '@/components/utils/showIf';
 import WhiteBar from '@/components/whiteBar';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { projectStories } from '@/data/mock/stories';
@@ -26,6 +27,8 @@ const Story = ({ story }) => {
     const [openIndex, setOpenIndex] = useState(false);
     const toggleOpenIndex = () => setOpenIndex(!openIndex);
     const closeIndexModal = () => setOpenIndex(false);
+
+    const showRelevantSections = story.relevantSections !== undefined && story.relevantSections.length > 0;
 
     const RelevantSections = ({ isMobile }) => (
         <Box>
@@ -54,18 +57,18 @@ const Story = ({ story }) => {
                         :
 
                         <SwipeableEdgeDrawer
-                            pullerContent={<StoryNavbar userId={userId} storyName={storyName} indexModalState={openIndex} toggleIndexModal={toggleOpenIndex} />}
+                            pullerContent={<StoryNavbar userId={userId} storyName={storyName} indexModalState={showRelevantSections ? openIndex : true} toggleIndexModal={toggleOpenIndex} />}
                             drawerContent={[
                                 <RelevantSections isMobile />,
                                 <>CIAO</>
                             ]}
-                            indexModalState={openIndex}
-                            closeIndexModal={closeIndexModal}
+                            indexModalState={showRelevantSections ? openIndex : true}
+                            closeIndexModal={showRelevantSections ? closeIndexModal : undefined}
                         />
                     }
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
-                        <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
+                        <Grid item xs={12} md={story.relevantSections ? 7 : 12} className='h-full !px-6 pb-8 md:pb-0'>
                             <Box>
                                 <Typography variant="h1" fontWeight='bold'>{story.title}</Typography>
 
@@ -76,9 +79,11 @@ const Story = ({ story }) => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
-                            {isGreaterThanMd ? <RelevantSections /> : <></>}
-                        </Grid>
+                        <ShowIf condition={showRelevantSections}>
+                            <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
+                                {isGreaterThanMd ? <RelevantSections /> : <></>}
+                            </Grid>
+                        </ShowIf>
                     </Grid>
                 </Container>
 
