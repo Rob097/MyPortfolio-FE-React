@@ -14,6 +14,7 @@ import { Box, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 import { useState } from 'react';
+import ProjectsTree from '@/components/tree/projectsTree'
 
 const domSection = '#mainProjectSection';
 
@@ -35,8 +36,8 @@ const StoryNavbar = ({ userId, story, section }) => {
     const nextLink = getNextSectionLink(section, story, userId);
 
     const DrawerContent = () => (
-        showRelevantSections && !indexModalOpen
-            ? <RelevantSections section={section} isMobile />
+        !indexModalOpen
+            ? (showRelevantSections ? <RelevantSections section={section} isMobile /> : <ProjectsTree project={story} />)
             : <StoryIndexContent story={story} toggleModal={() => toggleIndexModal()} />
     );
 
@@ -63,10 +64,10 @@ const StoryNavbar = ({ userId, story, section }) => {
                 <Box className="w-full min-w-fit relative flex flex-row justify-between items-center" style={{ left: '50%', transform: 'translateX(-50%)' }}>
                     <Button onClick={() => toggleIndexModal()} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white whitespace-nowrap min-w-fit' >
                         {
-                            isGreaterThanMd || !indexModalOpen || !showRelevantSections ?
+                            isGreaterThanMd || !indexModalOpen ?
                                 'Story Sections'
                                 :
-                                'Relevant Sections'
+                                (showRelevantSections ? 'Relevant Sections' : 'My Projects')
                         }
                     </Button>
                     <Box className='flex flex-row justify-end'>

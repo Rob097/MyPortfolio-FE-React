@@ -7,6 +7,8 @@ import DiaryLayout from '@/layouts/DiaryLayout';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import ProjectsTree from '@/components/tree/projectsTree'
+import ShowIf from '@/components/utils/showIf';
 
 const Project = ({ project }) => {
     const router = useRouter();
@@ -15,6 +17,7 @@ const Project = ({ project }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
+    const isGreaterThanMd = isGreaterThan('md');
 
     return (
         <>
@@ -23,8 +26,13 @@ const Project = ({ project }) => {
 
                     <StoryNavbar userId={userId} story={project} />
 
+                    {/* Add the project image: */}
+                    <Box className='relative w-full h-96 md:h-128 px-6'>
+                        <img src={project.image} alt={project.title} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
+                    </Box>
+
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
-                        <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
+                        <Grid item xs={12} md={7} className='h-full !px-6 pb-20 md:pb-0'>
                             <Box>
                                 <Typography variant="h1" fontWeight='bold'>{project.title}</Typography>
 
@@ -35,9 +43,11 @@ const Project = ({ project }) => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
-                            Projects structure
-                        </Grid>
+                        <ShowIf condition={isGreaterThanMd}>
+                            <Grid item xs={12} md={5}>
+                                <ProjectsTree project={project} />
+                            </Grid>
+                        </ShowIf>
                     </Grid>
                 </Container>
 

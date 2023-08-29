@@ -169,7 +169,8 @@ export const projectStories = [
         title: 'My Second Project',
         preview: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.',
         date: '11/08/2023',
-        skills: ['Design', 'Rendering']
+        skills: ['Design', 'Rendering'],
+        sections: projectSections,
     },
     {
         id: 3,

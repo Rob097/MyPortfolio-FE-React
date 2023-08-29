@@ -15,6 +15,7 @@ import ShowIf from '@/components/utils/showIf';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
 import DiaryLayout from '@/layouts/DiaryLayout';
+import { StoryCategoryEnum } from '@/models/categories.model';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -119,6 +120,7 @@ const Diary = () => {
                                     <Grid key={story.id} item xs={12} sm={6} lg={projectStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                         <StoryCard
                                             story={story}
+                                            storyCategory={StoryCategoryEnum.PROJECTS}
                                         />
                                     </Grid>
                                 ))
