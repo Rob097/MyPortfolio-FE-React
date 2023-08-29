@@ -51,7 +51,7 @@ const StoryNavbar = ({ userId, story, section }) => {
                         :
                         <SwipeableEdgeDrawer
                             drawerContent={<DrawerContent />}
-                            indexModalOpen={showRelevantSections ? indexModalOpen : true}
+                            indexModalOpen={indexModalOpen}
                             closeIndexModal={showRelevantSections ? () => toggleIndexModal(false) : undefined}
                         >
                             {children}
@@ -60,8 +60,8 @@ const StoryNavbar = ({ userId, story, section }) => {
                 }
             >
 
-                <Box className="w-full flex flex-row justify-between items-center">
-                    <Button onClick={() => toggleIndexModal()} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white' >
+                <Box className="w-full min-w-fit relative flex flex-row justify-between items-center" style={{ left: '50%', transform: 'translateX(-50%)' }}>
+                    <Button onClick={() => toggleIndexModal()} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white whitespace-nowrap min-w-fit' >
                         {
                             isGreaterThanMd || !indexModalOpen || !showRelevantSections ?
                                 'Story Sections'

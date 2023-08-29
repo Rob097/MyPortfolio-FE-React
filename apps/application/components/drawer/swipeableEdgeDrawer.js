@@ -1,3 +1,4 @@
+import { useIsMount } from '@/hooks/useIsMount';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { grey } from '@mui/material/colors';
@@ -18,12 +19,13 @@ const Puller = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
     borderRadius: 3,
     position: 'absolute',
-    top: 8,
+    top: 5,
     left: 'calc(50% - 15px)',
 }));
 
 function SwipeableEdgeDrawer(props) {
     const router = useRouter();
+    const isMount = useIsMount();
     const [open, setOpen] = useState(false);
 
     const toggleDrawer = (newOpen) => () => {
@@ -46,7 +48,7 @@ function SwipeableEdgeDrawer(props) {
 
     // if the index modal is open, open the drawer:
     useEffect(() => {
-        if (props.indexModalOpen) {
+        if (!isMount && props.indexModalOpen) {
             setOpen(props.indexModalOpen);
         }
     }, [props.indexModalOpen]);
@@ -78,7 +80,7 @@ function SwipeableEdgeDrawer(props) {
                     }}
                     className='shadow-lgTop'
                 >
-                    <Box sx={{ pointerEvents: !isTouchDevice && 'all' }} onClick={toggleDrawer(true)}>
+                    <Box bgcolor='dark.main' sx={{ pointerEvents: !isTouchDevice && 'all' }} onClick={toggleDrawer(true)} className='rounded-sm'>
                         <Puller />
                         <Box sx={{ p: 2.5 }}>{'\u00A0'}</Box>
                     </Box>

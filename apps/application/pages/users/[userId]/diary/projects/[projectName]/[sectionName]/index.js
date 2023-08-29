@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 const StorySection = ({ project, section }) => {
 
-    if(!project || !section) throw new Error('Project or section not found');
+    if (!project || !section) throw new Error('Project or section not found');
 
 
     const router = useRouter();
@@ -32,7 +32,7 @@ const StorySection = ({ project, section }) => {
 
                     <StoryNavbar userId={userId} story={project} section={section} />
 
-                    <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
+                    <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0 mb-10 md:mb-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
                             <Box>
                                 <Typography variant="h1" fontWeight='bold'>{section.title}</Typography>
