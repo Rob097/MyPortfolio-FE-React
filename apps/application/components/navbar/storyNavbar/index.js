@@ -118,7 +118,7 @@ function getPreviousSection(obj, story) {
 }
 function getNextSection(obj, story) {
     if (!story) return undefined;
-    if (!obj) return story.sections[0];
+    if (!obj) return story.sections?.[0];
 
     const sections = story.sections;
     const getIndex = (arr, id) => arr.findIndex(item => item.id === id);

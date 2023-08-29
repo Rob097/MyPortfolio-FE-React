@@ -11,6 +11,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 
 const StorySection = ({ project, section }) => {
+
+    if(!project || !section) throw new Error('Project or section not found');
+
+
     const router = useRouter();
     const { userId, projectName } = router.query;
 
@@ -78,26 +82,6 @@ export async function getStaticPaths(context) {
                 locale
             }
         );
-        paths.push(
-            {
-                params: {
-                    userId: 'user1',
-                    projectName: 'my-second-project',
-                    sectionName: 'my-first-section'
-                },
-                locale
-            }
-        );
-        paths.push(
-            {
-                params: {
-                    userId: 'user1',
-                    projectName: 'my-second-project',
-                    sectionName: 'my-second-section'
-                },
-                locale
-            }
-        );
     }
     return {
         fallback: false,
@@ -113,7 +97,7 @@ export async function getStaticProps(context) {
 
     // Use projectName to find the project in projectStories that has the same slug
     const project = projectStories.find(project => project.slug === projectName);
-    const section = project.sections.find(section => section.slug === sectionName);
+    const section = project.sections?.find(section => section.slug === sectionName);
 
     return {
         props: {
