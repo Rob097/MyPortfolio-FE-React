@@ -2,7 +2,8 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-import * as React from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import drawerClasses from './swipeableEdgeDrawer.module.scss';
 
 const drawerBleeding = 90;
@@ -22,8 +23,8 @@ const Puller = styled(Box)(({ theme }) => ({
 }));
 
 function SwipeableEdgeDrawer(props) {
-    const { window } = props;
-    const [open, setOpen] = React.useState(false);
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -32,13 +33,27 @@ function SwipeableEdgeDrawer(props) {
         }
     };
 
-    // This is used only for the example
-    const container = window !== undefined ? () => window().document.body : undefined;
+    // Detect if the current device is a touch device:
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+    useEffect(() => {
+        setIsTouchDevice('ontouchstart' in window || navigator.msMaxTouchPoints);
+    }, []);
+
+    // if the route changes, close the drawer:
+    useEffect(() => {
+        setOpen(false);
+    }, [router.asPath]);
+
+    // if the index modal is open, open the drawer:
+    useEffect(() => {
+        if (props.indexModalOpen) {
+            setOpen(props.indexModalOpen);
+        }
+    }, [props.indexModalOpen]);
 
     return (
         <>
             <SwipeableDrawer
-                container={container}
                 anchor="bottom"
                 open={open}
                 onClose={toggleDrawer(false)}
@@ -63,12 +78,14 @@ function SwipeableEdgeDrawer(props) {
                     }}
                     className='shadow-lgTop'
                 >
-                    <Puller />
-                    <Box sx={{ p: 2.5 }}>{'\u00A0'}</Box>
+                    <Box sx={{ pointerEvents: !isTouchDevice && 'all' }} onClick={toggleDrawer(true)}>
+                        <Puller />
+                        <Box sx={{ p: 2.5 }}>{'\u00A0'}</Box>
+                    </Box>
 
                     <StyledBox sx={{
                         position: 'absolute',
-                        top: props.pullerContent ? 15 : 25,
+                        top: props.children ? 15 : 25,
                         borderTopLeftRadius: 8,
                         borderTopRightRadius: 8,
                         visibility: 'visible',
@@ -77,11 +94,13 @@ function SwipeableEdgeDrawer(props) {
                         zIndex: 1,
                         pointerEvents: 'all'
                     }}>
-                        <Box sx={{ p: 2.5, pointerEvents: 'all' }} onClick={toggleDrawer(true)} >
-                            {props.pullerContent ?? '\u00A0'}
+                        <Box sx={{ p: 2.5 }} >
+                            {props.children ?? '\u00A0'}
                         </Box>
                     </StyledBox>
                 </StyledBox>
+
+
                 <StyledBox
                     sx={{
                         px: 2,
@@ -90,12 +109,7 @@ function SwipeableEdgeDrawer(props) {
                         overflow: 'auto',
                     }}
                 >
-                    {
-                        !props.indexModalState ?
-                            props.drawerContent[0]
-                            :
-                            props.drawerContent[1]
-                    }
+                    {props.drawerContent}
                 </StyledBox>
             </SwipeableDrawer>
         </>

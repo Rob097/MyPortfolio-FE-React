@@ -3,20 +3,16 @@ import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
+import { StoryCategoryEnum } from '@/models/categories.model';
 import { Box, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Projects = () => {
-
     const { t } = useTranslation(['user-diary', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
-
-    const router = useRouter();
-    const { userId } = router.query;
 
     const stories = [...projectStories];
     const pages = Math.ceil(stories.length / 6);
@@ -37,6 +33,7 @@ const Projects = () => {
                                         <Grid key={story.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                             <StoryCard
                                                 story={story}
+                                                storyCategory={StoryCategoryEnum.PROJECTS}
                                             />
                                         </Grid>
                                     ))

@@ -1,13 +1,13 @@
+import DraggableBox from '@/components/draggableBox';
 import ShowIf from '@/components/utils/showIf';
 import { Button, Card, CardActions, CardContent, CardMedia, Chip, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import DraggableBox from '@/components/draggableBox';
 import storyCardClasses from './storyCard.module.scss';
 
 
-const StoryCard = ({ story }) => {
+const StoryCard = ({ story, storyCategory }) => {
     const { t } = useTranslation(['common']);
     const router = useRouter();
     const { userId } = router.query;
@@ -56,7 +56,7 @@ const StoryCard = ({ story }) => {
 
                     </Grid>
                     <Grid item xs={12} lg={6} className="flex items-center lg:justify-end justify-center">
-                        <Link href={`/users/${userId}/diary/${story.slug}`}>
+                        <Link href={`/users/${userId}/diary/${storyCategory}/${story.slug}`}>
                             <Button variant="contained" color="primary" size="small" className='rounded-full whitespace-nowrap' >
                                 {t('read-more')}
                             </Button>
