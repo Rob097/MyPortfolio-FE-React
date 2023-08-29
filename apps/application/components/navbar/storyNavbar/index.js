@@ -2,6 +2,7 @@ import RelevantSections from '@/components/cards/sectionCard/relevantSections';
 import SwipeableEdgeDrawer from '@/components/drawer/swipeableEdgeDrawer';
 import StoryIndexModal, { StoryIndexContent } from '@/components/modals/storyIndexModal';
 import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
+import ProjectsTree from '@/components/tree/projectsTree';
 import ConditionalWrapper from '@/components/utils/conditionalWrapper';
 import ShowIf from '@/components/utils/showIf';
 import WhiteBar from '@/components/whiteBar';
@@ -14,7 +15,6 @@ import { Box, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 import { useState } from 'react';
-import ProjectsTree from '@/components/tree/projectsTree'
 
 const domSection = '#mainProjectSection';
 
@@ -83,16 +83,21 @@ const StoryNavbar = ({ userId, story, section }) => {
                                 </Link>
                             </ConditionalWrapper>
                         </ShowIf>
-                        <ShowIf condition={nextSection !== undefined}>
+                        <ShowIf condition={isSmallerThanMd || nextSection !== undefined}>
                             <ConditionalWrapper
                                 condition={isSmallerThanMd}
                                 wrapper={children => <Tooltip title={nextSection?.title}>{children}</Tooltip>}
                             >
-                                <Link href={nextLink} >
-                                    <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                        {isGreaterThanMd ? nextSection?.title : <KeyboardArrowRightIcon />}
-                                    </Button>
-                                </Link>
+                                {
+                                    isSmallerThanMd && nextSection === undefined ?
+                                        <Box sx={{ width: '4.5rem' }} />
+                                        :
+                                        <Link href={nextLink} >
+                                            <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2'>
+                                                {isGreaterThanMd ? nextSection?.title : <KeyboardArrowRightIcon />}
+                                            </Button>
+                                        </Link>
+                                }
                             </ConditionalWrapper>
                         </ShowIf>
                     </Box>
