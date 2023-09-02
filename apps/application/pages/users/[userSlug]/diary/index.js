@@ -25,7 +25,7 @@ const Diary = () => {
     const isSmallerThanLg = isSmallerThan('lg');
 
     const router = useRouter();
-    const { userId } = router.query;
+    const { userSlug } = router.query;
 
     return (
         <>
@@ -94,7 +94,7 @@ const Diary = () => {
                             <ShowIf condition={experienceStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                     <Tooltip title={experienceStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
+                                        <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -129,7 +129,7 @@ const Diary = () => {
                             <ShowIf condition={projectStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                     <Tooltip title={projectStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/diary/projects#projects' as={`/users/${userId}/diary/projects#projects`}>
+                                        <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -162,7 +162,7 @@ const Diary = () => {
                             <ShowIf condition={educationStories.length > 3}>
                                 <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
                                     <Tooltip title={educationStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userId]/diary/experiences#experiences' as={`/users/${userId}/diary/experiences#experiences`}>
+                                        <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                             <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                 <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
                                             </Avatar>
@@ -187,7 +187,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user1'
+                    userSlug: 'user1'
                 },
                 locale
             }
@@ -195,7 +195,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user2'
+                    userSlug: 'user2'
                 },
                 locale
             }

@@ -57,7 +57,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user1'
+                    userSlug: 'user1'
                 },
                 locale
             }
@@ -65,7 +65,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user2'
+                    userSlug: 'user2'
                 },
                 locale
             }

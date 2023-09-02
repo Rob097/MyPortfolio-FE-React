@@ -29,9 +29,9 @@ const ProjectsTree = ({ project }) => {
         const sectionSlug = projectStories.find((project) => project.id === projectId)?.sections?.find((section) => section.id === sectionId)?.slug;
 
         if (sectionSlug)
-            router.push(`/users/${router.query.userId}/diary/projects/${projectSlug}/${sectionSlug}${domSection}`, undefined, { shallow: true });
+            router.push(`/users/${router.query.userSlug}/diary/projects/${projectSlug}/${sectionSlug}${domSection}`, undefined, { shallow: true });
         else
-            router.push(`/users/${router.query.userId}/diary/projects/${projectSlug}${domSection}`);
+            router.push(`/users/${router.query.userSlug}/diary/projects/${projectSlug}${domSection}`);
     }
 
     return (

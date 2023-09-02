@@ -24,7 +24,7 @@ const Experiences = () => {
     const isSmallerThanLg = isSmallerThan('lg');
 
     const router = useRouter();
-    const { userId } = router.query;
+    const { userSlug } = router.query;
 
     const stories = [...experienceStories, ...educationStories];
     const pages = Math.ceil(stories.length / 6);
@@ -99,7 +99,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user1'
+                    userSlug: 'user1'
                 },
                 locale
             }
@@ -107,7 +107,7 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user2'
+                    userSlug: 'user2'
                 },
                 locale
             }

@@ -1,5 +1,7 @@
+import RelevantSections from '@/components/cards/sectionCard/relevantSections';
 import StoryNavbar from '@/components/navbar/storyNavbar';
 import HtmlContent from '@/components/utils/htmlContent';
+import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
@@ -7,45 +9,44 @@ import DiaryLayout from '@/layouts/DiaryLayout';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import ProjectsTree from '@/components/tree/projectsTree'
-import ShowIf from '@/components/utils/showIf';
 
-const Project = ({ project }) => {
+const StorySection = ({ project, section }) => {
+
+    if (!project || !section) throw new Error('Project or section not found');
+
+
     const router = useRouter();
-    const { userId, projectName } = router.query;
+    const { userSlug, projectName } = router.query;
 
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
     const isGreaterThanMd = isGreaterThan('md');
 
+    const showRelevantSections = section.relevantSections !== undefined && section.relevantSections.length > 0;
+
     return (
         <>
             <Box id='mainProjectSection' component='section' className='relative flex md:z-50 bg-background-secondary'>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoryNavbar userId={userId} story={project} />
+                    <StoryNavbar userSlug={userSlug} story={project} section={section} />
 
-                    {/* Add the project image: */}
-                    <Box className='relative w-full h-96 md:h-128 px-6'>
-                        <img src={project.image} alt={project.title} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
-                    </Box>
-
-                    <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
-                        <Grid item xs={12} md={7} className='h-full !px-6 pb-20 md:pb-0'>
+                    <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0 mb-10 md:mb-0' style={{ maxWidth: '-webkit-fill-available' }}>
+                        <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
                             <Box>
-                                <Typography variant="h1" fontWeight='bold'>{project.title}</Typography>
+                                <Typography variant="h1" fontWeight='bold'>{section.title}</Typography>
 
                                 <Box className='mt-4'>
                                     <HtmlContent>
-                                        {project.text}
+                                        {section.text}
                                     </HtmlContent>
                                 </Box>
                             </Box>
                         </Grid>
-                        <ShowIf condition={isGreaterThanMd}>
-                            <Grid item xs={12} md={5}>
-                                <ProjectsTree project={project} />
+                        <ShowIf condition={showRelevantSections && isGreaterThanMd}>
+                            <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
+                                <RelevantSections section={section} />
                             </Grid>
                         </ShowIf>
                     </Grid>
@@ -55,7 +56,6 @@ const Project = ({ project }) => {
 
         </>
     )
-
 }
 
 export async function getStaticPaths(context) {
@@ -65,8 +65,9 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user1',
-                    projectName: 'my-first-project'
+                    userSlug: 'user1',
+                    projectName: 'my-first-project',
+                    sectionName: 'my-first-section',
                 },
                 locale
             }
@@ -74,8 +75,9 @@ export async function getStaticPaths(context) {
         paths.push(
             {
                 params: {
-                    userId: 'user1',
-                    projectName: 'my-second-project'
+                    userSlug: 'user1',
+                    projectName: 'my-first-project',
+                    sectionName: 'my-second-section'
                 },
                 locale
             }
@@ -91,21 +93,23 @@ export async function getStaticProps(context) {
     // extract the locale identifier from the URL
     const { locale, params } = context
 
-    const { userId, projectName } = params;
+    const { userSlug, projectName, sectionName } = params;
 
     // Use projectName to find the project in projectStories that has the same slug
     const project = projectStories.find(project => project.slug === projectName);
+    const section = project.sections?.find(section => section.slug === sectionName);
 
     return {
         props: {
             // pass the translation props to the page component
             ...(await serverSideTranslations(locale)),
-            project
+            project,
+            section
         },
     }
 }
 
-Project.getLayout = (page) => {
+StorySection.getLayout = (page) => {
     return (
         <DiaryLayout>
             {page}
@@ -113,4 +117,4 @@ Project.getLayout = (page) => {
     )
 }
 
-export default Project
+export default StorySection

@@ -13,20 +13,30 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
-
+import { useEffect } from 'react';
+import { UserService } from '@/services/user.service';
+import { User } from '@/models/user.model';
 
 const UserHome = () => {
+    const userService = new UserService();
     const { t } = useTranslation(['user-home', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const { colors } = tailwindConfig.theme;
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const router = useRouter();
-    const { userId } = router.query;
+    const { userSlug } = router.query;
 
     async function handleContact(data) {
         console.log(data);
     }
+
+    useEffect(() => {
+        userService.getBySlug(userSlug, 'verbose').then(async (response) => {
+            const user = new User((await response.json()).content);
+            console.log(user);
+        });
+    }, []);
 
     return (
         <>
@@ -80,17 +90,17 @@ const UserHome = () => {
                 <Container className={whiteBarClasses.customContainer}>
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/[userId]/diary' as={`/users/${userId}/diary`}>
+                            <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
                                 <ImageCard image="/images/Rectangle-22952.png" title={t('cards.diary')} />
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/[userId]/diary/experiences' as={`/users/${userId}/diary/experiences`}>
+                            <Link href='/users/[userSlug]/diary/experiences' as={`/users/${userSlug}/diary/experiences`}>
                                 <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
                             </Link>
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <Link href='/users/[userId]/diary/projects' as={`/users/${userId}/diary/projects`}>
+                            <Link href='/users/[userSlug]/diary/projects' as={`/users/${userSlug}/diary/projects`}>
                                 <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
                             </Link>
                         </Grid>
@@ -158,25 +168,24 @@ const UserHome = () => {
 }
 
 export async function getStaticPaths(context) {
+    const userService = new UserService();
+
+    const slugsResponse = await userService.getAllSlugs();
+    const slugs = (await slugsResponse.json()).content;
+
     const { locales } = context;
     let paths = [];
     for (const locale of locales) {
-        paths.push(
-            {
-                params: {
-                    userId: 'user1'
-                },
-                locale
-            }
-        );
-        paths.push(
-            {
-                params: {
-                    userId: 'user2'
-                },
-                locale
-            }
-        );
+        for(const slug of slugs) {
+            paths.push(
+                {
+                    params: {
+                        userSlug: slug
+                    },
+                    locale
+                }
+            );
+        }
     }
     return {
         fallback: false,

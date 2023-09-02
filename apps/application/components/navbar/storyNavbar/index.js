@@ -18,7 +18,7 @@ import { useState } from 'react';
 
 const domSection = '#mainProjectSection';
 
-const StoryNavbar = ({ userId, story, section }) => {
+const StoryNavbar = ({ userSlug, story, section }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanMd = isGreaterThan('md');
     const isSmallerThanMd = isSmallerThan('md');
@@ -32,8 +32,8 @@ const StoryNavbar = ({ userId, story, section }) => {
 
     const previousSection = getPreviousSection(section, story);
     const nextSection = getNextSection(section, story);
-    const previousLink = getPreviousSectionLink(section, story, userId);
-    const nextLink = getNextSectionLink(section, story, userId);
+    const previousLink = getPreviousSectionLink(section, story, userSlug);
+    const nextLink = getNextSectionLink(section, story, userSlug);
 
     const DrawerContent = () => (
         !indexModalOpen
@@ -132,15 +132,15 @@ function getNextSection(obj, story) {
     const index = getIndex(sections, obj.id);
     return index < sections.length - 1 ? sections[index + 1] : undefined;
 }
-function getPreviousSectionLink(obj, story, userId) {
+function getPreviousSectionLink(obj, story, userSlug) {
     const previousSection = getPreviousSection(obj, story);
     return previousSection !== null && previousSection !== undefined
-        ? `/users/${userId}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${previousSection.slug}${domSection}`
-        : (previousSection == null ? `/users/${userId}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}${domSection}` : undefined);
+        ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${previousSection.slug}${domSection}`
+        : (previousSection == null ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}${domSection}` : undefined);
 }
-function getNextSectionLink(obj, story, userId) {
+function getNextSectionLink(obj, story, userSlug) {
     const nextSection = getNextSection(obj, story);
     return nextSection
-        ? `/users/${userId}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${nextSection.slug}${domSection}`
+        ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${nextSection.slug}${domSection}`
         : undefined;
 }

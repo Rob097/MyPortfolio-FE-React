@@ -1,6 +1,6 @@
 import ShowIf from '@/components/utils/showIf';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
-import userClasses from '@/pages/users/[userId]/styles/shared.module.scss';
+import userClasses from '@/pages/users/[userSlug]/styles/shared.module.scss';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -94,7 +94,7 @@ const NextBreadcrumbs = () => {
 
     // Gives us ability to load the current route details
     const router = useRouter();
-    const { userId } = router.query;
+    const { userSlug } = router.query;
 
     const { t, i18n } = useTranslation('user-diary', { lng: router.locale });
 
@@ -107,8 +107,8 @@ const NextBreadcrumbs = () => {
             const href = "/" + asPathNestedRoutes.slice(0, idx + 1).join("/");
 
             // If href is /, or /users, or /users/user*, etc, we want to show the text as "Home". Only one time.
-            if (href === "/" || href === "/users" || href === `/users/${userId}`) {
-                return { href: `/users/${userId}/home`, text: "Home" };
+            if (href === "/" || href === "/users" || href === `/users/${userSlug}`) {
+                return { href: `/users/${userSlug}/home`, text: "Home" };
             }
 
             // if subpath has the character '#' followed by some text, we want to remove it

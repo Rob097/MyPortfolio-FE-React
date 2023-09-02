@@ -31,7 +31,7 @@ export default StoryIndexModal;
 
 export const StoryIndexContent = ({ story, toggleModal, addCloseIcon }) => {
     const router = useRouter();
-    const { userId, sectionName } = router.query;
+    const { userSlug, sectionName } = router.query;
 
     const actualSection = sectionName ? story.sections.find(section => section.slug === sectionName) : undefined;
 
@@ -51,7 +51,7 @@ export const StoryIndexContent = ({ story, toggleModal, addCloseIcon }) => {
             <List>
                 <ListItem key={'section-home'} disablePadding >
                     <ListItemButton selected={!actualSection?.id} className='rounded-md my-1'>
-                        <Link href={`/users/${userId}/diary/projects/${story.slug}${domSection}`} onClick={toggleModal} className='w-full'>
+                        <Link href={`/users/${userSlug}/diary/projects/${story.slug}${domSection}`} onClick={toggleModal} className='w-full'>
                             <ListItemText primary={'1. Home'} />
                         </Link>
                     </ListItemButton>
@@ -60,7 +60,7 @@ export const StoryIndexContent = ({ story, toggleModal, addCloseIcon }) => {
                     story.sections?.map((section, index) => (
                         <ListItem key={'section-' + section.id} disablePadding onClick={toggleModal}>
                             <ListItemButton selected={section.id === actualSection?.id} className='rounded-md my-1'>
-                                <Link href={`/users/${userId}/diary/projects/${story.slug}/${section.slug}${domSection}`} className='w-full' >
+                                <Link href={`/users/${userSlug}/diary/projects/${story.slug}/${section.slug}${domSection}`} className='w-full' >
                                     <ListItemText primary={(index + 2) + '. ' + section.title} />
                                 </Link>
                             </ListItemButton>

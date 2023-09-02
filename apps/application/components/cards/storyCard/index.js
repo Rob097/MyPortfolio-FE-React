@@ -10,7 +10,7 @@ import storyCardClasses from './storyCard.module.scss';
 const StoryCard = ({ story, storyCategory }) => {
     const { t } = useTranslation(['common']);
     const router = useRouter();
-    const { userId } = router.query;
+    const { userSlug } = router.query;
 
     const handleClick = (event) => {
         console.info('You clicked the Chip: ', event.target.id);
@@ -56,7 +56,7 @@ const StoryCard = ({ story, storyCategory }) => {
 
                     </Grid>
                     <Grid item xs={12} lg={6} className="flex items-center lg:justify-end justify-center">
-                        <Link href={`/users/${userId}/diary/${storyCategory}/${story.slug}`}>
+                        <Link href={`/users/${userSlug}/diary/${storyCategory}/${story.slug}`}>
                             <Button variant="contained" color="primary" size="small" className='rounded-full whitespace-nowrap' >
                                 {t('read-more')}
                             </Button>
