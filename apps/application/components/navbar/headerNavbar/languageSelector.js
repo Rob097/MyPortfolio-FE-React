@@ -7,6 +7,8 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
+const defaultLanguage = 'en';
+
 const LanguageSelector = ({ onChange, isMobile }) => {
     const { i18n } = useTranslation("common");
     const { language: currentLanguage } = i18n;
@@ -14,12 +16,12 @@ const LanguageSelector = ({ onChange, isMobile }) => {
     const locales = router.locales ?? [currentLanguage];
 
     const languageNames = useMemo(() => {
-        return new Intl.DisplayNames([currentLanguage ?? 'en'], {
+        return new Intl.DisplayNames([currentLanguage ?? defaultLanguage], {
             type: 'language',
         });
     }, [currentLanguage]);
 
-    const [value, setValue] = useState(i18n.language);
+    const [value, setValue] = useState(i18n.language ?? defaultLanguage);
 
     const switchToLocale = useCallback(
         (locale) => {

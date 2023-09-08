@@ -1,21 +1,22 @@
 import StoryCard from '@/components/cards/storyCard';
-import StoriesFilters from '@/components/whiteBar/storiesFilters';
+import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { educationStories, experienceStories, projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import DiaryLayout from '@/layouts/DiaryLayout';
+import { StoryCategoryEnum } from '@/models/categories.model';
+import { User } from '@/models/user.model';
+import UserService from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Avatar, Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Container, Grid, Typography } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import userClasses from '../styles/shared.module.scss';
-import ShowIf from '@/components/utils/showIf';
-import Tooltip from '@mui/material/Tooltip';
-import Zoom from '@mui/material/Zoom';
-import DiaryLayout from '@/layouts/DiaryLayout';
-import { StoryCategoryEnum } from '@/models/categories.model';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -181,47 +182,61 @@ const Diary = () => {
 }
 
 export async function getStaticPaths(context) {
+    const slugsResponse = await UserService.getAllSlugs();
+    const slugs = (await slugsResponse.json()).content;
+
     const { locales } = context;
+
     let paths = [];
     for (const locale of locales) {
-        paths.push(
-            {
-                params: {
-                    userSlug: 'user1'
-                },
-                locale
-            }
-        );
-        paths.push(
-            {
-                params: {
-                    userSlug: 'user2'
-                },
-                locale
-            }
-        );
+        for (const slug of slugs) {
+            paths.push(
+                {
+                    params: {
+                        userSlug: slug
+                    },
+                    locale
+                }
+            );
+        }
     }
     return {
-        fallback: false,
+        fallback: 'blocking',
         paths
     }
 }
 
 export async function getStaticProps(context) {
-    // extract the locale identifier from the URL
-    const { locale } = context
+    try {
+        // extract the locale identifier from the URL
+        const locale = context.locale;
+        const userSlug = context.params.userSlug;
 
-    return {
-        props: {
-            // pass the translation props to the page component
-            ...(await serverSideTranslations(locale)),
-        },
+        const userReq = await UserService.getBySlug(userSlug, 'verbose');
+        const user = new User((await userReq.json()).content);
+
+        return {
+            props: {
+                // pass the translation props to the page component
+                ...(await serverSideTranslations(locale)),
+                user: {
+                    ...user
+                }
+            },
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            notFound: true
+        }
     }
 }
 
 Diary.getLayout = (page) => {
+    const { t } = useTranslation('user-diary');
+
     return (
-        <DiaryLayout title={"Diary"} showStoryFilters showBreadcrumbs>
+        <DiaryLayout title={t('diary')} showStoryFilters showBreadcrumbs>
             {page}
         </DiaryLayout>
     )

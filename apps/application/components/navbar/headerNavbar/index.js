@@ -81,7 +81,7 @@ function Navbar({ transparent, light, action }) {
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
           <NavbarLink icon="donut_large" name="dashboard" route="/" light={light} />
-          <NavbarLink icon="person" name="profile" route="/users/user1/home" light={light} />
+          <NavbarLink icon="person" name="profile" route="/users/roberto-dellantonio/home" light={light} />
           <NavbarLink
             icon="account_circle"
             name="sign up"

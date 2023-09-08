@@ -2,8 +2,11 @@ import ImageCard from '@/components/cards/imageCard/ImageCard';
 import PersonalCard from '@/components/cards/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
+import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
+import { User } from '@/models/user.model';
+import UserService from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
@@ -13,12 +16,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
-import { useEffect } from 'react';
-import { UserService } from '@/services/user.service';
-import { User } from '@/models/user.model';
 
-const UserHome = () => {
-    const userService = new UserService();
+const UserHome = ({ user }) => {
     const { t } = useTranslation(['user-home', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const { colors } = tailwindConfig.theme;
@@ -31,35 +30,37 @@ const UserHome = () => {
         console.log(data);
     }
 
-    useEffect(() => {
-        userService.getBySlug(userSlug, 'verbose').then(async (response) => {
-            const user = new User((await response.json()).content);
-            console.log(user);
-        });
-    }, []);
-
     return (
         <>
             {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
             <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]}>
                 <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
-                <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>Roberto Dellantonio</Typography>
-                <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>Software Engineer</Typography>
-                <Typography variant="subtitle1" color="text" gutterBottom>Shot what able cold new the see hold. Friendly as an betrayed formerly he. Morning because as to society behaved moments.</Typography>
+                <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThan('xl') ? '120%' : 'fit-content' }}>{user.firstName} {user.lastName}</Typography>
+                <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user.title}</Typography>
+                <Typography variant="subtitle1" color="text" gutterBottom>{user.description}</Typography>
             </HeroSection>
 
-            <MicroHighlightSection moveUp>
-                <SingleElement avatar="1" title="Java" caption="Back-end development" />
-                <SingleElement avatar="2" title="React" caption="Front-end development" />
-                <SingleElement avatar="3" title="Docker" caption="Devops management" />
-            </MicroHighlightSection>
+            <ShowIf condition={user.skills?.filter(skill => skill.isMain)?.length >= 3}>
+                <MicroHighlightSection moveUp>
+                    {
+                        user.skills
+                            ?.filter(skill => skill.isMain)
+                            ?.sort((a, b) => a.orderId - b.orderId)
+                            ?.map((userSkill, index) => (
+                                <SingleElement key={index} avatar={'' + userSkill.orderId} title={userSkill.skill.name} caption={userSkill.skill.category?.name} />
+                            )
+                            )
+                    }
+
+                </MicroHighlightSection>
+            </ShowIf>
 
             <Box id='main-story-section' component='section' className='mt-12 xl:mt-0'>
                 <Box className='absolute w-full h-96'>
                     <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl bg-dark-main' style={{ opacity: 0.9 }} ></div>
                 </Box>
                 <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
-                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone='+39-3343281120' email='dellantonio47@gmail.com' city='Predazzo, Italy' sectionToScrollTo='#contact-section' />
+                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone={user.phone} email={user.email} city={User.getUserAddress(user)} sectionToScrollTo='#contact-section' />
 
                     <Grid container >
                         <Grid item xs={12} height='25em' marginBottom={2} className='flex justify-center items-center'>
@@ -168,15 +169,14 @@ const UserHome = () => {
 }
 
 export async function getStaticPaths(context) {
-    const userService = new UserService();
-
-    const slugsResponse = await userService.getAllSlugs();
+    const slugsResponse = await UserService.getAllSlugs();
     const slugs = (await slugsResponse.json()).content;
 
     const { locales } = context;
+
     let paths = [];
     for (const locale of locales) {
-        for(const slug of slugs) {
+        for (const slug of slugs) {
             paths.push(
                 {
                     params: {
@@ -188,20 +188,34 @@ export async function getStaticPaths(context) {
         }
     }
     return {
-        fallback: false,
+        fallback: 'blocking',
         paths
     }
 }
 
 export async function getStaticProps(context) {
-    // extract the locale identifier from the URL
-    const { locale } = context
+    try {
+        // extract the locale identifier from the URL
+        const locale = context.locale;
+        const userSlug = context.params.userSlug;
 
-    return {
-        props: {
-            // pass the translation props to the page component
-            ...(await serverSideTranslations(locale)),
-        },
+        const userReq = await UserService.getBySlug(userSlug, 'verbose');
+        const user = new User((await userReq.json()).content);
+
+        return {
+            props: {
+                // pass the translation props to the page component
+                ...(await serverSideTranslations(locale)),
+                user: {
+                    ...user
+                }
+            },
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            notFound: true
+        }
     }
 }
 

@@ -19,6 +19,7 @@ function CoverLayout(props) {
         minHeight: `calc(100vh - 80px)`,
         margin: 0,
         padding: 0,
+        width: "100%",
         marginTop: props.top
       }}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
