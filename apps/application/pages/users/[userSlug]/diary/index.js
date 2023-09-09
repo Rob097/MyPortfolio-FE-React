@@ -6,7 +6,7 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
 import { StoryCategoryEnum } from '@/models/categories.model';
 import { User } from '@/models/user.model';
-import UserService from '@/services/user.service';
+import UserService, { useUser } from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Avatar, Box, Container, Grid, Typography } from '@mui/material';
@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import userClasses from '../styles/shared.module.scss';
 
-const Diary = () => {
+const Diary = ({user}) => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
@@ -27,6 +27,7 @@ const Diary = () => {
 
     const router = useRouter();
     const { userSlug } = router.query;
+    // const { user, isLoading, isError } = useUser(userSlug, 'normal');
 
     return (
         <>

@@ -28,25 +28,25 @@ export class User {
     status?: string;
 
     constructor(obj: any) {
-        this.id = obj.id;
-        this.slug = obj.slug;
-        this.email = obj.email;
-        this.phone = obj.phone;
-        this.firstName = obj.firstName;
-        this.lastName = obj.lastName;
-        this.age = obj.age;
-        this.sex = obj.sex;
-        this.nationality = obj.nationality;
-        this.title = obj.title;
-        this.description = obj.description;
-        this.address = obj.address;
-        this.skills = obj.skills;
-        this.educations = obj.educations;
-        this.experiences = obj.experiences;
-        this.diaries = obj.diaries;
-        this.projects = obj.projects;
-        this.avatar = obj.avatar;
-        this.status = obj.status;
+        this.id = obj?.id;
+        this.slug = obj?.slug;
+        this.email = obj?.email;
+        this.phone = obj?.phone;
+        this.firstName = obj?.firstName;
+        this.lastName = obj?.lastName;
+        this.age = obj?.age;
+        this.sex = obj?.sex;
+        this.nationality = obj?.nationality;
+        this.title = obj?.title;
+        this.description = obj?.description;
+        this.address = obj?.address;
+        this.skills = obj?.skills;
+        this.educations = obj?.educations;
+        this.experiences = obj?.experiences;
+        this.diaries = obj?.diaries;
+        this.projects = obj?.projects;
+        this.avatar = obj?.avatar;
+        this.status = obj?.status;
 
         // Replace all undefined values with null
         Object.keys(this).forEach(key => {
@@ -57,7 +57,7 @@ export class User {
     }
 
     public static getUserAddress(user: User) {
-        const address = user.address;
+        const address = user?.address;
         return address?.city + ', ' + address?.province + ', ' + address?.nation;
     }
 }
