@@ -14,6 +14,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
 
@@ -22,6 +23,11 @@ const UserHome = () => {
     const { userSlug } = router.query;
     const { user, isLoading, isError, isValidating } = useUser(userSlug, 'normal');
 
+    useEffect(() => {
+        if (isError !== undefined && isError != null) {
+            throw isError;
+        }
+    }, [isError]);
 
     const { t } = useTranslation(['user-home', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
@@ -31,31 +37,19 @@ const UserHome = () => {
     const { colors } = tailwindConfig.theme;
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-
     async function handleContact(data) {
         console.log(data);
     }
 
-
     return (
         <>
 
-            <ShowIf condition={isLoading}>
-                <div className='flex justify-center items-center w-full h-screen'>
+            <ShowIf condition={isLoading || isValidating}>
+                <div className='flex justify-center items-center w-full' style={{ height: 'calc(100vh - 104px)' }}>
                     <Typography variant='h1' color='primary' fontWeight='bold'>Loading...</Typography>
                 </div>
             </ShowIf>
-            <ShowIf condition={isValidating}>
-                <div className='flex justify-center items-center w-full h-screen'>
-                    <Typography variant='h1' color='primary' fontWeight='bold'>Validating...</Typography>
-                </div>
-            </ShowIf>
-            <ShowIf condition={isError!==undefined}>
-                <div className='flex justify-center items-center w-full h-screen'>
-                    <Typography variant='h1' color='primary' fontWeight='bold'>{isError}</Typography>
-                </div>
-            </ShowIf>
-            <ShowIf condition={!isLoading && !isValidating && isError===undefined && user!==undefined}>
+            <ShowIf condition={!isLoading && !isValidating && isError === undefined && user !== undefined && !user.isEmpty()}>
 
                 {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
                 <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]}>
@@ -195,24 +189,29 @@ const UserHome = () => {
 }
 
 export async function getStaticPaths(context) {
-    const slugsResponse = await UserService.getAllSlugs();
-    const slugs = (await slugsResponse.json()).content;
-
+    const paths = [];
     const { locales } = context;
 
-    let paths = [];
-    for (const locale of locales) {
-        for (const slug of slugs) {
-            paths.push(
-                {
-                    params: {
-                        userSlug: slug
-                    },
-                    locale
-                }
-            );
+    try {
+        const slugsResponse = await UserService.getAllSlugs();
+        const slugs = (await slugsResponse.json()).content;
+
+        for (const locale of locales) {
+            for (const slug of slugs) {
+                paths.push(
+                    {
+                        params: {
+                            userSlug: slug
+                        },
+                        locale
+                    }
+                );
+            }
         }
+    } catch (error) {
+        console.debug("Error in user home getStaticPaths", error);
     }
+
     return {
         fallback: 'blocking',
         paths

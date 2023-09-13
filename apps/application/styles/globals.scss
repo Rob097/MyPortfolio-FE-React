@@ -117,3 +117,12 @@ li.MuiMenuItem-root {
 a {
   text-decoration: none;
 }
+
+.notistack-SnackbarContainer{
+  top: 104px !important;
+}
+
+// Add styles to all .notistack-SnackbarContainer children:
+.notistack-SnackbarContainer > * {
+  width: 100%;
+}

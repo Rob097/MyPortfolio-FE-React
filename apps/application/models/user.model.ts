@@ -60,6 +60,10 @@ export class User {
         const address = user?.address;
         return address?.city + ', ' + address?.province + ', ' + address?.nation;
     }
+
+    isEmpty() {
+        return !this?.id || !this?.slug;
+    }
 }
 
 export class UserQ extends Filters {
