@@ -1,6 +1,6 @@
 import { Alert, AlertTitle } from '@mui/material';
-import { SnackbarContent, useSnackbar, closeSnackbar } from 'notistack';
-import React, { forwardRef } from 'react';
+import { SnackbarContent, SnackbarProvider, closeSnackbar, useSnackbar } from 'notistack';
+import { forwardRef } from 'react';
 
 
 export const VariantType = {
@@ -81,3 +81,24 @@ export const CustomAlert = forwardRef((props, ref) => {
     </SnackbarContent>
   )
 })
+
+export const CustomSnackProvider = ({ children }) => (
+  <SnackbarProvider
+    maxSnack={3}
+    // persist
+    preventDuplicate
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    Components={{
+      default: CustomAlert,
+      error: CustomAlert,
+      success: CustomAlert,
+      warning: CustomAlert,
+      info: CustomAlert
+    }}
+  >
+    {children}
+  </SnackbarProvider>
+);

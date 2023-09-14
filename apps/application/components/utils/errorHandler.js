@@ -1,4 +1,4 @@
-import Snack from '@/components/utils/snack';
+import Snack from '@/components/alerts/snack';
 import CoverLayout from '@/layouts/CoverLayout';
 import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';

@@ -9,4 +9,6 @@ module.exports = {
   fallbackLng: {
     default: ['en'],
   },
+  //needed when deploy on Vercel
+  localePath: require('path').resolve('./public/locales')
 }

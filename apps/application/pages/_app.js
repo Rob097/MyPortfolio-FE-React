@@ -1,7 +1,9 @@
 import theme from "@/MUI/theme";
 import createEmotionCache from '@/components/utils/createEmotionCache';
 import ErrorHandler from '@/components/utils/errorHandler';
-import { CustomAlert, SnackbarUtilsConfigurator } from '@/components/utils/snack';
+import Rendering from "@/components/utils/loading/rendering";
+import NoSSR from "@/components/utils/nossr";
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts/snack';
 import CoverLayout from '@/layouts/CoverLayout';
 import '@/styles/animations.scss';
 import '@/styles/globals.scss';
@@ -11,9 +13,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SnackbarProvider } from 'notistack';
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import { Suspense } from "react";
 import { ErrorBoundary } from 'react-error-boundary';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -24,26 +25,12 @@ function MyApp(props) {
   const router = useRouter();
 
   return (
-    <SnackbarProvider
-      maxSnack={3}
-      // persist
-      preventDuplicate
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      Components={{
-        default: CustomAlert,
-        error: CustomAlert,
-        success: CustomAlert,
-        warning: CustomAlert,
-        info: CustomAlert
-      }}
-    >
+    <CustomSnackProvider>
       <StateProvider>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
             <ErrorBoundary FallbackComponent={ErrorHandler} key={router.pathname}>
+              
               <Head>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
               </Head>
@@ -55,12 +42,16 @@ function MyApp(props) {
           </ThemeProvider>
         </CacheProvider>
       </StateProvider>
-    </SnackbarProvider>
+    </CustomSnackProvider>
   );
 }
 
 const SuspApp = (props) => {
-  return <React.Suspense fallback={<div>Loading...</div>}><MyApp {...props} /></React.Suspense>
+  return (
+    <NoSSR>
+      <Suspense fallback={<Rendering />}><MyApp {...props} /></Suspense>
+    </NoSSR>
+  )
 }
 
 const Layout = ({ Component, pageProps }) => {

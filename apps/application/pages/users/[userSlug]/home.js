@@ -17,10 +17,18 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
+import Loading from '@/components/utils/loading/loading';
 
 const UserHome = () => {
     const router = useRouter();
     const { userSlug } = router.query;
+
+    const { t } = useTranslation(['user-home', 'common']);
+    const { colors } = tailwindConfig.theme;
+    const { isGreaterThan, isSmallerThan } = useBreakpoints();
+    const isGreaterThanXl = isGreaterThan('xl'); const isGreaterThanLg = isGreaterThan('lg'); const isSmallerThanLg = isSmallerThan('lg');
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const { user, isLoading, isError, isValidating } = useUser(userSlug, 'normal');
 
     useEffect(() => {
@@ -28,14 +36,6 @@ const UserHome = () => {
             throw isError;
         }
     }, [isError]);
-
-    const { t } = useTranslation(['user-home', 'common']);
-    const { isGreaterThan, isSmallerThan } = useBreakpoints();
-    const isGreaterThanXl = isGreaterThan('xl');
-    const isGreaterThanLg = isGreaterThan('lg');
-    const isSmallerThanLg = isSmallerThan('lg');
-    const { colors } = tailwindConfig.theme;
-    const { register, handleSubmit, formState: { errors } } = useForm();
 
     async function handleContact(data) {
         console.log(data);
@@ -45,11 +45,9 @@ const UserHome = () => {
         <>
 
             <ShowIf condition={isLoading || isValidating}>
-                <div className='flex justify-center items-center w-full' style={{ height: 'calc(100vh - 104px)' }}>
-                    <Typography variant='h1' color='primary' fontWeight='bold'>Loading...</Typography>
-                </div>
+                <Loading />
             </ShowIf>
-            <ShowIf condition={!isLoading && !isValidating && isError === undefined && user !== undefined && !user.isEmpty()}>
+            <ShowIf condition={!isLoading && !isValidating && isError === undefined && !user?.isEmpty()}>
 
                 {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
                 <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]}>
@@ -209,7 +207,7 @@ export async function getStaticPaths(context) {
             }
         }
     } catch (error) {
-        console.debug("Error in user home getStaticPaths", error);
+        console.debug("Error in user home getStaticPaths");
     }
 
     return {
@@ -226,8 +224,27 @@ export async function getStaticProps(context) {
             // pass the translation props to the page component
             ...(await serverSideTranslations(locale))
         },
+        revalidate: 1800 // Revalidate at most every 30 minutes
     }
 }
+
+/* 
+If data changes really frequently, we can use getServerSideProps instead of getStaticProps and getStaticPaths.
+This way, the page will be rendered on each request, so we can be sure that the data is always up to date.
+export async function getServerSideProps(context) {
+    const locale = context.locale;
+    // const request = context.req;
+    // const response = context.res;
+
+    // Fetch translations for the specific user's locale
+    const translations = await serverSideTranslations(locale, ['user-home', 'common']);
+
+    return {
+        props: {
+            ...translations,
+        },
+    };
+} */
 
 export default UserHome;
 
