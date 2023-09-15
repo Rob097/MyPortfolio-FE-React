@@ -2,6 +2,7 @@ import ImageCard from '@/components/cards/imageCard/ImageCard';
 import PersonalCard from '@/components/cards/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
+import Loading from '@/components/utils/loading/loading';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
@@ -17,7 +18,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
-import Loading from '@/components/utils/loading/loading';
 
 const UserHome = () => {
     const router = useRouter();
@@ -29,7 +29,7 @@ const UserHome = () => {
     const isGreaterThanXl = isGreaterThan('xl'); const isGreaterThanLg = isGreaterThan('lg'); const isSmallerThanLg = isSmallerThan('lg');
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { user, isLoading, isError, isValidating } = useUser(userSlug, 'normal');
+    const { user, isLoading, isError, isValidating } = useUser(userSlug, 'verbose');
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {

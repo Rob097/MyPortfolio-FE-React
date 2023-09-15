@@ -1,9 +1,9 @@
 import theme from "@/MUI/theme";
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts/snack';
 import createEmotionCache from '@/components/utils/createEmotionCache';
 import ErrorHandler from '@/components/utils/errorHandler';
-import Rendering from "@/components/utils/loading/rendering";
+import Loading from "@/components/utils/loading/loading";
 import NoSSR from "@/components/utils/nossr";
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts/snack';
 import CoverLayout from '@/layouts/CoverLayout';
 import '@/styles/animations.scss';
 import '@/styles/globals.scss';
@@ -30,7 +30,7 @@ function MyApp(props) {
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
             <ErrorBoundary FallbackComponent={ErrorHandler} key={router.pathname}>
-              
+
               <Head>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
               </Head>
@@ -48,9 +48,10 @@ function MyApp(props) {
 
 const SuspApp = (props) => {
   return (
-    <NoSSR>
-      <Suspense fallback={<Rendering />}><MyApp {...props} /></Suspense>
-    </NoSSR>
+    // <NoSSR>
+      // <Suspense fallback={<Loading />}><MyApp {...props} /></Suspense>
+    // </NoSSR>
+    <MyApp {...props} />
   )
 }
 
