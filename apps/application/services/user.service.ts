@@ -7,7 +7,7 @@ const USERS_URL = BASE_URL + '/core/users';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function useUser(slug: string, view?: string) {
-    const { data, error, isLoading, isValidating } = useSWR(UserService.getBySlugUrl(slug, view), fetcher, { suspense: true });
+    const { data, error, isLoading, isValidating } = useSWR(UserService.getBySlugUrl(slug, view), fetcher/*, { suspense: true }*/);
 
     return {
         user: new User(data?.content),

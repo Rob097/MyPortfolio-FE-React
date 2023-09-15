@@ -1,17 +1,15 @@
 import createEmotionCache from '@/components/utils/createEmotionCache';
 import tailwindConfig from '@/tailwind.config';
 import createEmotionServer from '@emotion/server/create-instance';
-import { useTranslation } from 'next-i18next';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import PropTypes from 'prop-types';
 
 export default function MyDocument(props) {
   const { emotionStyleTags } = props;
   const { colors } = tailwindConfig.theme;
-  const { i18n } = useTranslation();
 
   return (
-    <Html lang={i18n.language} style={{scrollBehavior:'smooth'}}>
+    <Html style={{ scrollBehavior: 'smooth' }}>
       <Head>
         {/* PWA primary color */}
         <meta name="theme-color" content={colors.primary.main} />
