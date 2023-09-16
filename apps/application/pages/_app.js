@@ -54,13 +54,12 @@ function MyApp(props) {
 const Layout = ({ Component, pageProps }) => {
 
   let content = PagesCommonLogics(pageProps);
-  if (content)
-    return content;
-
-  if (Component.getLayout) {
-    content = Component.getLayout(<Component {...pageProps} />);
-  } else {
-    content = <Component {...pageProps} />;
+  if (!content) {
+    if (Component.getLayout) {
+      content = Component.getLayout(<Component {...pageProps} />);
+    } else {
+      content = <Component {...pageProps} />;
+    }
   }
 
   return <CoverLayout>{content}</CoverLayout>
