@@ -61,8 +61,8 @@ export class User {
         return address?.city + ', ' + address?.province + ', ' + address?.nation;
     }
 
-    isEmpty() {
-        return !this?.id || !this?.slug;
+    public static isEmpty(user: User) {
+        return !user ||!user?.id || !user?.slug;
     }
 }
 

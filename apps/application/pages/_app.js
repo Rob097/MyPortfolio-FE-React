@@ -1,9 +1,8 @@
 import theme from "@/MUI/theme";
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts/snack';
+import { CustomSnackProvider, SnackbarUtilsConfigurator, displayMessages } from "@/components/alerts/snack";
 import createEmotionCache from '@/components/utils/createEmotionCache';
 import ErrorHandler from '@/components/utils/errorHandler';
 import Loading from "@/components/utils/loading/loading";
-import NoSSR from "@/components/utils/nossr";
 import CoverLayout from '@/layouts/CoverLayout';
 import '@/styles/animations.scss';
 import '@/styles/globals.scss';
@@ -16,6 +15,8 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Suspense } from "react";
 import { ErrorBoundary } from 'react-error-boundary';
+import { SWRConfig } from 'swr';
+import Custom500 from './500';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -25,39 +26,36 @@ function MyApp(props) {
   const router = useRouter();
 
   return (
-    <CustomSnackProvider>
-      <StateProvider>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme}>
-            <ErrorBoundary FallbackComponent={ErrorHandler} key={router.pathname}>
+    <Suspense fallback={<Loading />}>
+      <CustomSnackProvider>
+        <StateProvider>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+              <ErrorBoundary FallbackComponent={ErrorHandler} key={router.pathname}>
 
-              <Head>
-                <meta name="viewport" content="initial-scale=1, width=device-width" />
-              </Head>
+                <Head>
+                  <meta name="viewport" content="initial-scale=1, width=device-width" />
+                </Head>
 
-              <SnackbarUtilsConfigurator />
-              <Layout Component={Component} pageProps={pageProps} />
+                <SnackbarUtilsConfigurator />
+                <SWRConfig value={{ fallback: pageProps.fallback }}>
+                  <Layout Component={Component} pageProps={pageProps} />
+                </SWRConfig>
 
-            </ErrorBoundary>
-          </ThemeProvider>
-        </CacheProvider>
-      </StateProvider>
-    </CustomSnackProvider>
+              </ErrorBoundary>
+            </ThemeProvider>
+          </CacheProvider>
+        </StateProvider>
+      </CustomSnackProvider>
+    </Suspense>
   );
-}
-
-const SuspApp = (props) => {
-  return (
-    // <NoSSR>
-      // <Suspense fallback={<Loading />}><MyApp {...props} /></Suspense>
-    // </NoSSR>
-    <MyApp {...props} />
-  )
 }
 
 const Layout = ({ Component, pageProps }) => {
 
-  let content;
+  let content = PagesCommonLogics(pageProps);
+  if (content)
+    return content;
 
   if (Component.getLayout) {
     content = Component.getLayout(<Component {...pageProps} />);
@@ -68,7 +66,18 @@ const Layout = ({ Component, pageProps }) => {
   return <CoverLayout>{content}</CoverLayout>
 };
 
-export default appWithTranslation(SuspApp);
+const PagesCommonLogics = (pageProps) => {
+  let content;
+  if (pageProps.messages) {
+    displayMessages(pageProps.messages);
+  }
+  if (pageProps?.error) {
+    content = <Custom500 error={pageProps.error} {...pageProps} />
+  }
+  return content;
+}
+
+export default appWithTranslation(MyApp);
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,

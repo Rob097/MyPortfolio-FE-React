@@ -2,7 +2,6 @@ import { Alert, AlertTitle } from '@mui/material';
 import { SnackbarContent, SnackbarProvider, closeSnackbar, useSnackbar } from 'notistack';
 import { forwardRef } from 'react';
 
-
 export const VariantType = {
   default: 'default',
   error: 'error',
@@ -36,10 +35,10 @@ const trimMessage = (
   msg,
   length = defaultSnackMessageLength
 ) => {
-  return msg.substring(0, length);
+  return msg?.substring(0, length);
 };
 
-export default {
+const Snack = {
   success(msg, options = {}) {
     this.toast(trimMessage(msg), { ...options, variant: VariantType.success });
   },
@@ -53,9 +52,12 @@ export default {
     this.toast(trimMessage(msg), { ...options, variant: VariantType.error });
   },
   toast(msg, options = {}) {
-    useSnackbarRef?.enqueueSnackbar(msg, options);
+    if (msg) {
+      useSnackbarRef?.enqueueSnackbar(msg, options);
+    }
   }
 };
+export default Snack;
 
 export const CustomAlert = forwardRef((props, ref) => {
 
@@ -102,3 +104,19 @@ export const CustomSnackProvider = ({ children }) => (
     {children}
   </SnackbarProvider>
 );
+
+export function displayMessages(messages) {
+  if (messages) {
+    messages.forEach((m) => {
+      if (m.level.toUpperCase() === VariantType.error.toUpperCase()) {
+        Snack.error(m.text);
+      } else if (m.level.toUpperCase() === VariantType.warning.toUpperCase()) {
+        Snack.warning(m.text);
+      } else if (m.level.toUpperCase() === VariantType.info.toUpperCase()) {
+        Snack.info(m.text);
+      } else if (m.level.toUpperCase() === VariantType.success.toUpperCase()) {
+        Snack.success(m.text);
+      }
+    });
+  }
+}

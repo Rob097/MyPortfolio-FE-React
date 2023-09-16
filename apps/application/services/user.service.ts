@@ -7,7 +7,7 @@ const USERS_URL = BASE_URL + '/core/users';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function useUser(slug: string, view?: string) {
-    const { data, error, isLoading, isValidating } = useSWR(UserService.getBySlugUrl(slug, view), fetcher/*, { suspense: true }*/);
+    const { data, error, isLoading, isValidating } = useSWR(UserService.getBySlugUrl(slug, view), fetcher, { suspense: true });
 
     return {
         user: new User(data?.content),
@@ -20,14 +20,17 @@ export function useUser(slug: string, view?: string) {
 export default class UserService {
 
     static getBySlugUrl(slug: string, view?: string) {
-        return USERS_URL + `/slug/${slug}` + '?view=' + (view || View.normal)
+        return USERS_URL + `/slug/${slug}` + '?view=' + (view || View.normal);
     }
     static getByIdUrl(id: number, view?: string) {
-        return USERS_URL + `/${id}` + '?view=' + (view || View.normal)
+        return USERS_URL + `/${id}` + '?view=' + (view || View.normal);
+    }
+    static getAllSlugsUrl() {
+        return USERS_URL + '/slugs';
     }
 
     static getById(id: number, view?: string) {
-        return fetch(USERS_URL + `/${id}` + '?view=' + (view || View.normal), {
+        return fetch(this.getByIdUrl(id, view), {
             method: constants.METHODS.GET,
             headers: {
                 ...JSON_HEADER
@@ -54,7 +57,7 @@ export default class UserService {
     }
 
     static getAllSlugs() {
-        return fetch(USERS_URL + '/slugs', {
+        return fetch(this.getAllSlugsUrl(), {
             method: constants.METHODS.GET,
             headers: {
                 ...JSON_HEADER
