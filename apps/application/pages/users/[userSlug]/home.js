@@ -210,6 +210,10 @@ export async function getStaticPaths(context) {
 }
 
 export async function getStaticProps(context) {
+
+    let props = {};
+    const revalidate = 10;
+
     try {
         const locale = context.locale;
 
@@ -219,27 +223,27 @@ export async function getStaticProps(context) {
         if (!userResponse?.content || User.isEmpty(userResponse?.content)) {
             return {
                 notFound: true,
-                revalidate: 10
+                revalidate: revalidate
             }
         }
 
-        return {
-            props: {
-                ...(await serverSideTranslations(locale)),
-                user: userResponse?.content,
-                messages: userResponse?.messages,
-                fallback: {
-                    [url]: userResponse
-                },
+        props = {
+            ...(await serverSideTranslations(locale)),
+            user: userResponse?.content,
+            messages: userResponse?.messages,
+            fallback: {
+                [url]: userResponse
             },
-            revalidate: 30 // 30 Revalidate at most every 30 seconds
         }
     } catch (error) {
-        return {
-            props: {
-                error: JSON.parse(JSON.stringify(error))
-            }
+        props = {
+            error: JSON.parse(JSON.stringify(error))
         }
+    }
+
+    return {
+        props,
+        revalidate
     }
 }
 
