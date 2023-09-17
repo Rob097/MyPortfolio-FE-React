@@ -237,7 +237,7 @@ export async function getStaticProps(context) {
     } catch (error) {
         return {
             props: {
-                error
+                error: JSON.parse(JSON.stringify(error))
             }
         }
     }

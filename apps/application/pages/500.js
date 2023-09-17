@@ -7,13 +7,20 @@ export default function Custom500({ error }) {
 
     const router = useRouter();
 
-    if (error)
-        Snack.error(error);
+    let errorMessage;
+    if (error) {
+        if(typeof error === 'string') {
+            errorMessage = error;
+        } else {
+            errorMessage = error.message || error.cause.message;
+        }
+        Snack.error(errorMessage);
+    }
 
     return (
         <div className="absolute w-full flex flex-col items-center justify-center" style={{ minHeight: `calc(100vh - 80px)` }}>
             <h1>500 - Server-side error occurred</h1>
-            {error && <p>{error}</p>}
+            {errorMessage && <p>{errorMessage}</p>}
             <Link href="/">
                 <Button variant="contained" color="primary" size="small" className='rounded-full whitespace-nowrap' >
                     Go to the Home Page
