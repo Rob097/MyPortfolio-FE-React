@@ -5,6 +5,7 @@ export const fetcher = async (url: string) => {
     .then(async (r) => {
       return r.json().then((json) => {
         if (!r.ok && r.status !== 404) {
+          console.debug("Fetcher Error: %O", json);
           return Promise.reject(json?.error || "Errore sconosciuto");
         }
         return json;

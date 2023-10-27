@@ -1,27 +1,34 @@
 import { Filters } from '@/models/criteria.model';
 import { Skill } from './skill.model';
 import { User } from './user.model';
+import { SlugDto } from './baseDto.models';
+import { Story } from './story.model';
 
-export class Experience {
-    id: number;
-    user: User;
+export class Experience extends SlugDto {
+    userId: number;
     title: string;
     employmentType: string;
     companyName: string;
     location?: string;
-    startDate: Date;
     description?: string;
+    fromDate: Date;
+    toDate?: Date;
+    mainStoryId?: number;
+    stories?: Story[];
     skills?: Skill[];
 
     constructor(obj: any) {
-        this.id = obj.id;
-        this.user = obj.user;
+        super(obj);
+        this.userId = obj.userId;
         this.title = obj.title;
         this.employmentType = obj.employmentType;
         this.companyName = obj.companyName;
         this.location = obj.location;
-        this.startDate = obj.startDate;
         this.description = obj.description;
+        this.fromDate = obj.fromDate;
+        this.toDate = obj.toDate;
+        this.mainStoryId = obj.mainStoryId;
+        this.stories = obj.stories;
         this.skills = obj.skills;
     }
 }
@@ -33,6 +40,7 @@ export class ExperienceQ extends Filters {
     public static employmentType = 'employmentType';
     public static companyName = 'companyName';
     public static location = 'location';
-    public static startDate = 'startDate';
     public static description = 'description';
+    public static fromDate = 'fromDate';
+    public static toDate = 'toDate';
 }

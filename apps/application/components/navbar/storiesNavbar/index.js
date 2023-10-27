@@ -1,44 +1,48 @@
 import RelevantSections from '@/components/cards/sectionCard/relevantSections';
 import SwipeableEdgeDrawer from '@/components/drawer/swipeableEdgeDrawer';
-import StoryIndexModal, { StoryIndexContent } from '@/components/modals/storyIndexModal';
-import StoryNavbarClasses from '@/components/navbar/navbar.module.scss';
-import ProjectsTree from '@/components/tree/projectsTree';
+import StoriesIndexModal, { StoriesIndexContent } from '@/components/modals/storiesIndexModal';
+import StoriesNavbarClasses from '@/components/navbar/navbar.module.scss';
+import EntitiesTree from '@/components/tree/entitiesTree';
 import ConditionalWrapper from '@/components/utils/conditionalWrapper';
 import ShowIf from '@/components/utils/showIf';
 import WhiteBar from '@/components/whiteBar';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { StoryCategoryEnum } from '@/models/categories.model';
+import { EntityTypeEnum } from '@/models/categories.model';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ListIcon from '@mui/icons-material/List';
 import { Box, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-const domSection = '#mainProjectSection';
+const domStory = '#mainEntityStory';
 
-const StoryNavbar = ({ userSlug, story, section }) => {
+const StoriesNavbar = ({ entities, entity, story, category }) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanMd = isGreaterThan('md');
     const isSmallerThanMd = isSmallerThan('md');
+
+    const router = useRouter();
+    const { userSlug } = router.query;
 
     const [indexModalOpen, setIndexModalOpen] = useState(false);
     function toggleIndexModal(forcedValue) {
         setIndexModalOpen(forcedValue !== undefined ? forcedValue : !indexModalOpen);
     }
 
-    const showRelevantSections = section?.relevantSections !== undefined && section?.relevantSections.length > 0;
+    const showRelevantSections = story?.relevantSections !== undefined && story?.relevantSections.length > 0;
 
-    const previousSection = getPreviousSection(section, story);
-    const nextSection = getNextSection(section, story);
-    const previousLink = getPreviousSectionLink(section, story, userSlug);
-    const nextLink = getNextSectionLink(section, story, userSlug);
+    const previousStory = getPreviousStory(story, entity);
+    const nextStory = getNextStory(story, entity);
+    const previousLink = getPreviousStoryLink(story, entity, userSlug);
+    const nextLink = getNextStoryLink(story, entity, userSlug);
 
     const DrawerContent = () => (
         !indexModalOpen
-            ? (showRelevantSections ? <RelevantSections section={section} isMobile /> : <ProjectsTree project={story} />)
-            : <StoryIndexContent story={story} toggleModal={() => toggleIndexModal()} />
+            ? (showRelevantSections ? <RelevantSections story={story} isMobile /> : <EntitiesTree entity={entity} entities={entities} category={category} />)
+            : <StoriesIndexContent entity={entity} toggleModal={() => toggleIndexModal()} />
     );
 
     return (
@@ -48,12 +52,12 @@ const StoryNavbar = ({ userSlug, story, section }) => {
                 condition={true}
                 wrapper={children => (
                     isGreaterThanMd ?
-                        <WhiteBar id={StoryNavbarClasses["storyNavbar"]} containerClasses='sticky top-0 pt-4 !px-0 bg-background-secondary' white px={2}>{children}</WhiteBar>
+                        <WhiteBar id={StoriesNavbarClasses["storiesNavbar"]} containerClasses='sticky top-0 pt-4 !px-0 bg-background-secondary' white px={2}>{children}</WhiteBar>
                         :
                         <SwipeableEdgeDrawer
                             drawerContent={<DrawerContent />}
                             indexModalOpen={indexModalOpen}
-                            closeIndexModal={showRelevantSections ? () => toggleIndexModal(false) : undefined}
+                            closeIndexModal={/* showRelevantSections ? */ () => toggleIndexModal(false)/*  : undefined */}
                         >
                             {children}
                         </SwipeableEdgeDrawer>
@@ -65,36 +69,36 @@ const StoryNavbar = ({ userSlug, story, section }) => {
                     <Button onClick={() => toggleIndexModal()} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white whitespace-nowrap min-w-fit' >
                         {
                             isGreaterThanMd || !indexModalOpen ?
-                                'Story Sections'
+                                'Stories'
                                 :
-                                (showRelevantSections ? 'Relevant Sections' : 'My Projects')
+                                (showRelevantSections ? 'Relevant Sections' : 'My Entities')
                         }
                     </Button>
                     <Box className='flex flex-row justify-end'>
-                        <ShowIf condition={previousSection !== undefined}>
+                        <ShowIf condition={previousStory !== undefined}>
                             <ConditionalWrapper
                                 condition={isSmallerThanMd}
-                                wrapper={children => <Tooltip title={previousSection?.title ?? 'Home'}>{children}</Tooltip>}
+                                wrapper={children => <Tooltip title={previousStory?.title ?? 'Home'}>{children}</Tooltip>}
                             >
                                 <Link href={previousLink}>
                                     <Button variant="contained" startIcon={isGreaterThanMd && <KeyboardArrowLeftIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                        {isGreaterThanMd ? (previousSection?.title ?? 'Home') : <KeyboardArrowLeftIcon />}
+                                        {isGreaterThanMd ? (previousStory?.title ?? 'Home') : <KeyboardArrowLeftIcon />}
                                     </Button>
                                 </Link>
                             </ConditionalWrapper>
                         </ShowIf>
-                        <ShowIf condition={isSmallerThanMd || nextSection !== undefined}>
+                        <ShowIf condition={isSmallerThanMd || nextStory !== undefined}>
                             <ConditionalWrapper
                                 condition={isSmallerThanMd}
-                                wrapper={children => <Tooltip title={nextSection?.title}>{children}</Tooltip>}
+                                wrapper={children => <Tooltip title={nextStory?.title}>{children}</Tooltip>}
                             >
                                 {
-                                    isSmallerThanMd && nextSection === undefined ?
+                                    isSmallerThanMd && nextStory === undefined ?
                                         <Box sx={{ width: '4.5rem' }} />
                                         :
                                         <Link href={nextLink} >
                                             <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2'>
-                                                {isGreaterThanMd ? nextSection?.title : <KeyboardArrowRightIcon />}
+                                                {isGreaterThanMd ? nextStory?.title : <KeyboardArrowRightIcon />}
                                             </Button>
                                         </Link>
                                 }
@@ -104,43 +108,43 @@ const StoryNavbar = ({ userSlug, story, section }) => {
                 </Box>
             </ConditionalWrapper>
 
-            <StoryIndexModal story={story} open={isGreaterThanMd && indexModalOpen} toggleModal={() => toggleIndexModal()} />
+            <StoriesIndexModal entity={entity} open={isGreaterThanMd && indexModalOpen} toggleModal={() => toggleIndexModal()} />
 
         </>
     )
 }
 
-export default StoryNavbar;
+export default StoriesNavbar;
 
-function getPreviousSection(obj, story) {
-    if (!obj || !story) return undefined;
+function getPreviousStory(story, entity) {
+    if (!story || !entity) return undefined;
 
-    const sections = story.sections;
+    const stories = entity?.stories;
     const getIndex = (arr, id) => arr.findIndex(item => item.id === id);
 
-    const index = getIndex(sections, obj.id);
-    return index > 0 ? sections[index - 1] : null;
+    const index = getIndex(stories, story.id);
+    return index > 0 ? stories[index - 1] : null;
 
 }
-function getNextSection(obj, story) {
-    if (!story) return undefined;
-    if (!obj) return story.sections?.[0];
+function getNextStory(story, entity) {
+    if (!entity) return undefined;
+    if (!story) return entity?.stories?.[0];
 
-    const sections = story.sections;
+    const stories = entity?.stories;
     const getIndex = (arr, id) => arr.findIndex(item => item.id === id);
 
-    const index = getIndex(sections, obj.id);
-    return index < sections.length - 1 ? sections[index + 1] : undefined;
+    const index = getIndex(stories, story.id);
+    return index < stories.length - 1 ? stories[index + 1] : undefined;
 }
-function getPreviousSectionLink(obj, story, userSlug) {
-    const previousSection = getPreviousSection(obj, story);
-    return previousSection !== null && previousSection !== undefined
-        ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${previousSection.slug}${domSection}`
-        : (previousSection == null ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}${domSection}` : undefined);
+function getPreviousStoryLink(story, entity, userSlug) {
+    const previousStory = getPreviousStory(story, entity);
+    return previousStory !== null && previousStory !== undefined
+        ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}/${previousStory.slug}${domStory}`
+        : (previousStory == null ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}${domStory}` : undefined);
 }
-function getNextSectionLink(obj, story, userSlug) {
-    const nextSection = getNextSection(obj, story);
-    return nextSection
-        ? `/users/${userSlug}/diary/${StoryCategoryEnum.PROJECTS}/${story.slug}/${nextSection.slug}${domSection}`
+function getNextStoryLink(story, entity, userSlug) {
+    const nextStory = getNextStory(story, entity);
+    return nextStory
+        ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}/${nextStory.slug}${domStory}`
         : undefined;
 }

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs }) => {
+const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG }) => {
 
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
@@ -59,27 +59,29 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs })
 
             <Divider variant="middle" className='opacity-100' />
 
-            <ShowIf condition={title !== undefined && title !== ''}>
-                <Box id={id} className='pt-10'>
-                    <Typography variant="h1" textAlign='center'>
-                        {
-                            title && title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-                        }
-                    </Typography>
-                </Box>
-            </ShowIf>
+            <Box className={pageBG}>
+                <ShowIf condition={title !== undefined && title !== ''}>
+                    <Box id={id} className='pt-10'>
+                        <Typography variant="h1" textAlign='center'>
+                            {
+                                title && title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                            }
+                        </Typography>
+                    </Box>
+                </ShowIf>
 
-            <ShowIf condition={showBreadcrumbs === true}>
-                <Box id="diary-breadcrumbs" className={(title === undefined ? 'mt-10' : 'mt-8') + ' w-fit mx-auto'}>
-                    <NextBreadcrumbs />
-                </Box>
-            </ShowIf>
+                <ShowIf condition={showBreadcrumbs === true}>
+                    <Box id="diary-breadcrumbs" className={(title === undefined ? 'pt-10' : 'pt-8') + ' w-fit mx-auto'}>
+                        <NextBreadcrumbs />
+                    </Box>
+                </ShowIf>
 
-            <ShowIf condition={showStoryFilters === true}>
-                <Box id="diary-stories-filter">
-                    <StoriesFilters />
-                </Box>
-            </ShowIf>
+                <ShowIf condition={showStoryFilters === true}>
+                    <Box id="diary-stories-filter">
+                        <StoriesFilters />
+                    </Box>
+                </ShowIf>
+            </Box>
 
             {children}
 
@@ -121,6 +123,9 @@ const NextBreadcrumbs = () => {
 
             // Capitalize subpath:
             subpath = subpath.charAt(0).toUpperCase() + subpath.slice(1);
+
+            // Replace '-' and '_' with ' ':
+            subpath = subpath.replace(/-/g, ' ').replace(/_/g, ' ');
 
             return { href, text: subpath };
         })

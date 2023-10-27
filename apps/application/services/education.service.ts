@@ -1,28 +1,45 @@
 const constants = require('@rob097/common-lib/constants');
-import { View } from "@/models/criteria.model";
-import { Education, EducationQ } from "../models/education.model";
-import { BaseService } from "./base.service";
+import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
+import { fetcher } from "@/services/base.service";
+import { EducationQ } from "../models/education.model";
 const EDUCATIONS_URL = constants.BASE_URL + '/core/educations';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
-export class EducationService implements BaseService {
+export default class EducationService {
 
-
-    getById(id: number, view?: string) {
-        return fetch(EDUCATIONS_URL + `/${id}` + '?view=' + (view || View.normal), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getByIdUrl(id: number, view?: string) {
+        return EDUCATIONS_URL + `/${id}` + '?view=' + (view || View.normal);
     }
 
-    getByCriteria(criteria: EducationQ) {
-        return fetch(EDUCATIONS_URL + criteria.toString(), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getBySlugUrl(slug: string, view?: View) {
+        return EDUCATIONS_URL + `/slug/${slug}` + '?view=' + (view || View.normal);
+    }
+
+    static getByCriteriaUrl(criteria: EducationQ) {
+        return EDUCATIONS_URL + criteria.toString();
+    }
+
+    static getByUserIdUrl(userId: number, view?: View) {
+        const criteria = new Criteria(EducationQ.userId, Operation.equals, userId);
+        const filters = new Filters([criteria], view || View.normal);
+        return this.getByCriteriaUrl(filters);
+    }
+
+    /////////////////////////////////////////////////////////////////
+
+    static getById(id: number, view?: View) {
+        return fetcher(this.getByIdUrl(id, view));
+    }
+
+    static getBySlug(slug: string, view?: View) {
+        return fetcher(this.getBySlugUrl(slug, view));
+    }
+
+    static getByCriteria(criteria: EducationQ) {
+        return fetcher(this.getByCriteriaUrl(criteria));
+    }
+
+    static getByUserId(userId: number, view?: View) {
+        return fetcher(this.getByUserIdUrl(userId, view));
     }
 }

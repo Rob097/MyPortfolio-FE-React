@@ -1,11 +1,11 @@
 import StoryCard from '@/components/cards/storyCard';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
-import { educationStories, experienceStories, projectStories } from '@/data/mock/stories';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
-import { StoryCategoryEnum } from '@/models/categories.model';
+import { EntityTypeEnum } from '@/models/categories.model';
 import { User } from '@/models/user.model';
+import { fetcher } from '@/services/base.service';
 import UserService, { useUser } from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -16,9 +16,10 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import userClasses from '../styles/shared.module.scss';
 
-const Diary = ({user}) => {
+const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
@@ -27,180 +28,154 @@ const Diary = ({user}) => {
 
     const router = useRouter();
     const { userSlug } = router.query;
-    // const { user, isLoading, isError } = useUser(userSlug, 'normal');
+    const { user, isError } = useUser(userSlug, 'verbose');
+
+    useEffect(() => {
+        if (isError !== undefined && isError != null) {
+            throw isError;
+        }
+    }, [isError]);
 
     return (
         <>
-            {/* <Box id='main-story-section' component='section' className='mt-12 xl:mt-0 pt-10 flex justify-center' sx={{ backgroundImage: `linear-gradient(180deg, transparent, ${colors.background.main} 50%);` }}>
-
-                <Grid container className='mx-8' sx={({ breakpoints }) => ({ maxWidth: breakpoints.values['2xl'] })}>
-                    <Grid item xs={12} md={4} height='25em' marginBottom={2} className='h-fit md:h-full' style={{ zIndex: '1' }}>
-                        <Box className='flex justify-center items-center h-fit md:h-full'>
-                            <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
-                                <Avatar id="personalCardAvatar" src="https://mui.com/static/images/avatar/1.jpg" sx={{ width: 150, height: 150 }} variant='circular' />
-                                <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>Roberto Dellantonio</Typography>
-                                <Typography variant="subtitle1" fontWeight="bold" color="dark">Software Engineer</Typography>
-                                <Typography variant="subtitle2" fontWeight="bold" color="text" mt={2}>Predazzo, TN</Typography>
-                                <Box mt={3}>
-                                    <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('hire-me')}</Button>
-                                    <Button variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('follow-me')}</Button>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Grid>
-
-                    <Grid item xs={12} md={8} height='25em' marginBottom={2} className='flex justify-center items-center'>
-                        <Box className='absolute w-full h-96 left-0'>
-                            <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl bg-dark-main' style={{ opacity: 0.9 }} ></div>
-                        </Box>
-                        <Box className='flex justify-center h-fit items-end'>
-                            <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
-                                <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
-                                <Typography variant="h5" fontWeight="bold" color="primary">{t('user-home:about-me.title')}</Typography>
-                                <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
-                                    <Typography variant="body2" className='leading-7'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                    </Typography>
-                                </div>
-                                <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
-                            </div>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </Box>
-
-            <Divider variant="middle" className='opacity-100' />
-
-            <StoriesFilters /> */}
-
             <Box id="diary-stories" component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${colors.background.main} 90%);` }}>
-                <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
+                <ShowIf condition={user.experiences?.length > 0}>
+                    <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                        <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.professional-experiences')}</Typography>
+                        <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.professional-experiences')}</Typography>
 
-                        <Grid container className='mt-4' spacing={2}>
+                            <Grid container className='mt-4' spacing={2}>
 
-                            {
-                                experienceStories.slice(0, 3).map((story) => (
-                                    <Grid key={story.id} item xs={12} sm={6} lg={experienceStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                        <StoryCard
-                                            story={story}
-                                        />
+                                {
+                                    user.experiences.slice(0, 3).map((experience) => (
+                                        <Grid key={experience.id} item xs={12} sm={6} lg={user.experiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                            <StoryCard
+                                                story={experience}
+                                                storyCategory={EntityTypeEnum.EXPERIENCES}
+                                            />
+                                        </Grid>
+                                    ))
+                                }
+
+                                <ShowIf condition={user.experiences.length > 3}>
+                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                        <Tooltip title={user.experiences.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                            <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
+                                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                                </Avatar>
+                                            </Link>
+                                        </Tooltip>
                                     </Grid>
-                                ))
-                            }
+                                </ShowIf>
+                            </Grid>
 
-                            <ShowIf condition={experienceStories.length > 3}>
-                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={experienceStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
-                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                            </Avatar>
-                                        </Link>
-                                    </Tooltip>
-                                </Grid>
-                            </ShowIf>
-                        </Grid>
+                        </Container>
 
-                    </Container>
-
-                </Box>
+                    </Box>
+                </ShowIf>
 
                 <Box id='personal-projects-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
+                    <ShowIf condition={user.projects?.length > 0}>
+                        <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                        <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
+                            <Grid container className='mt-4' spacing={2}>
 
-                        <Grid container className='mt-4' spacing={2}>
+                                {
+                                    user.projects.slice(0, 3).map((project) => (
+                                        <Grid key={project.id} item xs={12} sm={6} lg={user.projects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                            <StoryCard
+                                                story={project}
+                                                storyCategory={EntityTypeEnum.PROJECTS}
+                                            />
+                                        </Grid>
+                                    ))
+                                }
 
-                            {
-                                projectStories.slice(0, 3).map((story) => (
-                                    <Grid key={story.id} item xs={12} sm={6} lg={projectStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                        <StoryCard
-                                            story={story}
-                                            storyCategory={StoryCategoryEnum.PROJECTS}
-                                        />
+                                <ShowIf condition={user.projects.length > 3}>
+                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                        <Tooltip title={user.projects.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                            <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
+                                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                                </Avatar>
+                                            </Link>
+                                        </Tooltip>
                                     </Grid>
-                                ))
-                            }
-
-                            <ShowIf condition={projectStories.length > 3}>
-                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={projectStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
-                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                            </Avatar>
-                                        </Link>
-                                    </Tooltip>
-                                </Grid>
-                            </ShowIf>
-                        </Grid>
-                    </Container>
-
+                                </ShowIf>
+                            </Grid>
+                        </Container>
+                    </ShowIf>
                 </Box>
 
-                <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
+                <ShowIf condition={user.educations?.length > 0}>
+                    <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                        <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.educations')}</Typography>
+                        <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
+                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.educations')}</Typography>
 
-                        <Grid container className='mt-4' spacing={2}>
+                            <Grid container className='mt-4' spacing={2}>
 
-                            {
-                                educationStories.slice(0, 3).map((story) => (
-                                    <Grid key={story.id} item xs={12} sm={6} lg={educationStories.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                        <StoryCard
-                                            story={story}
-                                        />
+                                {
+                                    user.educations.slice(0, 3).map((education) => (
+                                        <Grid key={education.id} item xs={12} sm={6} lg={user.educations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                            <StoryCard
+                                                story={education}
+                                                storyCategory={EntityTypeEnum.EDUCATION}
+                                                title={education.field}
+                                                subtitle={education.school}
+                                            />
+                                        </Grid>
+                                    ))
+                                }
+
+                                <ShowIf condition={user.educations.length > 3}>
+                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                        <Tooltip title={user.educations.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                            <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
+                                                <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
+                                                    <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
+                                                </Avatar>
+                                            </Link>
+                                        </Tooltip>
                                     </Grid>
-                                ))
-                            }
-
-                            <ShowIf condition={educationStories.length > 3}>
-                                <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                    <Tooltip title={educationStories.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
-                                        <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
-                                            <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
-                                                <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
-                                            </Avatar>
-                                        </Link>
-                                    </Tooltip>
-                                </Grid>
-                            </ShowIf>
-                        </Grid>
-                    </Container>
-                </Box>
+                                </ShowIf>
+                            </Grid>
+                        </Container>
+                    </Box>
+                </ShowIf>
             </Box>
 
         </>
 
-    )
+    );
 }
 
 export async function getStaticPaths(context) {
-    const slugsResponse = await UserService.getAllSlugs();
-    const slugs = (await slugsResponse.json()).content;
-
+    const paths = [];
     const { locales } = context;
 
-    let paths = [];
-    for (const locale of locales) {
-        for (const slug of slugs) {
-            paths.push(
-                {
-                    params: {
-                        userSlug: slug
-                    },
-                    locale
-                }
-            );
+    try {
+        const slugsResponse = await fetcher(UserService.getAllSlugsUrl());
+
+        for (const locale of locales) {
+            for (const slug of slugsResponse?.content) {
+                paths.push(
+                    {
+                        params: {
+                            userSlug: slug
+                        },
+                        locale
+                    }
+                );
+            }
         }
+    } catch (error) {
+        console.debug("Error in diary home getStaticPaths");
     }
+
     return {
         fallback: 'blocking',
         paths
@@ -208,28 +183,40 @@ export async function getStaticPaths(context) {
 }
 
 export async function getStaticProps(context) {
+
+    let props = {};
+    const revalidate = 10;
+
     try {
-        // extract the locale identifier from the URL
         const locale = context.locale;
-        const userSlug = context.params.userSlug;
 
-        const userReq = await UserService.getBySlug(userSlug, 'verbose');
-        const user = new User((await userReq.json()).content);
+        const url = UserService.getBySlugUrl(context.params.userSlug, 'verbose');
+        const userResponse = await fetcher(url);
 
-        return {
-            props: {
-                // pass the translation props to the page component
-                ...(await serverSideTranslations(locale)),
-                user: {
-                    ...user
-                }
+        if (!userResponse?.content || User.isEmpty(userResponse?.content)) {
+            return {
+                notFound: true,
+                revalidate: revalidate
+            }
+        }
+
+        props = {
+            ...(await serverSideTranslations(locale)),
+            user: userResponse?.content,
+            messages: userResponse?.messages,
+            fallback: {
+                [url]: userResponse
             },
         }
     } catch (error) {
-        console.log(error);
-        return {
-            notFound: true
+        props = {
+            error: JSON.parse(JSON.stringify(error))
         }
+    }
+
+    return {
+        props,
+        revalidate
     }
 }
 

@@ -7,7 +7,7 @@ export default function ShowIf(props) {
 
     // props.condition accetta solo valori booleani o undefined (quando la condizione non è presente)
     if (props.condition !== false && props.condition !== true && props.condition !== undefined) {
-        throw new Error('ShowIf - condition must be a boolean or undefined. Value: ' + props.condition);
+        throw new Error('ShowIf - condition must be a boolean or undefined. Value: ' + JSON.stringify(props.condition));
     }
 
     // Se è specificata una condizione, deve essere vera

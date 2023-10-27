@@ -5,7 +5,7 @@ $--screen-md: theme('screens.md');
 $--screen-sm: theme('screens.sm');
 $--background-secondary: theme('colors.background.secondary');
 
-#storyNavbar::after {
+#storiesNavbar::after {
     display: block;
     background: $--background-secondary;
     content: "";

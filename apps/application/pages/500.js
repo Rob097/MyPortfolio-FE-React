@@ -12,7 +12,7 @@ export default function Custom500({ error }) {
         if(typeof error === 'string') {
             errorMessage = error;
         } else {
-            errorMessage = error.message || error.cause.message;
+            errorMessage = error.message || error.cause?.message;
         }
         Snack.error(errorMessage);
     }

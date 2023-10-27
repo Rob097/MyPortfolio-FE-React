@@ -1,28 +1,34 @@
 import { Filters } from '@/models/criteria.model';
+import { SlugDto } from './baseDto.models';
+import { Skill } from './skill.model';
 import { Story } from './story.model';
-import { User } from './user.model';
 
-export class Education {
-    id: number;
-    user: User;
+export class Education extends SlugDto {
+    userId: number;
+    field?: string;
     school?: string;
     degree?: string;
-    field?: string;
-    startDate: Date;
     grade?: number;
     description?: string;
+    fromDate?: Date;
+    toDate?: Date;
+    mainStoryId?: number;
     stories?: Story[];
+    skills?: Skill[];
 
     constructor(obj: any) {
-        this.id = obj.id;
-        this.user = obj.user;
+        super(obj);
+        this.userId = obj.userId;
         this.school = obj.school;
         this.degree = obj.degree;
         this.field = obj.field;
-        this.startDate = obj.startDate;
         this.grade = obj.grade;
         this.description = obj.description;
+        this.fromDate = obj.fromDate;
+        this.toDate = obj.toDate;
+        this.mainStoryId = obj.mainStoryId;
         this.stories = obj.stories;
+        this.skills = obj.skills;
     }
 }
 
@@ -32,7 +38,8 @@ export class EducationQ extends Filters {
     public static school = 'school';
     public static degree = 'degree';
     public static field = 'field';
-    public static startDate = 'startDate';
     public static grade = 'grade';
     public static description = 'description';
+    public static fromDate = 'fromDate';
+    public static toDate = 'toDate';
 }

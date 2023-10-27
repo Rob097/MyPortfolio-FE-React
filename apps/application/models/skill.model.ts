@@ -1,23 +1,22 @@
 import { Filters } from '@/models/criteria.model';
+import { BaseDto } from './baseDto.models';
 
-export class Skill {
-    id: number;
+export class Skill extends BaseDto {
     name: string;
     category?: SkillCategory;
 
     constructor(obj: any) {
-        this.id = obj.id;
+        super(obj);
         this.name = obj.name;
         this.category = obj.category;
     }
 }
 
-export class SkillCategory {
-    id: number;
+export class SkillCategory extends BaseDto {
     name: string;
 
     constructor(obj: any) {
-        this.id = obj.id;
+        super(obj);
         this.name = obj.name;
     }
 }

@@ -1,28 +1,45 @@
 const constants = require('@rob097/common-lib/constants');
-import { View } from "@/models/criteria.model";
-import { Experience, ExperienceQ } from "../models/experience.model";
-import { BaseService } from "./base.service";
+import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
+import { fetcher } from "@/services/base.service";
+import { ExperienceQ } from "../models/experience.model";
 const EXPERIENCES_URL = constants.BASE_URL + '/core/experiences';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
-export class ExperienceService implements BaseService {
+export default class ExperienceService {
 
-
-    getById(id: number, view?: string) {
-        return fetch(EXPERIENCES_URL + `/${id}` + '?view=' + (view || View.normal), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getByIdUrl(id: number, view?: string) {
+        return EXPERIENCES_URL + `/${id}` + '?view=' + (view || View.normal);
     }
 
-    getByCriteria(criteria: ExperienceQ) {
-        return fetch(EXPERIENCES_URL + criteria.toString(), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getBySlugUrl(slug: string, view?: View) {
+        return EXPERIENCES_URL + `/slug/${slug}` + '?view=' + (view || View.normal);
+    }
+
+    static getByCriteriaUrl(criteria: ExperienceQ) {
+        return EXPERIENCES_URL + criteria.toString();
+    }
+
+    static getByUserIdUrl(userId: number, view?: View) {
+        const criteria = new Criteria(ExperienceQ.userId, Operation.equals, userId);
+        const filters = new Filters([criteria], view || View.normal);
+        return this.getByCriteriaUrl(filters);
+    }
+
+    /////////////////////////////////////////////////////////////////
+
+    static getById(id: number, view?: View) {
+        return fetcher(this.getByIdUrl(id, view));
+    }
+
+    static getBySlug(slug: string, view?: View) {
+        return fetcher(this.getBySlugUrl(slug, view));
+    }
+
+    static getByCriteria(criteria: ExperienceQ) {
+        return fetcher(this.getByCriteriaUrl(criteria));
+    }
+
+    static getByUserId(userId: number, view?: View) {
+        return fetcher(this.getByUserIdUrl(userId, view));
     }
 }

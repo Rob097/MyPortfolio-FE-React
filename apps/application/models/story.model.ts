@@ -1,29 +1,39 @@
 import { Filters } from '@/models/criteria.model';
 import { Diary } from './diary.model';
-import { Education } from './education.model';
-import { Experience } from './experience.model';
 import { Skill } from './skill.model';
+import { SlugDto } from './baseDto.models';
 
-export class Story {
-    id: number;
-    entryDateTime: Date;
+export class Story extends SlugDto {
+    diaryId: number;
     title: string;
     description: string;
-    isPrimaryStory: boolean;
-    diary: Diary;
-    educations?: Education[];
-    experiences?: Experience[];
+    fromDate: Date;
+    toDate: Date;
+    firstRelevantSection: string;
+    secondRelevantSection: string;
+    projectId: number;
+    orderInProject: number;
+    educationId: number;
+    orderInEducation: number;
+    experienceId: number;
+    orderInExperience: number;
     skills?: Skill[];
 
     constructor(obj: any) {
-        this.id = obj.id;
-        this.entryDateTime = obj.entryDateTime;
+        super(obj);
+        this.diaryId = obj.diaryId;
         this.title = obj.title;
         this.description = obj.description;
-        this.isPrimaryStory = obj.isPrimaryStory;
-        this.diary = obj.diary;
-        this.educations = obj.educations;
-        this.experiences = obj.experiences;
+        this.fromDate = obj.fromDate;
+        this.firstRelevantSection = obj.firstRelevantSection;
+        this.secondRelevantSection = obj.secondRelevantSection;
+        this.toDate = obj.toDate;
+        this.projectId = obj.projectId;
+        this.orderInProject = obj.orderInProject;
+        this.educationId = obj.educationId;
+        this.orderInEducation = obj.orderInEducation;
+        this.experienceId = obj.experienceId;
+        this.orderInExperience = obj.orderInExperience;
         this.skills = obj.skills;
     }
 }
@@ -33,6 +43,8 @@ export class StoryQ extends Filters {
     public static entryDateTime = 'entryDateTime';
     public static title = 'title';
     public static description = 'description';
-    public static isPrimaryStory = 'isPrimaryStory';
     public static diaryId = 'diary.id';
+    public static projectId = 'project.id';
+    public static educationId = 'education.id';
+    public static experienceId = 'experience.id';
 }

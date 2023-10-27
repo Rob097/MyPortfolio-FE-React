@@ -53,6 +53,9 @@ function MyApp(props) {
 
 const Layout = ({ Component, pageProps }) => {
 
+  const router = useRouter();
+  if (router.isFallback)  return <Loading />
+
   let content = PagesCommonLogics(pageProps);
   if (!content) {
     if (Component.getLayout) {

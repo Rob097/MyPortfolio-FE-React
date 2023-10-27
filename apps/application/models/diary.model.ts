@@ -1,23 +1,30 @@
 import { Filters } from '@/models/criteria.model';
 import { Story } from './story.model';
 import { User } from './user.model';
+import { AuditableDto } from './baseDto.models';
 
-export class Diary {
-    id: number;
-    entryDateTime: Date;
-    user?: User;
+export class Diary extends AuditableDto {
+    userId?: number;
+    title?: string;
+    description?: string;
+    isMain?: boolean;
+    mainStoryId?: number;
     stories?: Story[];
 
     constructor(obj: any) {
-        this.id = obj.id;
-        this.entryDateTime = obj.entryDateTime;
-        this.user = obj.user;
+        super(obj);
+        this.userId = obj.userId;
+        this.title = obj.title;
+        this.description = obj.description;
+        this.isMain = obj.isMain;
+        this.mainStoryId = obj.mainStoryId;
         this.stories = obj.stories;
     }
 }
 
 export class DiaryQ extends Filters {
     public static id = 'id';
-    public static entryDateTime = 'entryDateTime';
     public static userId = 'user.id';
+    public static title = 'title';
+    public static isMain = 'isMain';
 }

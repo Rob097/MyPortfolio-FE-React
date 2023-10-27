@@ -5,64 +5,51 @@ import { Experience } from './experience.model';
 import { UserSkill } from './skill.model';
 import { Project } from './project.model';
 import { Address } from "./address.model";
+import { SlugDto } from "./baseDto.models";
 
-export class User {
-    id: number;
-    slug: string;
-    email: string;
-    phone: string;
+export class User extends SlugDto {
     firstName: string;
     lastName: string;
+    email: string;
+    phone: string;
     age: number;
-    sex: string;
-    nationality: string;
     address: Address;
+    sex: string;
     title: string;
     description: string;
-    skills?: UserSkill[];
-    educations?: Education[];
-    experiences?: Experience[];
+    mainStoryId?: number;
     diaries?: Diary[];
     projects?: Project[];
+    educations?: Education[];
+    experiences?: Experience[];
+    skills?: UserSkill[];
     avatar?: string;
     status?: string;
 
     constructor(obj: any) {
-        this.id = obj?.id;
-        this.slug = obj?.slug;
-        this.email = obj?.email;
-        this.phone = obj?.phone;
-        this.firstName = obj?.firstName;
-        this.lastName = obj?.lastName;
-        this.age = obj?.age;
+        super(obj);
+        this.firstName = obj.firstName;
+        this.lastName = obj.lastName;
+        this.email = obj.email;
+        this.phone = obj.phone;
+        this.age = obj.age;
+        this.address = obj?.address;
         this.sex = obj?.sex;
-        this.nationality = obj?.nationality;
         this.title = obj?.title;
         this.description = obj?.description;
-        this.address = obj?.address;
-        this.skills = obj?.skills;
-        this.educations = obj?.educations;
-        this.experiences = obj?.experiences;
+        this.mainStoryId = obj?.mainStoryId;
         this.diaries = obj?.diaries;
         this.projects = obj?.projects;
+        this.educations = obj?.educations;
+        this.experiences = obj?.experiences;
+        this.skills = obj?.skills;
         this.avatar = obj?.avatar;
         this.status = obj?.status;
-
-        // Replace all undefined values with null
-        Object.keys(this).forEach(key => {
-            if (this[key] === undefined) {
-                this[key] = null;
-            }
-        });
     }
 
     public static getUserAddress(user: User) {
         const address = user?.address;
         return address?.city + ', ' + address?.province + ', ' + address?.nation;
-    }
-
-    public static isEmpty(user: User) {
-        return !user ||!user?.id || !user?.slug;
     }
 }
 

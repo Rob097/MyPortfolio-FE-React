@@ -1,22 +1,22 @@
 import { Filters } from '@/models/criteria.model';
 import { Story } from './story.model';
-import { User } from './user.model';
+import { SlugDto } from './baseDto.models';
+import { Skill } from './skill.model';
 
-export class Project {
-    id: number;
+export class Project extends SlugDto {
+    userId: number;
     title: string;
     description: string;
-    entryDateTime: Date;
-    user: User;
+    mainStoryId?: number;
     stories?: Story[];
-    skills?: any[];
+    skills?: Skill[];
 
     constructor(obj: any) {
-        this.id = obj.id;
+        super(obj);
+        this.userId = obj.userId;
         this.title = obj.title;
         this.description = obj.description;
-        this.entryDateTime = obj.entryDateTime;
-        this.user = obj.user;
+        this.mainStoryId = obj.mainStoryId;
         this.stories = obj.stories;
         this.skills = obj.skills;
     }
