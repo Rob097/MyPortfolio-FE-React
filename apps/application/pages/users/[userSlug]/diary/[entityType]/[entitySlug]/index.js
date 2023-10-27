@@ -110,7 +110,7 @@ export async function getStaticPaths(context) {
                             params: {
                                 userSlug: userSlug,
                                 entityType: entityType,
-                                entitySlug: ''
+                                entitySlug: 'entitySlug'
                             },
                             locale
                         }
