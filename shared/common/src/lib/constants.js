@@ -10,7 +10,7 @@ export const PERMISSIONS = {
 }
 
 /** GLOBAL */
-export const BASE_URL = "https://secure.myportfolio-backend.it/api";
+export const BASE_URL = "https://secure-backend.my-portfolio.it/api";
 
 export const METHODS = {
     GET: "GET",

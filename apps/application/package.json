@@ -17,7 +17,7 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
-    "@rob097/common-lib": "^1.0.21",
+    "@rob097/common-lib": "^1.0.22",
     "fetch-intercept": "^2.4.0",
     "lodash": "^4.17.21",
     "next": "latest",
