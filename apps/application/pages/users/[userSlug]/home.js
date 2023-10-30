@@ -15,12 +15,14 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
+import StoryService from '@/services/story.service';
+import { View } from '@/models/criteria.model';
+import Snack from "@/components/alerts/snack";
 
 const UserHome = () => {
-
     const router = useRouter();
     const { userSlug } = router.query;
 
@@ -31,12 +33,21 @@ const UserHome = () => {
     const isGreaterThanXl = isGreaterThan('xl'); const isGreaterThanLg = isGreaterThan('lg'); const isSmallerThanLg = isSmallerThan('lg');
 
     const { user, isError } = useUser(userSlug, 'verbose');
+    const [mainStory, setMainStory] = useState(null);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
             throw isError;
         }
     }, [isError]);
+
+    useEffect(() => {
+        if(user?.mainStoryId) {
+            StoryService.getById(user?.mainStoryId, View.normal)
+                .then(response => setMainStory(response.content))
+                .catch(error => Snack.error(error));
+        }
+    }, [user?.mainStoryId]);
 
     async function handleContact(data) {
         console.log(data);
@@ -82,9 +93,12 @@ const UserHome = () => {
                                     <Typography variant="h5" fontWeight="bold" color="primary">{t('about-me.title')}</Typography>
                                     <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
                                         <Typography variant="body2" className='leading-7'>
+                                            {
+                                                mainStory?.description
+                                            }                                            
+                                            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. */}
                                         </Typography>
                                     </div>
                                     <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />

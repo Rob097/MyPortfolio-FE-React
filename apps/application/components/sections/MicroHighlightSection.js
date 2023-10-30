@@ -16,20 +16,20 @@ const MicroHighlightSection = (props) => {
     return (
         <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? sectionsClasses.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
             <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
-                <ShowIf condition={isGreaterThan('md')}>
+                <ShowIf condition={isGreaterThan('lg')}>
                     <WhiteBar>
                         <Grid container py={2}>
-                            <Grid item md={12 / elements.length} className='border-0 border-r border-solid'>
+                            <Grid item lg={12 / elements.length} className='border-0 border-r border-solid'>
                                 {elements[0]}
                             </Grid>
-                            <Grid item md={12 / elements.length} className='border-0 border-r border-solid'>
+                            <Grid item lg={12 / elements.length} className='border-0 border-r border-solid'>
                                 {elements[1]}
                             </Grid>
-                            <Grid item md={12 / elements.length}>
+                            <Grid item lg={12 / elements.length}>
                                 {elements[2]}
                             </Grid>
                             <ShowIf condition={elements.length === 4}>
-                                <Grid item md={12 / elements.length} className='border-0 border-l border-solid'>
+                                <Grid item lg={12 / elements.length} className='border-0 border-l border-solid'>
                                     {elements[3]}
                                 </Grid>
                             </ShowIf>
@@ -38,27 +38,27 @@ const MicroHighlightSection = (props) => {
 
                 </ShowIf>
 
-                <ShowIf condition={isSmallerThan('md')}>
+                <ShowIf condition={isSmallerThan('lg')}>
                     <Grid container justifyContent="center">
-                        <Grid item md={6} justifyContent="center" display="flex" >
+                        <Grid item lg={6} justifyContent="center" display="flex" >
                             <WhiteBar>
                                 {elements[0]}
                             </WhiteBar>
                         </Grid>
-                        <Grid item md={6} justifyContent="center" display="flex">
+                        <Grid item lg={6} justifyContent="center" display="flex">
                             <WhiteBar>
                                 {elements[1]}
                             </WhiteBar>
                         </Grid>
                     </Grid>
                     <Grid container justifyContent="center">
-                        <Grid item md={elements.length === 4 ? 6 : 12} justifyContent="center" display="flex">
+                        <Grid item lg={elements.length === 4 ? 6 : 12} justifyContent="center" display="flex">
                             <WhiteBar>
                                 {elements[2]}
                             </WhiteBar>
                         </Grid>
                         <ShowIf condition={elements.length === 4}>
-                            <Grid item md={6} justifyContent="center" display="flex">
+                            <Grid item lg={6} justifyContent="center" display="flex">
                                 <WhiteBar>
                                     {elements[3]}
                                 </WhiteBar>

@@ -1,9 +1,32 @@
 const constants = require('@rob097/common-lib/constants');
 import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
 import { fetcher } from "@/services/base.service";
-import { EducationQ } from "../models/education.model";
+import useSWR from "swr";
+import { Education, EducationQ } from "../models/education.model";
 const EDUCATIONS_URL = constants.BASE_URL + '/core/educations';
 const JSON_HEADER = { "Content-Type": "application/json" }
+
+export function useUserEducations(userId: number, view?: View) {
+    const { data, error, isLoading, isValidating } = useSWR(EducationService.getByUserIdUrl(userId, view), fetcher, { suspense: true });
+
+    return {
+        educations: data?.content,
+        isLoading,
+        isValidating,
+        isError: error
+    }
+}
+
+export function useEducation(slug: string, view?: View) {
+    const { data, error, isLoading, isValidating } = useSWR(EducationService.getBySlugUrl(slug, view), fetcher, { suspense: true });
+
+    return {
+        education: new Education(data?.content),
+        isLoading,
+        isValidating,
+        isError: error
+    }
+}
 
 export default class EducationService {
 

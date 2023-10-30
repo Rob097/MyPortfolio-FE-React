@@ -8,16 +8,17 @@ import DiaryLayout from '@/layouts/DiaryLayout';
 import { SlugDto } from '@/models/baseDto.models';
 import { EntityTypeEnum } from '@/models/categories.model';
 import { View } from '@/models/criteria.model';
+import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
 import { fetcher } from '@/services/base.service';
 import EntityService, { useEntity } from '@/services/entity.service';
 import UserService from '@/services/user.service';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Chip, Container, Grid, Typography } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect, useState } from 'react';
-import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
 
 const Project = (props) => {
-
+    const { t } = useTranslation(['user-diary']);
     const { entity, isError } = useEntity(props.entityType, props.entity?.slug, View.verbose);
     const [entities, setEntities] = useState([]);
     const [mainStory, setMainStoryId] = useState(entity?.stories?.find(story => story?.id === entity?.mainStoryId));
@@ -44,6 +45,7 @@ const Project = (props) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
+    const isSmallerThanMd = isSmallerThan('md');
 
     return (
         <>
@@ -55,14 +57,18 @@ const Project = (props) => {
                     {/* Add the entity image: */}
                     <ShowIf condition={entity?.image !== undefined}>
                         <Box className='relative w-full h-96 md:h-128 px-6'>
-                            <img src={entity?.image} alt={entity?.title} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
+                            <img src={entity?.image} alt={entity?.title || entity?.field} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
                         </Box>
                     </ShowIf>
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-20 md:pb-0'>
                             <Box>
-                                <Typography variant="h1" fontWeight='bold'>{entity?.title}</Typography>
+                                {entity?.title && <Typography variant="h1" fontWeight='bold'>{entity?.title}</Typography>}
+                                {entity?.field && <>
+                                    <Typography variant="h1" fontWeight='bold' className='text-5xl' >{entity?.field}</Typography>
+                                    <Typography variant="h2" fontWeight='bold' className='mt-2 text-2xl' >{entity?.school}</Typography>
+                                </>}
 
                                 <Box className='mt-4'>
                                     <HtmlContent>
@@ -81,9 +87,43 @@ const Project = (props) => {
                                     </Box>
                                 </Box>
                             </ShowIf>
+
+                            <ShowIf condition={entity?.skills?.length > 0 && isSmallerThanMd}>
+                                <Box className='h-fit sticky md:top-32 !py-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
+                                    <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
+
+                                    {entity?.skills?.map((skill, index) => (
+                                        <Chip
+                                            key={skill.name}
+                                            id={skill.name}
+                                            label={skill.name}
+                                            clickable
+                                            className='mr-2 mb-4'
+                                            onMouseDown={(event) => event.stopPropagation()}
+                                            onClick={() => console.log("clicked chip " + skill.name)} />
+                                    ))}
+                                </Box>
+                            </ShowIf>
                         </Grid>
                         <Grid item xs={12} md={5} sx={{ display: { md: 'block', xs: 'none' } }} >
                             <EntitiesTree entity={entity} entities={entities} category={props.entityType} />
+
+                            <ShowIf condition={entity?.skills?.length > 0}>
+                                <Box className='h-fit sticky md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
+                                    <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
+
+                                    {entity?.skills?.map((skill, index) => (
+                                        <Chip
+                                            key={skill.name}
+                                            id={skill.name}
+                                            label={skill.name}
+                                            clickable
+                                            className='mr-2 mb-4'
+                                            onMouseDown={(event) => event.stopPropagation()}
+                                            onClick={() => console.log("clicked chip " + skill.name)} />
+                                    ))}
+                                </Box>
+                            </ShowIf>
                         </Grid>
                     </Grid>
                 </Container>
@@ -146,7 +186,7 @@ export async function getStaticProps(context) {
             }
         }
 
-        if(EntityTypeEnum.isValid(entityType) === false) {
+        if (EntityTypeEnum.isValid(entityType) === false) {
             return {
                 notFound: true,
                 revalidate: revalidate

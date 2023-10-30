@@ -12,14 +12,15 @@ import { fetcher } from '@/services/base.service';
 import EntityService from '@/services/entity.service';
 import StoryService, { useStory } from '@/services/story.service';
 import UserService from '@/services/user.service';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography, Chip } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
+import { useTranslation } from 'next-i18next';
 
 const Story = (props) => {
-
+    const { t } = useTranslation(['user-diary']);
     const { story, isError } = useStory(props.story?.slug, View.verbose);
     const [entities, setEntities] = useState([]);
 
@@ -44,7 +45,7 @@ const Story = (props) => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
-    const isGreaterThanMd = isGreaterThan('md');
+    const isSmallerThanMd = isSmallerThan('md');
 
     if (story && !story.relevantSections) {
         const firstRelevantSection = story.firstRelevantSection;
@@ -72,12 +73,46 @@ const Story = (props) => {
                                     </HtmlContent>
                                 </Box>
                             </Box>
+
+                            <ShowIf condition={story?.skills?.length > 0 && isSmallerThanMd}>
+                                <Box className='h-fit sticky md:top-32 !py-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
+                                    <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
+
+                                    {story?.skills?.map((skill, index) => (
+                                        <Chip
+                                            key={skill.name}
+                                            id={skill.name}
+                                            label={skill.name}
+                                            clickable
+                                            className='mr-2 mb-4'
+                                            onMouseDown={(event) => event.stopPropagation()}
+                                            onClick={() => console.log("clicked chip " + skill.name)} />
+                                    ))}
+                                </Box>
+                            </ShowIf>
                         </Grid>
-                        <ShowIf condition={showRelevantSections && isGreaterThanMd}>
-                            <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6'>
+                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
+                            <ShowIf condition={story?.skills?.length > 0}>
+                                <Box className='h-fit sticky md:top-32 !p-6 md:mb-8 md:bg-white md:rounded-xl md:shadow-xl'>
+                                    <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
+
+                                    {story?.skills?.map((skill, index) => (
+                                        <Chip
+                                            key={skill.name}
+                                            id={skill.name}
+                                            label={skill.name}
+                                            clickable
+                                            className='mr-2 mb-4'
+                                            onMouseDown={(event) => event.stopPropagation()}
+                                            onClick={() => console.log("clicked chip " + skill.name)} />
+                                    ))}
+                                </Box>
+                            </ShowIf>
+                            <ShowIf condition={showRelevantSections}>
                                 <RelevantSections story={story} showEntityTree entity={props.entity} entities={entities} entityType={props.entityType} />
-                            </Grid>
-                        </ShowIf>
+                            </ShowIf>
+                        </Grid>
+
                     </Grid>
                 </Container>
 
@@ -139,7 +174,7 @@ export async function getStaticProps(context) {
             }
         }
 
-        if(EntityTypeEnum.isValid(entityType) === false) {
+        if (EntityTypeEnum.isValid(entityType) === false) {
             return {
                 notFound: true,
                 revalidate: revalidate

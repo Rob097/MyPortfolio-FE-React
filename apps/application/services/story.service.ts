@@ -22,15 +22,12 @@ export default class StoryService {
     static getBySlugUrl(slug: string, view?: View) {
         return STORIES_URL + `/slug/${slug}` + '?view=' + (view || View.normal);
     }
+    static getByIdUrl(id: number, view?: string) {
+        return STORIES_URL + `/${id}` + '?view=' + (view || View.normal);
+    }
 
-
-    getById(id: number, view?: string) {
-        return fetch(STORIES_URL + `/${id}` + '?view=' + (view || View.normal), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getById(id: number, view?: View) {
+        return fetcher(this.getByIdUrl(id, view));
     }
 
     getByCriteria(criteria: StoryQ) {

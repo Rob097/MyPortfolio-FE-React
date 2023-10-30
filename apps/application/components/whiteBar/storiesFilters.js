@@ -26,9 +26,9 @@ const StoriesFilters = () => {
     ];
 
     const categoriesMock = [
-        { id: 1, name: t('categories.list.professional-experiences') },
+        { id: 1, name: t('categories.list.personal-experiences') },
         { id: 2, name: t('categories.list.personal-projects') },
-        { id: 3, name: t('categories.list.educations') },
+        { id: 3, name: t('categories.list.personal-educations') },
     ];
 
     const [filterBy, setFilterBy] = useState('');

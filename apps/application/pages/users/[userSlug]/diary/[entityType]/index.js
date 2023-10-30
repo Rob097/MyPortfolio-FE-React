@@ -47,6 +47,8 @@ const Projects = (props) => {
                                             <StoryCard
                                                 story={entity}
                                                 storyCategory={props.entityType}
+                                                title={entity.title || entity.field}
+                                                subtitle={entity.school || undefined}
                                             />
                                         </Grid>
                                     ))

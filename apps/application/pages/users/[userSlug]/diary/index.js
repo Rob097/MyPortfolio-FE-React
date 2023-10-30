@@ -43,7 +43,7 @@ const Diary = () => {
                     <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.professional-experiences')}</Typography>
+                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-experiences')}</Typography>
 
                             <Grid container className='mt-4' spacing={2}>
 
@@ -114,7 +114,7 @@ const Diary = () => {
                     <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.educations')}</Typography>
+                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-educations')}</Typography>
 
                             <Grid container className='mt-4' spacing={2}>
 
@@ -123,7 +123,7 @@ const Diary = () => {
                                         <Grid key={education.id} item xs={12} sm={6} lg={user.educations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <StoryCard
                                                 story={education}
-                                                storyCategory={EntityTypeEnum.EDUCATION}
+                                                storyCategory={EntityTypeEnum.EDUCATIONS}
                                                 title={education.field}
                                                 subtitle={education.school}
                                             />

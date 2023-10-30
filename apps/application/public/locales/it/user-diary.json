@@ -7,12 +7,17 @@
         "title": "Categorie",
         "list": {
             "all": "Tutte",
-            "professional-experiences": "Esperienze professionali",
+            "personal-experiences": "Esperienze professionali",
             "personal-projects": "Progetti personali",
+            "personal-educations": "Istruzione Personale",
             
             "experiences": "Esperienze",
             "educations": "Educazione",
-            "projects": "Progetti"
+            "projects": "Progetti",
+
+            "my-experiences": "Le mie esperienze",
+            "my-educations": "La mia istruzione",
+            "my-projects": "I miei progetti"
         }
     },
     "sort": {
@@ -29,6 +34,7 @@
         "by-name": "Cerca per nome",
         "by-skills": "Cerca per competenze"
     },
+    "related-skills": "Competenze correlate",
     "view-as-timeline": "Visualizza come timeline",
     "view-as-list": "Visualizza come lista"
 

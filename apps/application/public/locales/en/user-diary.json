@@ -7,11 +7,17 @@
         "title": "Categories",
         "list": {
             "all": "All",
-            "professional-experiences": "Professional experiences",
-            "experiences": "Experiences",
+            "personal-experiences": "Professional experiences",
             "personal-projects": "Personal projects",
+            "personal-educations": "Personal Educations",
+            
+            "experiences": "Experiences",
             "educations": "Educations",
-            "projects": "Projects"
+            "projects": "Projects",
+
+            "my-experiences": "My experiences",
+            "my-educations": "My educations",
+            "my-projects": "My projects"
         }
     },
     "sort": {
@@ -28,6 +34,7 @@
         "by-name": "Search by name",
         "by-skills": "Search by skills"
     },
+    "related-skills": "Related skills",
     "view-as-timeline": "View as timeline",
     "view-as-list": "View as list"
 

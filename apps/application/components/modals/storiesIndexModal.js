@@ -9,6 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Modal from '@mui/material/Modal';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 const domSection = '#mainEntityStory';
 
@@ -31,6 +32,7 @@ export default StoriesIndexModal;
 
 export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
     const router = useRouter();
+    const { t } = useTranslation(['common']);
     const { userSlug, storySlug } = router.query;
 
     const actualSection = storySlug ? entity.stories.find(story => story.slug === storySlug) : undefined;
@@ -39,7 +41,7 @@ export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
         <>
             <Box className='flex flex-row justify-between items-center pb-4 border-b'>
                 <Typography variant="h3" noWrap component="div">
-                    {entity.title}
+                    {entity.title || entity.field}
                 </Typography>
                 <ShowIf condition={addCloseIcon === true}>
                     <IconButton onClick={toggleModal}>
@@ -52,7 +54,7 @@ export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
                 <ListItem key={'story-home'} disablePadding >
                     <ListItemButton selected={!actualSection?.id} className='rounded-md my-1'>
                         <Link href={`/users/${userSlug}/diary/projects/${entity.slug}${domSection}`} onClick={toggleModal} className='w-full'>
-                            <ListItemText primary={'1. Home'} />
+                            <ListItemText primary={'1. ' + t('common:home')} />
                         </Link>
                     </ListItemButton>
                 </ListItem>

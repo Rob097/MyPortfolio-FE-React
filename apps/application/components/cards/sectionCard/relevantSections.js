@@ -9,10 +9,11 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from 'next-i18next';
 import { useMemo, useState } from 'react';
 
 const RelevantSections = (props) => {
-
+    const { t } = useTranslation(['user-diary']);
     const [expanded, setExpanded] = useState('panel0');
 
     const handleChange = (panel) => (event, newExpanded) => {
@@ -22,13 +23,13 @@ const RelevantSections = (props) => {
     const entityTreeTitle = useMemo(() => {
         switch (props.entityType) {
             case EntityTypeEnum.PROJECTS:
-                return 'My Projects';
-            case EntityTypeEnum.EDUCATION:
-                return 'My Education';
-            case EntityTypeEnum.EXPERIENCE:
-                return 'My Experience';
+                return t('categories.list.my-projects');
+            case EntityTypeEnum.EDUCATIONS:
+                return t('categories.list.my-educations');
+            case EntityTypeEnum.EXPERIENCES:
+                return t('categories.list.my-experiences');
             default:
-                return 'test';
+                return '';
         }
     }, [props.entityType]);
 
@@ -54,7 +55,7 @@ const RelevantSections = (props) => {
             {
 
                 props.story?.relevantSections?.map((sectionTmp, index) => (
-                    <Accordion expanded={expanded === 'panel' + (index + 1)} onChange={handleChange('panel' + (index + 1))} className='rounded-xl shadow-md'>
+                    <Accordion key={'accordition-'+(index+1)} expanded={expanded === 'panel' + (index + 1)} onChange={handleChange('panel' + (index + 1))} className='rounded-xl shadow-md'>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -113,8 +114,8 @@ const AccordionSummary = styled((props) => (
     },
 }));
 
-const AccordionDetails = styled((props) => (
-    <MuiAccordionDetails {...props} style={{ height: props.isMobile ? 'auto' : `calc((100vh - 140px)/${props.story.relevantSections.length})`, maxHeight: props.isMobile ? '75vh' : '' }} /* className='overflow-y-scroll hide-scrollbar' */ />
+const AccordionDetails = styled(({isMobile, story, ...rest}) => (
+    <MuiAccordionDetails {...rest} style={{ height: isMobile ? 'auto' : `calc((100vh - 140px)/${story.relevantSections.length})`, maxHeight: isMobile ? '75vh' : '' }} /* className='overflow-y-scroll hide-scrollbar' */ />
 ))(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',

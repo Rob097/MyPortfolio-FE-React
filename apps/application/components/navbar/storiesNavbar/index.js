@@ -16,16 +16,18 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 const domStory = '#mainEntityStory';
 
 const StoriesNavbar = ({ entities, entity, story, category }) => {
+    const { t } = useTranslation(['user-diary', 'common']);
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanMd = isGreaterThan('md');
     const isSmallerThanMd = isSmallerThan('md');
 
     const router = useRouter();
-    const { userSlug } = router.query;
+    const { userSlug, entityType } = router.query;
 
     const [indexModalOpen, setIndexModalOpen] = useState(false);
     function toggleIndexModal(forcedValue) {
@@ -69,20 +71,20 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
                     <Button onClick={() => toggleIndexModal()} variant="contained" startIcon={<ListIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white whitespace-nowrap min-w-fit' >
                         {
                             isGreaterThanMd || !indexModalOpen ?
-                                'Stories'
+                                t('common:stories')
                                 :
-                                (showRelevantSections ? 'Relevant Sections' : 'My Entities')
+                                (showRelevantSections ? t('common:relevant-sections') : t('user-diary:categories.list.my-'+entityType))
                         }
                     </Button>
                     <Box className='flex flex-row justify-end'>
                         <ShowIf condition={previousStory !== undefined}>
                             <ConditionalWrapper
                                 condition={isSmallerThanMd}
-                                wrapper={children => <Tooltip title={previousStory?.title ?? 'Home'}>{children}</Tooltip>}
+                                wrapper={children => <Tooltip title={previousStory?.title ?? t('common:home')}>{children}</Tooltip>}
                             >
                                 <Link href={previousLink}>
                                     <Button variant="contained" startIcon={isGreaterThanMd && <KeyboardArrowLeftIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                        {isGreaterThanMd ? (previousStory?.title ?? 'Home') : <KeyboardArrowLeftIcon />}
+                                        {isGreaterThanMd ? (previousStory?.title ?? t('common:home')) : <KeyboardArrowLeftIcon />}
                                     </Button>
                                 </Link>
                             </ConditionalWrapper>
