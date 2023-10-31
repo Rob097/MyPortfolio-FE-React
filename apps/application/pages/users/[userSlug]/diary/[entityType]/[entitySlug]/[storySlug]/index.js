@@ -8,36 +8,26 @@ import DiaryLayout from '@/layouts/DiaryLayout';
 import { SlugDto } from '@/models/baseDto.models';
 import { EntityTypeEnum } from '@/models/categories.model';
 import { View } from '@/models/criteria.model';
+import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
 import { fetcher } from '@/services/base.service';
 import EntityService from '@/services/entity.service';
 import StoryService, { useStory } from '@/services/story.service';
 import UserService from '@/services/user.service';
-import { Box, Container, Grid, Typography, Chip } from '@mui/material';
+import { Box, Chip, Container, Grid, Typography } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useEffect } from 'react';
 
 const Story = (props) => {
     const { t } = useTranslation(['user-diary']);
     const { story, isError } = useStory(props.story?.slug, View.verbose);
-    const [entities, setEntities] = useState([]);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
             throw isError;
         }
     }, [isError]);
-
-    useEffect(() => {
-        async function fetchEntities() {
-            const entities = await EntityService.getByUserId(props.entityType, props.user?.id, View.normal);
-            setEntities(entities?.content);
-        }
-        fetchEntities();
-    }, []);
-
 
     const router = useRouter();
     const { userSlug } = router.query;
@@ -60,7 +50,7 @@ const Story = (props) => {
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoriesNavbar userSlug={userSlug} entity={props.entity} story={story} entities={entities} category={EntityTypeEnum.PROJECTS} />
+                    <StoriesNavbar userSlug={userSlug} entity={props.entity} story={story} entities={props.entities} category={EntityTypeEnum.PROJECTS} />
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0 mb-10 md:mb-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
@@ -109,7 +99,7 @@ const Story = (props) => {
                                 </Box>
                             </ShowIf>
                             <ShowIf condition={showRelevantSections}>
-                                <RelevantSections story={story} showEntityTree entity={props.entity} entities={entities} entityType={props.entityType} />
+                                <RelevantSections story={story} showEntityTree entity={props.entity} entities={props.entities} entityType={props.entityType} />
                             </ShowIf>
                         </Grid>
 
@@ -202,10 +192,13 @@ export async function getStaticProps(context) {
             }
         }
 
+        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.normal);
+
         props = {
             ...(await serverSideTranslations(locale)),
             user: userResponse?.content,
             entity: entityResponse?.content,
+            entities: entities?.content,
             entityType: entityType,
             story: storyResponse?.content,
             messages: [...userResponse?.messages, ...entityResponse?.messages, ...storyResponse?.messages],

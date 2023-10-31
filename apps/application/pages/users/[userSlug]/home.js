@@ -1,6 +1,7 @@
 import ImageCard from '@/components/cards/imageCard/ImageCard';
 import PersonalCard from '@/components/cards/personalCard';
 import HeroSection from "@/components/sections/HeroSection";
+import MainStorySection from '@/components/sections/MainStorySection';
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
@@ -15,12 +16,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
-import StoryService from '@/services/story.service';
-import { View } from '@/models/criteria.model';
-import Snack from "@/components/alerts/snack";
 
 const UserHome = () => {
     const router = useRouter();
@@ -30,10 +28,9 @@ const UserHome = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
-    const isGreaterThanXl = isGreaterThan('xl'); const isGreaterThanLg = isGreaterThan('lg'); const isSmallerThanLg = isSmallerThan('lg');
+    const isGreaterThanXl = isGreaterThan('xl');
 
     const { user, isError } = useUser(userSlug, 'verbose');
-    const [mainStory, setMainStory] = useState(null);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
@@ -41,13 +38,9 @@ const UserHome = () => {
         }
     }, [isError]);
 
-    useEffect(() => {
-        if(user?.mainStoryId) {
-            StoryService.getById(user?.mainStoryId, View.normal)
-                .then(response => setMainStory(response.content))
-                .catch(error => Snack.error(error));
-        }
-    }, [user?.mainStoryId]);
+    const mainStory = useMemo(() => {
+        return user?.diaries?.flatMap(diary => diary?.stories)?.find(story => story?.id === user?.mainStoryId);
+    }, [user]);
 
     async function handleContact(data) {
         console.log(data);
@@ -78,35 +71,9 @@ const UserHome = () => {
                 </MicroHighlightSection>
             </ShowIf>
 
-            <Box id='main-story-section' component='section' className='mt-12 xl:mt-0'>
-                <Box className='absolute w-full h-96'>
-                    <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl bg-dark-main' style={{ opacity: 0.9 }} ></div>
-                </Box>
-                <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
-                    <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone={user?.phone} email={user?.email} city={User.getUserAddress(user)} sectionToScrollTo='#contact-section' />
-
-                    <Grid container >
-                        <Grid item xs={12} height='25em' marginBottom={2} className='flex justify-center items-center'>
-                            <Box className='flex justify-center h-fit items-end'>
-                                <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8 mx-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
-                                    <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
-                                    <Typography variant="h5" fontWeight="bold" color="primary">{t('about-me.title')}</Typography>
-                                    <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
-                                        <Typography variant="body2" className='leading-7'>
-                                            {
-                                                mainStory?.description
-                                            }                                            
-                                            {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. */}
-                                        </Typography>
-                                    </div>
-                                    <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
-                                </div>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Container>
+            <Box id='main-story-section' component='section' className='mt-12 mb-20 xl:mt-0'>
+                <MainStorySection useContainer staticMainStory={mainStory} />
+                <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone={user?.phone} email={user?.email} city={User.getUserAddress(user)} sectionToScrollTo='#contact-section' />
             </Box>
 
             {/* TODO: Cambiare le immagini delle tre cards */}

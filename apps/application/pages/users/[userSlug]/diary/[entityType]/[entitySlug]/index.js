@@ -20,7 +20,6 @@ import { useEffect, useState } from 'react';
 const Project = (props) => {
     const { t } = useTranslation(['user-diary']);
     const { entity, isError } = useEntity(props.entityType, props.entity?.slug, View.verbose);
-    const [entities, setEntities] = useState([]);
     const [mainStory, setMainStoryId] = useState(entity?.stories?.find(story => story?.id === entity?.mainStoryId));
 
     useEffect(() => {
@@ -28,15 +27,6 @@ const Project = (props) => {
             throw isError;
         }
     }, [isError]);
-
-
-    useEffect(() => {
-        async function fetchEntities() {
-            const entities = await EntityService.getByUserId(props.entityType, props.user?.id, View.normal);
-            setEntities(entities?.content);
-        }
-        fetchEntities();
-    }, []);
 
     useEffect(() => {
         setMainStoryId(entity?.stories?.find(story => story?.id === entity?.mainStoryId));
@@ -52,7 +42,7 @@ const Project = (props) => {
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoriesNavbar entity={entity} entities={entities} category={props.entityType} />
+                    <StoriesNavbar entity={entity} entities={props.entities} category={props.entityType} />
 
                     {/* Add the entity image: */}
                     <ShowIf condition={entity?.image !== undefined}>
@@ -106,7 +96,7 @@ const Project = (props) => {
                             </ShowIf>
                         </Grid>
                         <Grid item xs={12} md={5} sx={{ display: { md: 'block', xs: 'none' } }} >
-                            <EntitiesTree entity={entity} entities={entities} category={props.entityType} />
+                            <EntitiesTree entity={entity} entities={props.entities} category={props.entityType} />
 
                             <ShowIf condition={entity?.skills?.length > 0}>
                                 <Box className='h-fit sticky md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
@@ -203,10 +193,13 @@ export async function getStaticProps(context) {
             }
         }
 
+        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.normal);
+
         props = {
             ...(await serverSideTranslations(locale)),
             user: userResponse?.content,
             entity: entityResponse?.content,
+            entities: entities?.content,
             entityType: entityType,
             messages: [...userResponse?.messages, ...entityResponse?.messages],
             fallback: {

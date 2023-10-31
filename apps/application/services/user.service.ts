@@ -25,43 +25,28 @@ export default class UserService {
     static getByIdUrl(id: number, view?: string) {
         return USERS_URL + `/${id}` + '?view=' + (view || View.normal);
     }
+    static getByCriteriaUrl(criteria: UserQ) {
+        return USERS_URL + criteria.toString();
+    }
     static getAllSlugsUrl() {
         return USERS_URL + '/slugs';
     }
 
+    /////////////////////////////////////////////////////////////////
+
     static getById(id: number, view?: string) {
-        return fetch(this.getByIdUrl(id, view), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+        return fetcher(this.getByIdUrl(id, view));
     }
 
     static getBySlug(slug: string, view?: string) {
-        return fetch(this.getBySlugUrl(slug, view), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+        return fetcher(this.getBySlugUrl(slug, view));
     }
 
     static getByCriteria(criteria: UserQ) {
-        return fetch(USERS_URL + criteria.toString(), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+        return fetcher(this.getByCriteriaUrl(criteria));
     }
 
     static getAllSlugs() {
-        return fetch(this.getAllSlugsUrl(), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+        return fetcher(this.getAllSlugsUrl());
     }
 }

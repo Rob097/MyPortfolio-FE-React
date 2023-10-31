@@ -1,6 +1,6 @@
+import MainStorySection from '@/components/sections/MainStorySection';
 import ShowIf from '@/components/utils/showIf';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
-import userClasses from '@/pages/users/[userSlug]/styles/shared.module.scss';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG }) => {
-
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
 
@@ -36,23 +35,7 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     </Grid>
 
                     <Grid item xs={12} md={8} height='25em' marginBottom={2} className='flex justify-center items-center'>
-                        <Box className='absolute w-full h-96 left-0'>
-                            <div className='w-3/5 md:w-2/5 h-full mr-0 ml-auto rounded-s-2xl bg-dark-main' style={{ opacity: 0.9 }} ></div>
-                        </Box>
-                        <Box className='flex justify-center h-fit items-end'>
-                            <div className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pl-16 pr-16 pt-8 pb-8' style={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
-                                <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
-                                <Typography variant="h5" fontWeight="bold" color="primary">{t('user-home:about-me.title')}</Typography>
-                                <div className={userClasses.scrollGradientMainStory + ' overflow-y-scroll hide-scrollbar'}>
-                                    <Typography variant="body2" className='leading-7'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo. Sed euismod, diam id tincidunt dapibus, ipsum diam aliquet nunc, sed tincidunt nisl velit eget justo.
-                                    </Typography>
-                                </div>
-                                <img src='/images/Group.svg' className='absolute bottom-0 right-0 mr-4 mb-4' />
-                            </div>
-                        </Box>
+                        <MainStorySection />
                     </Grid>
                 </Grid>
             </Box>

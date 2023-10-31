@@ -53,7 +53,7 @@ const PersonalCard = (props) => {
     }, [isAvatarMoved]);
 
     return (
-        <div id="personalCard" className={classes.personalCard + ' relative align-center w-fit bg-white md:ml-8 m-auto mt-8 h-fit'} style={isGreaterThanSm && isAvatarMoved ? { borderRadius: '4rem 10rem 10rem 4rem' } : {}}>
+        <div id="personalCard" className={classes.personalCard + ' relative align-center w-fit bg-white m-auto h-fit'} style={isGreaterThanSm && isAvatarMoved ? { borderRadius: '4rem 10rem 10rem 4rem' } : {}}>
             <Grid container className='sm:py-0 py-2'>
                 <ShowIf condition={isAvatarMoved === true}>
                     <Grid item xs={12} sm={9} className={(!isGreaterThanSm ? 'pb-20' : '') + ' absolute top-0 left-0 w-full h-full flex justify-center items-center'}>

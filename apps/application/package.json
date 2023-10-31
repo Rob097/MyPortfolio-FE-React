@@ -30,6 +30,7 @@
     "react-hook-form": "^7.44.3",
     "react-jsx-parser": "^1.29.0",
     "react-material-ui-carousel": "latest",
+    "react-promise-tracker": "^2.1.1",
     "react-use-draggable-scroll": "^0.4.7",
     "sass": "^1.63.6",
     "swr": "^2.2.2"
