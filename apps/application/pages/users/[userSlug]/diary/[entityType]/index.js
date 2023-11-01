@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import EntityService, { useUserEntities } from '@/services/entity.service';
 import { useRouter } from 'next/router';
 import experiencesClasses from '../../styles/experiences.module.scss';
-import EntitiesTimeline from '@/components/carousel/entitiesTimeline';
+import EntitiesTimeline from '@/components/timelines/entitiesTimeline';
 import ShowIf from '@/components/utils/showIf';
 
 
