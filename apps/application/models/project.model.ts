@@ -7,6 +7,8 @@ export class Project extends SlugDto {
     userId: number;
     title: string;
     description: string;
+    fromDate: Date;
+    toDate?: Date;
     mainStoryId?: number;
     stories?: Story[];
     skills?: Skill[];
@@ -16,6 +18,8 @@ export class Project extends SlugDto {
         this.userId = obj.userId;
         this.title = obj.title;
         this.description = obj.description;
+        this.fromDate = obj.fromDate;
+        this.toDate = obj.toDate;
         this.mainStoryId = obj.mainStoryId;
         this.stories = obj.stories;
         this.skills = obj.skills;

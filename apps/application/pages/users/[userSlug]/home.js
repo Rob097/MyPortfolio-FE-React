@@ -52,8 +52,8 @@ const UserHome = () => {
             <HeroSection img="/images/SamplePhoto_12.jpg" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]}>
                 <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
                 <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThanXl ? '120%' : 'fit-content' }}>{user?.firstName} {user?.lastName}</Typography>
-                <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user?.title}</Typography>
-                <Typography variant="subtitle1" color="text" gutterBottom>{user?.description}</Typography>
+                <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user?.profession}</Typography>
+                <Typography variant="subtitle1" color="text" gutterBottom>{user?.presentation}</Typography>
             </HeroSection>
 
             <ShowIf condition={user?.skills?.filter(skill => skill.isMain)?.length >= 3}>

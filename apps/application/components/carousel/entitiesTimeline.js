@@ -7,36 +7,39 @@ import { useEffect, useState } from "react";
 import ShowIf from "../utils/showIf";
 import timelineClasses from "./timeline.module.scss";
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import Link from "next/link";
 
 const COOMING_SOON = 'Cooming Soon';
 const SHOW_ARROW = true;
 
 // Main component of the "S-shaped" timeline
-const TimelineCustom = ({stories}) => {
+const EntitiesTimeline = ({ entities }) => {
     const { t } = useTranslation('common');
 
 
+    /* Decomment to hide timeline if there are less than 3 entitites:
     if (!stories || stories.length < 3) {
         return <h2 className='text-center'>{t('errors.no-data-found')}</h2>;
-    }
+    }*/
 
     // Display 3 elements per row:
     const rows = [];
-    for (let i = 0; i < stories.length; i += 3) {
+    for (let i = 0; i < entities.length; i += 3) {
         rows.push(
             <Box key={"ROW-" + i}>
-                <MiddleLine isFirstLine={i === 0} rowItems={stories.slice(i, i + 3)} isRowEven={i % 2 === 0} />
-                <ElementsLine isFirst={i === 0} rowItems={stories.slice(i, i + 3)} isRowEven={i % 2 === 0} stories={stories} />
+                <MiddleLine isFirstLine={i === 0} rowItems={entities.slice(i, i + 3)} isRowEven={i % 2 === 0} />
+                <ElementsLine isFirst={i === 0} rowItems={entities.slice(i, i + 3)} isRowEven={i % 2 === 0} stories={entities} />
             </Box>
         );
     }
 
     // If the last item of stories is the last of a row, add a MiddleLine and a ElementsLine:
-    if (stories.length % 3 === 0) {
+    if (entities.length % 3 === 0) {
         rows.push(
-            <Box key={"ROW-" + stories.length}>
+            <Box key={"ROW-" + entities.length}>
                 <MiddleLine isFirstLine={false} rowItems={[]} isRowEven={rows.length % 2 === 0} />
-                <ElementsLine isFirst={false} rowItems={[]} isRowEven={rows.length % 2 === 0} stories={stories} />
+                <ElementsLine isFirst={false} rowItems={[]} isRowEven={rows.length % 2 === 0} stories={entities} />
             </Box>
         );
     }
@@ -53,7 +56,7 @@ const TimelineCustom = ({stories}) => {
     );
 };
 
-export default TimelineCustom;
+export default EntitiesTimeline;
 
 const TimelineBackground = () => {
 
@@ -63,8 +66,8 @@ const TimelineBackground = () => {
 
     useEffect(() => {
         const timelineContent = document.getElementById('timeline-content');
-        const maxOpacity = 0.2; 
-        let fraction = timelineContent.firstChild.offsetHeight/2;
+        const maxOpacity = 0.2;
+        let fraction = timelineContent.firstChild.offsetHeight / 2;
 
         function updateOpacity() {
             let scrollTop = timelineContent.scrollTop;
@@ -78,10 +81,10 @@ const TimelineBackground = () => {
 
         timelineContent.addEventListener("scroll", function () {
             updateOpacity();
-        }); 
+        });
 
         timelineContent.addEventListener("resize", function () {
-            fraction = timelineContent.firstChild.offsetHeight/2;
+            fraction = timelineContent.firstChild.offsetHeight / 2;
         });
 
     }, []);
@@ -202,10 +205,13 @@ const Line = ({ type, hasPreview, isEnd, isTop, isRight }) => {
 };
 
 
-// Represents the preview of a story with title, preview text and a "Read All" button
-const PreviewElement = ({ title, preview }) => {
+// Represents the description of a story with title, description text and a "Read All" button
+const PreviewElement = ({ entity, title, description }) => {
     const { t } = useTranslation('common');
     const [expanded, setExpanded] = useState(false);
+
+    const router = useRouter();
+    const { userSlug, entityType } = router.query;
 
     const handleExpandClick = (forceTo) => {
         setExpanded(forceTo !== undefined ? forceTo : !expanded);
@@ -219,10 +225,12 @@ const PreviewElement = ({ title, preview }) => {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <Typography variant="body2" className='m-2 overflow-hidden text-ellipsis' sx={{ display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical" }}>
-                    {preview}
+                    {description}
                 </Typography>
                 <Box className='w-full flex justify-between items-center mb-2'>
-                    <Typography variant="caption" color='primary' className='ml-2 cursor-pointer'>{t('read-more')}</Typography>
+                    <Link href='/users/[userSlug]/diary/[entityType]/[entitySlug]#mainEntityStory' as={`/users/${userSlug}/diary/${entityType}/${entity?.slug}#mainEntityStory`}>
+                        <Typography variant="caption" color='primary' className='ml-2 cursor-pointer'>{t('read-more')}</Typography>
+                    </Link>
                     <Typography variant="caption" color='primary' className='mr-2 cursor-pointer' onClick={() => handleExpandClick(false)} >X</Typography>
                 </Box>
             </Collapse>
@@ -231,7 +239,7 @@ const PreviewElement = ({ title, preview }) => {
     )
 }
 
-// If screen is less than LG, represents a single line of the timeline (the one with the 3 previewElements plus the row lines)
+// If screen is less than LG, represents a single line of the timeline (the one with the 3 descriptionElements plus the row lines)
 // If the row is not even, the direction of the row is reversed
 const MiddleLine = ({ isFirstLine, rowItems, isRowEven }) => {
     const { isGreaterThan } = useBreakpoints();
@@ -251,10 +259,10 @@ const MiddleLine = ({ isFirstLine, rowItems, isRowEven }) => {
                 {
                     // for loop from 0 to 2 through rowItems array:
                     [...Array(3).keys()].map((index) => (
-                        <Grid item key={"middle-line-"+index} xs={12} lg={3.25} className='relative flex justify-center items-end z-10'>
+                        <Grid item key={"middle-line-" + index} xs={12} lg={3.25} className='relative flex justify-center items-end z-10'>
                             <ShowIf condition={isGreaterThanLg}>
                                 <ShowIf condition={rowItems[index] !== undefined}>
-                                    <PreviewElement title={rowItems[index]?.title} preview={rowItems[index]?.preview} key={'preview-' + rowItems[index]?.id} />
+                                    <PreviewElement entity={rowItems[index]} title={rowItems[index]?.title || rowItems[index]?.field} description={rowItems[index]?.description} key={'description-' + rowItems[index]?.id} />
                                 </ShowIf>
                             </ShowIf>
                         </Grid>
@@ -281,7 +289,7 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
         <Grid item xs={12} lg={2.25} className={'relative flex flex-col justify-center items-center z-10 lg:px-2'}>
             <ShowIf condition={!isCoomingSoon && isSmallerThanLg && (isAbsoluteLast === -1 || isAbsoluteLast >= index)}>
                 <Line type="column" hasPreview />
-                <PreviewElement title={rowItems[index]?.title} preview={rowItems[index]?.preview} key={rowItems[index]?.id} />
+                <PreviewElement entity={rowItems[index]} title={rowItems[index]?.title || rowItems[index]?.field} description={rowItems[index]?.description} key={rowItems[index]?.id} />
             </ShowIf>
 
             <ShowIf condition={(isCoomingSoon && index === 0) || isAbsoluteLast === index}>
@@ -294,16 +302,19 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
         </Grid>
     );
 
+    function getDate(item) {
+        return item?.fromDate ? (new Date(item?.fromDate)?.getMonth() + "/" + new Date(item?.fromDate)?.getFullYear()) : ('🚀');
+    }
+
     const SimpleElement = ({ index, isRowEven }) => (
 
         <Grid item xs={12} lg={1} className={' relative flex justify-center items-center z-10'}>
             <ShowIf condition={!isCoomingSoon && (isAbsoluteLast === -1 || isAbsoluteLast > index - 1)}>
-                <Element text={rowItems[index]?.year} showArrow={true} isRowEven={isRowEven} />
+                <Element text={getDate(rowItems[0])} showArrow={true} isRowEven={isRowEven} />
             </ShowIf>
         </Grid>
 
     );
-
 
     return (
         <>
@@ -327,7 +338,7 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
                         {/* <ArrowElement isRowEven={isRowEven} /> */}
                     </ShowIf>
                     <ShowIf condition={!isCoomingSoon}>
-                        <Element text={rowItems[0]?.year} showArrow={!isFirst} isRowEven={isRowEven} />
+                        <Element text={getDate(rowItems[0])} showArrow={!isFirst} isRowEven={isRowEven} />
                     </ShowIf>
                 </Grid>
 
@@ -346,7 +357,7 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
                         </ShowIf>
                         <ShowIf condition={isSmallerThanLg}>
                             <Line type="column" hasPreview />
-                            <PreviewElement title={rowItems[2]?.title} preview={rowItems[2]?.preview} key={rowItems[2]?.id} />
+                            <PreviewElement entity={rowItems[2]} title={rowItems[2]?.title || rowItems[2]?.field} description={rowItems[2]?.description} key={rowItems[2]?.id} />
                             <Line type="column" hasPreview />
                         </ShowIf>
                     </ShowIf>

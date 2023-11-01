@@ -31,6 +31,7 @@ export class Experience extends SlugDto {
         this.stories = obj.stories;
         this.skills = obj.skills;
     }
+    
 }
 
 export class ExperienceQ extends Filters {

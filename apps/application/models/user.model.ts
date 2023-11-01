@@ -15,8 +15,8 @@ export class User extends SlugDto {
     age: number;
     address: Address;
     sex: string;
-    title: string;
-    description: string;
+    profession: string;
+    presentation: string;
     mainStoryId?: number;
     diaries?: Diary[];
     projects?: Project[];
@@ -35,8 +35,8 @@ export class User extends SlugDto {
         this.age = obj.age;
         this.address = obj?.address;
         this.sex = obj?.sex;
-        this.title = obj?.title;
-        this.description = obj?.description;
+        this.profession = obj?.profession;
+        this.presentation = obj?.presentation;
         this.mainStoryId = obj?.mainStoryId;
         this.diaries = obj?.diaries;
         this.projects = obj?.projects;

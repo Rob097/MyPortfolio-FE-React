@@ -14,7 +14,7 @@ const MicroHighlightSection = (props) => {
     }
 
     return (
-        <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? sectionsClasses.moveUp : ''} /*sx={{ top: { xl: props.moveUp ? '-6rem' : 'unset' } }}*/>
+        <Box id='support-section' component='section' position="relative" className={props.moveUp && isGreaterThan('xl') ? sectionsClasses.moveUp : ''}>
             <Container disableGutters={isSmallerThan('lg')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>
                 <ShowIf condition={isGreaterThan('lg')}>
                     <WhiteBar>
@@ -80,20 +80,20 @@ export const SingleElement = (props) => {
     const isAvatarPath = isNaN(props.avatar);
 
     return (
-        <Grid container justifyContent="center" flexWrap={isGreaterThan('md') ? 'nowrap' : 'wrap'}>
-            <Grid item mx={'auto'}>
+        <Grid container justifyContent="center" flexWrap={isGreaterThan('md') ? 'nowrap' : 'wrap'} className='h-full' sx={{ width: { xs: '45vw', sm: '15em', lg: 'auto' } }}>
+            <Grid item mx={'auto'} xs={12} lg={4} mr={{ lg: 4 }} ml={{ lg: 2 }} >
                 <ShowIf condition={isAvatarPath}>
                     <Avatar src={props.avatar} sx={{ width: { lg: 100, xs: 60 }, height: "auto" }} variant="rounded" />
                 </ShowIf>
                 <ShowIf condition={!isAvatarPath}>
-                    <Box sx={{ width: { lg: 100, xs: 60 }, height: { lg: 100, xs: 60 }, fontSize: '5rem' }} className='flex justify-center items-center'>
+                    <Box sx={{ fontSize: '5rem', minHeight: '1em' }} className='flex justify-center lg:justify-end items-center w-full h-full'>
                         <Typography variant="span" color="primary" fontWeight="bold" m={0} textAlign="center">{props.avatar}</Typography>
                     </Box>
                 </ShowIf>
             </Grid>
-            <Grid item alignSelf="center" mr={{md: 2}}>
-                <Typography variant="h4" fontWeight="bold" m={0} textAlign="center">{props.title}</Typography>
-                <Typography paragraph m={0} textAlign="center">{props.caption}</Typography>
+            <Grid item alignSelf="center" mr={{ md: 2 }} xs={12} lg={8}>
+                <Typography variant="h4" fontWeight="bold" m={0} className='text-center lg:text-left'>{props.title}</Typography>
+                <Typography paragraph m={0} className='text-center lg:text-left'>{props.caption}</Typography>
             </Grid>
         </Grid>
     )
