@@ -3,10 +3,13 @@ import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
 import { Box, Button, Container, Grid } from "@mui/material";
 import ShowIf from '@/components/utils/showIf';
+import Link from 'next/link';
 
 const HeroSection = (props) => {
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
+
+    const customizations = JSON.parse(props.customizations || '{}');
 
     return (
         <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
@@ -19,7 +22,7 @@ const HeroSection = (props) => {
                         </div>
 
                         <ShowIf condition={props.buttons != null}>
-                            <Box id="call-to-action" mt={4} mb={8}>
+                            <Box id="call-to-action" mt={4} mb={2}>
                                 <ShowIf condition={props.buttons[0] != null}>
                                     <Button variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }}>{props.buttons[0].label}</Button>
                                 </ShowIf>
@@ -28,6 +31,25 @@ const HeroSection = (props) => {
                                 </ShowIf>
                             </Box>
                         </ShowIf>
+
+                        <Box className="flex justify-start" mb={2}>
+                            <ShowIf condition={props.customizations?.socials?.linkedin !== undefined}>
+                                <Link href={props.customizations?.socials?.linkedin} target="_blank" className="mr-2">
+                                    <img src="/images/linkedin.svg" />
+                                </Link>
+                            </ShowIf>
+                            <ShowIf condition={props.customizations?.socials?.twitter !== undefined}>
+                                <Link href={props.customizations?.socials?.twitter} target="_blank" className="mr-2">
+                                    <img src="/images/twitterx.svg" />
+                                </Link>
+                            </ShowIf>
+                            <ShowIf condition={props.customizations?.socials?.instagram !== undefined}>
+                                <Link href={props.customizations?.socials?.instagram} target="_blank">
+                                    <img src="/images/instagram.svg" />
+                                </Link>
+                            </ShowIf>
+                        </Box>
+
                     </Grid>
                     <Grid item md={6} alignSelf="center" className='flex justify-center items-center'>
                         <img src={props.img} style={{ maxHeight: '30em', maxWidth: '100%', borderRadius: '1rem' }} />

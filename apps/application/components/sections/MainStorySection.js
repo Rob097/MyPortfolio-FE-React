@@ -55,7 +55,7 @@ const MainStorySection = ({ useContainer, staticMainStory }) => {
             </Box>
             <ConditionalWrapper condition={useContainer} wrapper={children => <Container className={(isGreaterThanLg ? whiteBarClasses.customContainer : '')}>{children}</Container>}>
                 <Box className='flex justify-center items-center h-96' sx={{ height: { xs: '22em', md: 'fit-content' } }}>
-                    <Box className='relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pt-4 md:py-6 px-2 sm:px-8 md:px-16' sx={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
+                    <Box className={userClasses.test + ' relative flex flex-col w-full h-full max-h-80 bg-white rounded-2xl pt-4 md:py-6 px-2 sm:px-8 md:px-16'} sx={{ boxShadow: 'rgb(0 0 0 / 10%) -8px 8px 20px 5px', minHeight: '40%' }}>
                         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                             <img src='/images/Group.svg' className='absolute top-0 left-0 ml-4 mt-4' />
                         </Box>

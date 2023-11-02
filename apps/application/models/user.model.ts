@@ -25,6 +25,7 @@ export class User extends SlugDto {
     skills?: UserSkill[];
     avatar?: string;
     status?: string;
+    customizations?: string;
 
     constructor(obj: any) {
         super(obj);
@@ -45,6 +46,7 @@ export class User extends SlugDto {
         this.skills = obj?.skills;
         this.avatar = obj?.avatar;
         this.status = obj?.status;
+        this.customizations = obj?.customizations;
     }
 
     public static getUserAddress(user: User) {
