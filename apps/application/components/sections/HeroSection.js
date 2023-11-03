@@ -9,8 +9,6 @@ const HeroSection = (props) => {
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
 
-    const customizations = JSON.parse(props.customizations || '{}');
-
     return (
         <Box id='hero-section' component='section' sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
             <Container sx={{ padding: isSmallerThan('lg') && "0.5rem" }} disableGutters={isSmallerThan('md')} className={isGreaterThan('lg') ? whiteBarClasses.customContainer : ''}>

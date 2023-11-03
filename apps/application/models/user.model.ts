@@ -46,7 +46,7 @@ export class User extends SlugDto {
         this.skills = obj?.skills;
         this.avatar = obj?.avatar;
         this.status = obj?.status;
-        this.customizations = obj?.customizations;
+        this.customizations = JSON.parse(obj?.customizations || '{}');
     }
 
     public static getUserAddress(user: User) {

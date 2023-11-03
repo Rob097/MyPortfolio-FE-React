@@ -1,6 +1,7 @@
 import MainStorySection from '@/components/sections/MainStorySection';
 import ShowIf from '@/components/utils/showIf';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
+import { useUser } from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -8,10 +9,14 @@ import { useTranslation } from 'next-i18next';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import { View } from '@/models/criteria.model';
 
 const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG }) => {
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
+    const router = useRouter();
+    const { userSlug } = router.query;
+    const { user } = useUser(userSlug, View.normal);
 
     return (
         <>
@@ -22,12 +27,12 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     <Grid item xs={12} md={4} height='25em' marginBottom={2} className='h-fit md:h-full' style={{ zIndex: '1' }}>
                         <Box className='flex justify-center items-center h-fit md:h-full'>
                             <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
-                                <Avatar id="personalCardAvatar" src="https://mui.com/static/images/avatar/1.jpg" sx={{ width: 150, height: 150 }} variant='circular' />
-                                <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>Roberto Dellantonio</Typography>
-                                <Typography variant="subtitle1" fontWeight="bold" color="dark">Software Engineer</Typography>
-                                <Typography variant="subtitle2" fontWeight="bold" color="text" mt={2}>Predazzo, TN</Typography>
+                                <Avatar id="personalCardAvatar" src="/images/profileImage.JPG" sx={{ width: 150, height: 150 }} variant='circular' />
+                                <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
+                                <Typography variant="subtitle1" fontWeight="bold" color="dark">{user?.profession}</Typography>
+                                <Typography variant="subtitle2" fontWeight="bold" color="text" mt={2}>{`${user?.address?.city}, ${user?.address?.nation}`}</Typography>
                                 <Box mt={3}>
-                                    <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('hire-me')}</Button>
+                                    <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('user-home:contact-me.title')}</Button>
                                     <Button variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('follow-me')}</Button>
                                 </Box>
                             </Box>
