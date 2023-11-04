@@ -65,6 +65,11 @@ const Layout = ({ Component, pageProps }) => {
     }
   }
 
+  // check if route is "/editor":
+  if (router.pathname === '/editor') {
+    return content;
+  }
+
   return <CoverLayout>{content}</CoverLayout>
 };
 

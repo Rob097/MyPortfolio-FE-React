@@ -23,20 +23,38 @@
   ::after {
     --tw-content: '';
   }
-  
+
   [type='search'] {
     -webkit-appearance: textfield;
     /* 1 */
     outline-offset: -2px;
     /* 2 */
   }
-  
+
   input::placeholder,
   textarea::placeholder {
     opacity: 1;
     /* 1 */
     color: theme('colors.gray.400', #9ca3af);
     /* 2 */
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  audio,
+  canvas,
+  embed,
+  iframe,
+  img,
+  object,
+  svg,
+  video {
+    display: block;
+    vertical-align: middle;
   }
 }
 
@@ -116,14 +134,76 @@ li.MuiMenuItem-root {
 
 a {
   text-decoration: none;
-  color:  theme('colors.secondary.main');
+  color: theme('colors.secondary.main');
 }
 
-.notistack-SnackbarContainer{
+.notistack-SnackbarContainer {
   top: 104px !important;
 }
 
 // Add styles to all .notistack-SnackbarContainer children:
-.notistack-SnackbarContainer > * {
+.notistack-SnackbarContainer>* {
   width: 100%;
+}
+
+// set color white to all div children of .gjs-custom-editor
+.gjs-custom-editor div:not(.MuiInputBase-formControl):not(.MuiSelect-select) {
+  color: white;
+}
+
+
+
+$--screen-xxl: theme('screens.2xl');
+$--screen-xl: theme('screens.xl');
+$--screen-lg: theme('screens.lg');
+$--screen-md: theme('screens.md');
+$--screen-sm: theme('screens.sm');
+$--screen-xs: theme('screens.xs');
+
+/* .container {
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  width: 100% !important;
+  position: relative;
+} */
+
+
+.container {
+  max-width: 100% !important;
+}
+
+@media (min-width: $--screen-sm) {
+  .container {
+    max-width: 640px !important;
+  }
+}
+
+@media (min-width: ($--screen-md)) {
+  .container {
+    max-width: 768px !important;
+  }
+}
+
+@media (min-width: ($--screen-lg)) {
+  .container {
+    max-width: 1024px !important;
+  }
+}
+
+@media (min-width: ($--screen-xl)) {
+  .container {
+    max-width: 1280px !important;
+  }
+}
+
+@media (min-width: ($--screen-xxl)) {
+  .container {
+    max-width: 1536px !important;
+  }
+}
+
+.gjs-rte-toolbar {
+  width: max-content !important;
 }
