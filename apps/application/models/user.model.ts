@@ -57,7 +57,6 @@ export class User extends SlugDto {
 
 export class UserQ extends Filters {
     static id = 'id';
-    static slug = 'slug';
     static email = 'email';
     static firstName = 'firstName';
     static lastName = 'lastName';
@@ -69,4 +68,7 @@ export class UserQ extends Filters {
     static city = 'city';
     static cap = 'cap';
     static address = 'address';
+    static slug = 'slug';
+    static createdAt = 'createdAt';
+    static updatedAt = 'updatedAt';
 }

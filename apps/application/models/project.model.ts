@@ -32,4 +32,7 @@ export class ProjectQ extends Filters {
     public static title = 'title';
     public static entryDateTime = 'entryDateTime';
     public static skillName = 'skills.name';
+    static slug = 'slug';
+    static createdAt = 'createdAt';
+    static updatedAt = 'updatedAt';
 }

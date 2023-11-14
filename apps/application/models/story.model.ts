@@ -47,4 +47,7 @@ export class StoryQ extends Filters {
     public static projectId = 'project.id';
     public static educationId = 'education.id';
     public static experienceId = 'experience.id';
+    static slug = 'slug';
+    static createdAt = 'createdAt';
+    static updatedAt = 'updatedAt';
 }

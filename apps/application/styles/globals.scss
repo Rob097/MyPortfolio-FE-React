@@ -121,7 +121,7 @@ body {
 }
 
 /** MUI INPUT **/
-.MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
+:not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
   top: 50%;
   left: 10px;
   transform: translateY(-50%) translateX(0);
@@ -170,36 +170,36 @@ $--screen-xs: theme('screens.xs');
 } */
 
 
-.container {
+.container, .MuiContainer-root.large {
   max-width: 100% !important;
 }
 
 @media (min-width: $--screen-sm) {
-  .container {
+  .container, .MuiContainer-root.large {
     max-width: 640px !important;
   }
 }
 
 @media (min-width: ($--screen-md)) {
-  .container {
+  .container, .MuiContainer-root.large {
     max-width: 768px !important;
   }
 }
 
 @media (min-width: ($--screen-lg)) {
-  .container {
+  .container, .MuiContainer-root.large {
     max-width: 1024px !important;
   }
 }
 
 @media (min-width: ($--screen-xl)) {
-  .container {
+  .container, .MuiContainer-root.large {
     max-width: 1280px !important;
   }
 }
 
 @media (min-width: ($--screen-xxl)) {
-  .container {
+  .container, .MuiContainer-root.large {
     max-width: 1536px !important;
   }
 }

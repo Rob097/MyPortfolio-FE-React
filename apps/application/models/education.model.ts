@@ -42,4 +42,7 @@ export class EducationQ extends Filters {
     public static description = 'description';
     public static fromDate = 'fromDate';
     public static toDate = 'toDate';
+    static slug = 'slug';
+    static createdAt = 'createdAt';
+    static updatedAt = 'updatedAt';
 }
