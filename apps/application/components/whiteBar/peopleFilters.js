@@ -1,11 +1,11 @@
 import WhiteBar from '@/components/whiteBar';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
-import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
-const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
-    
+const PeopleFilters = ({ handleFilters, people, filtersDefaultValues }) => {
+
     const methods = useFormContext({
         defaultValues: filtersDefaultValues
     });
@@ -18,7 +18,7 @@ const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
                 {
                     methods.formState.isDirty &&
                     <Box className="w-fit flex self-end" >
-                        <Typography variant="overline" fontWeight='bold' color='primary' className='mb-2 cursor-pointer' onClick={() => methods.reset(filtersDefaultValues)}>Clear Filters</Typography>
+                        <Typography variant="overline" fontWeight='bold' color='primary' className='mb-2 cursor-pointer' onClick={() => { methods.reset(filtersDefaultValues); handleChange(); }}>Clear Filters</Typography>
                     </Box>
                 }
                 <Box className='flex flex-col md:flex-row md:divide-x w-full items-center justify-center space-y-4 xl:space-y-0 flex-wrap'>
@@ -27,7 +27,7 @@ const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
                             {...methods.register("name", { onChange: handleChange })}
                             sx={{ minWidth: 150 }}
                             placeholder={"Name"}
-                            label="Seach"
+                            label="Search"
                             size="small"
                             variant="outlined"
                             className="customInputLabel"
@@ -63,16 +63,18 @@ const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
                                             value={value}
                                         >
                                             <MenuItem value={'All'}><em>All</em></MenuItem>
-                                            <MenuItem value={'World'}>World</MenuItem>
-                                            <MenuItem value={'Italy'}>Italy</MenuItem>
-                                            <MenuItem value={'USA'}>USA</MenuItem>
+
+                                            {people?.map((person, index) => (
+                                                <MenuItem key={'location-' + index} value={person.address?.nation}>{person.address?.nation}</MenuItem>
+                                            ))}
+
                                         </Select>
                                     </>
                                 )}
                             />
                         </FormControl>
 
-                        <FormControl sx={{ minWidth: 150 }} className='md:ml-4'>
+                        {/* <FormControl sx={{ minWidth: 150 }} className='md:ml-4'>
                             <Controller
                                 name="experience"
                                 control={methods.control}
@@ -100,7 +102,7 @@ const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
                                     </>
                                 )}
                             />
-                        </FormControl>
+                        </FormControl> */}
 
                         <FormControl sx={{ minWidth: 150 }} className='md:ml-4'>
                             <Controller
@@ -123,9 +125,11 @@ const PeopleFilters = ({ handleFilters, filtersDefaultValues }) => {
                                             value={value}
                                         >
                                             <MenuItem value={'All'}><em>All</em></MenuItem>
-                                            <MenuItem value={'Web design'}>Web design</MenuItem>
-                                            <MenuItem value={'Software Development'}>Software Development</MenuItem>
-                                            <MenuItem value={'Management'}>Management</MenuItem>
+
+                                            {people?.map((person, index) => (
+                                                <MenuItem key={'industry-' + index} value={person.profession}>{person.profession}</MenuItem>
+                                            ))}
+
                                         </Select>
                                     </>
                                 )}

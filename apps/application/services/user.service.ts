@@ -42,8 +42,8 @@ export default class UserService {
         return fetcher(this.getBySlugUrl(slug, view));
     }
 
-    static getByCriteria(criteria: UserQ) {
-        return fetcher(this.getByCriteriaUrl(criteria));
+    static getByCriteria(criteria: UserQ, returnHeaders?: boolean) {
+        return fetcher(this.getByCriteriaUrl(criteria), returnHeaders);
     }
 
     static getAllSlugs() {

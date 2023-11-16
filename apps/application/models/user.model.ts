@@ -1,11 +1,11 @@
 import { Filters } from "@/models/criteria.model";
+import { Address } from "./address.model";
+import { SlugDto } from "./baseDto.models";
 import { Diary } from './diary.model';
 import { Education } from './education.model';
 import { Experience } from './experience.model';
-import { UserSkill } from './skill.model';
 import { Project } from './project.model';
-import { Address } from "./address.model";
-import { SlugDto } from "./baseDto.models";
+import { UserSkill } from './skill.model';
 
 export class User extends SlugDto {
     firstName: string;
@@ -68,6 +68,7 @@ export class UserQ extends Filters {
     static city = 'city';
     static cap = 'cap';
     static address = 'address';
+    static profession = 'profession';
     static slug = 'slug';
     static createdAt = 'createdAt';
     static updatedAt = 'updatedAt';
