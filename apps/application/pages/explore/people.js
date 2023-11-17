@@ -1,4 +1,6 @@
 import Snack from "@/components/alerts/snack";
+import HorizontalCard from "@/components/cards/horizontalCard";
+import SquareCard from "@/components/cards/squareCard";
 import CustomPieChart from '@/components/charts/pieChart';
 import DraggableBox from '@/components/draggableBox';
 import Loading from '@/components/utils/loading/loading';
@@ -13,6 +15,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import ShowIf from '@/components/utils/showIf';
 
 const filtersDefaultValues = {
     name: null,
@@ -28,10 +31,12 @@ const People = (props) => {
     /*     STATES     */
     /******************/
     const methods = useForm({ defaultValues: filtersDefaultValues });
+    const [layout, setLayout] = useState('list');
     const [statisticsBy, setStatisticsBy] = useState('industry');
     const [statisticsData, setStatisticsData] = useState([]);
     const [totalUsers, setTotalUsers] = useState(props.number);
     const [users, setUsers] = useState(props.users);
+    const [visibleUsers, setVisibleUsers] = useState(props.users);
     const [filters, setFilters] = useState();
     const [currentPage, setCurrentPage] = useState(0);
     const [sideWidth, setSideWidth] = useState(0)
@@ -78,6 +83,10 @@ const People = (props) => {
             return () => clearTimeout(delayDebounceFn)
         }
     }, [filters])
+
+    useEffect(() => {
+        setVisibleUsers(users?.filter((user, index) => index < numberPerPage * (currentPage + 1) && index >= numberPerPage * currentPage));
+    }, [currentPage, users])
 
 
     /******************/
@@ -147,71 +156,64 @@ const People = (props) => {
             <Typography variant="h1" fontWeight='bold' color='primary'><span className="text-black">Explore</span> People</Typography>
 
             <FormProvider {...methods}>
-                <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} />
+                <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} currentLayout={layout} setLayout={setLayout} />
             </FormProvider>
 
             <Grid container spacing={2} className='relative my-10 py-10 px-2'>
 
                 <Grid item xs={12} lg={9} className='flex flex-col items-center justify-between'>
 
-                    <Box className="w-full flex flex-col justify-start items-center">
-                        {/* for each user of the current page: */}
-                        {
-                            users?.filter((user, index) => index < numberPerPage * (currentPage + 1) && index >= numberPerPage * currentPage)?.length <= 0 ? <h1>No people found</h1> :
-                                users?.filter((user, index) => index < numberPerPage * (currentPage + 1) && index >= numberPerPage * currentPage).map((user) => (
-                                    <Box key={user.id} className="w-full max-w-sm md:max-w-full md:h-36 h-fit bg-white border rounded-lg mb-4 py-4 md:py-0 flex flex-col md:flex-row text-center md:text-start items-center px-8 z-10 relative">
-                                        <Avatar
-                                            alt="Remy Sharp"
-                                            src="/images/profileImage.JPG"
-                                            sx={{ width: 70, height: 70 }}
-                                        />
-                                        <Box className="ml-4 ">
-                                            <Typography variant="h5" fontWeight='bold' color='black'>{`${user?.firstName} ${user?.lastName}`}</Typography>
-                                            <Box className='flex flex-col md:flex-row md:divide-x-2'>
-                                                <Typography variant="body2" color='black' paddingRight={2}>{user?.address?.nation}</Typography>
-                                                <Typography variant="body2" color='black' paddingLeft={2}>{user?.profession}</Typography>
-                                            </Box>
-                                            {user.skills?.length > 0 &&
-                                                <DraggableBox noDrag>
-                                                    {user.skills?.filter((userSkill) => userSkill.isMain)
-                                                        .sort((a, b) => a.orderId - b.orderId)
-                                                        .map((userSkill) => (
-                                                            <Chip key={"skill-" + user.id + "-" + userSkill.skill.id} id={"skill-" + user.id + "-" + userSkill.skill.id} label={userSkill.skill.name} />
-                                                        ))}
-                                                </DraggableBox>
-                                            }
-                                        </Box>
-
-                                        <Box display={{ xs: 'none', xl: 'flex' }} className="ml-auto flex-col justify-between">
+                    <ShowIf condition={layout === 'list'}>
+                        <Box className="w-full flex flex-col justify-start items-center">
+                            {
+                                visibleUsers?.length <= 0 ? <h1>No people found</h1> :
+                                    visibleUsers.map((user) => (
+                                        <HorizontalCard
+                                            key={'list-' + user.id}
+                                            id={user.id}
+                                            image={'/images/profileImage.JPG'}
+                                            title={`${user?.firstName} ${user?.lastName}`}
+                                            firstSubtitle={user?.address?.nation}
+                                            secondSubtitle={user?.profession}
+                                            chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
+                                            buttons={[{ label: 'View profile', link: `/users/${user.slug}/home` }, { label: 'Connect', link: '#' }]}
+                                        >
                                             <Box className="flex flex-col justify-between">
                                                 <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>Projects</Typography>
+                                                    <Typography variant="body2" color='black' paddingRight={2}>Projects:</Typography>
                                                     <Typography variant="h5" fontWeight='bold' color='black'>{user?.projects?.length}</Typography>
                                                 </Box>
                                                 <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>Experiences</Typography>
+                                                    <Typography variant="body2" color='black' paddingRight={2}>Experiences:</Typography>
                                                     <Typography variant="h5" fontWeight='bold' color='black'>{user?.experiences?.length}</Typography>
                                                 </Box>
                                             </Box>
-                                        </Box>
-                                        <Box className="mx-auto md:mx-0 md:ml-auto mt-4 md:mt-0 flex flex-col justify-between">
-                                            <Box className="flex flex-row justify-between">
-                                                <Link href={`/users/${user.slug}/home`}>
-                                                    <Button variant="outlined" color="primary" size="small" className='h-fit py-2 mr-2 whitespace-nowrap'>
-                                                        View profile
-                                                    </Button>
-                                                </Link>
-                                                <Button variant="contained" color="primary" size="small" className='h-fit py-2'>
-                                                    Connect
-                                                </Button>
-                                            </Box>
-                                        </Box>
-                                    </Box>
+                                        </HorizontalCard>
+                                    ))}
+                        </Box>
+                    </ShowIf>
 
-                                ))}
-                    </Box>
+                    <ShowIf condition={layout === 'grid'}>
+                        <Box className={"w-full flex flex-row flex-wrap items-start " + (visibleUsers?.length >= 3 ? 'justify-center' : 'justify-start')}>
+                            {
+                                visibleUsers?.length <= 0 ? <h1>No people found</h1> :
+                                    visibleUsers.map((user) => (
+                                        <SquareCard
+                                            key={'grid-' + user.id}
+                                            id={user.id}
+                                            image={'/images/profileImage.JPG'}
+                                            title={`${user?.firstName} ${user?.lastName}`}
+                                            subtitle={user?.profession}
+                                            description={user?.presentation}
+                                            chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
+                                            bottomCaption={user?.address?.nation}
+                                            buttons={[{ label: 'View profile', link: `/users/${user.slug}/home` }, { label: 'Connect', link: '#' }]}
+                                        />
+                                    ))}
+                        </Box>
+                    </ShowIf>
 
-                    <Box className="w-full flex flex-row justify-start items-end">
+                    <Box className="w-full flex flex-row justify-start items-end my-10">
                         <Pagination
                             count={Math.ceil(totalUsers / numberPerPage)}
                             variant="outlined"

@@ -1,4 +1,6 @@
-import StoryCard from '@/components/cards/storyCard';
+import SquareCard from '@/components/cards/squareCard';
+import EntitiesTimeline from '@/components/timelines/entitiesTimeline';
+import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
@@ -6,16 +8,14 @@ import { EntityTypeEnum } from '@/models/categories.model';
 import { View } from '@/models/criteria.model';
 import { User } from '@/models/user.model';
 import { fetcher } from '@/services/base.service';
+import EntityService, { useUserEntities } from '@/services/entity.service';
 import UserService from '@/services/user.service';
-import { Box, Container, Grid, Pagination, Stack, Typography, Button } from '@mui/material';
+import { Box, Button, Container, Grid, Pagination, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useEffect, useState } from 'react';
-import EntityService, { useUserEntities } from '@/services/entity.service';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import experiencesClasses from '../../styles/experiences.module.scss';
-import EntitiesTimeline from '@/components/timelines/entitiesTimeline';
-import ShowIf from '@/components/utils/showIf';
 
 
 const Projects = (props) => {
@@ -52,21 +52,29 @@ const Projects = (props) => {
                             <Stack direction='row' spacing={2} className='items-end my-10'>
                                 <Typography variant="h2" fontWeight='bold'>{t('common:list')}</Typography>
                                 <Box className={experiencesClasses.container} display={entities?.length > 3 ? 'block' : 'block'}>
-                                        <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
-                                            {t('view-as-timeline')}
-                                        </Button>
-                                    </Box>
+                                    <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
+                                        {t('view-as-timeline')}
+                                    </Button>
+                                </Box>
                             </Stack>
                             <Box className="w-full mt-8 mb-20">
                                 <Grid container className='mt-4' spacing={2}>
                                     {
                                         entities.slice(0, 6).map((entity) => (
                                             <Grid key={entity.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
-                                                <StoryCard
-                                                    story={entity}
-                                                    storyCategory={props.entityType}
+                                                <SquareCard
+                                                    image={entity.image}
                                                     title={entity.title || entity.field}
                                                     subtitle={entity.school || undefined}
+                                                    description={entity.description}
+                                                    chips={entity.skills}
+                                                    bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT")}
+                                                    buttons={[
+                                                        {
+                                                            label: t('common:read-more'),
+                                                            link: `/users/${props.user.slug}/diary/${props.entityType}/${entity.slug}`
+                                                        }
+                                                    ]}
                                                 />
                                             </Grid>
                                         ))
@@ -150,8 +158,8 @@ export async function getStaticProps(context) {
             }
         }
 
-        
-        if(EntityTypeEnum.isValid(entityType) === false) {
+
+        if (EntityTypeEnum.isValid(entityType) === false) {
             return {
                 notFound: true,
                 revalidate: revalidate
@@ -197,7 +205,7 @@ Projects.getLayout = (page) => {
     const { entityType } = router.query;
 
     return (
-        <DiaryLayout title={t('categories.list.personal-'+entityType)} id={entityType} showStoryFilters showBreadcrumbs>
+        <DiaryLayout title={t('categories.list.personal-' + entityType)} id={entityType} showStoryFilters showBreadcrumbs>
             {page}
         </DiaryLayout>
     )

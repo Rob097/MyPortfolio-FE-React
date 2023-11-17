@@ -1,9 +1,8 @@
-import StoryCard from '@/components/cards/storyCard';
+import SquareCard from '@/components/cards/squareCard';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
-import { EntityTypeEnum } from '@/models/categories.model';
 import { User } from '@/models/user.model';
 import { fetcher } from '@/services/base.service';
 import UserService, { useUser } from '@/services/user.service';
@@ -50,9 +49,19 @@ const Diary = () => {
                                 {
                                     user.experiences.slice(0, 3).map((experience) => (
                                         <Grid key={experience.id} item xs={12} sm={6} lg={user.experiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                            <StoryCard
-                                                story={experience}
-                                                storyCategory={EntityTypeEnum.EXPERIENCES}
+                                            <SquareCard
+                                                image={experience.image}
+                                                title={experience.title}
+                                                subtitle={experience.company}
+                                                description={experience.description}
+                                                chips={experience.skills}
+                                                bottomCaption={new Date(experience.fromDate || experience.updatedAt).toLocaleDateString("it-IT") + (experience.toDate ? " - " + new Date(experience.toDate).toLocaleDateString("it-IT") : "")}
+                                                buttons={[
+                                                    {
+                                                        label: t('common:read-more'),
+                                                        link: `/users/${userSlug}/diary/experiences/${experience.slug}`
+                                                    }
+                                                ]}
                                             />
                                         </Grid>
                                     ))
@@ -86,9 +95,18 @@ const Diary = () => {
                                 {
                                     user.projects.slice(0, 3).map((project) => (
                                         <Grid key={project.id} item xs={12} sm={6} lg={user.projects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                            <StoryCard
-                                                story={project}
-                                                storyCategory={EntityTypeEnum.PROJECTS}
+                                            <SquareCard
+                                                image={project.image}
+                                                title={project.title}
+                                                description={project.description}
+                                                chips={project.skills}
+                                                bottomCaption={new Date(project.fromDate || project.updatedAt).toLocaleDateString("it-IT") + (project.toDate ? " - " + new Date(project.toDate).toLocaleDateString("it-IT") : "")}
+                                                buttons={[
+                                                    {
+                                                        label: t('common:read-more'),
+                                                        link: `/users/${userSlug}/diary/projects/${project.slug}`
+                                                    }
+                                                ]}
                                             />
                                         </Grid>
                                     ))
@@ -121,11 +139,19 @@ const Diary = () => {
                                 {
                                     user.educations.slice(0, 3).map((education) => (
                                         <Grid key={education.id} item xs={12} sm={6} lg={user.educations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
-                                            <StoryCard
-                                                story={education}
-                                                storyCategory={EntityTypeEnum.EDUCATIONS}
+                                            <SquareCard
+                                                image={education.image}
                                                 title={education.field}
                                                 subtitle={education.school}
+                                                description={education.description}
+                                                chips={education.skills}
+                                                bottomCaption={new Date(education.fromDate || education.updatedAt).toLocaleDateString("it-IT") + (education.toDate ? " - " + new Date(education.toDate).toLocaleDateString("it-IT") : "")}
+                                                buttons={[
+                                                    {
+                                                        label: t('common:read-more'),
+                                                        link: `/users/${userSlug}/diary/educations/${education.slug}`
+                                                    }
+                                                ]}
                                             />
                                         </Grid>
                                     ))

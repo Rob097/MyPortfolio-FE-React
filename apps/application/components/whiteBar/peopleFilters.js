@@ -1,10 +1,12 @@
 import WhiteBar from '@/components/whiteBar';
+import GridViewIcon from '@mui/icons-material/GridView';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
 import { Controller, useFormContext } from 'react-hook-form';
 
-const PeopleFilters = ({ handleFilters, people, filtersDefaultValues }) => {
+const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLayout, setLayout }) => {
 
     const methods = useFormContext({
         defaultValues: filtersDefaultValues
@@ -41,7 +43,7 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues }) => {
                             }}
                         />
                     </Box>
-                    <Box className='flex flex-col md:flex-row justify-center items-center md:justify-start md:items-start md:pl-4 space-y-4 md:space-y-0'>
+                    <Box className='flex flex-col md:flex-row justify-center items-center md:justify-start md:pl-4 space-y-4 md:space-y-0'>
                         <FormControl sx={{ minWidth: 150 }}>
                             <Controller
                                 name="location"
@@ -74,36 +76,6 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues }) => {
                             />
                         </FormControl>
 
-                        {/* <FormControl sx={{ minWidth: 150 }} className='md:ml-4'>
-                            <Controller
-                                name="experience"
-                                control={methods.control}
-                                render={({ field: { value } }) => (
-                                    <>
-                                        <InputLabel id="sort-select-label"
-                                            sx={({ palette: { text }, functions: { rgba } }) => ({
-                                                color: rgba(text.main, 0.9),
-                                            })}
-                                        >Experience</InputLabel>
-                                        <Select
-                                            {...methods.register("experience", { onChange: handleChange })}
-                                            labelId="experience-select-label"
-                                            id="experience-select"
-                                            label="Experience"
-                                            size="small"
-                                            className='text-left'
-                                            value={value}
-                                        >
-                                            <MenuItem value={'All'}><em>All</em></MenuItem>
-                                            <MenuItem value={'Beginner'}>Beginner</MenuItem>
-                                            <MenuItem value={'Intermediate'}>Intermediate</MenuItem>
-                                            <MenuItem value={'Advanced'}>Advanced</MenuItem>
-                                        </Select>
-                                    </>
-                                )}
-                            />
-                        </FormControl> */}
-
                         <FormControl sx={{ minWidth: 150 }} className='md:ml-4'>
                             <Controller
                                 name="industry"
@@ -135,6 +107,14 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues }) => {
                                 )}
                             />
                         </FormControl>
+
+                        <Tooltip title={currentLayout === 'grid' ? 'List' : 'Grid'} placement="top">
+                            <Button variant="contained" size="small" className='w-fit h-fit min-w-0 p-2 ml-4 whitespace-nowrap bg-primary-main text-white' onClick={() => setLayout(currentLayout === 'grid' ? 'list' : 'grid')}>
+                                {currentLayout === 'list' && <GridViewIcon />}
+                                {currentLayout === 'grid' && <ViewListIcon />}
+                            </Button>
+                        </Tooltip>
+
                     </Box>
                 </Box>
             </Box>
