@@ -8,6 +8,7 @@ import { User } from '@/models/user.model';
 import { fetcher } from '@/services/base.service';
 import UserService, { useUser } from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
 import { useTranslation } from 'next-i18next';
@@ -70,7 +71,7 @@ const UserHome = () => {
             </ShowIf>
 
             <Box id='main-story-section' component='section' className='mt-12 mb-20 xl:mt-0'>
-                <MainStorySection useContainer staticMainStory={mainStory} />
+                <MainStorySection useContainer mainStory={mainStory} />
                 {/* <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone={user?.phone} email={user?.email} city={User.getUserAddress(user)} sectionToScrollTo='#contact-section' /> */}
             </Box>
 
@@ -93,8 +94,8 @@ const UserHome = () => {
                 <Box className="w-12 h-12 bg-primary-main rounded-full mx-auto mb-4"></Box>
                 <Box className="w-full flex justify-center px-4 mb-4">
                     <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
-                        <Button variant="contained" color="primary" size="large">
-                            <Typography variant='h3' component={"p"} color="white" textTransform={"capitalize"} >📖 {t('read-my-diary')}</Typography>
+                        <Button variant="contained" color="primary" size="large" className="shineButton">
+                            <Typography variant='h4' component={"p"} color="white" textTransform={"capitalize"} className="contents" ><AutoStoriesIcon className="mr-2" /> {t('read-my-diary')}</Typography>
                         </Button>
                     </Link>
                 </Box>
@@ -127,7 +128,7 @@ const UserHome = () => {
             </Box>*/}
 
             {/* Contact Me Section */}
-            <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 50%);` }}>
+            <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 30%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{ zIndex: 1 }}>
                     <Typography variant="h2" sx={{ textAlign: 'center' }} gutterBottom color='dark'>
                         {t("contact-me.title")}

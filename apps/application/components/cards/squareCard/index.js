@@ -63,14 +63,14 @@ const SquareCard = ({ image, title, subtitle, description, chips, bottomCaption,
                     <Grid item xs={12} lg={6} className="flex items-center lg:justify-end justify-center">
                         <Box className="flex flex-row justify-end">
                             {buttons[1] !== undefined &&
-                                <Link href={buttons[1]?.link}>
+                                <Link href={buttons[1]?.link} scroll={!buttons[1]?.blockScroll}>
                                     <Button variant="outlined" color="primary" size="small" className='h-fit py-2 mr-2 rounded-full whitespace-nowrap'>
                                         {buttons[1]?.label}
                                     </Button>
                                 </Link>
                             }
                             {buttons[0] !== undefined &&
-                                <Link href={buttons[0]?.link}>
+                                <Link href={buttons[0]?.link} scroll={!buttons[0]?.blockScroll}>
                                     <Button variant="contained" color="primary" size="small" className='h-fit py-2 rounded-full whitespace-nowrap'>
                                         {buttons[0]?.label}
                                     </Button>

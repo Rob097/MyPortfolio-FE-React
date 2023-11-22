@@ -1,26 +1,22 @@
-const constants = require('@rob097/common-lib/constants');
 import { View } from "@/models/criteria.model";
-import { Diary, DiaryQ } from "../models/diary.model";
-import { BaseService, BASE_URL } from "./base.service";
+import { DiaryQ } from "../models/diary.model";
+import { BASE_URL, fetcher } from "./base.service";
 const DIARIES_URL = BASE_URL + '/core/diaries';
-const JSON_HEADER = { "Content-Type": "application/json" }
 
-export class DiaryService implements BaseService {
-    getById(id: number, view?: string) {
-        return fetch(DIARIES_URL + `/${id}` + '?view=' + (view || View.normal), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+export default class DiaryService {
+
+    static getByIdUrl(id: number, view?: string) {
+        return DIARIES_URL + `/${id}` + '?view=' + (view || View.normal);
+    }
+    static getByCriteriaUrl(criteria: DiaryQ) {
+        return DIARIES_URL + criteria.toString();
     }
 
-    getByCriteria(criteria: DiaryQ) {
-        return fetch(DIARIES_URL + criteria.toString(), {
-            method: constants.METHODS.GET,
-            headers: {
-                ...JSON_HEADER
-            }
-        })
+    static getById(id: number, view?: string) {
+        return fetcher(this.getByIdUrl(id, view));
+    }
+
+    static getByCriteria(criteria: DiaryQ, returnHeaders?: boolean) {
+        return fetcher(this.getByCriteriaUrl(criteria), returnHeaders);
     }
 }

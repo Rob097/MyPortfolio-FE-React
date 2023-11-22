@@ -1,7 +1,6 @@
 import MainStorySection from '@/components/sections/MainStorySection';
 import ShowIf from '@/components/utils/showIf';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
-import { useUser } from '@/services/user.service';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -9,14 +8,14 @@ import { useTranslation } from 'next-i18next';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { View } from '@/models/criteria.model';
 
-const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG }) => {
+const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG, user }) => {
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
-    const router = useRouter();
-    const { userSlug } = router.query;
-    const { user } = useUser(userSlug, View.normal);
+
+    const mainStory = useMemo(() => {
+        return user?.diaries?.find(diary => diary?.stories?.find(story => story?.id === user?.mainStoryId))?.stories?.find(story => story?.id === user?.mainStoryId);
+    }, [user]);
 
     return (
         <>
@@ -40,7 +39,7 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     </Grid>
 
                     <Grid item xs={12} md={8} height='25em' marginBottom={2} className='flex justify-center items-center'>
-                        <MainStorySection />
+                        <MainStorySection mainStory={mainStory} />
                     </Grid>
                 </Grid>
             </Box>

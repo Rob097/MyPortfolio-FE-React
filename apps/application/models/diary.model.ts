@@ -1,7 +1,6 @@
 import { Filters } from '@/models/criteria.model';
-import { Story } from './story.model';
-import { User } from './user.model';
 import { AuditableDto } from './baseDto.models';
+import { Story } from './story.model';
 
 export class Diary extends AuditableDto {
     userId?: number;
@@ -27,4 +26,5 @@ export class DiaryQ extends Filters {
     public static userId = 'user.id';
     public static title = 'title';
     public static isMain = 'isMain';
+    public static createdAt = 'createdAt';
 }

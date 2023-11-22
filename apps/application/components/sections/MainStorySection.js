@@ -1,49 +1,18 @@
-import Snack from "@/components/alerts/snack";
 import HtmlContent from '@/components/utils/htmlContent';
 import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
-import { View } from '@/models/criteria.model';
 import userClasses from '@/pages/users/[userSlug]/styles/shared.module.scss';
-import StoryService from '@/services/story.service';
-import UserService from '@/services/user.service';
 import { Box, Container, Typography } from "@mui/material";
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import { usePromiseTracker } from 'react-promise-tracker';
 import ConditionalWrapper from '../utils/conditionalWrapper';
 import Loading from "../utils/loading/loading";
 
-const MainStorySection = ({ useContainer, staticMainStory }) => {
+const MainStorySection = ({ useContainer, mainStory }) => {
     const { t } = useTranslation(['user-home', 'common']);
-    const router = useRouter();
-    const { userSlug } = router.query;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
-
-    const [mainStory, setMainStory] = useState(staticMainStory);
-    useEffect(() => {
-        if (!staticMainStory) {
-            trackPromise(
-                UserService.getBySlug(userSlug, View.normal)
-                    .then(user => {
-                        if (user?.content?.mainStoryId) {
-                            trackPromise(
-                                StoryService.getById(user?.content?.mainStoryId, View.normal).then(story => {
-                                    setMainStory(story?.content);
-                                }).catch(error => {
-                                    Snack.error(error);
-                                })
-                            );
-                        }
-                    })
-                    .catch(error => {
-                        Snack.error(error);
-                    })
-            );
-        }
-    }, [userSlug]);
 
     // Tracker attività API
     const { promiseInProgress } = usePromiseTracker();

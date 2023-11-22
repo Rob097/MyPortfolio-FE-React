@@ -3,6 +3,7 @@ import ShowIf from '@/components/utils/showIf';
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import DiaryLayout from '@/layouts/DiaryLayout';
+import { View } from '@/models/criteria.model';
 import { User } from '@/models/user.model';
 import { fetcher } from '@/services/base.service';
 import UserService, { useUser } from '@/services/user.service';
@@ -59,7 +60,7 @@ const Diary = () => {
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),
-                                                        link: `/users/${userSlug}/diary/experiences/${experience.slug}`
+                                                        link: `/users/${userSlug}/diary/experiences/${experience.slug}#mainEntityStory`
                                                     }
                                                 ]}
                                             />
@@ -104,7 +105,7 @@ const Diary = () => {
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),
-                                                        link: `/users/${userSlug}/diary/projects/${project.slug}`
+                                                        link: `/users/${userSlug}/diary/projects/${project.slug}#mainEntityStory`
                                                     }
                                                 ]}
                                             />
@@ -149,7 +150,7 @@ const Diary = () => {
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),
-                                                        link: `/users/${userSlug}/diary/educations/${education.slug}`
+                                                        link: `/users/${userSlug}/diary/educations/${education.slug}#mainEntityStory`
                                                     }
                                                 ]}
                                             />
@@ -216,7 +217,7 @@ export async function getStaticProps(context) {
     try {
         const locale = context.locale;
 
-        const url = UserService.getBySlugUrl(context.params.userSlug, 'verbose');
+        const url = UserService.getBySlugUrl(context.params.userSlug, View.verbose);
         const userResponse = await fetcher(url);
 
         if (!userResponse?.content || User.isEmpty(userResponse?.content)) {
@@ -250,7 +251,7 @@ Diary.getLayout = (page) => {
     const { t } = useTranslation('user-diary');
 
     return (
-        <DiaryLayout title={t('diary')} showStoryFilters showBreadcrumbs>
+        <DiaryLayout title={t('diary')} showStoryFilters showBreadcrumbs user={page.props.user}>
             {page}
         </DiaryLayout>
     )

@@ -72,7 +72,7 @@ const Projects = (props) => {
                                                     buttons={[
                                                         {
                                                             label: t('common:read-more'),
-                                                            link: `/users/${props.user.slug}/diary/${props.entityType}/${entity.slug}`
+                                                            link: `/users/${props.user.slug}/diary/${props.entityType}/${entity.slug}#mainEntityStory`
                                                         }
                                                     ]}
                                                 />
@@ -148,7 +148,7 @@ export async function getStaticProps(context) {
         const { userSlug, entityType, entitySlug } = params;
 
 
-        const userUrl = UserService.getBySlugUrl(userSlug, View.normal);
+        const userUrl = UserService.getBySlugUrl(userSlug, View.verbose);
         const userResponse = await fetcher(userUrl);
 
         if (!userResponse?.content || User.isEmpty(userResponse?.content)) {
@@ -205,7 +205,7 @@ Projects.getLayout = (page) => {
     const { entityType } = router.query;
 
     return (
-        <DiaryLayout title={t('categories.list.personal-' + entityType)} id={entityType} showStoryFilters showBreadcrumbs>
+        <DiaryLayout title={t('categories.list.personal-' + entityType)} id={entityType} showStoryFilters showBreadcrumbs user={page.props.user}>
             {page}
         </DiaryLayout>
     )

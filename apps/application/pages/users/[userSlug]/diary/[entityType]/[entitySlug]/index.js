@@ -166,7 +166,7 @@ export async function getStaticProps(context) {
         const { locale, params } = context
         const { userSlug, entityType, entitySlug } = params;
 
-        const userUrl = UserService.getBySlugUrl(userSlug, View.normal);
+        const userUrl = UserService.getBySlugUrl(userSlug, View.verbose);
         const userResponse = await fetcher(userUrl);
 
         if (!userResponse?.content || SlugDto.isEmpty(userResponse?.content)) {
@@ -222,7 +222,7 @@ export async function getStaticProps(context) {
 
 Project.getLayout = (page) => {
     return (
-        <DiaryLayout id='entity' showBreadcrumbs pageBG='bg-background-secondary'>
+        <DiaryLayout id='entity' showBreadcrumbs pageBG='bg-background-secondary' user={page.props.user}>
             {page}
         </DiaryLayout>
     )
