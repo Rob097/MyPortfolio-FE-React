@@ -63,6 +63,10 @@
 @import "@rob097/common-lib/assets/theme/styles.scss";
 
 
+.grecaptcha-badge { 
+  visibility: hidden;
+}
+
 /** SCROLLBAR STYLES **/
 .hide-scrollbar {
   -ms-overflow-style: none;

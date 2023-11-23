@@ -2,6 +2,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import MainStorySection from '@/components/sections/MainStorySection';
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
 import UserTimeline from '@/components/timelines/userTimeline';
+import Loading from "@/components/utils/loading/loading";
 import ShowIf from '@/components/utils/showIf';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import { User } from '@/models/user.model';
@@ -16,11 +17,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
+import { useGoogleReCaptcha } from "react-google-recaptcha-hook";
 import { useForm } from 'react-hook-form';
-import userClasses from './styles/shared.module.scss';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
-import Loading from "@/components/utils/loading/loading";
+import userClasses from './styles/shared.module.scss';
 
+const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+const ACTION_NAME = "submit";
 const UserHome = () => {
     const router = useRouter();
     const { userSlug } = router.query;
@@ -31,6 +34,7 @@ const UserHome = () => {
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanXl = isGreaterThan('xl');
     const { promiseInProgress } = usePromiseTracker();
+    const { executeGoogleReCaptcha } = useGoogleReCaptcha(SITE_KEY);
 
     const { user, isError } = useUser(userSlug, 'verbose');
     const [contactRequestStatus, setContactRequestStatus] = useState(null);
@@ -46,7 +50,8 @@ const UserHome = () => {
     }, [user]);
 
     async function handleContact(data) {
-        console.log(data);
+        const token = await executeGoogleReCaptcha(ACTION_NAME);
+        data.recaptchaToken = token;
         data.userId = user?.id;
         data.language = i18n.language;
 
@@ -54,12 +59,16 @@ const UserHome = () => {
             UserService.sendEmail(data)
                 .then(response => {
                     console.log(response)
-                    reset();
-                    setContactRequestStatus({status: "OK", message: t('contact-me.success')});
+                    if (response?.status === 200) {
+                        reset();
+                        setContactRequestStatus({ status: "OK", message: t('contact-me.success') });
+                    } else {
+                        setContactRequestStatus({ status: "KO", message: t('contact-me.error') });
+                    }
                 })
                 .catch(error => {
                     console.log(error)
-                    setContactRequestStatus({status: "KO", message: t('contact-me.error')});
+                    setContactRequestStatus({ status: "KO", message: t('contact-me.error') });
                 })
         );
     }
@@ -153,7 +162,7 @@ const UserHome = () => {
                     <Typography variant="h2" sx={{ textAlign: 'center' }} gutterBottom color='dark'>
                         {t("contact-me.title")}
                     </Typography>
-                    <Typography variant="subtitle1" sx={{ textAlign: 'center' }} gutterBottom color={contactRequestStatus?.status==='OK' ? 'success.main' : contactRequestStatus?.status==='KO' ? 'error.main' : 'dark'}>
+                    <Typography variant="subtitle1" sx={{ textAlign: 'center' }} gutterBottom color={contactRequestStatus?.status === 'OK' ? 'success.main' : contactRequestStatus?.status === 'KO' ? 'error.main' : 'dark'}>
                         {contactRequestStatus?.message}
                     </Typography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>
@@ -201,6 +210,7 @@ const UserHome = () => {
                             <Button type="submit" variant="contained" color="primary" size="large" fullWidth>
                                 {t("contact-me.submit")}
                             </Button>
+                            <Typography variant="caption">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</Typography>
                         </Box>
                     </Box>
                 </Container>
