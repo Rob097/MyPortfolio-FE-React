@@ -55,12 +55,12 @@ export default class UserService {
 
     // Request to send an email (/users/send) 
     static sendEmail(data: any) {
-        const { name, email, message } = data;
+        const { name, email, message, userId, language } = data;
         const subject: string = 'MyPortfolio - Nuovo messaggio da ' + name;
         return fetch(EMAIL_URL + '/send', {
             method: 'POST',
             headers: JSON_HEADER,
-            body: JSON.stringify({ name, email, message, subject })
+            body: JSON.stringify({ userId, name, email, message, subject, language })
         });
     }
 

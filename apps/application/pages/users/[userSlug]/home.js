@@ -25,7 +25,7 @@ const UserHome = () => {
     const router = useRouter();
     const { userSlug } = router.query;
 
-    const { t } = useTranslation(['user-home', 'common']);
+    const { t, i18n } = useTranslation(['user-home', 'common']);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
@@ -47,6 +47,8 @@ const UserHome = () => {
 
     async function handleContact(data) {
         console.log(data);
+        data.userId = user?.id;
+        data.language = i18n.language;
 
         trackPromise(
             UserService.sendEmail(data)
