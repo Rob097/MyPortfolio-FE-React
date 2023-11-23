@@ -5,7 +5,18 @@
         "title": "Something about me",
         "more": "Something more"
     },
+    "quick-overview": {
+        "title": "A Quick Overview",
+        "what-i-do": "What I do",
+        "what-i-studied": "What I studied",
+        "what-im-working-on": "What I'm working on",
+        "company": "Company",
+        "institute": "Institute",
+        "period": "Period",
+        "present": "Present"
+    },
     "read-my-diary": "Read my diary",
+    "read-my-complete-diary": "Read my complete diary",
     "contact-me": {
         "title": "Contact Me",
         "submit": "Send Message",
@@ -19,7 +30,9 @@
             "email-required": "Email is required",
             "message-required": "Message is required",
             "message-length": "Message must be at most {{maxLength}} characters long"
-        }
+        },
+        "success": "Message sent successfully",
+        "error": "An error occurred while sending the message"
     },
     "cards": {
         "diary": "Diary",

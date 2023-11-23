@@ -1,7 +1,7 @@
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
 import { useBreakpoints } from '@/hooks/useBreakpoints';
 import tailwindConfig from '@/tailwind.config.js';
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Container, Grid, Tooltip } from "@mui/material";
 import ShowIf from '@/components/utils/showIf';
 import Link from 'next/link';
 
@@ -22,10 +22,18 @@ const HeroSection = (props) => {
                         <ShowIf condition={props.buttons != null}>
                             <Box id="call-to-action" mt={4} mb={2}>
                                 <ShowIf condition={props.buttons[0] != null}>
-                                    <Button variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }}>{props.buttons[0].label}</Button>
+                                    <Tooltip title={props.buttons[0].tooltip} placement="top" arrow>
+                                        <Box component='span' className={props.buttons[0].disabled ? 'cursor-not-allowed' : ''}>
+                                            <Button variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }} disabled={props.buttons[0].disabled}>{props.buttons[0].label}</Button>
+                                        </Box>
+                                    </Tooltip>
                                 </ShowIf>
                                 <ShowIf condition={props.buttons[1] != null}>
-                                    <Button href={props.buttons[1].link} variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{props.buttons[1].label}</Button>
+                                    <Tooltip title={props.buttons[1].tooltip} placement="top" arrow>
+                                        <Box component='span' className={props.buttons[1].disabled ? 'cursor-not-allowed' : ''}>
+                                            <Button href={props.buttons[1].link} variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }} disabled={props.buttons[1].disabled}>{props.buttons[1].label}</Button>
+                                        </Box>
+                                    </Tooltip>
                                 </ShowIf>
                             </Box>
                         </ShowIf>

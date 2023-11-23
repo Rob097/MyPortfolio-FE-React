@@ -33,7 +33,7 @@ export default StoriesIndexModal;
 export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
     const router = useRouter();
     const { t } = useTranslation(['common']);
-    const { userSlug, storySlug } = router.query;
+    const { userSlug, storySlug, entityType } = router.query;
 
     const actualSection = storySlug ? entity.stories.find(story => story.slug === storySlug) : undefined;
 
@@ -53,7 +53,7 @@ export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
             <List>
                 <ListItem key={'story-home'} disablePadding >
                     <ListItemButton selected={!actualSection?.id} className='rounded-md my-1'>
-                        <Link href={`/users/${userSlug}/diary/projects/${entity.slug}${domSection}`} onClick={toggleModal} className='w-full'>
+                        <Link href={`/users/${userSlug}/diary/${entityType}/${entity.slug}${domSection}`} onClick={toggleModal} className='w-full'>
                             <ListItemText primary={'1. ' + t('common:home')} />
                         </Link>
                     </ListItemButton>
@@ -62,7 +62,7 @@ export const StoriesIndexContent = ({ entity, toggleModal, addCloseIcon }) => {
                     entity.stories?.map((story, index) => (
                         <ListItem key={'story-' + story.id} disablePadding onClick={toggleModal}>
                             <ListItemButton selected={story.id === actualSection?.id} className='rounded-md my-1'>
-                                <Link href={`/users/${userSlug}/diary/projects/${entity.slug}/${story.slug}${domSection}`} className='w-full' >
+                                <Link href={`/users/${userSlug}/diary/${entityType}/${entity.slug}/${story.slug}${domSection}`} className='w-full' >
                                     <ListItemText primary={(index + 2) + '. ' + story.title} />
                                 </Link>
                             </ListItemButton>

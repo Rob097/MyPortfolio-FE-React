@@ -5,8 +5,10 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLayout, setLayout }) => {
+    const { t } = useTranslation(['explore', 'user-diary']);
 
     const methods = useFormContext({
         defaultValues: filtersDefaultValues
@@ -20,7 +22,7 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLay
                 {
                     methods.formState.isDirty &&
                     <Box className="w-fit flex self-end" >
-                        <Typography variant="overline" fontWeight='bold' color='primary' className='mb-2 cursor-pointer' onClick={() => { methods.reset(filtersDefaultValues); handleChange(); }}>Clear Filters</Typography>
+                        <Typography variant="overline" fontWeight='bold' color='primary' className='mb-2 cursor-pointer' onClick={() => { methods.reset(filtersDefaultValues); handleChange(); }}>{t('people.filters.clear')}</Typography>
                     </Box>
                 }
                 <Box className='flex flex-col md:flex-row md:divide-x w-full items-center justify-center space-y-4 xl:space-y-0 flex-wrap'>
@@ -28,8 +30,8 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLay
                         <TextField
                             {...methods.register("name", { onChange: handleChange })}
                             sx={{ minWidth: 150 }}
-                            placeholder={"Name"}
-                            label="Search"
+                            placeholder={t('people.filters.search-placeholder')}
+                            label={t('people.filters.search')}
                             size="small"
                             variant="outlined"
                             className="customInputLabel"
@@ -54,17 +56,17 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLay
                                             sx={({ palette: { text }, functions: { rgba } }) => ({
                                                 color: rgba(text.main, 0.9),
                                             })}
-                                        >Location</InputLabel>
+                                        >{t('people.filters.location')}</InputLabel>
                                         <Select
                                             {...methods.register("location", { onChange: handleChange })}
                                             labelId="location-select-label"
                                             id="location-select"
-                                            label="Location"
+                                            label={t('people.filters.location')}
                                             size="small"
                                             className='text-left'
                                             value={value}
                                         >
-                                            <MenuItem value={'All'}><em>All</em></MenuItem>
+                                            <MenuItem value={'All'}><em>{t('people.filters.all')}</em></MenuItem>
 
                                             {people?.map((person, index) => (
                                                 <MenuItem key={'location-' + index} value={person.address?.nation}>{person.address?.nation}</MenuItem>
@@ -86,17 +88,17 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLay
                                             sx={({ palette: { text }, functions: { rgba } }) => ({
                                                 color: rgba(text.main, 0.9),
                                             })}
-                                        >Industry</InputLabel>
+                                        >{t('people.filters.industry')}</InputLabel>
                                         <Select
                                             {...methods.register("industry", { onChange: handleChange })}
                                             labelId="industry-select-label"
                                             id="industry-select"
-                                            label="Industry"
+                                            label={t('people.filters.industry')}
                                             size="small"
                                             className='text-left'
                                             value={value}
                                         >
-                                            <MenuItem value={'All'}><em>All</em></MenuItem>
+                                            <MenuItem value={'All'}><em>{t('people.filters.all')}</em></MenuItem>
 
                                             {people?.map((person, index) => (
                                                 <MenuItem key={'industry-' + index} value={person.profession}>{person.profession}</MenuItem>
@@ -108,7 +110,7 @@ const PeopleFilters = ({ handleFilters, people, filtersDefaultValues, currentLay
                             />
                         </FormControl>
 
-                        <Tooltip title={currentLayout === 'grid' ? 'List' : 'Grid'} placement="top">
+                        <Tooltip title={currentLayout === 'grid' ? t('people.filters.layouts.list') : t('people.filters.layouts.grid')} placement="top">
                             <Button variant="contained" size="small" className='w-fit h-fit min-w-0 p-2 ml-4 whitespace-nowrap bg-primary-main text-white' onClick={() => setLayout(currentLayout === 'grid' ? 'list' : 'grid')}>
                                 {currentLayout === 'list' && <GridViewIcon />}
                                 {currentLayout === 'grid' && <ViewListIcon />}

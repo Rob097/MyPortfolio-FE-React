@@ -24,8 +24,8 @@
         "title": "Ordina per",
         "list": {
             "none": "Nessuno",
-            "dateUp": "Data su",
-            "dateDown": "Data giù",
+            "dateUp": "Dal più vecchio",
+            "dateDown": "Dal più recente",
             "name": "Nome"
         }
     },

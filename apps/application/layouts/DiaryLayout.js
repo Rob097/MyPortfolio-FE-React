@@ -2,7 +2,7 @@ import MainStorySection from '@/components/sections/MainStorySection';
 import ShowIf from '@/components/utils/showIf';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import tailwindConfig from '@/tailwind.config.js';
-import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Button, Divider, Grid, Tooltip, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { useTranslation } from 'next-i18next';
 import Link from "next/link";
@@ -12,6 +12,9 @@ import { useMemo } from 'react';
 const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG, user }) => {
     const { t } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
+
+    const router = useRouter();
+    const { userSlug } = router.query;
 
     const mainStory = useMemo(() => {
         return user?.diaries?.find(diary => diary?.stories?.find(story => story?.id === user?.mainStoryId))?.stories?.find(story => story?.id === user?.mainStoryId);
@@ -27,12 +30,20 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                         <Box className='flex justify-center items-center h-fit md:h-full'>
                             <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
                                 <Avatar id="personalCardAvatar" src="/images/profileImage.JPG" sx={{ width: 150, height: 150 }} variant='circular' />
-                                <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
+                                <Link href='/users/[userSlug]/home' as={`/users/${userSlug}/home`}>
+                                    <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
+                                </Link>
                                 <Typography variant="subtitle1" fontWeight="bold" color="dark">{user?.profession}</Typography>
                                 <Typography variant="subtitle2" fontWeight="bold" color="text" mt={2}>{`${user?.address?.city}, ${user?.address?.nation}`}</Typography>
                                 <Box mt={3}>
-                                    <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>{t('user-home:contact-me.title')}</Button>
-                                    <Button variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('follow-me')}</Button>
+                                    <Tooltip title='Cooming Soon' placement="top" arrow>
+                                        <Box component='span' className='cursor-not-allowed'>
+                                            <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }} disabled>{t('user-home:download-cv')}</Button>
+                                        </Box>
+                                    </Tooltip>
+                                    <Link href='/users/[userSlug]/home#contact-section' as={`/users/${userSlug}/home#contact-section`}>
+                                        <Button variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('user-home:contact-me.title')}</Button>
+                                    </Link>
                                 </Box>
                             </Box>
                         </Box>
@@ -63,11 +74,11 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     </Box>
                 </ShowIf>
 
-                <ShowIf condition={showStoryFilters === true}>
+                {/* <ShowIf condition={showStoryFilters === true}>
                     <Box id="diary-stories-filter">
                         <StoriesFilters />
                     </Box>
-                </ShowIf>
+                </ShowIf> */}
             </Box>
 
             {children}

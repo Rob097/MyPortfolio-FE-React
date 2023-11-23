@@ -15,21 +15,25 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import userClasses from './styles/shared.module.scss';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import Loading from "@/components/utils/loading/loading";
 
 const UserHome = () => {
     const router = useRouter();
     const { userSlug } = router.query;
 
     const { t } = useTranslation(['user-home', 'common']);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { colors } = tailwindConfig.theme;
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanXl = isGreaterThan('xl');
+    const { promiseInProgress } = usePromiseTracker();
 
     const { user, isError } = useUser(userSlug, 'verbose');
+    const [contactRequestStatus, setContactRequestStatus] = useState(null);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
@@ -43,12 +47,25 @@ const UserHome = () => {
 
     async function handleContact(data) {
         console.log(data);
+
+        trackPromise(
+            UserService.sendEmail(data)
+                .then(response => {
+                    console.log(response)
+                    reset();
+                    setContactRequestStatus({status: "OK", message: t('contact-me.success')});
+                })
+                .catch(error => {
+                    console.log(error)
+                    setContactRequestStatus({status: "KO", message: t('contact-me.error')});
+                })
+        );
     }
 
     return (
         <>
             {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
-            <HeroSection img="/images/profileImage.JPG" buttons={[{ label: t('download-cv') }, { label: t('contact-me.title'), link: '#contact-section' }]} customizations={user?.customizations}>
+            <HeroSection img="/images/profileImage.JPG" buttons={[{ label: t('download-cv'), disabled: true, tooltip: 'Cooming Soon' }, { label: t('contact-me.title'), link: '#contact-section' }]} customizations={user?.customizations}>
                 <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
                 <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThanXl ? '120%' : 'fit-content' }}>{user?.firstName} {user?.lastName}</Typography>
                 <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user?.profession}</Typography>
@@ -79,11 +96,11 @@ const UserHome = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', flexDirection: 'column' }}>
                     {/* h3 */}
                     <Typography variant="h3" gutterBottom>
-                        A quick overview
+                        {t('quick-overview.title')}
                     </Typography>
                     {/* link to user's diary */}
                     <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
-                        <Box fontSize={(theme) => theme.typography.size.md} >Read my complete diary</Box>
+                        <Box fontSize={(theme) => theme.typography.size.md} >{t('read-my-complete-diary')}</Box>
                     </Link>
                 </Box>
 
@@ -130,8 +147,12 @@ const UserHome = () => {
             {/* Contact Me Section */}
             <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 30%);` }}>
                 <Container maxWidth="lg" className='px-12 lg:px-6 relative' sx={{ zIndex: 1 }}>
+                    {promiseInProgress && <Loading adaptToComponent />}
                     <Typography variant="h2" sx={{ textAlign: 'center' }} gutterBottom color='dark'>
                         {t("contact-me.title")}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ textAlign: 'center' }} gutterBottom color={contactRequestStatus?.status==='OK' ? 'success.main' : contactRequestStatus?.status==='KO' ? 'error.main' : 'dark'}>
+                        {contactRequestStatus?.message}
                     </Typography>
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleContact(data))}>
                         <Grid container spacing={3}>

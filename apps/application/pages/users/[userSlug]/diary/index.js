@@ -16,8 +16,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import userClasses from '../styles/shared.module.scss';
+import StoriesFilters from '@/components/whiteBar/storiesFilters';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -29,17 +30,59 @@ const Diary = () => {
     const router = useRouter();
     const { userSlug } = router.query;
     const { user, isError } = useUser(userSlug, 'verbose');
-
     useEffect(() => {
         if (isError !== undefined && isError != null) {
             throw isError;
         }
     }, [isError]);
 
+    const [filteredExperiences, setFilteredExperiences] = useState(user?.experiences);
+    const [filteredProjects, setFilteredProjects] = useState(user?.projects);
+    const [filteredEducations, setFilteredEducations] = useState(user?.educations);
+
+    const skills = useMemo(() => {
+        const experienceSkillsNames = user?.experiences?.map(experience => experience.skills?.map(skill => skill.name)).flat();
+        const projectSkillsNames = user?.projects?.map(project => project.skills?.map(skill => skill.name)).flat();
+        const educationSkillsNames = user?.educations?.map(education => education.skills?.map(skill => skill.name)).flat();
+
+        return [...new Set(experienceSkillsNames.concat(projectSkillsNames).concat(educationSkillsNames))];
+    }, [user]);
+
+    const emitFilters = (filters) => {
+        const isSkillsEmptyStringOrEmptyArray = filters.skills === '' || filters.skills.length === 0;
+
+        setFilteredExperiences(user.experiences.filter(experience =>
+            filters.categories.includes(1) &&
+            (isSkillsEmptyStringOrEmptyArray || experience.skills.map(skill => skill.name).includes(...filters.skills)) &&
+            experience.title.toLowerCase().includes(filters.name.toLowerCase())
+        ));
+        setFilteredProjects(user.projects.filter(project =>
+            filters.categories.includes(2) &&
+            (isSkillsEmptyStringOrEmptyArray || project.skills.map(skill => skill.name).includes(...filters.skills)) &&
+            project.title.toLowerCase().includes(filters.name.toLowerCase())
+        ));
+        setFilteredEducations(user.educations.filter(education =>
+            filters.categories.includes(3) &&
+            (isSkillsEmptyStringOrEmptyArray || education.skills.map(skill => skill.name).includes(...filters.skills)) &&
+            education.field.toLowerCase().includes(filters.name.toLowerCase())
+        ));
+
+    }
+
     return (
         <>
+            <Box id="diary-stories-filter">
+                <StoriesFilters emitFilters={emitFilters} skills={skills} filtersToHide={['sort']} />
+            </Box>
             <Box id="diary-stories" component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, transparent 80%, ${colors.background.main} 90%);` }}>
-                <ShowIf condition={user.experiences?.length > 0}>
+
+                <ShowIf condition={filteredExperiences.length === 0 && filteredProjects.length === 0 && filteredEducations.length === 0}>
+                    <Box className='flex justify-center items-start h-96'>
+                        <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('common:errors.no-data-found')}</Typography>
+                    </Box>
+                </ShowIf>                
+                
+                <ShowIf condition={filteredExperiences?.length > 0}>
                     <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
@@ -48,8 +91,8 @@ const Diary = () => {
                             <Grid container className='mt-4' spacing={2}>
 
                                 {
-                                    user.experiences.slice(0, 3).map((experience) => (
-                                        <Grid key={experience.id} item xs={12} sm={6} lg={user.experiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                    filteredExperiences.slice(0, 3).map((experience) => (
+                                        <Grid key={experience.id} item xs={12} sm={6} lg={filteredExperiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={experience.image}
                                                 title={experience.title}
@@ -68,9 +111,9 @@ const Diary = () => {
                                     ))
                                 }
 
-                                <ShowIf condition={user.experiences.length > 3}>
+                                <ShowIf condition={filteredExperiences.length > 3}>
                                     <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                        <Tooltip title={user.experiences.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Tooltip title={filteredExperiences.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                     <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
@@ -87,15 +130,15 @@ const Diary = () => {
                 </ShowIf>
 
                 <Box id='personal-projects-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
-                    <ShowIf condition={user.projects?.length > 0}>
+                    <ShowIf condition={filteredProjects?.length > 0}>
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
                             <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
 
                             <Grid container className='mt-4' spacing={2}>
 
                                 {
-                                    user.projects.slice(0, 3).map((project) => (
-                                        <Grid key={project.id} item xs={12} sm={6} lg={user.projects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                    filteredProjects.slice(0, 3).map((project) => (
+                                        <Grid key={project.id} item xs={12} sm={6} lg={filteredProjects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={project.image}
                                                 title={project.title}
@@ -113,9 +156,9 @@ const Diary = () => {
                                     ))
                                 }
 
-                                <ShowIf condition={user.projects.length > 3}>
+                                <ShowIf condition={filteredProjects.length > 3}>
                                     <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                        <Tooltip title={user.projects.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Tooltip title={filteredProjects.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                     <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />
@@ -129,7 +172,7 @@ const Diary = () => {
                     </ShowIf>
                 </Box>
 
-                <ShowIf condition={user.educations?.length > 0}>
+                <ShowIf condition={filteredEducations?.length > 0}>
                     <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
@@ -138,8 +181,8 @@ const Diary = () => {
                             <Grid container className='mt-4' spacing={2}>
 
                                 {
-                                    user.educations.slice(0, 3).map((education) => (
-                                        <Grid key={education.id} item xs={12} sm={6} lg={user.educations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                    filteredEducations.slice(0, 3).map((education) => (
+                                        <Grid key={education.id} item xs={12} sm={6} lg={filteredEducations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={education.image}
                                                 title={education.field}
@@ -158,9 +201,9 @@ const Diary = () => {
                                     ))
                                 }
 
-                                <ShowIf condition={user.educations.length > 3}>
+                                <ShowIf condition={filteredEducations.length > 3}>
                                     <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
-                                        <Tooltip title={user.educations.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
+                                        <Tooltip title={filteredEducations.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
                                                     <ArrowForwardIosIcon color='dark' fontSize='large' className='z-10' />

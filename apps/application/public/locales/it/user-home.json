@@ -5,7 +5,18 @@
         "title": "Qualcosa su di me",
         "more": "Altro su di me"
     },
+    "quick-overview": {
+        "title": "Una Panoramica veloce",
+        "what-i-do": "Cosa faccio",
+        "what-i-studied": "Cosa ho studiato",
+        "what-im-working-on": "Su cosa sto lavorando",
+        "company": "Azienda",
+        "institute": "Istituto",
+        "period": "Periodo",
+        "present": "Presente"
+    },
     "read-my-diary": "Leggi il mio diario",
+    "read-my-complete-diary": "Leggi il mio diario completo",
     "contact-me": {
         "title": "Contattami",
         "submit": "Invia messaggio",
@@ -19,7 +30,9 @@
             "email-required": "L'email è obbligatoria",
             "message-required": "Il messaggio è obbligatorio",
             "message-length": "Il messaggio deve essere lungo massimo {{maxLength}} caratteri"
-        }
+        },
+        "success": "Messaggio inviato correttamente",
+        "error": "Errore nell'invio del messaggio"
     },
     "cards": {
         "diary": "Diario",

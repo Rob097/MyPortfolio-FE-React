@@ -24,8 +24,8 @@
         "title": "Sort",
         "list": {
             "none": "None",
-            "dateUp": "Date up",
-            "dateDown": "Date down",
+            "dateUp": "From the oldest",
+            "dateDown": "From the newest",
             "name": "Name"
         }
     },

@@ -1,0 +1,26 @@
+{
+    "people": {
+        "explore-title": "Esplora",
+        "people-title": "i Profili",
+        "full-title": "Esplora i Profili",
+        "no-results": "Nessun risultato",
+        "filters": {
+            "clear": "Pulisci Filtri",
+            "search": "Cerca",
+            "search-placeholder": "Cerca per nome",
+            "location": "Posizione",
+            "industry": "Settore",
+            "all": "Tutti",
+            "layouts": {
+                "list": "Lista",
+                "grid": "Griglia"
+            }
+        },
+        "view-profile": "Vedi Profilo",
+        "statistics": {
+            "title": "Statistiche",
+            "by-industry": "Per Settore",
+            "by-skill": "Per Competenza"
+        }
+    }
+}

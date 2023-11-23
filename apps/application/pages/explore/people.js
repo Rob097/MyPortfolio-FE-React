@@ -2,20 +2,19 @@ import Snack from "@/components/alerts/snack";
 import HorizontalCard from "@/components/cards/horizontalCard";
 import SquareCard from "@/components/cards/squareCard";
 import CustomPieChart from '@/components/charts/pieChart';
-import DraggableBox from '@/components/draggableBox';
 import Loading from '@/components/utils/loading/loading';
+import ShowIf from '@/components/utils/showIf';
 import PeopleFilters from '@/components/whiteBar/peopleFilters';
 import { Criteria, Operation, Sort, View } from '@/models/criteria.model';
 import { UserQ } from '@/models/user.model';
 import { fetcher } from '@/services/base.service';
 import UserService from '@/services/user.service';
-import { Avatar, Box, Button, Chip, Container, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Pagination, Typography } from "@mui/material";
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
-import ShowIf from '@/components/utils/showIf';
 
 const filtersDefaultValues = {
     name: null,
@@ -26,6 +25,7 @@ const filtersDefaultValues = {
 const numberPerPage = 10;
 
 const People = (props) => {
+    const { t } = useTranslation(['explore', 'user-diary', 'user-home']);
 
     /******************/
     /*     STATES     */
@@ -153,7 +153,7 @@ const People = (props) => {
 
     return (
         <Container className="pt-20 text-center large" maxWidth="xl" >
-            <Typography variant="h1" fontWeight='bold' color='primary'><span className="text-black">Explore</span> People</Typography>
+            <Typography variant="h1" fontWeight='bold' color='primary'><span className="text-black">{t('people.explore-title')}</span> {t('people.people-title')}</Typography>
 
             <FormProvider {...methods}>
                 <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} currentLayout={layout} setLayout={setLayout} />
@@ -166,7 +166,7 @@ const People = (props) => {
                     <ShowIf condition={layout === 'list'}>
                         <Box className="w-full flex flex-col justify-start items-center">
                             {
-                                visibleUsers?.length <= 0 ? <h1>No people found</h1> :
+                                visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
                                     visibleUsers.map((user) => (
                                         <HorizontalCard
                                             key={'list-' + user.id}
@@ -176,15 +176,15 @@ const People = (props) => {
                                             firstSubtitle={user?.address?.nation}
                                             secondSubtitle={user?.profession}
                                             chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
-                                            buttons={[{ label: 'View profile', link: `/users/${user.slug}/home` }, { label: 'Connect', link: '#' }]}
+                                            buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
                                         >
                                             <Box className="flex flex-col justify-between">
                                                 <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>Projects:</Typography>
+                                                    <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.projects')}:</Typography>
                                                     <Typography variant="h5" fontWeight='bold' color='black'>{user?.projects?.length}</Typography>
                                                 </Box>
                                                 <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>Experiences:</Typography>
+                                                    <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.experiences')}:</Typography>
                                                     <Typography variant="h5" fontWeight='bold' color='black'>{user?.experiences?.length}</Typography>
                                                 </Box>
                                             </Box>
@@ -196,7 +196,7 @@ const People = (props) => {
                     <ShowIf condition={layout === 'grid'}>
                         <Box className={"w-full flex flex-row flex-wrap items-start " + (visibleUsers?.length >= 3 ? 'justify-center' : 'justify-start')}>
                             {
-                                visibleUsers?.length <= 0 ? <h1>No people found</h1> :
+                                visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
                                     visibleUsers.map((user) => (
                                         <SquareCard
                                             key={'grid-' + user.id}
@@ -207,7 +207,7 @@ const People = (props) => {
                                             description={user?.presentation}
                                             chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
                                             bottomCaption={user?.address?.nation}
-                                            buttons={[{ label: 'View profile', link: `/users/${user.slug}/home` }, { label: 'Connect', link: '#' }]}
+                                            buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
                                         />
                                     ))}
                         </Box>
@@ -230,14 +230,14 @@ const People = (props) => {
                     <Box className="w-ful h-fit bg-white border rounded-lg z-10 relative">
                         <Box className="flex flex-row py-4 justify-between flex-wrap">
                             <Box className="flex justify-start items-center ml-4">
-                                <Typography variant="h5" fontWeight='bold' color='black'>Statistics</Typography>
+                                <Typography variant="h5" fontWeight='bold' color='black'>{t('people.statistics.title')}</Typography>
                             </Box>
                             <Box className="flex justify-end items-center mr-2">
                                 <Button variant="outlined" color="primary" size="small" className='h-fit mr-2 whitespace-nowrap rounded-full' onClick={() => setStatisticsBy('industry')}>
-                                    By industry
+                                    {t('people.statistics.by-industry')}
                                 </Button>
                                 <Button variant="outlined" color="primary" size="small" className='h-fit rounded-full' onClick={() => setStatisticsBy('skill')}>
-                                    By skill
+                                    {t('people.statistics.by-skill')}
                                 </Button>
                             </Box>
                         </Box>

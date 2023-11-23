@@ -14,8 +14,9 @@ import { Box, Button, Container, Grid, Pagination, Stack, Typography } from '@mu
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import experiencesClasses from '../../styles/experiences.module.scss';
+import StoriesFilters from '@/components/whiteBar/storiesFilters';
 
 
 const Projects = (props) => {
@@ -24,15 +25,15 @@ const Projects = (props) => {
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
     const { entities, isError } = useUserEntities(props.entityType, props.user.id, View.verbose);
+    const [filteredEntities, setFilteredEntities] = useState(entities);
     const [showTimeline, setShowTimeline] = useState(false);
+    const pages = Math.ceil(filteredEntities?.length / 6);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
             throw isError;
         }
     }, [isError]);
-
-    const pages = Math.ceil(entities?.length / 6);
 
     function toggleTimeline() {
         if (typeof document !== 'undefined' && typeof window !== 'undefined') {
@@ -41,8 +42,38 @@ const Projects = (props) => {
         }
     }
 
+    const skills = useMemo(() => {
+        return [...new Set(filteredEntities?.map(entity => entity.skills?.map(skill => skill.name)).flat())];
+    }, [filteredEntities]);
+
+    const emitFilters = (filters) => {
+
+        const isSkillsEmptyStringOrEmptyArray = !filters.skills || filters.skills === '' || filters.skills?.length === 0;
+        setFilteredEntities(
+            entities.filter(entity =>
+                (isSkillsEmptyStringOrEmptyArray || entity.skills.map(skill => skill.name).includes(...filters.skills)) &&
+                (entity.title || entity.field).toLowerCase().includes(filters.name.toLowerCase())
+            ).sort((a, b) => {
+                const orderType = filters.sort;                
+                if (orderType === 'dateDown') {
+                    return new Date(b.fromDate || b.updatedAt).getTime() - new Date(a.fromDate || a.updatedAt).getTime();
+                } else if (orderType === 'dateUp') {
+                    return new Date(a.fromDate || a.updatedAt).getTime() - new Date(b.fromDate || b.updatedAt).getTime();
+                } else if (orderType === 'name') {
+                    return (a.title || a.field).localeCompare(b.title || b.field);
+                }
+
+            })
+        );
+
+    }
+
     return (
         <Box id='entities-section' component='section' className='pb-20'>
+
+            <Box id="diary-stories-filter">
+                <StoriesFilters emitFilters={emitFilters} skills={skills} filtersToHide={['categories']} />
+            </Box>
 
             <ShowIf condition={!showTimeline}>
                 <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
@@ -51,7 +82,7 @@ const Projects = (props) => {
 
                             <Stack direction='row' spacing={2} className='items-end my-10'>
                                 <Typography variant="h2" fontWeight='bold'>{t('common:list')}</Typography>
-                                <Box className={experiencesClasses.container} display={entities?.length > 3 ? 'block' : 'block'}>
+                                <Box className={experiencesClasses.container} display={filteredEntities?.length > 3 ? 'block' : 'block'}>
                                     <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
                                         {t('view-as-timeline')}
                                     </Button>
@@ -60,7 +91,7 @@ const Projects = (props) => {
                             <Box className="w-full mt-8 mb-20">
                                 <Grid container className='mt-4' spacing={2}>
                                     {
-                                        entities.slice(0, 6).map((entity) => (
+                                        filteredEntities.slice(0, 6).map((entity) => (
                                             <Grid key={entity.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                                 <SquareCard
                                                     image={entity.image}

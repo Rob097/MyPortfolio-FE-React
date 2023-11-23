@@ -1,0 +1,26 @@
+{
+    "people": {
+        "explore-title": "Explore",
+        "people-title": "People",
+        "full-title": "Explore People",
+        "no-results": "No Results",
+        "filters": {
+            "clear": "Clear Filters",
+            "search": "Search",
+            "search-placeholder": "Search By Name",
+            "location": "Location",
+            "industry": "Industry",
+            "all": "All",
+            "layouts": {
+                "list": "List",
+                "grid": "Grid"
+            }
+        },
+        "view-profile": "View Profile",
+        "statistics": {
+            "title": "Statistics",
+            "by-industry": "By Industry",
+            "by-skill": "By Skill"
+        }
+    }
+}
