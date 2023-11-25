@@ -49,6 +49,10 @@ const UserHome = () => {
         return user?.diaries?.flatMap(diary => diary?.stories)?.find(story => story?.id === user?.mainStoryId);
     }, [user]);
 
+    const cvUrl = useMemo(() => {
+        return user?.customizations?.CV?.[i18n.language] || user?.customizations?.CV?.en;
+    }, [user, i18n.language]);
+
     async function handleContact(data) {
         const token = await executeGoogleReCaptcha(ACTION_NAME);
         data.recaptchaToken = token;
@@ -76,7 +80,7 @@ const UserHome = () => {
     return (
         <>
             {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
-            <HeroSection img="/images/profileImage.JPG" buttons={[{ label: t('download-cv'), disabled: true, tooltip: 'Cooming Soon' }, { label: t('contact-me.title'), link: '#contact-section' }]} customizations={user?.customizations}>
+            <HeroSection img={user?.customizations?.profileImage} buttons={[{ label: t('download-cv'), link: cvUrl, isDownload: true }, { label: t('contact-me.title'), link: '#contact-section' }]} customizations={user?.customizations}>
                 <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
                 <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThanXl ? '120%' : 'fit-content' }}>{user?.firstName} {user?.lastName}</Typography>
                 <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user?.profession}</Typography>

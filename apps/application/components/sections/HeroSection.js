@@ -24,14 +24,18 @@ const HeroSection = (props) => {
                                 <ShowIf condition={props.buttons[0] != null}>
                                     <Tooltip title={props.buttons[0].tooltip} placement="top" arrow>
                                         <Box component='span' className={props.buttons[0].disabled ? 'cursor-not-allowed' : ''}>
-                                            <Button variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }} disabled={props.buttons[0].disabled}>{props.buttons[0].label}</Button>
+                                            <Link href={props.buttons[0].link} download={props.buttons[0].isDownload} target={props.buttons[0].isDownload ? '_blank' : ''}>
+                                                <Button variant="contained" color="dark" size="medium" sx={{ borderRadius: '50px' }} disabled={props.buttons[0].disabled}>{props.buttons[0].label}</Button>
+                                            </Link>
                                         </Box>
                                     </Tooltip>
                                 </ShowIf>
                                 <ShowIf condition={props.buttons[1] != null}>
                                     <Tooltip title={props.buttons[1].tooltip} placement="top" arrow>
                                         <Box component='span' className={props.buttons[1].disabled ? 'cursor-not-allowed' : ''}>
-                                            <Button href={props.buttons[1].link} variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }} disabled={props.buttons[1].disabled}>{props.buttons[1].label}</Button>
+                                            <Link href={props.buttons[1].link} download={props.buttons[1].isDownload} target={props.buttons[1].isDownload ? '_blank' : ''} >
+                                                <Button variant="outlined" color="dark" size="medium" className="ml-2" sx={{ borderRadius: '50px' }} disabled={props.buttons[1].disabled}>{props.buttons[1].label}</Button>
+                                            </Link>
                                         </Box>
                                     </Tooltip>
                                 </ShowIf>

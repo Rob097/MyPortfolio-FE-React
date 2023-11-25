@@ -1,6 +1,5 @@
 import MainStorySection from '@/components/sections/MainStorySection';
 import ShowIf from '@/components/utils/showIf';
-import StoriesFilters from '@/components/whiteBar/storiesFilters';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Tooltip, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -10,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, pageBG, user }) => {
-    const { t } = useTranslation(['user-diary', 'user-home']);
+    const { t, i18n } = useTranslation(['user-diary', 'user-home']);
     const { colors } = tailwindConfig.theme;
 
     const router = useRouter();
@@ -19,6 +18,10 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
     const mainStory = useMemo(() => {
         return user?.diaries?.find(diary => diary?.stories?.find(story => story?.id === user?.mainStoryId))?.stories?.find(story => story?.id === user?.mainStoryId);
     }, [user]);
+
+    const cvUrl = useMemo(() => {
+        return JSON.parse(user?.customizations)?.CV?.[i18n.language] || JSON.parse(user?.customizations)?.CV?.en;
+    }, [user, i18n.language]);
 
     return (
         <>
@@ -29,18 +32,18 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     <Grid item xs={12} md={4} height='25em' marginBottom={2} className='h-fit md:h-full' style={{ zIndex: '1' }}>
                         <Box className='flex justify-center items-center h-fit md:h-full'>
                             <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
-                                <Avatar id="personalCardAvatar" src="/images/profileImage.JPG" sx={{ width: 150, height: 150 }} variant='circular' />
+                                <Avatar id="personalCardAvatar" src={JSON.parse(user?.customizations)?.profileImage} sx={{ width: 150, height: 150 }} variant='circular' />
                                 <Link href='/users/[userSlug]/home' as={`/users/${userSlug}/home`}>
                                     <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
                                 </Link>
                                 <Typography variant="subtitle1" fontWeight="bold" color="dark">{user?.profession}</Typography>
                                 <Typography variant="subtitle2" fontWeight="bold" color="text" mt={2}>{`${user?.address?.city}, ${user?.address?.nation}`}</Typography>
                                 <Box mt={3}>
-                                    <Tooltip title='Cooming Soon' placement="top" arrow>
-                                        <Box component='span' className='cursor-not-allowed'>
-                                            <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }} disabled>{t('user-home:download-cv')}</Button>
-                                        </Box>
-                                    </Tooltip>
+                                    <Link href={cvUrl} download target="_blank" rel="noopener noreferrer">
+                                        <Button variant="contained" color="primary" size="medium" sx={{ borderRadius: '50px' }}>
+                                            <Typography variant="button" color="white">{t('user-home:download-cv')}</Typography>
+                                        </Button>
+                                    </Link>
                                     <Link href='/users/[userSlug]/home#contact-section' as={`/users/${userSlug}/home#contact-section`}>
                                         <Button variant="outlined" color="primary" size="medium" className="ml-2" sx={{ borderRadius: '50px' }}>{t('user-home:contact-me.title')}</Button>
                                     </Link>

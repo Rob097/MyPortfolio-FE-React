@@ -86,6 +86,7 @@ const People = (props) => {
 
     useEffect(() => {
         setVisibleUsers(users?.filter((user, index) => index < numberPerPage * (currentPage + 1) && index >= numberPerPage * currentPage));
+        console.log(users);
     }, [currentPage, users])
 
 
@@ -171,7 +172,7 @@ const People = (props) => {
                                         <HorizontalCard
                                             key={'list-' + user.id}
                                             id={user.id}
-                                            image={'/images/profileImage.JPG'}
+                                            image={JSON.parse(user?.customizations)?.profileImage}
                                             title={`${user?.firstName} ${user?.lastName}`}
                                             firstSubtitle={user?.address?.nation}
                                             secondSubtitle={user?.profession}
@@ -201,7 +202,7 @@ const People = (props) => {
                                         <SquareCard
                                             key={'grid-' + user.id}
                                             id={user.id}
-                                            image={'/images/profileImage.JPG'}
+                                            image={JSON.parse(user?.customizations)?.profileImage}
                                             title={`${user?.firstName} ${user?.lastName}`}
                                             subtitle={user?.profession}
                                             description={user?.presentation}

@@ -25,7 +25,7 @@ export const fetcher = async (url: string, returnHeaders?: boolean) => {
 }
 
 // export const BASE_URL = "http://localhost:8083/api";
-export const BASE_URL = "https://secure-backend.my-portfolio.it/api";
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export interface BaseService {
   getById(id: number, view?: string): Promise<any>;
