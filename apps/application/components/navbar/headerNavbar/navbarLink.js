@@ -16,7 +16,7 @@ function NavbarLink({ icon, name, route, light, closeMobileNavbar }) {
       sx={{ cursor: "pointer", userSelect: "none" }}
       onClick={closeMobileNavbar}
     >
-      <Icon
+      <Icon 
         sx={{
           color: ({ palette: { white, secondary } }) => (light ? white : secondary.main),
           verticalAlign: "middle",

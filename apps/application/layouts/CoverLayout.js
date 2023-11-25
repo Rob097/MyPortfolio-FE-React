@@ -7,14 +7,7 @@ import PageLayout from "./PageLayout";
 function CoverLayout(props) {
   return (
     <PageLayout background="background.white">
-      <Navbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-          color: "dark",
-        }}
-      />
+      <Navbar />
       <Box sx={{
         minHeight: `calc(100vh - 80px)`,
         margin: 0,

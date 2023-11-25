@@ -9,5 +9,10 @@
     "list": "Lista",
     "errors": {
         "no-data-found": "Nessun risultato trovato"
+    },
+    "navbar": {
+        "discover": "Scopri di più",
+        "explore-people": "Esplora Persone",
+        "sign-up": "Registrati"
     }
 }

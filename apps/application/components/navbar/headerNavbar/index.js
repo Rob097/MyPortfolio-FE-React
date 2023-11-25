@@ -1,19 +1,19 @@
+import WhiteBar from "@/components/whiteBar";
 import tailwindConfig from '@/tailwind.config';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Icon from "@mui/material/Icon";
 import Typography from '@mui/material/Typography';
-import { Link } from "next/link";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import WhiteBar from "@/components/whiteBar";
 import LanguageSelector from "./languageSelector";
 import NavbarLink from "./navbarLink";
 import NavbarMobile from "./navbarMobile";
+import { useTranslation } from 'next-i18next';
 
 function Navbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
-  const [mobileView, setMobileView] = useState(false);
+  const [mobileView, setMobileView] = useState(true);
   const [show, setShow] = useState(true);
 
   const openMobileNavbar = ({ currentTarget }) => setMobileNavbar(currentTarget.parentNode);
@@ -74,59 +74,15 @@ function Navbar({ transparent, light, action }) {
       <WhiteBar
         containerStyles={{ opacity: (show ? 1 : 0), position: 'fixed', zIndex: (show ? 40 : -1), transform: 'translateX(-50%)', left: '50%', transition: 'all 0.5s ease-in-out 0s' }}
       >
-        <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
+
+        <Box component={Link} href="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
           <Typography variant="h4" fontWeight="bold" color={light ? "white" : "dark"}>
             <span className='text-primary-main'>My</span><span className='text-dark-main'>Portfolio</span>
           </Typography>
         </Box>
-        <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <NavbarLink icon="donut_large" name="dashboard" route="/" light={light} />
-          <NavbarLink icon="people" name="Explore People" route="/explore/people" light={light} />
-          <NavbarLink icon="person" name="profile" route="/users/roberto-dellantonio/home" light={light} />
-          <NavbarLink
-            icon="account_circle"
-            name="sign up"
-            route="/auth/sign-up"
-            light={light}
-          />
-          <NavbarLink
-            icon="key"
-            name="sign in"
-            route="/auth/sign-in"
-            light={light}
-          />
-        </Box>
-        {action &&
-          (action.type === "internal" ? (
-            <Box display={{ xs: "none", lg: "inline-block" }}>
-              <Button
-                component={Link}
-                to={action.route}
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                circular
-              >
-                {action.label}
-              </Button>
-            </Box>
-          ) : (
-            <Box display={{ xs: "none", lg: "inline-block" }}>
-              {/* <Button
-                component="a"
-                href={action.route}
-                target="_blank"
-                rel="noreferrer"
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                circular
-              >
-                {action.label}
-              </Button> */}
-              <LanguageSelector />
-            </Box>
-          ))}
+
+        {!mobileView ? <NavbarLinks closeMobileNavbar={closeMobileNavbar} light={light} /> : <NavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
+
         <Box
           display={{ xs: "inline-block", lg: "none" }}
           lineHeight={0}
@@ -138,8 +94,25 @@ function Navbar({ transparent, light, action }) {
         >
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
         </Box>
-        {mobileView && <NavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
+
       </WhiteBar>
+    </>
+  );
+}
+
+export const NavbarLinks = ({ isMobile, closeMobileNavbar, light }) => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <Box color="inherit" m={0} p={0} className={isMobile ? "block" : "flex"}>
+        <NavbarLink icon="auto_awesome" name={t('navbar.discover')} route="/" light={light} closeMobileNavbar={closeMobileNavbar} />
+        <NavbarLink icon="people" name={t('navbar.explore-people')} route="/explore/people" light={light} closeMobileNavbar={closeMobileNavbar} />
+        <NavbarLink icon="account_circle" name={t('navbar.sign-up')} route="/auth/sign-up" light={light} closeMobileNavbar={closeMobileNavbar} />
+      </Box>
+      <Box >
+        <LanguageSelector isMobile={isMobile} />
+      </Box>
     </>
   );
 }

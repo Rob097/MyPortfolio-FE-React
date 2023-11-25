@@ -9,5 +9,10 @@
     "list": "List",
     "errors": {
         "no-data-found": "No data found"
+    },
+    "navbar": {
+        "discover": "Discover",
+        "explore-people": "Explore people",
+        "sign-up": "Sign up"
     }
 }
