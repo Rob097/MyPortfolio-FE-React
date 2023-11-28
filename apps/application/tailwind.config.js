@@ -1046,7 +1046,9 @@ module.exports = {
       50: '50',
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-fluid-type'),
+  ],
   corePlugins: {
     preflight: false,
   }

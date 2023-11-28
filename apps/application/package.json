@@ -3,7 +3,6 @@
   "version": "5.0.0",
   "private": true,
   "scripts": {
-    "local": "NODE_ENV=local next dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -11,11 +10,15 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "dependencies": {
+    "@builder.io/dev-tools": "^0.2.6",
+    "@builder.io/react": "^3.1.1",
+    "@builder.io/sdk": "^2.1.1",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@grapesjs/react": "^1.0.0",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
@@ -39,7 +42,8 @@
     "react-promise-tracker": "^2.1.1",
     "react-use-draggable-scroll": "^0.4.7",
     "sass": "^1.63.6",
-    "swr": "^2.2.2"
+    "swr": "^2.2.2",
+    "tailwindcss-fluid-type": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
