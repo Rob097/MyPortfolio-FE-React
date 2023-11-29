@@ -4,12 +4,13 @@ import { BuilderComponent, builder, useIsPreviewing } from "@builder.io/react";
 import DefaultErrorPage from "next/error";
 import Head from "next/head";
 import "../builder-registry";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 // Define a function that fetches the Builder
 // content for a given page
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params, locale }) => {
   // Fetch the builder content for the given page
   const page = await builder
     .get("page", {
@@ -23,6 +24,7 @@ export const getStaticProps = async ({ params }) => {
   return {
     props: {
       page: page || null,
+      ...(await serverSideTranslations(locale))
     },
     // Revalidate the content every 5 seconds
     revalidate: 5,
@@ -31,7 +33,9 @@ export const getStaticProps = async ({ params }) => {
 
 // Define a function that generates the
 // static paths for all pages in Builder
-export async function getStaticPaths() {
+export async function getStaticPaths(context) {
+  const { locales } = context;
+
   // Get a list of all pages in Builder
   const pages = await builder.getAll("page", {
     // We only need the URL field
@@ -39,11 +43,21 @@ export async function getStaticPaths() {
     options: { noTargeting: true },
   });
 
+  const paths = [];
+
+  for (const locale of locales) {
+  
+    // Generate the static paths for all pages in Builder
+    paths.push(...pages
+      .map((page) => String(page.data?.url))
+      .filter((url) => url !== "/")
+      .map((url) => ({ params: { page: url.split("/").filter(Boolean) }, locale })));
+  
+  }
+
   // Generate the static paths for all pages in Builder
   return {
-    paths: pages
-      .map((page) => String(page.data?.url))
-      .filter((url) => url !== "/"),
+    paths: paths,
     fallback: "blocking",
   };
 }
@@ -56,7 +70,8 @@ export default function Page({ page }) {
   // If the page content is not available
   // and not in preview mode, show a 404 error page
   if (!page && !isPreviewing) {
-    return <DefaultErrorPage statusCode={404} />;
+    // redirect to /404 page
+    router.push("/404");
   }
 
   // If the page content is available, render
