@@ -41,3 +41,26 @@ Builder.registerComponent(
     ],
   }
 );
+
+// Component with Font size as a style property
+Builder.registerComponent(
+  dynamic(() => import("@mui/material/Icon")),
+  {
+    name: "Icon",
+    inputs: [
+      {
+        name: "children",
+        type: "text",
+        defaultValue: "home",
+      },
+      {
+        name: "color",
+        type: "text",
+        defaultValue: "primary",
+      }
+    ],
+    defaultStyles: {
+      width: "fit-content",
+    },
+  }
+);
