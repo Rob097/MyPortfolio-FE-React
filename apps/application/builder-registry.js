@@ -64,3 +64,11 @@ Builder.registerComponent(
     },
   }
 );
+
+// register the component "PricingComponent" in /components/switcher/index.js
+Builder.registerComponent(
+  dynamic(() => import("./components/switcher/index")),
+  {
+    name: "PricingComponent",
+  }
+);
