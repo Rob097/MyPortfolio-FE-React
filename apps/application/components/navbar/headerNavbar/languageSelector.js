@@ -39,6 +39,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
 
             setValue(locale);
             localStorage.setItem("lang", locale);
+            window.dispatchEvent(new Event("lang"));
 
             if (onChange) {
                 onChange(locale);
@@ -49,7 +50,7 @@ const LanguageSelector = ({ onChange, isMobile }) => {
         },
         [switchToLocale, onChange]
     );
-
+    
     return (
         <>
             <FormControl className={isMobile ? "mx-auto" : ""} style={isMobile ? { display: 'table' } : {}}>

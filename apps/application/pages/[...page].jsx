@@ -67,9 +67,14 @@ export default function Page({ page }) {
   const router = useRouter();
   const isPreviewing = useIsPreviewing();
 
+  // Get the current language:
+  const { locale } = router;
+
+  const isServer = typeof window === 'undefined'
+
   // If the page content is not available
   // and not in preview mode, show a 404 error page
-  if (!page && !isPreviewing) {
+  if (!page && !isPreviewing && !isServer ) {
     // redirect to /404 page
     router.push("/404");
   }
@@ -82,7 +87,13 @@ export default function Page({ page }) {
         <title>{page?.data?.title}</title>
       </Head>
       {/* Render the Builder page */}
-      <BuilderComponent model="page" content={page || undefined} />
+      <BuilderComponent 
+        model="page" 
+        content={page || undefined}
+        data={{
+          lingua: locale
+        }}
+      />
     </>
   );
 }
