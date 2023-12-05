@@ -14,5 +14,21 @@
         "discover": "Discover",
         "explore-people": "Explore professionals",
         "sign-up": "Sign up"
+    },
+    "contact-us": {
+        "title": "Contact us",
+        "description": "If you have any questions or suggestions, please contact us by filling out the form below.",
+        "name": "Full Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "success": "Your message has been sent successfully.",
+        "error": "An error occurred while sending your message. Please try again later.",
+        "validations": {
+            "name-required": "Please enter your full name.",
+            "email-required": "Please enter your email address.",
+            "email-invalid": "Please enter a valid email address.",
+            "message-required": "Please enter your message."
+        }
     }
 }

@@ -14,5 +14,21 @@
         "discover": "Scopri di più",
         "explore-people": "Esplora Professionisti",
         "sign-up": "Registrati"
+    },
+    "contact-us": {
+        "title": "Contattaci",
+        "description": "Se hai domande o suggerimenti, non esitare a contattarci utilizzando il modulo di contatto sottostante.",
+        "name": "Nome completo",
+        "email": "Email",
+        "message": "Messaggio",
+        "send": "Invia",
+        "success": "Il tuo messaggio è stato inviato con successo. Ti risponderemo il prima possibile.",
+        "error": "Si è verificato un errore durante l'invio del messaggio. Riprova più tardi.",
+        "validations": {
+            "name-required": "Il nome è obbligatorio",
+            "email-required": "L'email è obbligatoria",
+            "email-invalid": "L'email non è valida",
+            "message-required": "Il messaggio è obbligatorio"
+        }
     }
 }

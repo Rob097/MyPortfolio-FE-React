@@ -35,7 +35,7 @@ export default PageLayout;
 
 const BgVector = (props) => {
   return (
-    <div style={{ position: 'relative', zIndex: 0 }}>
+    <div style={{ position: 'relative', zIndex: 0 }} id={'vector-' + (props.up ? 'up' : 'down')}>
       <div className={props.up ? classes.bgVectorUp : classes.bgVectorDown}>
         <img src="/images/Vector.png" style={{ width: '35em', maxWidth: '100%' }} />
       </div>
