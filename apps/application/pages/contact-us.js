@@ -53,12 +53,14 @@ function ContactForm(props) {
                 sx={{
                     backgroundColor: "white",
                     boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-                    width: "40vw",
+                    width: "90vw",
+                    maxWidth: "1000px",
                     display: "flex",
                     flexDirection: "column",
                     margin: "auto",
-                    padding: 8,
+                    padding: {xs: 2, sm: 8},
                     borderRadius: "8px",
+                    zIndex: 1,
                 }}
             >
                 {promiseInProgress && <Loading adaptToComponent />}
@@ -140,6 +142,8 @@ function ContactForm(props) {
                     >
                         {t('contact-us.send')}
                     </Button>
+                    <br/>
+                    <Typography variant="caption">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</Typography>
                 </Box>
             </Box>
         </Box>
