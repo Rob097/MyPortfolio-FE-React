@@ -154,7 +154,7 @@ const People = (props) => {
 
     return (
         <Container className="pt-20 text-center large" maxWidth="xl" >
-            <Typography variant="h1" fontWeight='bold' color='primary'><span className="text-black">{t('people.explore-title')}</span> {t('people.people-title')}</Typography>
+            <Typography variant="h1" fontWeight='bold' color='primary' className="text-7xl"><span className="text-black">{t('people.explore-title')}</span> {t('people.people-title')}</Typography>
 
             <FormProvider {...methods}>
                 <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} currentLayout={layout} setLayout={setLayout} />

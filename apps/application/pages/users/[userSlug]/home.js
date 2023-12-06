@@ -82,7 +82,7 @@ const UserHome = () => {
             {/* <HeroSection img="https://dora-react.vercel.app/images/hero-person-img.png" buttons={[{ label: "Download CV" }, { label: "Contact Me" }]}> */}
             <HeroSection img={user?.customizations?.profileImage} buttons={[{ label: t('download-cv'), link: cvUrl, isDownload: true }, { label: t('contact-me.title'), link: '#contact-section' }]} customizations={user?.customizations}>
                 <Typography variant="h3" color="primary" fontWeight="bold">{t("common:whoamI")}</Typography>
-                <Typography variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThanXl ? '120%' : 'fit-content' }}>{user?.firstName} {user?.lastName}</Typography>
+                <Typography className="text-6xl" variant="h1" color="dark" fontWeight="bold" gutterBottom sx={{ width: isGreaterThanXl ? '120%' : 'fit-content' }}>{user?.firstName} {user?.lastName}</Typography>
                 <Typography variant="h5" color="dark" fontWeight="bold" gutterBottom>{user?.profession}</Typography>
                 <Typography variant="subtitle1" color="text" gutterBottom>{user?.presentation}</Typography>
             </HeroSection>
