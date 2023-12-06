@@ -46,7 +46,7 @@ function ContactForm(props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                height: "calc(100vh - 80px)",
+                minHeight: "calc(100vh - 80px)",
             }}
         >
             <Box
@@ -59,6 +59,7 @@ function ContactForm(props) {
                     flexDirection: "column",
                     margin: "auto",
                     padding: {xs: 2, sm: 8},
+                    marginBottom: {xs: 2, sm: 'auto'},
                     borderRadius: "8px",
                     zIndex: 1,
                 }}
