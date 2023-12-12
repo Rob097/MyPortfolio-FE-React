@@ -3,8 +3,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import PropTypes from "prop-types";
 import Navbar from "@/components/navbar/headerNavbar";
 import PageLayout from "./PageLayout";
+import CustomFooter from './Footer';
+import { useRouter } from 'next/router';
 
 function CoverLayout(props) {
+  const router = useRouter();
+
+  // check if the path contains "/users" or "/explore"
+  const isUsersOrExplore = router.pathname.includes('/users') || router.pathname.includes('/explore');
+
   return (
     <PageLayout background="background.white">
       <Navbar />
@@ -19,7 +26,7 @@ function CoverLayout(props) {
         <CssBaseline />
         {props.children}
       </Box>
-
+      {!isUsersOrExplore && <CustomFooter />}
     </PageLayout>
   );
 }

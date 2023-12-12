@@ -81,5 +81,11 @@
             "validation": "Seleziona un metodo di pagamento."
         },
         "submit": "Continua all'ultimo passaggio"
+    },
+    "footer": {
+        "title": "Iniziamo!",
+        "description": "Con MyPortfolio, trasforma la tua esperienza e competenza in storie coinvolgenti. Racconta la tua professionalità in modo unico e conquista nuove opportunità.<br/><br/>Hai qualche domanda?",
+        "contact-us": "Contattaci",
+        "support": "Supportaci"
     }
 }

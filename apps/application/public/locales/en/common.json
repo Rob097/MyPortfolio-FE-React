@@ -81,5 +81,11 @@
             "validation": "Please select a payment method."
         },
         "submit": "Continue to the final step"
+    },
+    "footer": {
+        "title": "Get Started!",
+        "description": "With MyPortfolio, turn your expertise into compelling stories. Share your professionalism uniquely and seize new opportunities in your career journey.<br/><br/>Do you have any question?",
+        "contact-us": "Contact us",
+        "support": "Support us"
     }
 }
