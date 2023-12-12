@@ -13,7 +13,8 @@
     "navbar": {
         "discover": "Discover",
         "explore-people": "Explore professionals",
-        "sign-up": "Sign up"
+        "sign-up": "Sign up",
+        "support": "Support"
     },
     "contact-us": {
         "title": "Contact us",
@@ -30,5 +31,55 @@
             "email-invalid": "Please enter a valid email address.",
             "message-required": "Please enter your message."
         }
+    },
+    "registration": {
+        "title": "Registration",
+        "subtitle": "Tell us something about yourself",
+        "plan": {
+            "title": "Your plan",
+            "basic": "Basic",
+            "professional": "Professional",
+            "organization": "Organization",
+            "monthly": "Monthly",
+            "yearly": "Yearly",
+            "validation": {
+                "plan-required": "Please select a plan.",
+                "period-required": "Please select a period."
+            }
+        },
+        "mandatory-fields": {
+            "title": "Mandatory information",
+            "first-name": "First name",
+            "last-name": "Last name",
+            "email": "Email",
+            "validations": {
+                "first-name-required": "Please enter your first name.",
+                "last-name-required": "Please enter your last name.",
+                "email-required": "Please enter your email address.",
+                "email-invalid": "Please enter a valid email address."
+            }
+        },
+        "feedback": {
+            "title": "Help us with some feedback",
+            "represents": {
+                "title": "What represents you the most?",
+                "student": "Student",
+                "professional": "Professional",
+                "organization": "Organization",
+                "other": "Other"
+            },
+            "found-us": "How did you find us?",
+            "looking-for": {
+                "title": "What are you looking for?",
+                "placeholder": "Write your expectations..."
+            }
+        },
+        "payment": {
+            "title": "Payment information",
+            "credit-card": "Credit card",
+            "paypal": "PayPal",
+            "validation": "Please select a payment method."
+        },
+        "submit": "Continue to the final step"
     }
 }

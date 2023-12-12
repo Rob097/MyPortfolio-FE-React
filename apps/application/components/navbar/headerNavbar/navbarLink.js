@@ -29,7 +29,7 @@ function NavbarLink({ icon, name, route, light, closeMobileNavbar }) {
         fontWeight="regular"
         color={light ? "white" : "dark"}
         textTransform="capitalize"
-        sx={{ width: "100%", lineHeight: 0 }}
+        sx={{ width: "100%", lineHeight: 'initial' }}
       >
         &nbsp;{name}
       </Typography>

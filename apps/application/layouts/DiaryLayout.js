@@ -60,7 +60,7 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
 
             <Divider variant="middle" className='opacity-100' />
 
-            <Box className={pageBG}>
+            <Box className={pageBG} id="main-content">
                 <ShowIf condition={title !== undefined && title !== ''}>
                     <Box id={id} className='pt-10'>
                         <Typography variant="h1" textAlign='center'>

@@ -108,7 +108,8 @@ export const NavbarLinks = ({ isMobile, closeMobileNavbar, light }) => {
       <Box color="inherit" m={0} p={0} className={isMobile ? "block" : "flex"}>
         <NavbarLink icon="auto_awesome" name={t('navbar.discover')} route="/" light={light} closeMobileNavbar={closeMobileNavbar} />
         <NavbarLink icon="people" name={t('navbar.explore-people')} route="/explore/people" light={light} closeMobileNavbar={closeMobileNavbar} />
-        <NavbarLink icon="account_circle" name={t('navbar.sign-up')} route="/auth/sign-up" light={light} closeMobileNavbar={closeMobileNavbar} />
+        <NavbarLink icon="account_circle" name={t('navbar.sign-up')} route="/register" light={light} closeMobileNavbar={closeMobileNavbar} />
+        <NavbarLink icon="volunteer_activism" name={t('navbar.support')} route="/support" light={light} closeMobileNavbar={closeMobileNavbar} />
       </Box>
       <Box >
         <LanguageSelector isMobile={isMobile} />

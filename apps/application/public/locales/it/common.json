@@ -13,7 +13,8 @@
     "navbar": {
         "discover": "Scopri di più",
         "explore-people": "Esplora Professionisti",
-        "sign-up": "Registrati"
+        "sign-up": "Registrati",
+        "support": "Supporto"
     },
     "contact-us": {
         "title": "Contattaci",
@@ -30,5 +31,55 @@
             "email-invalid": "L'email non è valida",
             "message-required": "Il messaggio è obbligatorio"
         }
+    },
+    "registration": {
+        "title": "Registrazione",
+        "subtitle": "Raccontaci qualcosa di te",
+        "plan": {
+            "title": "Scegli il tuo piano",
+            "basic": "Base",
+            "professional": "Professionisti",
+            "organization": "Team",
+            "monthly": "Mensile",
+            "yearly": "Annuale",
+            "validation": {
+                "plan-required": "Seleziona un piano.",
+                "period-required": "Seleziona un periodo."
+            }
+        },
+        "mandatory-fields": {
+            "title": "Informazioni obbligatorie",
+            "first-name": "Nome",
+            "last-name": "Cognome",
+            "email": "Email",
+            "validations": {
+                "first-name-required": "Inserisci il tuo nome.",
+                "last-name-required": "Inserisci il tuo cognome.",
+                "email-required": "Inserisci la tua email.",
+                "email-invalid": "Inserisci un'email valida."
+            }
+        },
+        "feedback": {
+            "title": "Aiutaci con un feedback",
+            "represents": {
+                "title": "Cosa ti rappresenta di più?",
+                "student": "Studente",
+                "professional": "Professionista",
+                "organization": "Organizzazione",
+                "other": "Altro"
+            },
+            "found-us": "Come ci hai trovato?",
+            "looking-for": {
+                "title": "Cosa stai cercando?",
+                "placeholder": "Scrivi le tue aspettative..."
+            }
+        },
+        "payment": {
+            "title": "Informazioni di pagamento",
+            "credit-card": "Carta di credito",
+            "paypal": "PayPal",
+            "validation": "Seleziona un metodo di pagamento."
+        },
+        "submit": "Continua all'ultimo passaggio"
     }
 }
