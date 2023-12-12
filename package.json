@@ -71,7 +71,7 @@
     "@mui/icons-material": "^5.14.0",
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.14.0",
-    "@rob097/common-lib": "^1.0.11",
+    "@rob097/common-lib": "^1.0.22",
     "chroma-js": "^2.4.2",
     "i18next": "^22.5.1",
     "json-loader": "^0.5.7",
