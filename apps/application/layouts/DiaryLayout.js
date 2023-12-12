@@ -72,7 +72,7 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                 </ShowIf>
 
                 <ShowIf condition={showBreadcrumbs === true}>
-                    <Box id="diary-breadcrumbs" className={(title === undefined ? 'pt-10' : 'pt-8') + ' w-fit mx-auto'}>
+                    <Box id="diary-breadcrumbs" className={(title === undefined ? 'pt-10' : 'pt-8') + ' w-auto mx-10'}>
                         <NextBreadcrumbs />
                     </Box>
                 </ShowIf>
@@ -141,16 +141,18 @@ const NextBreadcrumbs = () => {
     }, [router.asPath, router.locale, t]);
 
     return (
-        /* The old breadcrumb ending with '/>' was converted into this */
-        <Breadcrumbs aria-label="breadcrumb">
-            {/*
-            Iterate through the crumbs, and render each individually.
-            We "mark" the last crumb to not have a link.
-          */}
-            {breadcrumbs.map((crumb, idx) => (
-                <Crumb {...crumb} key={idx} last={idx === breadcrumbs.length - 1} />
-            ))}
-        </Breadcrumbs>
+        <Box className="max-w-screen-xl mx-auto overflow-x-scroll hide-scrollbar">
+            {/* The old breadcrumb ending with '/>' was converted into this */}
+            <Breadcrumbs aria-label="breadcrumb" className='w-max mx-auto'>
+                {/*
+                    Iterate through the crumbs, and render each individually.
+                    We "mark" the last crumb to not have a link.
+                */}
+                {breadcrumbs.map((crumb, idx) => (
+                    <Crumb {...crumb} key={idx} last={idx === breadcrumbs.length - 1} />
+                ))}
+            </Breadcrumbs>
+        </Box>
     );
 }
 

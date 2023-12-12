@@ -17,7 +17,7 @@ import { Box, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const Story = (props) => {
     const { t } = useTranslation(['user-diary']);
@@ -41,21 +41,27 @@ const Story = (props) => {
         const firstRelevantSection = story.firstRelevantSection;
         const secondRelevantSection = story.secondRelevantSection;
 
-        story.relevantSections = [firstRelevantSection, secondRelevantSection];
+        story.relevantSections = [];
+        if (firstRelevantSection) {
+            story.relevantSections.push(firstRelevantSection);
+        }
+        if (secondRelevantSection) {
+            story.relevantSections.push(secondRelevantSection);
+        }
     }
-    const showRelevantSections = story?.relevantSections !== undefined && story?.relevantSections.length > 0;
+    const showRelevantSections = useMemo(() => {story?.relevantSections != null && story?.relevantSections !== undefined}, [story?.relevantSections]);
 
     return (
         <>
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoriesNavbar userSlug={userSlug} entity={props.entity} story={story} entities={props.entities} category={EntityTypeEnum.PROJECTS} />
+                    <StoriesNavbar userSlug={userSlug} entity={props.entity} story={story} entities={props.entities} category={props.entityType} />
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0 mb-10 md:mb-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
                             <Box>
-                                <Typography variant="h1" fontWeight='bold'>{story?.title}</Typography>
+                                <Typography variant="h1" fontWeight='bold' className='text-6xl'>{story?.title}</Typography>
 
                                 <Box className='mt-4'>
                                     <HtmlContent>
@@ -98,7 +104,7 @@ const Story = (props) => {
                                     ))}
                                 </Box>
                             </ShowIf>
-                            <ShowIf condition={showRelevantSections}>
+                            <ShowIf condition={story?.relevantSections!==undefined}>
                                 <RelevantSections story={story} showEntityTree entity={props.entity} entities={props.entities} entityType={props.entityType} />
                             </ShowIf>
                         </Grid>

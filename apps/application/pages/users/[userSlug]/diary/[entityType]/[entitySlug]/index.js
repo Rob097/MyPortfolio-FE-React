@@ -54,9 +54,9 @@ const Project = (props) => {
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-20 md:pb-0'>
                             <Box>
-                                {entity?.title && <Typography variant="h1" fontWeight='bold'>{entity?.title}</Typography>}
+                                {entity?.title && <Typography variant="h1" fontWeight='bold' className="text-6xl">{entity?.title}</Typography>}
                                 {entity?.field && <>
-                                    <Typography variant="h1" fontWeight='bold' className='text-5xl' >{entity?.field}</Typography>
+                                    <Typography variant="h1" fontWeight='bold' className='text-6xl' >{entity?.field}</Typography>
                                     <Typography variant="h2" fontWeight='bold' className='mt-2 text-2xl' >{entity?.school}</Typography>
                                 </>}
 
@@ -95,11 +95,11 @@ const Project = (props) => {
                                 </Box>
                             </ShowIf>
                         </Grid>
-                        <Grid item xs={12} md={5} sx={{ display: { md: 'block', xs: 'none' } }} >
+                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
                             <EntitiesTree entity={entity} entities={props.entities} category={props.entityType} />
 
                             <ShowIf condition={entity?.skills?.length > 0}>
-                                <Box className='h-fit sticky md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
+                                <Box className='h-fit md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
                                     <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
 
                                     {entity?.skills?.map((skill, index) => (

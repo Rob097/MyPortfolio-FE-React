@@ -98,7 +98,7 @@ const Diary = () => {
                                                 title={experience.title}
                                                 subtitle={experience.company}
                                                 description={experience.description}
-                                                chips={experience.skills}
+                                                chips={experience.skills?.slice(0, 5)}
                                                 bottomCaption={new Date(experience.fromDate || experience.updatedAt).toLocaleDateString("it-IT") + (experience.toDate ? " - " + new Date(experience.toDate).toLocaleDateString("it-IT") : "")}
                                                 buttons={[
                                                     {
@@ -143,7 +143,7 @@ const Diary = () => {
                                                 image={project.image}
                                                 title={project.title}
                                                 description={project.description}
-                                                chips={project.skills}
+                                                chips={project.skills?.slice(0, 5)}
                                                 bottomCaption={new Date(project.fromDate || project.updatedAt).toLocaleDateString("it-IT") + (project.toDate ? " - " + new Date(project.toDate).toLocaleDateString("it-IT") : "")}
                                                 buttons={[
                                                     {
@@ -188,7 +188,7 @@ const Diary = () => {
                                                 title={education.field}
                                                 subtitle={education.school}
                                                 description={education.description}
-                                                chips={education.skills}
+                                                chips={education.skills?.slice(0, 5)}
                                                 bottomCaption={new Date(education.fromDate || education.updatedAt).toLocaleDateString("it-IT") + (education.toDate ? " - " + new Date(education.toDate).toLocaleDateString("it-IT") : "")}
                                                 buttons={[
                                                     {

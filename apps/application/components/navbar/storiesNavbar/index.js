@@ -38,8 +38,8 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
 
     const previousStory = getPreviousStory(story, entity);
     const nextStory = getNextStory(story, entity);
-    const previousLink = getPreviousStoryLink(story, entity, userSlug);
-    const nextLink = getNextStoryLink(story, entity, userSlug);
+    const previousLink = getPreviousStoryLink(story, entity, userSlug, category);
+    const nextLink = getNextStoryLink(story, entity, userSlug, category);
 
     const DrawerContent = () => (
         !indexModalOpen
@@ -73,7 +73,7 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
                             isGreaterThanMd || !indexModalOpen ?
                                 t('common:stories')
                                 :
-                                (showRelevantSections ? t('common:relevant-sections') : t('user-diary:categories.list.my-'+entityType))
+                                (showRelevantSections ? t('common:relevant-sections') : t('user-diary:categories.list.my-' + entityType))
                         }
                     </Button>
                     <Box className='flex flex-row justify-end'>
@@ -82,11 +82,18 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
                                 condition={isSmallerThanMd}
                                 wrapper={children => <Tooltip title={previousStory?.title ?? t('common:home')}>{children}</Tooltip>}
                             >
-                                <Link href={previousLink}>
-                                    <Button variant="contained" startIcon={isGreaterThanMd && <KeyboardArrowLeftIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2' >
-                                        {isGreaterThanMd ? (previousStory?.title ?? t('common:home')) : <KeyboardArrowLeftIcon />}
-                                    </Button>
-                                </Link>
+                                <Tooltip title={previousStory?.title?.length && previousStory?.title}>
+                                    <Link href={previousLink}>
+                                        <Button variant="contained" startIcon={isGreaterThanMd && <KeyboardArrowLeftIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2'>
+                                            {isGreaterThanMd ?
+                                                (previousStory?.title?.length > 20 ?
+                                                    `${previousStory?.title.substring(0, 10)}...${previousStory?.title.substring(previousStory?.title.length - 5)}`
+                                                    : previousStory?.title ?? t('common:home'))
+                                                : <KeyboardArrowLeftIcon />
+                                            }
+                                        </Button>
+                                    </Link>
+                                </Tooltip>
                             </ConditionalWrapper>
                         </ShowIf>
                         <ShowIf condition={isSmallerThanMd || nextStory !== undefined}>
@@ -98,11 +105,18 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
                                     isSmallerThanMd && nextStory === undefined ?
                                         <Box sx={{ width: '4.5rem' }} />
                                         :
-                                        <Link href={nextLink} >
-                                            <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2'>
-                                                {isGreaterThanMd ? nextStory?.title : <KeyboardArrowRightIcon />}
-                                            </Button>
-                                        </Link>
+                                        <Tooltip title={nextStory?.title?.length && nextStory?.title}>
+                                            <Link href={nextLink} >
+                                                <Button variant="contained" endIcon={isGreaterThanMd && <KeyboardArrowRightIcon />} className='rounded-full bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white ml-2'>
+                                                    {isGreaterThanMd ?
+                                                        (nextStory?.title.length > 20 ?
+                                                            `${nextStory?.title.substring(0, 10)}...${nextStory?.title.substring(nextStory?.title.length - 5)}`
+                                                            : nextStory?.title)
+                                                        : <KeyboardArrowRightIcon />
+                                                    }
+                                                </Button>
+                                            </Link>
+                                        </Tooltip>
                                 }
                             </ConditionalWrapper>
                         </ShowIf>
@@ -138,15 +152,15 @@ function getNextStory(story, entity) {
     const index = getIndex(stories, story.id);
     return index < stories.length - 1 ? stories[index + 1] : undefined;
 }
-function getPreviousStoryLink(story, entity, userSlug) {
+function getPreviousStoryLink(story, entity, userSlug, category) {
     const previousStory = getPreviousStory(story, entity);
     return previousStory !== null && previousStory !== undefined
-        ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}/${previousStory.slug}${domStory}`
-        : (previousStory == null ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}${domStory}` : undefined);
+        ? `/users/${userSlug}/diary/${category}/${entity?.slug}/${previousStory.slug}${domStory}`
+        : (previousStory == null ? `/users/${userSlug}/diary/${category}/${entity?.slug}${domStory}` : undefined);
 }
-function getNextStoryLink(story, entity, userSlug) {
+function getNextStoryLink(story, entity, userSlug, category) {
     const nextStory = getNextStory(story, entity);
     return nextStory
-        ? `/users/${userSlug}/diary/${EntityTypeEnum.PROJECTS}/${entity?.slug}/${nextStory.slug}${domStory}`
+        ? `/users/${userSlug}/diary/${category}/${entity?.slug}/${nextStory.slug}${domStory}`
         : undefined;
 }

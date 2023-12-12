@@ -34,7 +34,7 @@ const RelevantSections = (props) => {
     }, [props.entityType]);
 
     return (
-        <Box>
+        <Box className="md:mt-10">
             {
                 props.showEntityTree && (
                     <Accordion expanded={expanded === 'panel0'} onChange={handleChange('panel0')} className='rounded-xl shadow-md'>
@@ -115,7 +115,11 @@ const AccordionSummary = styled((props) => (
 }));
 
 const AccordionDetails = styled(({isMobile, story, ...rest}) => (
-    <MuiAccordionDetails {...rest} style={{ height: isMobile ? 'auto' : `calc((100vh - 140px)/${story.relevantSections.length})`, maxHeight: isMobile ? '75vh' : '' }} /* className='overflow-y-scroll hide-scrollbar' */ />
+    <MuiAccordionDetails {...rest} style={{ 
+        minHeight: '20vh',
+        height: isMobile ? 'auto' : (story?.relevantSections?.length>1 ? `calc((100vh - 140px)/${story?.relevantSections?.length})` : 'fit-content'), 
+        maxHeight: isMobile ? '75vh' : ''
+    }} /* className='overflow-y-scroll hide-scrollbar' */ />
 ))(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',

@@ -98,7 +98,7 @@ const Projects = (props) => {
                                                     title={entity.title || entity.field}
                                                     subtitle={entity.school || undefined}
                                                     description={entity.description}
-                                                    chips={entity.skills}
+                                                    chips={entity.skills?.slice(0, 5)}
                                                     bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT")}
                                                     buttons={[
                                                         {
