@@ -40,7 +40,7 @@ const EntitiesTree = (props) => {
     );
 }
 
-export const EntitiesTreeContent = ({ entity, entities, category }) => {
+export const EntitiesTreeContent = ({ entity, entities, category, story }) => {
     const router = useRouter();
     const [expanded, setExpanded] = useState(['p-' + entity?.id]);
 
@@ -68,7 +68,7 @@ export const EntitiesTreeContent = ({ entity, entities, category }) => {
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
             sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-            selected={'p-' + entity?.id}
+            selected={story ? ('s-' + story?.id) : ('p-' + entity?.id)}
             expanded={expanded}
             onNodeToggle={handleToggle}
             className='h-full'
@@ -86,8 +86,11 @@ export const EntitiesTreeContent = ({ entity, entities, category }) => {
                     className='py-1'
                     sx={({ rounded }) => ({
                         ['& .MuiTreeItem-content']: {
-                            height: '3rem',
-                            borderRadius: rounded.xl
+                            borderRadius: rounded.xl,
+                            minHeight: '3rem',
+                            height: 'fit-content',
+                            paddingTop: '0.5rem',
+                            paddingBottom: '0.5rem'
                         }
                     })}
                 >
@@ -99,7 +102,15 @@ export const EntitiesTreeContent = ({ entity, entities, category }) => {
                                 <div onClick={event => event.stopPropagation()}>
                                     <div onClick={() => handleClick(entity?.id, story.id)}>{story.title}</div>
                                 </div>}
-                            className='py-1'
+                            className='py-1 my-4'
+                            sx={() => ({
+                                ['& .MuiTreeItem-content']: {
+                                    minHeight: '3rem',
+                                    height: 'fit-content',
+                                    paddingTop: '0.5rem',
+                                    paddingBottom: '0.5rem'
+                                }
+                            })}
                         />
                     ))}
                 </TreeItem>

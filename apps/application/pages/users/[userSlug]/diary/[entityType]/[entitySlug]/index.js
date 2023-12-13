@@ -12,9 +12,11 @@ import classes from '@/pages/users/[userSlug]/styles/shared.module.scss';
 import { fetcher } from '@/services/base.service';
 import EntityService, { useEntity } from '@/services/entity.service';
 import UserService from '@/services/user.service';
-import { Box, Chip, Container, Grid, Typography } from '@mui/material';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Box, Button, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const Project = (props) => {
@@ -65,8 +67,23 @@ const Project = (props) => {
                                         {entity?.description}
                                     </HtmlContent>
                                 </Box>
+
+                                {/* Link button "Read the story" */}
+                                <ShowIf condition={entity?.stories?.length > 0}>
+                                    <Box className='mt-8'>
+                                        <Link href='/users/[userSlug]/diary/[entityType]/[entitySlug]/[storySlug]#mainEntityStory' as={`/users/${props.user?.slug}/diary/${props.entityType}/${entity?.slug}/${entity.stories[0]?.slug}#mainEntityStory`}>
+                                            <Button variant="contained" className='bg-slate-300 hover:bg-slate-500 text-dark-main hover:text-white' size="large" sx={{ borderRadius: '50px' }} endIcon={<KeyboardArrowRightIcon />}>
+                                                {t('user-diary:read-the-main-story')}
+                                            </Button>
+                                        </Link>
+                                    </Box>
+                                </ShowIf>
+
+
+
                             </Box>
 
+                            {/* This block used to display the main story in the entity page. But for now I think is not useful.
                             <ShowIf condition={mainStory !== undefined}>
                                 <Box className='mt-8'>
                                     <Typography variant="h2" fontWeight='bold'>{mainStory?.title}</Typography>
@@ -76,7 +93,7 @@ const Project = (props) => {
                                         </HtmlContent>
                                     </Box>
                                 </Box>
-                            </ShowIf>
+                            </ShowIf> */}
 
                             <ShowIf condition={entity?.skills?.length > 0 && isSmallerThanMd}>
                                 <Box className='h-fit sticky md:top-32 !py-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
@@ -193,7 +210,7 @@ export async function getStaticProps(context) {
             }
         }
 
-        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.normal);
+        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.verbose);
 
         props = {
             ...(await serverSideTranslations(locale)),

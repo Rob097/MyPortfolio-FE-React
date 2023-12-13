@@ -1,4 +1,5 @@
 import MainStorySection from '@/components/sections/MainStorySection';
+import ConditionalWrapper from '@/components/utils/conditionalWrapper';
 import ShowIf from '@/components/utils/showIf';
 import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Tooltip, Typography } from '@mui/material';
@@ -142,7 +143,6 @@ const NextBreadcrumbs = () => {
 
     return (
         <Box className="max-w-screen-xl mx-auto overflow-x-scroll hide-scrollbar">
-            {/* The old breadcrumb ending with '/>' was converted into this */}
             <Breadcrumbs aria-label="breadcrumb" className='w-max mx-auto'>
                 {/*
                     Iterate through the crumbs, and render each individually.
@@ -161,15 +161,33 @@ function Crumb({ text, href, last = false }) {
     const { colors } = tailwindConfig.theme;
     const isHome = text === "Home";
 
+    let originalText = text;
+    // If subpath is longer than 30 characters, show the first 20 followed by '...' and the last 5
+    if (text.length > 30) {
+        text = text.substring(0, 20) + '...' + text.substring(text.length - 5);
+    }
+
     // The last crumb is rendered as normal text since we are already on the page
     if (last) {
-        return <Typography color={colors.dark.main}>{text}</Typography>
+        return (
+            <ConditionalWrapper
+                condition={originalText.length > 30}
+                wrapper={children => <Tooltip placement="top" arrow title={originalText}>{children}</Tooltip>}
+            >
+                <Typography color={colors.dark.main}>{text}</Typography>
+            </ConditionalWrapper>
+        )
     }
 
     // All other crumbs will be rendered as links that can be visited
     return (
-        <Link underline="hover" href={href} scroll={isHome}>
-            <Typography color={colors.text.main}>{text}</Typography>
-        </Link>
+        <ConditionalWrapper
+            condition={originalText.length > 30}
+            wrapper={children => <Tooltip placement="top" arrow title={originalText}>{children}</Tooltip>}
+        >
+            <Link underline="hover" href={href} scroll={isHome}>
+                <Typography color={colors.text.main}>{text}</Typography>
+            </Link>
+        </ConditionalWrapper>
     );
 }

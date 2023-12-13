@@ -46,7 +46,7 @@ const RelevantSections = (props) => {
                             <Typography variant="h4" component="div" fontWeight='bold'>{entityTreeTitle}</Typography>
                         </AccordionSummary>
                         <AccordionDetails isMobile={props.isMobile} story={props.story} className='overflow-y-scroll hide-scrollbar'>
-                            <EntitiesTree entity={props.entity} entities={props.entities} category={props.entityType} />
+                            <EntitiesTree story={props.story} entity={props.entity} entities={props.entities} category={props.entityType} />
                         </AccordionDetails>
                     </Accordion>
                 )
@@ -55,7 +55,7 @@ const RelevantSections = (props) => {
             {
 
                 props.story?.relevantSections?.map((sectionTmp, index) => (
-                    <Accordion key={'accordition-'+(index+1)} expanded={expanded === 'panel' + (index + 1)} onChange={handleChange('panel' + (index + 1))} className='rounded-xl shadow-md'>
+                    <Accordion key={'accordition-' + (index + 1)} expanded={expanded === 'panel' + (index + 1)} onChange={handleChange('panel' + (index + 1))} className='rounded-xl shadow-md'>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -114,10 +114,10 @@ const AccordionSummary = styled((props) => (
     },
 }));
 
-const AccordionDetails = styled(({isMobile, story, ...rest}) => (
-    <MuiAccordionDetails {...rest} style={{ 
+const AccordionDetails = styled(({ isMobile, story, ...rest }) => (
+    <MuiAccordionDetails {...rest} style={{
         minHeight: '20vh',
-        height: isMobile ? 'auto' : (story?.relevantSections?.length>1 ? `calc((100vh - 140px)/${story?.relevantSections?.length})` : 'fit-content'), 
+        height: isMobile ? 'auto' : (story?.relevantSections?.length > 1 ? `calc((100vh - 140px)/${story?.relevantSections?.length})` : 'fit-content'),
         maxHeight: isMobile ? '75vh' : ''
     }} /* className='overflow-y-scroll hide-scrollbar' */ />
 ))(({ theme }) => ({

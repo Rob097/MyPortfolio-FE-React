@@ -43,7 +43,7 @@ const StoriesNavbar = ({ entities, entity, story, category }) => {
 
     const DrawerContent = () => (
         !indexModalOpen
-            ? (showRelevantSections ? <RelevantSections story={story} isMobile /> : <EntitiesTree entity={entity} entities={entities} category={category} />)
+            ? (showRelevantSections ? <RelevantSections story={story} isMobile /> : <EntitiesTree story={story} entity={entity} entities={entities} category={category} />)
             : <StoriesIndexContent entity={entity} toggleModal={() => toggleIndexModal()} />
     );
 

@@ -49,7 +49,7 @@ const Story = (props) => {
             story.relevantSections.push(secondRelevantSection);
         }
     }
-    const showRelevantSections = useMemo(() => {story?.relevantSections != null && story?.relevantSections !== undefined}, [story?.relevantSections]);
+    const showRelevantSections = useMemo(() => { story?.relevantSections != null && story?.relevantSections !== undefined }, [story?.relevantSections]);
 
     return (
         <>
@@ -104,7 +104,7 @@ const Story = (props) => {
                                     ))}
                                 </Box>
                             </ShowIf>
-                            <ShowIf condition={story?.relevantSections!==undefined}>
+                            <ShowIf condition={story?.relevantSections !== undefined}>
                                 <RelevantSections story={story} showEntityTree entity={props.entity} entities={props.entities} entityType={props.entityType} />
                             </ShowIf>
                         </Grid>
@@ -198,7 +198,7 @@ export async function getStaticProps(context) {
             }
         }
 
-        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.normal);
+        const entities = await EntityService.getByUserId(entityType, userResponse?.content?.id, View.verbose);
 
         props = {
             ...(await serverSideTranslations(locale)),
