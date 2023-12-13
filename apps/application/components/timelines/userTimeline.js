@@ -64,18 +64,20 @@ const UserTimeline = ({ user }) => {
                             </TimelineDot>
                             <TimelineConnector className={classes.centralConnector} />
                         </TimelineSeparator>
-                        <TimelineContent className={`${classes.timelineContent}`} >
-                            <Typography variant="h4" component="span" color="dark.main">
-                                {t('quick-overview.what-i-do')}
-                            </Typography>
-                            <Typography variant="subtitle1">{experience?.title}</Typography>
-                            <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.company')}: </Typography>
-                            <Typography variant="overline" color="primary.main">{experience?.companyName}, {experience?.location}</Typography>
-                            <br />
-                            <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                            <Typography variant="overline" color="primary.main">{new Date(experience?.fromDate).getFullYear()} - {experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                            <Typography variant='body2'>{experience?.description}</Typography>
-                        </TimelineContent>
+                        <Link href={`/users/${user?.slug}/diary/experiences/${experience?.slug}#mainEntityStory`} className='w-full' >
+                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
+                                <Typography variant="h4" component="span" color="dark.main">
+                                    {t('quick-overview.what-i-do')}
+                                </Typography>
+                                <Typography variant="subtitle1">{experience?.title}</Typography>
+                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.company')}: </Typography>
+                                <Typography variant="overline" color="primary.main">{experience?.companyName}, {experience?.location}</Typography>
+                                <br />
+                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
+                                <Typography variant="overline" color="primary.main">{new Date(experience?.fromDate).getFullYear()} - {experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
+                                <Typography variant='body2'>{experience?.description}</Typography>
+                            </TimelineContent>
+                        </Link>
                     </TimelineItem>
 
                     <TimelineItem className={`${classes.timelineItem} ${classes.even}`}>
@@ -85,18 +87,20 @@ const UserTimeline = ({ user }) => {
                             </TimelineDot>
                             <TimelineConnector className={classes.centralConnector} />
                         </TimelineSeparator>
-                        <TimelineContent className={`${classes.timelineContent}`} >
-                            <Typography variant="h4" component="span" color="dark.main">
-                                {t('quick-overview.what-i-studied')}
-                            </Typography>
-                            <Typography variant="subtitle1">{education?.field}</Typography>
-                            <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.institute')}: </Typography>
-                            <Typography variant="overline" color="primary.main">{education?.school}</Typography>
-                            <br />
-                            <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                            <Typography variant="overline" color="primary.main">{new Date(education?.fromDate).getFullYear()} - {education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                            <Typography variant='body2'>{education?.description}</Typography>
-                        </TimelineContent>
+                        <Link href={`/users/${user?.slug}/diary/educations/${education?.slug}#mainEntityStory`} className='w-full' >
+                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
+                                <Typography variant="h4" component="span" color="dark.main">
+                                    {t('quick-overview.what-i-studied')}
+                                </Typography>
+                                <Typography variant="subtitle1">{education?.field}</Typography>
+                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.institute')}: </Typography>
+                                <Typography variant="overline" color="primary.main">{education?.school}</Typography>
+                                <br />
+                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
+                                <Typography variant="overline" color="primary.main">{new Date(education?.fromDate).getFullYear()} - {education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
+                                <Typography variant='body2'>{education?.description}</Typography>
+                            </TimelineContent>
+                        </Link>
                     </TimelineItem>
 
                     <TimelineItem className={`${classes.timelineItem} ${classes.odd}`}>
@@ -106,15 +110,17 @@ const UserTimeline = ({ user }) => {
                             </TimelineDot>
                             <TimelineConnector className={classes.centralConnector} />
                         </TimelineSeparator>
-                        <TimelineContent className={`${classes.timelineContent}`} >
-                            <Typography variant="h4" component="span" color="dark.main">
-                                {t('quick-overview.what-im-working-on')}
-                            </Typography>
-                            <Typography variant="subtitle1" >{project?.title}</Typography>
-                            <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                            <Typography variant="overline" color="primary.main">{new Date(project?.fromDate).getFullYear()} - {project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                            <Typography variant='body2'>{project?.description}</Typography>
-                        </TimelineContent>
+                        <Link href={`/users/${user?.slug}/diary/projects/${project?.slug}#mainEntityStory`} className='w-full' >
+                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
+                                <Typography variant="h4" component="span" color="dark.main">
+                                    {t('quick-overview.what-im-working-on')}
+                                </Typography>
+                                <Typography variant="subtitle1" >{project?.title}</Typography>
+                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
+                                <Typography variant="overline" color="primary.main">{new Date(project?.fromDate).getFullYear()} - {project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
+                                <Typography variant='body2'>{project?.description}</Typography>
+                            </TimelineContent>
+                        </Link>
                     </TimelineItem>
                 </Timeline>
             </Container>
