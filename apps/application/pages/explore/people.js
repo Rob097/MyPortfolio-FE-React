@@ -245,7 +245,7 @@ const People = (props) => {
 
                         <Box className='w-fit mx-auto'>
                             <CustomPieChart
-                                data={...statisticsData}
+                                data={statisticsData}
                                 width={sideWidth}
                                 height={400}
                             />
