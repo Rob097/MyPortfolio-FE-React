@@ -32,7 +32,7 @@ const People = (props) => {
     /******************/
     const methods = useForm({ defaultValues: filtersDefaultValues });
     const [layout, setLayout] = useState('list');
-    const [statisticsBy, setStatisticsBy] = useState('industry');
+    const [statisticsBy, setStatisticsBy] = useState('skill');
     const [statisticsData, setStatisticsData] = useState([]);
     const [totalUsers, setTotalUsers] = useState(props.number);
     const [users, setUsers] = useState(props.users);
@@ -234,10 +234,10 @@ const People = (props) => {
                                 <Typography variant="h5" fontWeight='bold' color='black'>{t('people.statistics.title')}</Typography>
                             </Box>
                             <Box className="flex justify-end items-center mr-2">
-                                <Button variant="outlined" color="primary" size="small" className='h-fit mr-2 whitespace-nowrap rounded-full' onClick={() => setStatisticsBy('industry')}>
+                                <Button variant={statisticsBy==='industry' ? "contained" : "outlined"} color="primary" size="small" className='h-fit mr-2 whitespace-nowrap rounded-full' onClick={() => setStatisticsBy('industry')}>
                                     {t('people.statistics.by-industry')}
                                 </Button>
-                                <Button variant="outlined" color="primary" size="small" className='h-fit rounded-full' onClick={() => setStatisticsBy('skill')}>
+                                <Button variant={statisticsBy==='skill' ? "contained" : "outlined"} color="primary" size="small" className='h-fit rounded-full' onClick={() => setStatisticsBy('skill')}>
                                     {t('people.statistics.by-skill')}
                                 </Button>
                             </Box>

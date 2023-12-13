@@ -1,7 +1,7 @@
 import { Filters } from '@/models/criteria.model';
 import { Diary } from './diary.model';
 import { Skill } from './skill.model';
-import { SlugDto } from './baseDto.models';
+import { BaseDto, SlugDto } from './baseDto.models';
 
 export class Story extends SlugDto {
     diaryId: number;
@@ -9,8 +9,6 @@ export class Story extends SlugDto {
     description: string;
     fromDate: Date;
     toDate: Date;
-    firstRelevantSection: string;
-    secondRelevantSection: string;
     projectId: number;
     orderInProject: number;
     educationId: number;
@@ -18,6 +16,7 @@ export class Story extends SlugDto {
     experienceId: number;
     orderInExperience: number;
     skills?: Skill[];
+    relevantSections?: RelevantSection[];
 
     constructor(obj: any) {
         super(obj);
@@ -25,8 +24,6 @@ export class Story extends SlugDto {
         this.title = obj.title;
         this.description = obj.description;
         this.fromDate = obj.fromDate;
-        this.firstRelevantSection = obj.firstRelevantSection;
-        this.secondRelevantSection = obj.secondRelevantSection;
         this.toDate = obj.toDate;
         this.projectId = obj.projectId;
         this.orderInProject = obj.orderInProject;
@@ -35,6 +32,20 @@ export class Story extends SlugDto {
         this.experienceId = obj.experienceId;
         this.orderInExperience = obj.orderInExperience;
         this.skills = obj.skills;
+        this.relevantSections = obj.relevantSections;
+    }
+}
+
+export class RelevantSection extends BaseDto {
+    title: string;
+    description: string;
+    orderInStory: number;
+
+    constructor(obj: any) {
+        super(obj);
+        this.title = obj.title;
+        this.description = obj.description;
+        this.orderInStory = obj.orderInStory;
     }
 }
 

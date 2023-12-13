@@ -116,7 +116,7 @@ const Element = ({ text, showArrow, isRowEven }) => {
                 />
             </ShowIf>
             <Avatar variant='rounding' className={timelineClasses.circle + ' border-4 border-primary-main bg-white text-dark-main shadow-xl w-full h-auto m-2 lg:m-2'}>
-                <Typography variant="h4" textAlign='center' fontSize={isCoomingSoon && '0.8rem !important'} lineHeight={isCoomingSoon && '1rem !important'} className='lg:text-base xl:text-lg 2xl:text-2xl' >{text}</Typography>
+                <Typography variant="h4" textAlign='center' fontSize={isCoomingSoon && '0.8rem !important'} lineHeight={isCoomingSoon && '1rem !important'} className='lg:text-base xl:text-md' >{text}</Typography>
             </Avatar>
             <ShowIf condition={SHOW_ARROW && showArrow && !isRowEven}>
                 <ArrowForwardIosIcon color='primary' fontSize='large' className='z-10 absolute left-1/2 lg:right-0 lg:left-auto'
@@ -220,7 +220,7 @@ const PreviewElement = ({ entity, title, description }) => {
     return (
         <Box className='max-w-sm sm:w-96 lg:w-full bg-white shadow-lg rounded-lg m-2' sx={{ direction: 'ltr' }} >
             <Box className='w-full shadow-lg rounded-lg cursor-pointer' onClick={() => handleExpandClick()}>
-                <Typography variant="h3" className='p-2 text-xl' textAlign='center'>{title}</Typography>
+                <Typography variant="h3" className='p-2 text-base' textAlign='center'>{title}</Typography>
             </Box>
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -303,7 +303,7 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
     );
 
     function getDate(item) {
-        return item?.fromDate ? (new Date(item?.fromDate)?.getMonth() + "/" + new Date(item?.fromDate)?.getFullYear()) : ('🚀');
+        return item?.fromDate ? (new Date(item?.fromDate)?.getMonth()+1 + "/" + new Date(item?.fromDate)?.getFullYear()) : ('🚀');
     }
 
     const SimpleElement = ({ index, isRowEven }) => (

@@ -37,19 +37,7 @@ const Story = (props) => {
     const isSmallerThanLg = isSmallerThan('lg');
     const isSmallerThanMd = isSmallerThan('md');
 
-    if (story && !story.relevantSections) {
-        const firstRelevantSection = story.firstRelevantSection;
-        const secondRelevantSection = story.secondRelevantSection;
-
-        story.relevantSections = [];
-        if (firstRelevantSection) {
-            story.relevantSections.push(firstRelevantSection);
-        }
-        if (secondRelevantSection) {
-            story.relevantSections.push(secondRelevantSection);
-        }
-    }
-    const showRelevantSections = useMemo(() => { story?.relevantSections != null && story?.relevantSections !== undefined }, [story?.relevantSections]);
+    // const showRelevantSections = useMemo(() => { story?.relevantSections != null && story?.relevantSections !== undefined }, [story?.relevantSections]);
 
     return (
         <>
@@ -87,7 +75,7 @@ const Story = (props) => {
                                 </Box>
                             </ShowIf>
                         </Grid>
-                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
+                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6 hide-scrollbar' sx={{ display: { md: 'block', xs: 'none' }, maxHeight: '95vh', overflowY: 'scroll', paddingBottom: '1rem' }} >
                             <ShowIf condition={story?.skills?.length > 0}>
                                 <Box className='h-fit sticky md:top-32 !p-6 md:mb-8 md:bg-white md:rounded-xl md:shadow-xl'>
                                     <Typography variant="h4" component="div" fontWeight='bold' sx={{ textAlign: { md: 'right', xs: 'left' } }} className='mb-4'>{t('user-diary:related-skills')}</Typography>
@@ -104,9 +92,9 @@ const Story = (props) => {
                                     ))}
                                 </Box>
                             </ShowIf>
-                            <ShowIf condition={story?.relevantSections !== undefined}>
+                            {/* <ShowIf condition={story?.relevantSections !== undefined}> */}
                                 <RelevantSections story={story} showEntityTree entity={props.entity} entities={props.entities} entityType={props.entityType} />
-                            </ShowIf>
+                            {/* </ShowIf> */}
                         </Grid>
 
                     </Grid>

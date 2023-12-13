@@ -53,22 +53,20 @@ const RelevantSections = (props) => {
             }
 
             {
-
-                props.story?.relevantSections?.map((sectionTmp, index) => (
+                // order story relevantSections by "orderInStory" from the smallest to the biggest
+                props.story?.relevantSections?.sort((a, b) => a.orderInStory - b.orderInStory).map((section, index) => (
                     <Accordion key={'accordition-' + (index + 1)} expanded={expanded === 'panel' + (index + 1)} onChange={handleChange('panel' + (index + 1))} className='rounded-xl shadow-md'>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Accordion {index + 1}</Typography>
+                            <Typography>{section.title}</Typography>
                         </AccordionSummary>
                         <AccordionDetails isMobile={props.isMobile} story={props.story} className='overflow-y-scroll hide-scrollbar'>
-                            {/* <SectionCard key={sectionTmp.title} title={sectionTmp.title} className='my-6 overflow-y-hidden' style={{ height: isMobile ? 'auto' : `calc((100vh - 145px)/${story.relevantSections.length})`, maxHeight: isMobile ? '75vh' : '' }}> */}
                             <HtmlContent>
-                                {sectionTmp}
+                                {section.description}
                             </HtmlContent>
-                            {/* </SectionCard> */}
                         </AccordionDetails>
                     </Accordion>
                 ))
@@ -118,13 +116,11 @@ const AccordionDetails = styled(({ isMobile, story, ...rest }) => (
     <MuiAccordionDetails {...rest} style={{
         minHeight: '20vh',
         height: isMobile ? 'auto' : (story?.relevantSections?.length > 1 ? `calc((100vh - 140px)/${story?.relevantSections?.length})` : 'fit-content'),
-        maxHeight: isMobile ? '75vh' : ''
+        maxHeight: isMobile ? '75vh' : '70vh'
     }} /* className='overflow-y-scroll hide-scrollbar' */ />
 ))(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
-
-
 
 // style={{height: props.isMobile ? 'auto' : `calc((100vh - 145px)/${props.story.relevantSections.length})`, maxHeight: props.isMobile ? '75vh' : ''}}

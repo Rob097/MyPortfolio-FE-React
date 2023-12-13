@@ -99,7 +99,7 @@ const Projects = (props) => {
                                                     subtitle={entity.school || undefined}
                                                     description={entity.description}
                                                     chips={entity.skills?.slice(0, 5)}
-                                                    bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT")}
+                                                    bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + (entity.toDate ? " - " + new Date(entity.toDate).toLocaleDateString("it-IT") : "")}
                                                     buttons={[
                                                         {
                                                             label: t('common:read-more'),

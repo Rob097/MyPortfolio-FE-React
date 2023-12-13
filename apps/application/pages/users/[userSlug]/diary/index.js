@@ -86,7 +86,9 @@ const Diary = () => {
                     <Box id='professional-experiences-section' component='section' className='mt-12 xl:mt-0 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-experiences')}</Typography>
+                            <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
+                                <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-experiences')}</Typography>
+                            </Link>
 
                             <Grid container className='mt-4' spacing={2}>
 
@@ -132,7 +134,9 @@ const Diary = () => {
                 <Box id='personal-projects-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
                     <ShowIf condition={filteredProjects?.length > 0}>
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
+                            <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
+                                <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-projects')}</Typography>
+                            </Link>
 
                             <Grid container className='mt-4' spacing={2}>
 
@@ -176,7 +180,9 @@ const Diary = () => {
                     <Box id='educations-section' component='section' className='mt-12 xl:mt-0 pt-10 flex'>
 
                         <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : 'sm:mx-8'}>
-                            <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-educations')}</Typography>
+                            <Link href='/users/[userSlug]/diary/educations#educations' as={`/users/${userSlug}/diary/educations#educations`}>
+                                <Typography variant="h3" fontWeight="bold" color="dark" textAlign={{ xs: 'center', md: 'left' }} className='mt-8'>{t('categories.list.personal-educations')}</Typography>
+                            </Link>
 
                             <Grid container className='mt-4' spacing={2}>
 
