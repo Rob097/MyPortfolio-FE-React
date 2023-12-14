@@ -47,9 +47,9 @@ const Project = (props) => {
                     <StoriesNavbar entity={entity} entities={props.entities} category={props.entityType} />
 
                     {/* Add the entity image: */}
-                    <ShowIf condition={entity?.image !== undefined}>
+                    <ShowIf condition={entity?.coverImage !== undefined}>
                         <Box className='relative w-full h-96 md:h-128 px-6'>
-                            <img src={entity?.image} alt={entity?.title || entity?.field} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
+                            <img src={entity?.coverImage} alt={entity?.title || entity?.field} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
                         </Box>
                     </ShowIf>
 

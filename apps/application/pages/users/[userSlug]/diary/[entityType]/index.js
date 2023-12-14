@@ -94,7 +94,7 @@ const Projects = (props) => {
                                         filteredEntities.slice(0, 6).map((entity) => (
                                             <Grid key={entity.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
                                                 <SquareCard
-                                                    image={entity.image}
+                                                    image={entity.coverImage}
                                                     title={entity.title || entity.field}
                                                     subtitle={entity.school || undefined}
                                                     description={entity.description}

@@ -96,7 +96,7 @@ const Diary = () => {
                                     filteredExperiences.slice(0, 3).map((experience) => (
                                         <Grid key={experience.id} item xs={12} sm={6} lg={filteredExperiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
-                                                image={experience.image}
+                                                image={experience.coverImage}
                                                 title={experience.title}
                                                 subtitle={experience.company}
                                                 description={experience.description}
@@ -144,7 +144,7 @@ const Diary = () => {
                                     filteredProjects.slice(0, 3).map((project) => (
                                         <Grid key={project.id} item xs={12} sm={6} lg={filteredProjects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
-                                                image={project.image}
+                                                image={project.coverImage}
                                                 title={project.title}
                                                 description={project.description}
                                                 chips={project.skills?.slice(0, 5)}
@@ -190,7 +190,7 @@ const Diary = () => {
                                     filteredEducations.slice(0, 3).map((education) => (
                                         <Grid key={education.id} item xs={12} sm={6} lg={filteredEducations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
-                                                image={education.image}
+                                                image={education.coverImage}
                                                 title={education.field}
                                                 subtitle={education.school}
                                                 description={education.description}

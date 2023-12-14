@@ -15,6 +15,7 @@ export class Education extends SlugDto {
     mainStoryId?: number;
     stories?: Story[];
     skills?: Skill[];
+    coverImage?: string;
 
     constructor(obj: any) {
         super(obj);
@@ -29,6 +30,7 @@ export class Education extends SlugDto {
         this.mainStoryId = obj.mainStoryId;
         this.stories = obj.stories;
         this.skills = obj.skills;
+        this.coverImage = obj.coverImage;
     }
 }
 
