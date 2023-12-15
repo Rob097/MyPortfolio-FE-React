@@ -5,6 +5,7 @@ import tailwindConfig from '@/tailwind.config.js';
 import { Avatar, Box, Button, Divider, Grid, Tooltip, Typography } from '@mui/material';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
@@ -33,7 +34,8 @@ const DiaryLayout = ({ children, title, id, showStoryFilters, showBreadcrumbs, p
                     <Grid item xs={12} md={4} height='25em' marginBottom={2} className='h-fit md:h-full' style={{ zIndex: '1' }}>
                         <Box className='flex justify-center items-center h-fit md:h-full'>
                             <Box className='w-fit flex md:justify-start md:items-start justify-center items-center flex-col'>
-                                <Avatar id="personalCardAvatar" src={JSON.parse(user?.customizations)?.profileImage} sx={{ width: 150, height: 150 }} variant='circular' />
+                                {/* <Avatar id="personalCardAvatar" src={JSON.parse(user?.customizations)?.profileImage} sx={{ width: 150, height: 150 }} variant='circular' /> */}
+                                <Image id="personalCardImage" src={JSON.parse(user?.customizations)?.profileImage} width={150} height={150} style={{ width: '150px', height: '150px' }} className='rounded-full object-cover' alt={`${user?.firstName} ${user?.lastName}`} />
                                 <Link href='/users/[userSlug]/home' as={`/users/${userSlug}/home`}>
                                     <Typography variant="h3" fontWeight="bold" color="primary" textAlign={{ xs: 'center', md: 'left' }}>{`${user?.firstName} ${user?.lastName}`}</Typography>
                                 </Link>

@@ -4,6 +4,7 @@ import tailwindConfig from '@/tailwind.config.js';
 import { Box, Button, Container, Grid, Tooltip } from "@mui/material";
 import ShowIf from '@/components/utils/showIf';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const HeroSection = (props) => {
     const { colors } = tailwindConfig.theme;
@@ -62,7 +63,12 @@ const HeroSection = (props) => {
 
                     </Grid>
                     <Grid item md={6} alignSelf="center" className='flex justify-center items-center'>
-                        <img src={props.img} style={{ maxHeight: '30em', maxWidth: '100%', borderRadius: '1rem' }} />
+                        <Image 
+                            src={props.img.src} 
+                            width={400} 
+                            height={500}
+                            style={{ maxHeight: '30em', maxWidth: '100%', borderRadius: '1rem' }} 
+                            alt={props.img.alt} />
                     </Grid>
                 </Grid>
             </Container>
