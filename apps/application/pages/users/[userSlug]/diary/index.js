@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import userClasses from '../styles/shared.module.scss';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
+import Head from 'next/head';
 
 const Diary = () => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
@@ -71,6 +72,16 @@ const Diary = () => {
 
     return (
         <>
+
+            <Head>
+                <title>{`MyPortfolio | Diary of ${user?.firstName} ${user?.lastName}`}</title>
+                <meta name="description" content={`Personal diary of ${user?.firstName} ${user?.lastName}. ${user?.experiences?.length} experiences, ${user?.projects?.length} projects, ${user?.educations?.length} educations.`} />
+                <meta name="keywords" content={`${user?.firstName} ${user?.lastName}, ${user?.experiences?.[0]?.title}, ${user?.projects?.[0]?.title}, ${user?.educations?.[0]?.field}`} />
+                <meta name="author" content={`${user?.firstName} ${user?.lastName}`} />
+                <meta name="robots" content="index, follow" />
+                <meta name="googlebot" content="index, follow" />
+            </Head>
+
             <Box id="diary-stories-filter">
                 <StoriesFilters emitFilters={emitFilters} skills={skills} filtersToHide={['sort']} />
             </Box>

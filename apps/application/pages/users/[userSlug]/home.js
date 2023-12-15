@@ -83,7 +83,7 @@ const UserHome = () => {
         <>
 
             <Head>
-                <title>{`${user?.firstName} ${user?.lastName} | MyPortfolio`}</title>
+                <title>{`MyPortfolio | ${user?.firstName} ${user?.lastName}`}</title>
                 <meta name="description" content={user?.presentation} />
                 <meta name="keywords" content={user?.skills?.map(skill => skill.skill.name).join(', ')} />
                 <meta name="author" content={`${user?.firstName} ${user?.lastName}`} />

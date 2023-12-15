@@ -16,6 +16,7 @@ import UserService from '@/services/user.service';
 import { Box, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 
@@ -41,6 +42,16 @@ const Story = (props) => {
 
     return (
         <>
+
+            <Head>
+                <title>{story?.title}</title>
+                <meta name="description" content={`${story?.title}, a story of my ${props.entityType} ${props.entity?.title || props.entity?.field}`} />
+                <meta name="keywords" content={`${story?.title}, ${props.entityType}`} />
+                <meta name="author" content={props.user?.firstName + ' ' + props.user?.lastName} />
+                <meta name="robots" content="index, follow" />
+                <meta name="googlebot" content="index, follow" />
+            </Head>
+
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 

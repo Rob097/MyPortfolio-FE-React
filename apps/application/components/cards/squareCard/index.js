@@ -28,9 +28,11 @@ const SquareCard = ({ image, title, subtitle, description, chips, bottomCaption,
                 />
             </ShowIf>
             <CardContent className={(image === undefined ? 'mt-4' : '')}>
-                <Typography gutterBottom variant="h3">
-                    {capitalizeFirstLetter(title)}
-                </Typography>
+                <Link href={buttons[0]?.link} scroll={!buttons[0]?.blockScroll}>
+                    <Typography gutterBottom variant="h3">
+                        {capitalizeFirstLetter(title)}
+                    </Typography>
+                </Link>
                 <ShowIf condition={subtitle !== undefined}>
                     <Typography gutterBottom variant='h5'>
                         {capitalizeFirstLetter(subtitle)}

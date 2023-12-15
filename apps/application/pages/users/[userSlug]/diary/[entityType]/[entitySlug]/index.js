@@ -16,6 +16,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Box, Button, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -44,6 +45,16 @@ const Project = (props) => {
 
     return (
         <>
+
+            <Head>
+                <title>{`MyPortfolio | ${entity?.title || entity?.field} by ${props.user?.firstName} ${props.user?.lastName}`}</title>
+                <meta name="description" content={entity?.description} />
+                <meta name="keywords" content={entity?.skills?.map(skill => skill.name).join(', ')} />
+                <meta name="author" content={props.user?.firstName + ' ' + props.user?.lastName} />
+                <meta name="robots" content="index, follow" />
+                <meta name="googlebot" content="index, follow" />
+            </Head>
+
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 

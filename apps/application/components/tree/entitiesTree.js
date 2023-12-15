@@ -57,7 +57,7 @@ export const EntitiesTreeContent = ({ entity, entities, category, story }) => {
         const storySlug = entities.find((entity) => entity?.id === entityId)?.stories?.find((story) => story.id === storyId)?.slug;
 
         if (storySlug)
-            router.push(`/users/${router.query.userSlug}/diary/${category}/${entitySlug}/${storySlug}${domSection}`, undefined, { shallow: true });
+            router.push(`/users/${router.query.userSlug}/diary/${category}/${entitySlug}/${storySlug}${domSection}`);
         else
             router.push(`/users/${router.query.userSlug}/diary/${category}/${entitySlug}${domSection}`);
     }

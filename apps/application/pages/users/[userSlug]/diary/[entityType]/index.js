@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import experiencesClasses from '../../styles/experiences.module.scss';
 import StoriesFilters from '@/components/whiteBar/storiesFilters';
+import Head from 'next/head';
 
 
 const Projects = (props) => {
@@ -54,7 +55,7 @@ const Projects = (props) => {
                 (isSkillsEmptyStringOrEmptyArray || entity.skills.map(skill => skill.name).includes(...filters.skills)) &&
                 (entity.title || entity.field).toLowerCase().includes(filters.name.toLowerCase())
             ).sort((a, b) => {
-                const orderType = filters.sort;                
+                const orderType = filters.sort;
                 if (orderType === 'dateDown') {
                     return new Date(b.fromDate || b.updatedAt).getTime() - new Date(a.fromDate || a.updatedAt).getTime();
                 } else if (orderType === 'dateUp') {
@@ -69,71 +70,83 @@ const Projects = (props) => {
     }
 
     return (
-        <Box id='entities-section' component='section' className='pb-20'>
+        <>
 
-            <Box id="diary-stories-filter">
-                <StoriesFilters emitFilters={emitFilters} skills={skills} filtersToHide={['categories']} />
-            </Box>
+            <Head>
+                <title>{`MyPortfolio | ${t('categories.list.personal-' + props.entityType)} - ${props.user.firstName} ${props.user.lastName}`}</title>
+                <meta name="description" content={`${t('categories.list.personal-' + props.entityType)} of ${props.user.firstName} ${props.user.lastName} - ${props.entities?.length} ${t('categories.list.' + props.entityType)}`} />
+                <meta name="keywords" content={`${props.entities?.length > 0 ? props.entities[0].title : ''}${props.entities?.length > 1 ? ', ' + props.entities[1].title : ''}${props.entities?.length > 2 ? ', ' + props.entities[2].title : ''}`} />
+                <meta name="author" content={`${props.user.firstName} ${props.user.lastName}`} />
+                <meta name="robots" content="index, follow" />
+                <meta name="googlebot" content="index, follow" />
+            </Head>
 
-            <ShowIf condition={!showTimeline}>
-                <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
-                        <Box className={isSmallerThanLg ? 'mx-8' : ''}>
+            <Box id='entities-section' component='section' className='pb-20'>
 
-                            <Stack direction='row' spacing={2} className='items-end my-10'>
-                                <Typography variant="h2" fontWeight='bold'>{t('common:list')}</Typography>
-                                <Box className={experiencesClasses.container} display={filteredEntities?.length > 3 ? 'block' : 'block'}>
-                                    <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
-                                        {t('view-as-timeline')}
-                                    </Button>
+                <Box id="diary-stories-filter">
+                    <StoriesFilters emitFilters={emitFilters} skills={skills} filtersToHide={['categories']} />
+                </Box>
+
+                <ShowIf condition={!showTimeline}>
+                    <Box id='stories-section' component='section' className='mt-12 xl:mt-0 pt-10'>
+                        <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
+                            <Box className={isSmallerThanLg ? 'mx-8' : ''}>
+
+                                <Stack direction='row' spacing={2} className='items-end my-10'>
+                                    <Typography variant="h2" fontWeight='bold'>{t('common:list')}</Typography>
+                                    <Box className={experiencesClasses.container} display={filteredEntities?.length > 3 ? 'block' : 'block'}>
+                                        <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>
+                                            {t('view-as-timeline')}
+                                        </Button>
+                                    </Box>
+                                </Stack>
+                                <Box className="w-full mt-8 mb-20">
+                                    <Grid container className='mt-4' spacing={2}>
+                                        {
+                                            filteredEntities.slice(0, 6).map((entity) => (
+                                                <Grid key={entity.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
+                                                    <SquareCard
+                                                        image={entity.coverImage}
+                                                        title={entity.title || entity.field}
+                                                        subtitle={entity.school || undefined}
+                                                        description={entity.description}
+                                                        chips={entity.skills?.slice(0, 5)}
+                                                        bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + (entity.toDate ? " - " + new Date(entity.toDate).toLocaleDateString("it-IT") : "")}
+                                                        buttons={[
+                                                            {
+                                                                label: t('common:read-more'),
+                                                                link: `/users/${props.user.slug}/diary/${props.entityType}/${entity.slug}#mainEntityStory`
+                                                            }
+                                                        ]}
+                                                    />
+                                                </Grid>
+                                            ))
+                                        }
+                                    </Grid>
                                 </Box>
-                            </Stack>
-                            <Box className="w-full mt-8 mb-20">
-                                <Grid container className='mt-4' spacing={2}>
-                                    {
-                                        filteredEntities.slice(0, 6).map((entity) => (
-                                            <Grid key={entity.id} item xs={12} sm={6} lg={4} className='flex justify-center sm:justify-start items-start'>
-                                                <SquareCard
-                                                    image={entity.coverImage}
-                                                    title={entity.title || entity.field}
-                                                    subtitle={entity.school || undefined}
-                                                    description={entity.description}
-                                                    chips={entity.skills?.slice(0, 5)}
-                                                    bottomCaption={new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + (entity.toDate ? " - " + new Date(entity.toDate).toLocaleDateString("it-IT") : "")}
-                                                    buttons={[
-                                                        {
-                                                            label: t('common:read-more'),
-                                                            link: `/users/${props.user.slug}/diary/${props.entityType}/${entity.slug}#mainEntityStory`
-                                                        }
-                                                    ]}
-                                                />
-                                            </Grid>
-                                        ))
-                                    }
-                                </Grid>
+
+                                <Pagination count={pages} variant="outlined" color="primary" className='relative z-10' />
+
                             </Box>
+                        </Container>
+                    </Box>
+                </ShowIf>
 
-                            <Pagination count={pages} variant="outlined" color="primary" className='relative z-10' />
-
-                        </Box>
-                    </Container>
-                </Box>
-            </ShowIf>
-
-            <ShowIf condition={showTimeline}>
-                <Box id='timeline-section' component='section' className='mt-12 xl:mt-0 pt-10'>
-                    <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
-                        <Box className={isSmallerThanLg ? 'mx-8' : ''}>
-                            <Stack direction='row' spacing={2} className='items-end my-10'>
-                                <Typography variant="h2" fontWeight='bold'>Timeline</Typography>
-                                <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>{t('view-as-list')}</Button>
-                            </Stack>
-                            <EntitiesTimeline entities={entities} />
-                        </Box>
-                    </Container>
-                </Box>
-            </ShowIf>
-        </Box>
+                <ShowIf condition={showTimeline}>
+                    <Box id='timeline-section' component='section' className='mt-12 xl:mt-0 pt-10'>
+                        <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
+                            <Box className={isSmallerThanLg ? 'mx-8' : ''}>
+                                <Stack direction='row' spacing={2} className='items-end my-10'>
+                                    <Typography variant="h2" fontWeight='bold'>Timeline</Typography>
+                                    <Button onClick={toggleTimeline} variant="contained" color="primary" size="small" className='shineButton h-fit py-2' sx={{ borderRadius: '50px' }}>{t('view-as-list')}</Button>
+                                </Stack>
+                                <EntitiesTimeline entities={entities} />
+                            </Box>
+                        </Container>
+                    </Box>
+                </ShowIf>
+            </Box>
+        </>
     )
 }
 
