@@ -17,7 +17,7 @@ import { Box, Button, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Project = (props) => {
     const { t } = useTranslation(['user-diary']);
@@ -39,6 +39,9 @@ const Project = (props) => {
     const isSmallerThanLg = isSmallerThan('lg');
     const isSmallerThanMd = isSmallerThan('md');
 
+    const imgRef = useRef();
+    const [objectFit, setObjectFit] = useState('cover');
+
     return (
         <>
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
@@ -48,8 +51,21 @@ const Project = (props) => {
 
                     {/* Add the entity image: */}
                     <ShowIf condition={entity?.coverImage !== undefined}>
-                        <Box className='relative w-full h-96 md:h-128 px-6'>
-                            <img src={entity?.coverImage} alt={entity?.title || entity?.field} className='object-cover w-full h-full rounded-xl shadow-2xl shadow-slate-900' />
+                        <Box className='relative w-full h-fit md:h-full md:max-h-96 px-6 mt-10 flex justify-center items-center '
+                            sx={{
+                                backgroundImage: `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 10%, rgba(255, 255, 255, 0.7) 90%, rgba(255, 255, 255, 0) 100%)`,
+                                backdropFilter: { xs: 'none', lg: 'blur(15px) saturate(1)' }
+                            }}
+                            onMouseEnter={() => setObjectFit('contain')}
+                            onMouseLeave={() => setObjectFit('cover')}
+                        >
+                            <img
+                                crossOrigin={"Anonymous"}
+                                ref={imgRef}
+                                src={entity?.coverImage}
+                                alt={entity?.title || entity?.field}
+                                className={`object-contain md:object-${objectFit} ${objectFit === 'contain' ? 'w-fit' : 'md:w-full'} w-fit h-fit max-h-96 md:h-full md:max-h-full mx-auto rounded-xl shadow-xl shadow-black-400 rounded-xl`}
+                            />
                         </Box>
                     </ShowIf>
 
