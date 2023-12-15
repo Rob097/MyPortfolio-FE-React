@@ -17,6 +17,8 @@ import { Suspense } from "react";
 import { ErrorBoundary } from 'react-error-boundary';
 import { SWRConfig } from 'swr';
 import Custom500 from './500';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -41,6 +43,9 @@ function MyApp(props) {
                 <SWRConfig value={{ fallback: pageProps.fallback }}>
                   <Layout Component={Component} pageProps={pageProps} />
                 </SWRConfig>
+
+                <Analytics />
+                <SpeedInsights/>
 
               </ErrorBoundary>
             </ThemeProvider>
