@@ -1,4 +1,5 @@
 import whiteBarClasses from '@/components/whiteBar/whiteBar.module.scss';
+import tailwindConfig from '@/tailwind.config.js';
 import Timeline from '@mui/lab/Timeline';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
@@ -6,11 +7,10 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import { Box, Container, Typography } from '@mui/material';
-import Link from 'next/link';
-import classes from './userTimeline.module.scss';
-import { useMemo } from 'react';
-import tailwindConfig from '@/tailwind.config.js';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import classes from './userTimeline.module.scss';
 
 const UserTimeline = ({ user }) => {
     const { t } = useTranslation(['user-home', 'common']);
@@ -48,80 +48,55 @@ const UserTimeline = ({ user }) => {
                             flex: 0,
                             padding: 0,
                         },
-                        backgroundColor: { xs: 'transparent', sm: 'rgba(255, 255, 255, 0.75)' },
-                        backdropFilter: { xs: 'none', sm: 'saturate(200%) blur(30px)' },
+                        backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                        backdropFilter: 'saturate(200%) blur(30px)',
                     }}
-                    className='relative sm:rounded-xl sm:shadow-2xl sm:py-8'
+                    className='relative rounded-xl shadow-2xl py-8'
                 >
                     <Box className='absolute w-fit h-fit top-8 right-8 hidden md:block'>
                         <img src='/images/Group.svg' />
                     </Box>
-                    <TimelineItem className={`${classes.timelineItem} ${classes.odd}`}>
-                        <TimelineSeparator >
-                            {/* <TimelineConnector className={classes.peripheralConnector} /> */}
-                            <TimelineDot className={classes.dot} >
-                                <img src='/images/workIcon.png' className={classes.dotImage} />
-                            </TimelineDot>
-                            <TimelineConnector className={classes.centralConnector} />
-                        </TimelineSeparator>
-                        <Link href={`/users/${user?.slug}/diary/experiences/${experience?.slug}#mainEntityStory`} className='w-full' >
-                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
-                                <Typography variant="h4" component="span" color="dark.main">
-                                    {t('quick-overview.what-i-do')}
-                                </Typography>
-                                <Typography variant="subtitle1">{experience?.title}</Typography>
-                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.company')}: </Typography>
-                                <Typography variant="overline" color="primary.main">{experience?.companyName}, {experience?.location}</Typography>
-                                <br />
-                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                                <Typography variant="overline" color="primary.main">{new Date(experience?.fromDate).getFullYear()} - {experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                                <Typography variant='body2'>{experience?.description}</Typography>
-                            </TimelineContent>
-                        </Link>
-                    </TimelineItem>
 
-                    <TimelineItem className={`${classes.timelineItem} ${classes.even}`}>
-                        <TimelineSeparator >
-                            <TimelineDot className={classes.dot} >
-                                <img src='/images/educationIcon.png' className={classes.dotImage} />
-                            </TimelineDot>
-                            <TimelineConnector className={classes.centralConnector} />
-                        </TimelineSeparator>
-                        <Link href={`/users/${user?.slug}/diary/educations/${education?.slug}#mainEntityStory`} className='w-full' >
-                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
-                                <Typography variant="h4" component="span" color="dark.main">
-                                    {t('quick-overview.what-i-studied')}
-                                </Typography>
-                                <Typography variant="subtitle1">{education?.field}</Typography>
-                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.institute')}: </Typography>
-                                <Typography variant="overline" color="primary.main">{education?.school}</Typography>
-                                <br />
-                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                                <Typography variant="overline" color="primary.main">{new Date(education?.fromDate).getFullYear()} - {education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                                <Typography variant='body2'>{education?.description}</Typography>
-                            </TimelineContent>
-                        </Link>
-                    </TimelineItem>
+                    <TimelineElement
+                        userSlug={user?.slug}
+                        entityType='experiences'
+                        entitySlug={experience?.slug}
+                        separatorImage='/images/workIcon.png'
+                        title={t('quick-overview.what-i-do')}
+                        subtitle={experience?.title}
+                        firstCaption={t('quick-overview.company')}
+                        firstOverline={`${experience?.companyName}, ${experience?.location}`}
+                        secondCaption={t('quick-overview.period')}
+                        secondOverline={`${new Date(experience?.fromDate).getFullYear()} - ${experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}`}
+                        description={experience?.description}
+                    />
 
-                    <TimelineItem className={`${classes.timelineItem} ${classes.odd}`}>
-                        <TimelineSeparator >
-                            <TimelineDot className={classes.dot} >
-                                <img src='/images/projectIcon.png' className={classes.dotImage} />
-                            </TimelineDot>
-                            <TimelineConnector className={classes.centralConnector} />
-                        </TimelineSeparator>
-                        <Link href={`/users/${user?.slug}/diary/projects/${project?.slug}#mainEntityStory`} className='w-full' >
-                            <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG}`}>
-                                <Typography variant="h4" component="span" color="dark.main">
-                                    {t('quick-overview.what-im-working-on')}
-                                </Typography>
-                                <Typography variant="subtitle1" >{project?.title}</Typography>
-                                <Typography variant="caption" display={{ xs: 'none', sm: 'initial' }} >{t('quick-overview.period')}: </Typography>
-                                <Typography variant="overline" color="primary.main">{new Date(project?.fromDate).getFullYear()} - {project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}</Typography>
-                                <Typography variant='body2'>{project?.description}</Typography>
-                            </TimelineContent>
-                        </Link>
-                    </TimelineItem>
+                    <TimelineElement
+                        userSlug={user?.slug}
+                        entityType='educations'
+                        entitySlug={education?.slug}
+                        separatorImage='/images/educationIcon.png'
+                        title={t('quick-overview.what-i-studied')}
+                        subtitle={education?.field}
+                        firstCaption={t('quick-overview.institute')}
+                        firstOverline={education?.school}
+                        secondCaption={t('quick-overview.period')}
+                        secondOverline={`${new Date(education?.fromDate).getFullYear()} - ${education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}`}
+                        description={education?.description}
+                    />
+
+                    <TimelineElement
+                        userSlug={user?.slug}
+                        entityType='projects'
+                        entitySlug={project?.slug}
+                        separatorImage='/images/projectIcon.png'
+                        title={t('quick-overview.what-im-working-on')}
+                        subtitle={project?.title}
+                        firstCaption={t('quick-overview.period')}
+                        firstOverline={`${new Date(project?.fromDate).getFullYear()} - ${project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}`}
+                        description={project?.description}
+                    />
+
                 </Timeline>
             </Container>
         </Box>
@@ -154,4 +129,31 @@ const DividerShape = ({ reverse }) => {
         </div>
     )
 
+}
+
+const TimelineElement = (props) => {
+    return (
+        <TimelineItem className={`${classes.timelineItem}`}>
+            <TimelineSeparator >
+                <TimelineDot className={classes.dot} >
+                    <img src={props.separatorImage} className={classes.dotImage} />
+                </TimelineDot>
+                <TimelineConnector className={classes.centralConnector} />
+            </TimelineSeparator>
+            <Link href={`/users/${props.userSlug}/diary/${props.entityType}/${props.entitySlug}#mainEntityStory`} className='w-full' >
+                <TimelineContent className={`${classes.timelineContent} rounded-lg ease-in duration-300 hover:border hover:shadow-lg ${classes.saturatedBG} text-center sm:text-left`}>
+                    <Typography variant="h4" component="span" color="dark.main">
+                        {props.title}
+                    </Typography>
+                    <Typography variant="subtitle1">{props.subtitle}</Typography>
+                    <Typography variant="caption" display='initial'>{props.firstCaption}: </Typography>
+                    <Typography variant="overline" color="primary.main">{props.firstOverline}</Typography>
+                    <br />
+                    {props.secondCaption && <Typography variant="caption" display='initial'>{props.secondCaption}: </Typography>}
+                    {props.secondOverline && <Typography variant="overline" color="primary.main">{props.secondOverline}</Typography>}
+                    <Typography variant='body2' className='text-justify sm:text-left'>{props.description}</Typography>
+                </TimelineContent>
+            </Link>
+        </TimelineItem>
+    );
 }

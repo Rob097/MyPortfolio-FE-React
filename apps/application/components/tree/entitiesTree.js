@@ -33,7 +33,7 @@ const EntitiesTree = (props) => {
     }, [entityType]);
 
     return (
-        <Box className='h-fit sticky md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>
+        <Box className={'h-fit md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl ' + (props.sticky ? 'sticky' : '')}>
             <Typography variant="h4" component="div" fontWeight='bold' textAlign={isGreaterThanMd ? 'right' : 'left'} className='mb-4'>{sectionTitle}</Typography>
             <EntitiesTreeContent {...props} />
         </Box>

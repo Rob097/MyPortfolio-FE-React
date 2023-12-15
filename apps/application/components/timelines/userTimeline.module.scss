@@ -40,38 +40,14 @@
 }
 
 @media (max-width: theme('screens.sm')) {
+    .centralConnector {
+        display: none;
+    }
+
     .timelineItem {
         flex-direction: column;
-        background-color: #ededed;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid black;
+        align-items: center;
     }
-
-    .timelineItem.odd {
-        align-items: end;
-        padding-right: 0.5rem;
-        border-start-start-radius: 100%;
-        border-start-end-radius: 18%;
-        border-left: 5px solid black;
-    }
-
-    .timelineItem.even {
-        align-items: start;
-        padding-left: 0.5rem;
-        border-start-end-radius: 100%;
-        border-start-start-radius: 18%;
-        border-right: 5px solid black;
-    }
-
-    .odd .timelineContent {
-        text-align: right;
-    }
-
-    .even .timelineContent {
-        text-align: left;
-    }
-
 }
 
 .saturatedBG:hover {

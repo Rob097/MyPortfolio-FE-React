@@ -128,7 +128,7 @@ const Project = (props) => {
                                 </Box>
                             </ShowIf>
                         </Grid>
-                        <Grid item xs={12} md={5} className='h-full sticky top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
+                        <Grid item xs={12} md={5} className='h-full top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
                             <EntitiesTree entity={entity} entities={props.entities} category={props.entityType} />
 
                             <ShowIf condition={entity?.skills?.length > 0}>

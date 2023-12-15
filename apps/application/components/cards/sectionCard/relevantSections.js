@@ -46,7 +46,7 @@ const RelevantSections = (props) => {
                             <Typography variant="h4" component="div" fontWeight='bold'>{entityTreeTitle}</Typography>
                         </AccordionSummary>
                         <AccordionDetails isMobile={props.isMobile} story={props.story} className='overflow-y-scroll hide-scrollbar'>
-                            <EntitiesTree story={props.story} entity={props.entity} entities={props.entities} category={props.entityType} />
+                            <EntitiesTree story={props.story} entity={props.entity} entities={props.entities} category={props.entityType} sticky />
                         </AccordionDetails>
                     </Accordion>
                 )
