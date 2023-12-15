@@ -64,7 +64,7 @@ const Project = (props) => {
                                 ref={imgRef}
                                 src={entity?.coverImage}
                                 alt={entity?.title || entity?.field}
-                                className={`object-contain md:object-${objectFit} ${objectFit === 'contain' ? 'w-fit' : 'md:w-full'} w-fit h-fit max-h-96 md:h-full md:max-h-full mx-auto rounded-xl shadow-xl shadow-black-400 rounded-xl`}
+                                className={`object-contain ${objectFit === 'contain' ? 'w-fit' : 'md:w-full md:object-cover'} w-fit h-fit max-h-96 md:h-full md:max-h-full mx-auto rounded-xl shadow-xl shadow-black-400 rounded-xl`}
                             />
                         </Box>
                     </ShowIf>
