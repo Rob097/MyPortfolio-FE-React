@@ -1,3 +1,4 @@
+import MouseControlledButton from "@/components/buttons/MouseControlledButton";
 import HeroSection from "@/components/sections/HeroSection";
 import MainStorySection from '@/components/sections/MainStorySection';
 import MicroHighlightSection, { SingleElement } from '@/components/sections/MicroHighlightSection';
@@ -121,43 +122,10 @@ const UserHome = () => {
 
                 <UserTimeline user={user} />
 
-                <Box className="w-5 h-5 bg-primary-main rounded-full mx-auto mb-4"></Box>
-                <Box className="w-8 h-8 bg-primary-main rounded-full mx-auto mb-4"></Box>
-                <Box className="w-12 h-12 bg-primary-main rounded-full mx-auto mb-4"></Box>
-                <Box className="w-full flex justify-center px-4 mb-4">
-                    <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
-                        <Button variant="contained" color="primary" size="large" className="shineButton">
-                            <Typography variant='h4' component={"p"} color="white" textTransform={"capitalize"} className="contents" ><AutoStoriesIcon className="mr-2" /> {t('read-my-diary')}</Typography>
-                        </Button>
-                    </Link>
+                <Box className="w-full flex justify-center px-4 mb-4 mt-32">
+                    <MouseControlledButton href={`/users/${userSlug}/diary`} text={t('read-my-complete-diary')} icon={<AutoStoriesIcon className="sm:mr-2" fontSize="large" />} />
                 </Box>
             </Box>
-
-            {/* TODO: Cambiare le immagini delle tre cards
-            <Box id='cards-section' component='section'>
-                <Box width='fit-content' m='auto' mb={4}>
-                    <Typography variant="h2" fontWeight="bold" color='dark'>{t('about-me.more')}</Typography>
-                </Box>
-                <Container className={whiteBarClasses.customContainer}>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12} md={4}>
-                            <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
-                                <ImageCard image="/images/Rectangle-22952.png" title={t('cards.diary')} />
-                            </Link>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Link href='/users/[userSlug]/diary/experiences' as={`/users/${userSlug}/diary/experiences`}>
-                                <ImageCard image="/images/Rectangle-22953.png" title={t('cards.experiences')} />
-                            </Link>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Link href='/users/[userSlug]/diary/projects' as={`/users/${userSlug}/diary/projects`}>
-                                <ImageCard image="/images/Rectangle-22954.png" title={t('cards.projects')} />
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Box>*/}
 
             {/* Contact Me Section */}
             <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 30%);` }}>
