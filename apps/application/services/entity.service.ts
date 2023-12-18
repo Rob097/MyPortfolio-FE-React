@@ -1,5 +1,5 @@
 import { EntityTypeEnum } from '@/models/categories.model';
-import { View } from '@/models/criteria.model';
+import { Filters, View } from '@/models/criteria.model';
 import EducationService, {useEducation, useUserEducations} from '@/services/education.service';
 import ExperienceService, { useExperience, useUserExperiences } from '@/services/experience.service';
 import ProjectService, { useProject, useUserProjects } from '@/services/project.service';
@@ -54,12 +54,21 @@ export default class EntityService {
         return this.getService(type).getByUserIdUrl(userId, view);
     }
 
+    // criteria is an instance of a type that extends Filters
+    static getByCriteriaUrl(type: EntityTypeEnum, criteria: Filters) {
+        return this.getService(type).getByCriteriaUrl(criteria);
+    }
+
     static getBySlug(type: EntityTypeEnum, slug: string, view?: View) {
         return this.getService(type).getBySlug(slug, view);
     }
 
     static getByUserId(type: EntityTypeEnum, userId: number, view?: View) {
         return this.getService(type).getByUserId(userId, view);
+    }
+
+    static getByCriteria(type: EntityTypeEnum, criteria: Filters) {
+        return this.getService(type).getByCriteria(criteria);
     }
 
 }

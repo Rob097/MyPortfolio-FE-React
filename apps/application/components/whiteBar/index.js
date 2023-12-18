@@ -13,6 +13,7 @@ const WhiteBar = (props) => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
+                flexDirection={props.flexDirection && props.flexDirection}
                 mx='auto'
                 my={2}
                 py={1.5}

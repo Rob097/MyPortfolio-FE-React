@@ -70,6 +70,10 @@ const Diary = () => {
 
     }
 
+    function getDatesRange(entity) {
+        return new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + " - " + (entity.toDate ? new Date(entity.toDate).toLocaleDateString("it-IT") : t('user-home:quick-overview.present'));
+    }
+
     return (
         <>
 
@@ -112,7 +116,7 @@ const Diary = () => {
                                                 subtitle={experience.company}
                                                 description={experience.description}
                                                 chips={experience.skills?.slice(0, 5)}
-                                                bottomCaption={new Date(experience.fromDate || experience.updatedAt).toLocaleDateString("it-IT") + (experience.toDate ? " - " + new Date(experience.toDate).toLocaleDateString("it-IT") : "")}
+                                                bottomCaption={getDatesRange(experience)}
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),
@@ -159,7 +163,7 @@ const Diary = () => {
                                                 title={project.title}
                                                 description={project.description}
                                                 chips={project.skills?.slice(0, 5)}
-                                                bottomCaption={new Date(project.fromDate || project.updatedAt).toLocaleDateString("it-IT") + (project.toDate ? " - " + new Date(project.toDate).toLocaleDateString("it-IT") : "")}
+                                                bottomCaption={getDatesRange(project)}
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),
@@ -206,7 +210,7 @@ const Diary = () => {
                                                 subtitle={education.school}
                                                 description={education.description}
                                                 chips={education.skills?.slice(0, 5)}
-                                                bottomCaption={new Date(education.fromDate || education.updatedAt).toLocaleDateString("it-IT") + (education.toDate ? " - " + new Date(education.toDate).toLocaleDateString("it-IT") : "")}
+                                                bottomCaption={getDatesRange(education)}
                                                 buttons={[
                                                     {
                                                         label: t('common:read-more'),

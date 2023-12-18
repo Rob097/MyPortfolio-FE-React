@@ -32,7 +32,8 @@
     "filters": {
         "apply": "Applica filtri",
         "by-name": "Cerca per nome",
-        "by-skills": "Cerca per competenze"
+        "by-skills": "Cerca per competenze",
+        "clear": "Pulisci filtri"
     },
     "related-skills": "Competenze correlate",
     "view-as-timeline": "Visualizza come timeline",

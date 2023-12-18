@@ -23,6 +23,16 @@ const EntitiesTimeline = ({ entities }) => {
         return <h2 className='text-center'>{t('errors.no-data-found')}</h2>;
     }*/
 
+    // Order the entities by fromDate ASC:
+    useEffect(() => {
+        entities.sort((a, b) => {
+            if (a.fromDate && b.fromDate) {
+                return new Date(a.fromDate) - new Date(b.fromDate);
+            }
+            return 0;
+        });
+    }, [entities]);
+
     // Display 3 elements per row:
     const rows = [];
     for (let i = 0; i < entities.length; i += 3) {
@@ -303,14 +313,14 @@ const ElementsLine = ({ isFirst, rowItems, isRowEven, stories }) => {
     );
 
     function getDate(item) {
-        return item?.fromDate ? (new Date(item?.fromDate)?.getMonth()+1 + "/" + new Date(item?.fromDate)?.getFullYear()) : ('🚀');
+        return item?.fromDate ? (new Date(item?.fromDate)?.getMonth() + 1 + "/" + new Date(item?.fromDate)?.getFullYear()) : ('🚀');
     }
 
     const SimpleElement = ({ index, isRowEven }) => (
 
         <Grid item xs={12} lg={1} className={' relative flex justify-center items-center z-10'}>
             <ShowIf condition={!isCoomingSoon && (isAbsoluteLast === -1 || isAbsoluteLast > index - 1)}>
-                <Element text={getDate(rowItems[0])} showArrow={true} isRowEven={isRowEven} />
+                <Element text={getDate(rowItems[index])} showArrow={true} isRowEven={isRowEven} />
             </ShowIf>
         </Grid>
 

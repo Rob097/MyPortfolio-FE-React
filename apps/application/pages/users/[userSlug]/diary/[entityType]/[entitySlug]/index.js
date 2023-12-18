@@ -17,6 +17,7 @@ import { Box, Button, Chip, Container, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -70,12 +71,13 @@ const Project = (props) => {
                             onMouseEnter={() => setObjectFit('contain')}
                             onMouseLeave={() => setObjectFit('cover')}
                         >
-                            <img
+                            <Image
                                 crossOrigin={"Anonymous"}
                                 ref={imgRef}
                                 src={entity?.coverImage}
                                 alt={entity?.title || entity?.field}
-                                className={`object-contain ${objectFit === 'contain' ? 'w-fit' : 'md:w-full md:object-cover'} w-fit h-fit max-h-96 md:h-full md:max-h-full mx-auto rounded-xl shadow-xl shadow-black-400 rounded-xl`}
+                                layout="fill"
+                                className={`object-contain ${objectFit === 'contain' ? 'w-fit' : 'md:w-full md:object-cover'} !relative w-fit h-fit max-h-96 md:h-full md:max-h-full mx-auto rounded-xl shadow-xl shadow-black-400 rounded-xl`}
                             />
                         </Box>
                     </ShowIf>

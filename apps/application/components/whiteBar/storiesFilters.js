@@ -1,15 +1,22 @@
 import WhiteBar from '@/components/whiteBar';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Button, Checkbox, Chip, FormControl, FormHelperText, Grid, InputLabel, ListItemText, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Chip, FormControl, FormHelperText, Grid, InputLabel, ListItemText, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import _without from 'lodash/without';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ShowIf from '@/components/utils/showIf';
 
+const filtersDefaultValues = {
+    categories: [1, 2, 3],
+    skills: [],
+    name: '',
+    sort: ''
+};
+
 const StoriesFilters = ({ emitFilters, skills, filtersToHide }) => {
     const { t } = useTranslation(['user-diary', 'user-home', 'common']);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors, isDirty, isSubmitted } } = useForm();
 
     async function handleFilters(data) {
         emitFilters(data);
@@ -55,10 +62,25 @@ const StoriesFilters = ({ emitFilters, skills, filtersToHide }) => {
 
     const showCategories = (filtersToHide === undefined || filtersToHide.indexOf('categories') === -1);
 
+    const resetFilters = () => {
+        reset(filtersDefaultValues);
+        handleFilters(filtersDefaultValues);
+        setFilterBy('');
+        setFilteredSkills([]);
+        setCategories(categoriesMock.map(({ id }) => id));
+    }
+
 
     return (
-        <WhiteBar height={{ xs: "fit-content", md: "6rem" }} containerClasses='mt-12'>
+        <WhiteBar height={{ xs: "fit-content", md: "6rem" }} containerClasses='mt-12' flexDirection="column">
+            {
+                isSubmitted && isDirty &&
+                <Box className="absolute w-fit flex self-end" >
+                    <Typography variant="overline" fontWeight='bold' color='primary' className='mb-2 cursor-pointer' onClick={() => resetFilters() }>{t('filters.clear')}</Typography>
+                </Box>
+            }
             <Grid container className='items-center' component="form" role="form" onSubmit={handleSubmit((data) => handleFilters(data))}>
+
                 <Grid item xs={12} lg={10} className='flex flex-col sm:flex-row justify-center md:justify-start items-center w-full h-full'>
                     <Box className='flex flex-col md:flex-row justify-center md:justify-start items-center'>
 

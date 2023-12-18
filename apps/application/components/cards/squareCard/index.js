@@ -4,6 +4,7 @@ import { Button, Card, CardActions, CardContent, CardMedia, Chip, Grid, Typograp
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import squareCardClasses from './squareCard.module.scss';
+import Image from 'next/image';
 
 const SquareCard = ({ image, title, subtitle, description, chips, bottomCaption, buttons }) => {
     const { t } = useTranslation(['common']);
@@ -21,11 +22,14 @@ const SquareCard = ({ image, title, subtitle, description, chips, bottomCaption,
 
             <ShowIf condition={image !== undefined}>
                 <CardMedia
-                    component="img"
                     className={squareCardClasses.customCardMedia}
-                    image={image}
-                    title="green iguana"
-                />
+                    title={title + (subtitle ? (' - ' + subtitle) : '')}
+                >
+                    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '10rem', maxHeight: '20rem' }}>
+                        <Image src={image} layout="fill" objectFit="cover" />
+                    </div>
+                </CardMedia>
+
             </ShowIf>
             <CardContent className={(image === undefined ? 'mt-4' : '')}>
                 <Link href={buttons[0]?.link} scroll={!buttons[0]?.blockScroll}>
