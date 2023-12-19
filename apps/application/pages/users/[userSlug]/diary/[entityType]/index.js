@@ -26,7 +26,7 @@ const Projects = (props) => {
     const isGreaterThanLg = isGreaterThan('lg');
     const isSmallerThanLg = isSmallerThan('lg');
     const { entities, isError } = useUserEntities(props.entityType, props.user.id, View.verbose);
-    const [filteredEntities, setFilteredEntities] = useState(entities);
+    const [filteredEntities, setFilteredEntities] = useState(orderEntitiesByDate(entities));
     const [showTimeline, setShowTimeline] = useState(false);
     const pages = Math.ceil(filteredEntities?.length / 6);
 
@@ -51,15 +51,15 @@ const Projects = (props) => {
 
         const isSkillsEmptyStringOrEmptyArray = !filters.skills || filters.skills === '' || filters.skills?.length === 0;
         setFilteredEntities(
-            entities.filter(entity =>
+            orderEntitiesByDate(entities).filter(entity =>
                 (isSkillsEmptyStringOrEmptyArray || entity.skills.map(skill => skill.name).includes(...filters.skills)) &&
                 (entity.title || entity.field).toLowerCase().includes(filters.name.toLowerCase())
             ).sort((a, b) => {
                 const orderType = filters.sort;
                 if (orderType === 'dateDown') {
-                    return new Date(b.fromDate || b.updatedAt).getTime() - new Date(a.fromDate || a.updatedAt).getTime();
+                    return new Date(b.fromDate).getTime() - new Date(a.fromDate).getTime();
                 } else if (orderType === 'dateUp') {
-                    return new Date(a.fromDate || a.updatedAt).getTime() - new Date(b.fromDate || b.updatedAt).getTime();
+                    return new Date(a.fromDate).getTime() - new Date(b.fromDate).getTime();
                 } else if (orderType === 'name') {
                     return (a.title || a.field).localeCompare(b.title || b.field);
                 }
@@ -71,6 +71,30 @@ const Projects = (props) => {
 
     function getDatesRange(entity) {
         return new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + " - " + (entity.toDate ? new Date(entity.toDate).toLocaleDateString("it-IT") : t('user-home:quick-overview.present'));
+    }
+
+    // take the entities passed as paramerer and order them by date
+    // Every entitity has an attribute fromDate
+    // Some entitities have an attribute toDate
+    // If the toDate is not present, the entity is still in progress
+    // First show the entities that are still in progress
+    // Then show the entities that are finished
+    // The entities that are still in progress are ordered by fromDate
+    // The entities that are finished are ordered by toDate
+    function orderEntitiesByDate(passedEntities) {
+        const entitiesInProgress = passedEntities.filter(entity => !entity.toDate);
+        const entitiesFinished = passedEntities.filter(entity => entity.toDate);
+
+        entitiesInProgress.sort((a, b) => {
+            return new Date(b.fromDate).getTime() - new Date(a.fromDate).getTime();
+        });
+
+        entitiesFinished.sort((a, b) => {
+            return new Date(b.toDate).getTime() - new Date(a.toDate).getTime();
+        });
+        
+
+        return [...entitiesInProgress, ...entitiesFinished];
     }
 
     return (

@@ -37,9 +37,9 @@ const Diary = () => {
         }
     }, [isError]);
 
-    const [filteredExperiences, setFilteredExperiences] = useState(user?.experiences);
-    const [filteredProjects, setFilteredProjects] = useState(user?.projects);
-    const [filteredEducations, setFilteredEducations] = useState(user?.educations);
+    const [filteredExperiences, setFilteredExperiences] = useState(orderEntitiesByDate(user?.experiences));
+    const [filteredProjects, setFilteredProjects] = useState(orderEntitiesByDate(user?.projects));
+    const [filteredEducations, setFilteredEducations] = useState(orderEntitiesByDate(user?.educations));
 
     const skills = useMemo(() => {
         const experienceSkillsNames = user?.experiences?.map(experience => experience.skills?.map(skill => skill.name)).flat();
@@ -52,17 +52,17 @@ const Diary = () => {
     const emitFilters = (filters) => {
         const isSkillsEmptyStringOrEmptyArray = filters.skills === '' || filters.skills.length === 0;
 
-        setFilteredExperiences(user.experiences.filter(experience =>
+        setFilteredExperiences(orderEntitiesByDate(user.experiences).filter(experience =>
             filters.categories.includes(1) &&
             (isSkillsEmptyStringOrEmptyArray || experience.skills.map(skill => skill.name).includes(...filters.skills)) &&
             experience.title.toLowerCase().includes(filters.name.toLowerCase())
         ));
-        setFilteredProjects(user.projects.filter(project =>
+        setFilteredProjects(orderEntitiesByDate(user.projects).filter(project =>
             filters.categories.includes(2) &&
             (isSkillsEmptyStringOrEmptyArray || project.skills.map(skill => skill.name).includes(...filters.skills)) &&
             project.title.toLowerCase().includes(filters.name.toLowerCase())
         ));
-        setFilteredEducations(user.educations.filter(education =>
+        setFilteredEducations(orderEntitiesByDate(user.educations).filter(education =>
             filters.categories.includes(3) &&
             (isSkillsEmptyStringOrEmptyArray || education.skills.map(skill => skill.name).includes(...filters.skills)) &&
             education.field.toLowerCase().includes(filters.name.toLowerCase())
@@ -72,6 +72,30 @@ const Diary = () => {
 
     function getDatesRange(entity) {
         return new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + " - " + (entity.toDate ? new Date(entity.toDate).toLocaleDateString("it-IT") : t('user-home:quick-overview.present'));
+    }
+
+    // take the entities passed as paramerer and order them by date
+    // Every entitity has an attribute fromDate
+    // Some entitities have an attribute toDate
+    // If the toDate is not present, the entity is still in progress
+    // First show the entities that are still in progress
+    // Then show the entities that are finished
+    // The entities that are still in progress are ordered by fromDate
+    // The entities that are finished are ordered by toDate
+    function orderEntitiesByDate(passedEntities) {
+        const entitiesInProgress = passedEntities.filter(entity => !entity.toDate);
+        const entitiesFinished = passedEntities.filter(entity => entity.toDate);
+
+        entitiesInProgress.sort((a, b) => {
+            return new Date(b.fromDate).getTime() - new Date(a.fromDate).getTime();
+        });
+
+        entitiesFinished.sort((a, b) => {
+            return new Date(b.toDate).getTime() - new Date(a.toDate).getTime();
+        });
+        
+
+        return [...entitiesInProgress, ...entitiesFinished];
     }
 
     return (

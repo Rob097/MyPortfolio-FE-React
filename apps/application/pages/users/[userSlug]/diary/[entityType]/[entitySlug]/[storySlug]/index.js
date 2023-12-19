@@ -39,7 +39,7 @@ const Story = (props) => {
     const isSmallerThanMd = isSmallerThan('md');
 
     // const showRelevantSections = useMemo(() => { story?.relevantSections != null && story?.relevantSections !== undefined }, [story?.relevantSections]);
-
+    console.log(story?.description);
     return (
         <>
 
