@@ -133,7 +133,7 @@ const Diary = () => {
 
                                 {
                                     filteredExperiences.slice(0, 3).map((experience) => (
-                                        <Grid key={experience.id} item xs={12} sm={6} lg={filteredExperiences.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                        <Grid key={experience.id} item xs={12} sm={6} lg={filteredExperiences.length > 3 ? 3.66 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={experience.coverImage}
                                                 title={experience.title}
@@ -153,7 +153,7 @@ const Diary = () => {
                                 }
 
                                 <ShowIf condition={filteredExperiences.length > 3}>
-                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Grid item xs={12} sm={6} lg={1.02} className='flex justify-center items-center'>
                                         <Tooltip title={filteredExperiences.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
@@ -181,7 +181,7 @@ const Diary = () => {
 
                                 {
                                     filteredProjects.slice(0, 3).map((project) => (
-                                        <Grid key={project.id} item xs={12} sm={6} lg={filteredProjects.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                        <Grid key={project.id} item xs={12} sm={6} lg={filteredProjects.length > 3 ? 3.66 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={project.coverImage}
                                                 title={project.title}
@@ -200,7 +200,7 @@ const Diary = () => {
                                 }
 
                                 <ShowIf condition={filteredProjects.length > 3}>
-                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Grid item xs={12} sm={6} lg={1.02} className='flex justify-center items-center'>
                                         <Tooltip title={filteredProjects.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/projects#projects' as={`/users/${userSlug}/diary/projects#projects`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
@@ -227,7 +227,7 @@ const Diary = () => {
 
                                 {
                                     filteredEducations.slice(0, 3).map((education) => (
-                                        <Grid key={education.id} item xs={12} sm={6} lg={filteredEducations.length > 3 ? 3 : 4} className='flex justify-center sm:justify-start items-start'>
+                                        <Grid key={education.id} item xs={12} sm={6} lg={filteredEducations.length > 3 ? 3.66 : 4} className='flex justify-center sm:justify-start items-start'>
                                             <SquareCard
                                                 image={education.coverImage}
                                                 title={education.field}
@@ -247,7 +247,7 @@ const Diary = () => {
                                 }
 
                                 <ShowIf condition={filteredEducations.length > 3}>
-                                    <Grid item xs={12} sm={6} lg={3} className='flex justify-center items-center'>
+                                    <Grid item xs={12} sm={6} lg={1.02} className='flex justify-center items-center'>
                                         <Tooltip title={filteredEducations.length + " " + t('common:stories')} placement="top" arrow TransitionComponent={Zoom}>
                                             <Link href='/users/[userSlug]/diary/experiences#experiences' as={`/users/${userSlug}/diary/experiences#experiences`}>
                                                 <Avatar variant='rounding' className='bg-white shadow-lg cursor-pointer active:shadow-inner' sx={{ width: 100, height: 100 }}>
