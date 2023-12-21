@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from 'react';
 const Project = (props) => {
     const { t } = useTranslation(['user-diary']);
     const { entity, isError } = useEntity(props.entityType, props.entity?.slug, View.verbose);
-    const [mainStory, setMainStoryId] = useState(entity?.stories?.find(story => story?.id === entity?.mainStoryId));
+    const [entities, setEntities] = useState(props.entities);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
@@ -33,8 +33,20 @@ const Project = (props) => {
     }, [isError]);
 
     useEffect(() => {
-        setMainStoryId(entity?.stories?.find(story => story?.id === entity?.mainStoryId));
-    }, [entity?.mainStoryId, entity?.stories]);
+        const entitiesWithOrderedStories = entities?.map(entity => {
+            const orderedStories = entity?.stories?.sort((a, b) => {
+                if (props.entityType === EntityTypeEnum.EDUCATIONS) {
+                    return a.orderInEducation - b.orderInEducation;
+                } else if (props.entityType === EntityTypeEnum.EXPERIENCES) {
+                    return a.orderInExperience - b.orderInExperience;
+                } else if (props.entityType === EntityTypeEnum.PROJECTS) {
+                    return a.orderInProject - b.orderInProject;
+                }
+            });
+            return { ...entity, stories: orderedStories };
+        });
+        setEntities(entitiesWithOrderedStories);
+    }, [props.entities, props.entityType]);
 
     const { isGreaterThan, isSmallerThan } = useBreakpoints();
     const isGreaterThanLg = isGreaterThan('lg');
@@ -59,7 +71,7 @@ const Project = (props) => {
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoriesNavbar entity={entity} entities={props.entities} category={props.entityType} />
+                    <StoriesNavbar entity={entity} entities={entities} category={props.entityType} />
 
                     {/* Add the entity image: */}
                     <ShowIf condition={entity?.coverImage !== undefined}>
@@ -142,7 +154,7 @@ const Project = (props) => {
                             </ShowIf>
                         </Grid>
                         <Grid item xs={12} md={5} className='h-full top-8 !px-6' sx={{ display: { md: 'block', xs: 'none' } }} >
-                            <EntitiesTree entity={entity} entities={props.entities} category={props.entityType} />
+                            <EntitiesTree entity={entity} entities={entities} category={props.entityType} />
 
                             <ShowIf condition={entity?.skills?.length > 0}>
                                 <Box className='h-fit md:top-32 !p-6 md:mt-16 md:bg-white md:rounded-xl md:shadow-xl'>

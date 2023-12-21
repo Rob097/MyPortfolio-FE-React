@@ -7,12 +7,15 @@ import ProjectService, { useProject, useUserProjects } from '@/services/project.
 export function useEntity(type: EntityTypeEnum, slug: string, view?: View) {
     if(type === EntityTypeEnum.PROJECTS) {
         const { project, isError, isLoading, isValidating } = useProject(slug, view);
+        project.stories = project.stories.sort((a, b) => a.orderInProject - b.orderInProject);
         return {entity: project, isError, isLoading, isValidating};
     } else if(type === EntityTypeEnum.EDUCATIONS) {
         const { education, isError, isLoading, isValidating } = useEducation(slug, view);
+        education.stories = education.stories.sort((a, b) => a.orderInEducation - b.orderInEducation);
         return {entity: education, isError, isLoading, isValidating};
     } else if(type === EntityTypeEnum.EXPERIENCES) {
         const { experience, isError, isLoading, isValidating } = useExperience(slug, view);
+        experience.stories = experience.stories.sort((a, b) => a.orderInExperience - b.orderInExperience);
         return {entity: experience, isError, isLoading, isValidating};
     }
 }

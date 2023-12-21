@@ -18,17 +18,46 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 const Story = (props) => {
     const { t } = useTranslation(['user-diary']);
     const { story, isError } = useStory(props.story?.slug, View.verbose);
+    const [entity, setEntity] = useState(props.entity);
+    const [entities, setEntities] = useState(props.entities);
 
     useEffect(() => {
         if (isError !== undefined && isError != null) {
             throw isError;
         }
     }, [isError]);
+
+    useEffect(() => {
+        if (props.entity !== undefined && props.entity != null) {
+            setEntity(orderStories(props.entity));
+        }
+    }, [props.entity]);
+
+    useEffect(() => {
+        if (props.entities !== undefined && props.entities != null) {
+            setEntities(props.entities.map(entity => orderStories(entity)));
+        }
+    }, [props.entities]);
+
+    function orderStories(entity) {
+        if (entity?.stories?.length > 0) {
+            entity.stories = entity?.stories?.sort((a, b) => {
+                if (props.entityType === EntityTypeEnum.EDUCATIONS) {
+                    return a.orderInEducation - b.orderInEducation;
+                } else if (props.entityType === EntityTypeEnum.EXPERIENCES) {
+                    return a.orderInExperience - b.orderInExperience;
+                } else if (props.entityType === EntityTypeEnum.PROJECTS) {
+                    return a.orderInProject - b.orderInProject;
+                }
+            });
+        }
+        return entity;
+    }
 
     const router = useRouter();
     const { userSlug } = router.query;
@@ -54,7 +83,7 @@ const Story = (props) => {
             <Box id='mainEntityStory' component='section' className={classes.sectionMinHeight + ' relative flex md:z-50 bg-background-secondary'}>
                 <Container disableGutters={isSmallerThanLg} className={isGreaterThanLg ? whiteBarClasses.customContainer : ''}>
 
-                    <StoriesNavbar userSlug={userSlug} entity={props.entity} story={story} entities={props.entities} category={props.entityType} />
+                    <StoriesNavbar userSlug={userSlug} entity={entity} story={story} entities={entities} category={props.entityType} />
 
                     <Grid container spacing={6} className='w-full py-4 mx-4 lg:mx-0 mt-2 md:mt-0 mb-10 md:mb-0' style={{ maxWidth: '-webkit-fill-available' }}>
                         <Grid item xs={12} md={7} className='h-full !px-6 pb-8 md:pb-0'>
@@ -103,7 +132,7 @@ const Story = (props) => {
                                 </Box>
                             </ShowIf>
                             {/* <ShowIf condition={story?.relevantSections !== undefined}> */}
-                                <RelevantSections story={story} showEntityTree entity={props.entity} entities={props.entities} entityType={props.entityType} />
+                                <RelevantSections story={story} showEntityTree entity={entity} entities={entities} entityType={props.entityType} />
                             {/* </ShowIf> */}
                         </Grid>
 
