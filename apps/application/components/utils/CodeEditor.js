@@ -1,22 +1,29 @@
 import Editor from "@monaco-editor/react";
+import ShowIf from "./showIf";
 
-const CodeEditor = ({ defaultValue }) => {
+const CodeEditor = ({ value, language }) => {
 
-    /* function editorDidMount(editor, monaco) {
-        setTimeout(function() {
-          editor.getAction('editor.action.formatDocument').run();
-        }, 300);
-    } */
+    function editorDidMount(editor) {
+        editor.getAction('editor.action.formatDocument').run();
+    }
 
     return (
-        <Editor
-            className="me"
-            options={{ readOnly: true }}
-            theme="vs-light"
-            defaultLanguage="javascript"
-            defaultValue={defaultValue}
-            // editorDidMount={editorDidMount.bind(this)}
-        />
+        <ShowIf condition={value !== undefined && value != null}>
+            <Editor
+                className="me"
+                options={{
+                    readOnly: true,
+                    automaticLayout: true,
+                    autoIndent: true,
+                    language: language ?? "javascript"
+                }}
+                theme="vs-light"
+                defaultLanguage={language ?? "javascript"}
+                value={value}
+                editorDidMount={editorDidMount.bind(this)}
+                wrapperProps={{ style: { marginTop: '1.5rem' } }}
+            />
+        </ShowIf>
     )
 }
 
