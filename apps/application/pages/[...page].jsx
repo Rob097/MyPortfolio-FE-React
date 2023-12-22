@@ -85,6 +85,11 @@ export default function Page({ page }) {
     <>
       <Head>
         <title>{page?.data?.title}</title>
+        <meta name="description" content={page?.data?.description} />
+        <meta name="keywords" content="Portfolio, Professionals, Engineers, Architects, Web Developer, Storyteller" />
+        <meta name="author" content="Roberto Dellantonio"/>
+        <meta name="robots" content="index, follow"/>
+        <meta name="googlebot" content="index, follow"/>
       </Head>
       {/* Render the Builder page */}
       <BuilderComponent 

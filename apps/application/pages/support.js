@@ -3,6 +3,7 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import { Button, Container, Link, Typography } from "@mui/material";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from "next/head";
 import { useRouter } from 'next/router';
 import { useMemo } from "react";
 
@@ -38,6 +39,16 @@ export async function getStaticProps(context) {
 const EnglishPage = ({ user }) => {
     return (
         <>
+
+            <Head>
+                <title>MyPortfolio - Support Us</title>
+                <meta name="description" content="Support MyPortfolio and help us build the best portfolio platform ever!" />
+                <meta name="keywords" content="MyPortfolio, support, support us, support form" />
+                <meta name="author" content="Roberto Dellantonio" />
+                <meta name="robots" content="index, follow" />
+                <meta name="Googlebot" content="index, follow" />
+            </Head>
+
             <Container maxWidth="2xl" className="flex flex-col justify-center items-center px-16 pt-12 max-md:px-5 w-full">
                 <Typography
                     variant="h1"
@@ -150,6 +161,16 @@ const EnglishPage = ({ user }) => {
 const ItalianPage = ({ user }) => {
     return (
         <>
+
+            <Head>
+                <title>MyPortfolio | Supportaci</title>
+                <meta name="description" content="Supporta MyPortfolio e aiutaci a costruire la migliore piattaforma di portfolio mai creata!" />
+                <meta name="keywords" content="MyPortfolio, support, support us, support form" />
+                <meta name="author" content="Roberto Dellantonio" />
+                <meta name="robots" content="index, follow" />
+                <meta name="Googlebot" content="index, follow" />
+            </Head>
+
             <Container maxWidth="2xl" className="flex flex-col justify-center items-center px-16 pt-12 max-md:px-5 w-full">
                 <Typography
                     variant="h1"

@@ -12,6 +12,7 @@ import UserService from '@/services/user.service';
 import { Box, Button, Container, Grid, Pagination, Typography } from "@mui/material";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from "next/head";
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
@@ -153,113 +154,124 @@ const People = (props) => {
     /******************/
 
     return (
-        <Container className="pt-20 text-center large" maxWidth="xl" >
-            <Typography variant="h1" fontWeight='bold' color='primary' className="text-7xl"><span className="text-black">{t('people.explore-title')}</span> {t('people.people-title')}</Typography>
+        <>
 
-            <FormProvider {...methods}>
-                <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} currentLayout={layout} setLayout={setLayout} />
-            </FormProvider>
+            <Head>
+                <title>{`MyPortfolio | ${t('people.explore-title')} ${t('people.people-title')}`}</title>
+                <meta name="description" content={t('people.explore-description')} />
+                <meta name="keywords" content="portfolio, people, explore, professionals, skills, industry, location" />
+                <meta name="robots" content="index, follow" />
+                <meta name="author" content="Roberto Dellantonio" />
+            </Head>
 
-            <Grid container spacing={2} className='relative my-10 py-10 px-2'>
+            <Container className="pt-20 text-center large" maxWidth="xl" >
+                <Typography variant="h1" fontWeight='bold' color='primary' className="text-7xl"><span className="text-black">{t('people.explore-title')}</span> {t('people.people-title')}</Typography>
 
-                <Grid item xs={12} lg={9} className='flex flex-col items-center justify-between'>
+                <FormProvider {...methods}>
+                    <PeopleFilters handleFilters={handleFilters} people={users} filtersDefaultValues={filtersDefaultValues} currentLayout={layout} setLayout={setLayout} />
+                </FormProvider>
 
-                    <ShowIf condition={layout === 'list'}>
-                        <Box className="w-full flex flex-col justify-start items-center">
-                            {
-                                visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
-                                    visibleUsers.map((user) => (
-                                        <HorizontalCard
-                                            key={'list-' + user.id}
-                                            id={user.id}
-                                            image={JSON.parse(user?.customizations)?.profileImage}
-                                            title={`${user?.firstName} ${user?.lastName}`}
-                                            firstSubtitle={user?.address?.nation}
-                                            secondSubtitle={user?.profession}
-                                            chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
-                                            buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
-                                        >
-                                            <Box className="flex flex-col justify-between">
-                                                <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.projects')}:</Typography>
-                                                    <Typography variant="h5" fontWeight='bold' color='black'>{user?.projects?.length}</Typography>
+                <Grid container spacing={2} className='relative my-10 py-10 px-2'>
+
+                    <Grid item xs={12} lg={9} className='flex flex-col items-center justify-between'>
+
+                        <ShowIf condition={layout === 'list'}>
+                            <Box className="w-full flex flex-col justify-start items-center">
+                                {
+                                    visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
+                                        visibleUsers.map((user) => (
+                                            <HorizontalCard
+                                                key={'list-' + user.id}
+                                                id={user.id}
+                                                image={JSON.parse(user?.customizations)?.profileImage}
+                                                title={`${user?.firstName} ${user?.lastName}`}
+                                                firstSubtitle={user?.address?.nation}
+                                                secondSubtitle={user?.profession}
+                                                chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
+                                                buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
+                                            >
+                                                <Box className="flex flex-col justify-between">
+                                                    <Box className="flex flex-row justify-between">
+                                                        <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.projects')}:</Typography>
+                                                        <Typography variant="h5" fontWeight='bold' color='black'>{user?.projects?.length}</Typography>
+                                                    </Box>
+                                                    <Box className="flex flex-row justify-between">
+                                                        <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.experiences')}:</Typography>
+                                                        <Typography variant="h5" fontWeight='bold' color='black'>{user?.experiences?.length}</Typography>
+                                                    </Box>
                                                 </Box>
-                                                <Box className="flex flex-row justify-between">
-                                                    <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.experiences')}:</Typography>
-                                                    <Typography variant="h5" fontWeight='bold' color='black'>{user?.experiences?.length}</Typography>
-                                                </Box>
-                                            </Box>
-                                        </HorizontalCard>
-                                    ))}
-                        </Box>
-                    </ShowIf>
-
-                    <ShowIf condition={layout === 'grid'}>
-                        <Box className={"w-full flex flex-row flex-wrap items-start " + (visibleUsers?.length >= 3 ? 'justify-center' : 'justify-start')}>
-                            {
-                                visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
-                                    visibleUsers.map((user) => (
-                                        <SquareCard
-                                            key={'grid-' + user.id}
-                                            id={user.id}
-                                            image={JSON.parse(user?.customizations)?.profileImage}
-                                            title={`${user?.firstName} ${user?.lastName}`}
-                                            subtitle={user?.profession}
-                                            description={user?.presentation}
-                                            chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
-                                            bottomCaption={user?.address?.nation}
-                                            buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
-                                        />
-                                    ))}
-                        </Box>
-                    </ShowIf>
-
-                    <Box className="w-full flex flex-row justify-start items-end my-10">
-                        <Pagination
-                            count={Math.ceil(totalUsers / numberPerPage)}
-                            variant="outlined"
-                            color="primary"
-                            className='relative z-10'
-                            onChange={handlePagination}
-                        />
-                    </Box>
-                </Grid>
-
-                <Grid ref={sideRef} item xs={12} lg={3}>
-
-                    {/* Grafico circolare per rappresentare il numero di utenti per industria o per skill */}
-                    <Box className="w-ful h-fit bg-white border rounded-lg z-10 relative">
-                        <Box className="flex flex-row py-4 justify-between flex-wrap">
-                            <Box className="flex justify-start items-center ml-4">
-                                <Typography variant="h5" fontWeight='bold' color='black'>{t('people.statistics.title')}</Typography>
+                                            </HorizontalCard>
+                                        ))}
                             </Box>
-                            <Box className="flex justify-end items-center mr-2">
-                                <Button variant={statisticsBy==='industry' ? "contained" : "outlined"} color="primary" size="small" className='h-fit mr-2 whitespace-nowrap rounded-full' onClick={() => setStatisticsBy('industry')}>
-                                    {t('people.statistics.by-industry')}
-                                </Button>
-                                <Button variant={statisticsBy==='skill' ? "contained" : "outlined"} color="primary" size="small" className='h-fit rounded-full' onClick={() => setStatisticsBy('skill')}>
-                                    {t('people.statistics.by-skill')}
-                                </Button>
-                            </Box>
-                        </Box>
+                        </ShowIf>
 
-                        <Box className='w-fit mx-auto'>
-                            <CustomPieChart
-                                data={statisticsData}
-                                width={sideWidth}
-                                height={400}
+                        <ShowIf condition={layout === 'grid'}>
+                            <Box className={"w-full flex flex-row flex-wrap items-start " + (visibleUsers?.length >= 3 ? 'justify-center' : 'justify-start')}>
+                                {
+                                    visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
+                                        visibleUsers.map((user) => (
+                                            <SquareCard
+                                                key={'grid-' + user.id}
+                                                id={user.id}
+                                                image={JSON.parse(user?.customizations)?.profileImage}
+                                                title={`${user?.firstName} ${user?.lastName}`}
+                                                subtitle={user?.profession}
+                                                description={user?.presentation}
+                                                chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
+                                                bottomCaption={user?.address?.nation}
+                                                buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
+                                            />
+                                        ))}
+                            </Box>
+                        </ShowIf>
+
+                        <Box className="w-full flex flex-row justify-start items-end my-10">
+                            <Pagination
+                                count={Math.ceil(totalUsers / numberPerPage)}
+                                variant="outlined"
+                                color="primary"
+                                className='relative z-10'
+                                onChange={handlePagination}
                             />
                         </Box>
+                    </Grid>
+
+                    <Grid ref={sideRef} item xs={12} lg={3}>
+
+                        {/* Grafico circolare per rappresentare il numero di utenti per industria o per skill */}
+                        <Box className="w-ful h-fit bg-white border rounded-lg z-10 relative">
+                            <Box className="flex flex-row py-4 justify-between flex-wrap">
+                                <Box className="flex justify-start items-center ml-4">
+                                    <Typography variant="h5" fontWeight='bold' color='black'>{t('people.statistics.title')}</Typography>
+                                </Box>
+                                <Box className="flex justify-end items-center mr-2">
+                                    <Button variant={statisticsBy === 'industry' ? "contained" : "outlined"} color="primary" size="small" className='h-fit mr-2 whitespace-nowrap rounded-full' onClick={() => setStatisticsBy('industry')}>
+                                        {t('people.statistics.by-industry')}
+                                    </Button>
+                                    <Button variant={statisticsBy === 'skill' ? "contained" : "outlined"} color="primary" size="small" className='h-fit rounded-full' onClick={() => setStatisticsBy('skill')}>
+                                        {t('people.statistics.by-skill')}
+                                    </Button>
+                                </Box>
+                            </Box>
+
+                            <Box className='w-fit mx-auto'>
+                                <CustomPieChart
+                                    data={statisticsData}
+                                    width={sideWidth}
+                                    height={400}
+                                />
+                            </Box>
 
 
-                    </Box>
+                        </Box>
+                    </Grid>
+
+                    {promiseInProgress && <Loading adaptToComponent />}
+
                 </Grid>
 
-                {promiseInProgress && <Loading adaptToComponent />}
-
-            </Grid>
-
-        </Container>
+            </Container>
+        </>
     );
 }
 

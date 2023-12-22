@@ -34,6 +34,7 @@
     },
     "registration": {
         "title": "Registrazione",
+        "description": "Crea il tuo portfolio e inizia a raccontare la tua storia professionale.",
         "subtitle": "Raccontaci qualcosa di te",
         "plan": {
             "title": "Scegli il tuo piano",

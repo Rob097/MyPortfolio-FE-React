@@ -34,6 +34,7 @@
     },
     "registration": {
         "title": "Registration",
+        "description": "Create your account and start sharing your stories with the world.",
         "subtitle": "Tell us something about yourself",
         "plan": {
             "title": "Your plan",
