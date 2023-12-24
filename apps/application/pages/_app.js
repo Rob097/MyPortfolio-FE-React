@@ -9,16 +9,17 @@ import '@/styles/globals.scss';
 import { StateProvider } from '@/utilities/globalState';
 import { CacheProvider } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from "next/script";
 import PropTypes from 'prop-types';
 import { Suspense } from "react";
 import { ErrorBoundary } from 'react-error-boundary';
 import { SWRConfig } from 'swr';
 import Custom500 from './500';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -45,7 +46,8 @@ function MyApp(props) {
                 </SWRConfig>
 
                 <Analytics />
-                <SpeedInsights/>
+                <SpeedInsights />
+                <GoogleAnalytics />
 
               </ErrorBoundary>
             </ThemeProvider>
@@ -59,7 +61,7 @@ function MyApp(props) {
 const Layout = ({ Component, pageProps }) => {
 
   const router = useRouter();
-  if (router.isFallback)  return <Loading />
+  if (router.isFallback) return <Loading />
 
   let content = PagesCommonLogics(pageProps);
   if (!content) {
@@ -96,3 +98,18 @@ MyApp.propTypes = {
   emotionCache: PropTypes.object,
   pageProps: PropTypes.object.isRequired,
 };
+
+const GoogleAnalytics = () => (
+  <>
+    <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
+    <Script id="google-analytics">
+      {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+        `}
+    </Script>
+  </>
+);

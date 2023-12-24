@@ -87,7 +87,6 @@ const People = (props) => {
 
     useEffect(() => {
         setVisibleUsers(users?.filter((user, index) => index < numberPerPage * (currentPage + 1) && index >= numberPerPage * currentPage));
-        console.log(users);
     }, [currentPage, users])
 
 

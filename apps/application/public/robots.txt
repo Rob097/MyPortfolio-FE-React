@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://my-portfolio.it
+
+# Sitemaps
+Sitemap: https://my-portfolio.it/sitemap.xml
+Sitemap: https://my-portfolio.it/server-sitemap.xml
