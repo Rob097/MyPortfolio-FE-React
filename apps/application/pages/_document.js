@@ -3,6 +3,7 @@ import tailwindConfig from '@/tailwind.config';
 import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import PropTypes from 'prop-types';
+import Script from 'next/script'
 
 export default function MyDocument(props) {
   const { emotionStyleTags } = props;
@@ -18,6 +19,9 @@ export default function MyDocument(props) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto&display=swap" rel="stylesheet" />
         {emotionStyleTags}
+
+        <GoogleAnalytics />
+
       </Head>
       <body>
         <Main />
@@ -89,3 +93,18 @@ MyDocument.getInitialProps = async (ctx) => {
 MyDocument.propTypes = {
   emotionStyleTags: PropTypes.array.isRequired,
 };
+
+const GoogleAnalytics = () => (
+  <>
+    <Script src="https://www.googletagmanager.com/gtag/js?id=G-Q9L7C2C8LL" />
+    <Script id="google-analytics">
+      {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-Q9L7C2C8LL');
+        `}
+    </Script>
+  </>
+)
