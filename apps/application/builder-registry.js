@@ -2,13 +2,6 @@ import { Builder } from "@builder.io/react";
 import dynamic from "next/dynamic";
 
 Builder.registerComponent(
-  dynamic(() => import("./components/Counter/Counter")),
-  {
-    name: "Counter",
-  }
-);
-
-Builder.registerComponent(
   dynamic(() => import("@mui/material/Button")),
   {
     name: "Button",
