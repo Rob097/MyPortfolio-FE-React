@@ -5,6 +5,7 @@ import SoftTextArea from '@rob097/common-lib/components/SoftTextArea';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from "next/head";
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,6 @@ const Register = () => {
     const { promiseInProgress } = usePromiseTracker();
 
     const paymentPeriod = watch("period", false);
-    const paymentMethod = watch("payment", false);
     const plan = watch("plan", false);
 
     useEffect(() => {
@@ -98,13 +98,11 @@ const Register = () => {
                     <Box component="form" role="form" onSubmit={handleSubmit((data) => handleRegister(data))} className="w-full m-auto">
                         <Grid container rowSpacing={3} columnSpacing={10} >
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12} lg={6} className="!pt-12">
+
                                 <Typography variant="h3" color="black" fontWeight="bold" className="text-lg mb-2">
                                     {t('registration.plan.title')}
                                 </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6} className="!pt-0">
-
                                 <FormControl fullWidth>
                                     <Select
                                         id="plan"
@@ -119,9 +117,7 @@ const Register = () => {
                                     {errors.plan && <FormHelperText error>{errors.plan.message}</FormHelperText>}
                                 </FormControl>
 
-                            </Grid>
-                            <Grid item xs={12} md={6} className="md:!pt-0">
-                                <FormControl fullWidth>
+                                <FormControl fullWidth className="pt-5">
                                     <Select
                                         id="period"
                                         {...register("period", { required: t('registration.plan.validation.period-required') })}
@@ -133,18 +129,16 @@ const Register = () => {
                                     </Select>
                                     {errors.period && <FormHelperText error>{errors.period.message}</FormHelperText>}
                                 </FormControl>
-                            </Grid>
 
-                            <Grid item xs={12} md={6}>
 
-                                <Box className="mb-10">
+                                <Box className="my-10">
                                     <Typography variant="h3" color="black" fontWeight="bold" className="text-lg mb-4">
                                         {t('registration.mandatory-fields.title')}
                                     </Typography>
 
                                     {/* Use flex boxes to create a first row with two equals columns with "First Name" and "Last Name" and a second row full width with "Email" */}
                                     <Grid container spacing={3}>
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} lg={6}>
                                             <TextField
                                                 id="first-name"
                                                 label={t('registration.mandatory-fields.first-name')}
@@ -154,7 +148,7 @@ const Register = () => {
                                                 helperText={errors.firstName?.message}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} lg={6}>
                                             <TextField
                                                 id="last-name"
                                                 label={t('registration.mandatory-fields.last-name')}
@@ -184,7 +178,7 @@ const Register = () => {
 
                                     {/* Two rows: The first row has two equals columns: "What represents you the most?" with a select with four options "Sudent", "Professional", "Organization", "Other". The second column is a free text field "How did you found us?". The second row is a text area full width "What are you looking for in MyPortfolio?" */}
                                     <Grid container spacing={3}>
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} lg={6}>
                                             <FormControl fullWidth>
                                                 <InputLabel id="represents-label">{t('registration.feedback.represents.title')}</InputLabel>
                                                 <Select
@@ -201,7 +195,7 @@ const Register = () => {
                                                 </Select>
                                             </FormControl>
                                         </Grid>
-                                        <Grid item xs={12} md={6}>
+                                        <Grid item xs={12} lg={6}>
                                             <TextField
                                                 id="found-us"
                                                 label={t('registration.feedback.found-us')}
@@ -226,31 +220,16 @@ const Register = () => {
                                 </Box>
 
                             </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} lg={6} display={{ xs: 'none', lg: 'block' }}>
 
                                 <Box className="mb-10">
-                                    <Typography variant="h3" color="black" fontWeight="bold" className="text-lg mb-4">
-                                        {t('registration.payment.title')}
-                                        {errors.payment && !paymentMethod && <FormHelperText error>{errors.payment.message}</FormHelperText>}
-                                    </Typography>
-
-                                    {/* Use flex boxes to create a first row with two equals columns with "First Name" and "Last Name" and a second row full width with "Email" */}
-                                    <Box className="flex flex-row justify-start items-center w-full space-x-14">
-                                        <SquareButton
-                                            {...register("payment", { required: t('registration.payment.validation') })}
-                                            image='/images/credit-card.svg'
-                                            label={t('registration.payment.credit-card')}
-                                            selected={paymentMethod === "creditCard"}
-                                            onClick={() => setValue("payment", "creditCard")}
-                                        />
-                                        <SquareButton
-                                            {...register("payment", { required: t('registration.payment.validation') })}
-                                            image='/images/paypal.svg'
-                                            label={t('registration.payment.paypal')}
-                                            selected={paymentMethod === "payPal"}
-                                            onClick={() => setValue("payment", "payPal")}
-                                        />
-                                    </Box>
+                                    <Image
+                                        id="registerImage"
+                                        src={'/images/register-image.png'}
+                                        layout="fill"
+                                        alt="Register page image"
+                                        className={`!relative`}
+                                    />
                                 </Box>
 
                             </Grid>
@@ -275,7 +254,7 @@ const SquareButton = (props) => {
     return (
         <Box
             {...props}
-            className={"w-40 min-h-full h-36 flex flex-col justify-center items-center cursor-pointer rounded-md ease-in-out duration-300" + (props.selected ? " shadow-md border-primary-main border-2" : " border border-black hover:scale-105 hover:shadow-xl hover:border-primary-main hover:border-2")}
+            className={"w-40 min-h-full h-36 flex flex-col justify-center items-center cursor-pointer rounded-lg ease-in-out duration-300" + (props.selected ? " shadow-lg border-primary-main border-2" : " border border-black hover:scale-105 hover:shadow-xl hover:border-primary-main hover:border-2")}
         >
             <img src={props.image} />
             <Typography variant="caption" color="black" className="text-sm mt-4">

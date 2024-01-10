@@ -3,7 +3,7 @@ import loadingClasses from './loading.module.scss';
 
 export default function Loading({adaptToComponent}) {
     return (
-        <Box id="loading-container" className={(adaptToComponent ? 'h-full' : 'h-screen') + " w-full absolute top-0 left-0 flex justify-center items-center z-10"}
+        <Box id="loading-container" className={(adaptToComponent ? 'h-full' : 'h-screen') + " w-full fixed top-0 left-0 flex justify-center items-center z-10"}
             sx={({ palette, functions }) => ({
                 backgroundColor: functions?.rgba(palette?.background?.main, 0.2),
                 backdropFilter: 'saturate(250%) blur(5px)'
