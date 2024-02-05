@@ -1,7 +1,6 @@
-import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
-import Icon from "@mui/material/Icon";
+import { Breadcrumbs as MuiBreadcrumbs, Typography } from "@mui/material";
 import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
+import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -13,12 +12,12 @@ function Breadcrumbs({ icon, title, route, light }) {
       <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
-            color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
+            color: ({ palette: { white, grey } }) => (light ? white : grey[600]),
           },
         }}
       >
         <Link to="/">
-          <SoftTypography
+          <Typography
             component="span"
             variant="body2"
             color={light ? "white" : "dark"}
@@ -26,11 +25,11 @@ function Breadcrumbs({ icon, title, route, light }) {
             sx={{ lineHeight: 0 }}
           >
             <Icon>{icon}</Icon>
-          </SoftTypography>
+          </Typography>
         </Link>
         {routes.map((el) => (
           <Link to={`/${el}`} key={el}>
-            <SoftTypography
+            <Typography
               component="span"
               variant="button"
               fontWeight="regular"
@@ -40,10 +39,10 @@ function Breadcrumbs({ icon, title, route, light }) {
               sx={{ lineHeight: 0 }}
             >
               {el}
-            </SoftTypography>
+            </Typography>
           </Link>
         ))}
-        <SoftTypography
+        <Typography
           variant="button"
           fontWeight="regular"
           textTransform="capitalize"
@@ -51,9 +50,9 @@ function Breadcrumbs({ icon, title, route, light }) {
           sx={{ lineHeight: 0 }}
         >
           {title.replace("-", " ")}
-        </SoftTypography>
+        </Typography>
       </MuiBreadcrumbs>
-      <SoftTypography
+      <Typography
         fontWeight="bold"
         textTransform="capitalize"
         variant="h6"
@@ -61,7 +60,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         noWrap
       >
         {title.replace("-", " ")}
-      </SoftTypography>
+      </Typography>
     </Box>
   );
 }

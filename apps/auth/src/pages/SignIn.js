@@ -1,19 +1,17 @@
+import { Button, TextField, Typography } from "@mui/material";
 import Alert from '@mui/material/Alert';
-import Switch from "@mui/material/Switch";
-import curved9 from "@rob097/common-lib/assets/images/curved-images/curved-6.jpg";
 import Box from '@mui/material/Box';
-import SoftButton from "@rob097/common-lib/components/SoftButton";
-import SoftInput from "@rob097/common-lib/components/SoftInput";
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
-import { useAuthStore } from "context/AuthStore";
+import Switch from "@mui/material/Switch";
+import jwtDecode from "jwt-decode";
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "shared/stores/AuthStore";
 import CoverLayout from "../components/CoverLayout";
-import { signIn } from "../utilities/AuthService";
-import { User } from "../models/user";
-import jwtDecode from "jwt-decode";
+import { User } from "../models/user.model";
+import { signIn } from "../services/auth.service";
+import curved6 from "public/images/curved-6.jpg";
 
 function SignIn() {
   const { t, i18n } = useTranslation("auth");
@@ -26,14 +24,14 @@ function SignIn() {
   async function handleSignIn(data) {
     setIsProcessing(true);
 
-/*     dispatch({
-      type: "login",
-      payload: {
-        token: "",
-        user: undefined
-      }
-    });
-    navigate('/'); */
+    /*     dispatch({
+          type: "login",
+          payload: {
+            token: "",
+            user: undefined
+          }
+        });
+        navigate('/'); */
 
     signIn(data).then(async response => {
       const bodyResponse = await response.json();
@@ -63,7 +61,7 @@ function SignIn() {
     <CoverLayout
       title={t('sign-in.welcome-back')}
       description={t('sign-in.instruction')}
-      image={curved9}
+      image={curved6}
     >
 
       {
@@ -75,57 +73,55 @@ function SignIn() {
       <Box component="form" role="form" onSubmit={handleSubmit((data) => handleSignIn(data))}>
         <Box mb={2}>
           <Box mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
+            <Typography component="label" variant="caption" fontWeight="bold">
               Email
-            </SoftTypography>
+            </Typography>
           </Box>
-          <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-in.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+          <TextField id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-in.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
         </Box>
         <Box mb={2}>
           <Box mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
+            <Typography component="label" variant="caption" fontWeight="bold">
               Password
-            </SoftTypography>
+            </Typography>
           </Box>
-          <SoftInput id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-in.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
+          <TextField id='password' type="password" placeholder="Password" {...register("password", { required: t('sign-in.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} />
         </Box>
         <Box display="flex" alignItems="center">
           <Switch {...register("rememberMe")} />
-          <SoftTypography
+          <Typography
             variant="button"
             fontWeight="regular"
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
             &nbsp;&nbsp;{t('sign-in.remember-me')}
-          </SoftTypography>
+          </Typography>
         </Box>
         <Box mt={4} mb={1}>
-          <SoftButton
+          <Button
             type="submit"
             variant="gradient"
             color="info"
             fullWidth
-            loading={isProcessing}
-            loadingPosition="start"
+            loading={isProcessing ? true : undefined}
             startIcon={<span />}
           >
             {t('sign-in.sign-in')}
-          </SoftButton>
+          </Button>
         </Box>
         <Box mt={3} textAlign="center">
-          <SoftTypography variant="submit" color="text" fontWeight="regular">
+          <Typography variant="submit" color="text" fontWeight="regular">
             {t('sign-in.no-account')}{" "}
-            <SoftTypography
+            <Typography
               component={Link}
               to="../sign-up"
               variant="button"
               color="info"
               fontWeight="medium"
-              textGradient
             >
               {t('sign-in.register')}
-            </SoftTypography>
-          </SoftTypography>
+            </Typography>
+          </Typography>
         </Box>
       </Box>
     </CoverLayout>

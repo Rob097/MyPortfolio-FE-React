@@ -1,34 +1,33 @@
-import { useState, useEffect } from "react";
+import AppBar from "@mui/material/AppBar";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
 
 // Soft UI Dashboard React components
 import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
-// import SoftAvatar from "@rob097/common-lib/components/SoftAvatar";
 import Avatar from "@mui/material/Avatar";
 
 // Soft UI Dashboard React icons
-import Cube from "@rob097/common-lib/assets/Icons/Cube";
-import Document from "@rob097/common-lib/assets/Icons/Document";
-import Settings from "@rob097/common-lib/assets/Icons/Settings";
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+
+import DescriptionIcon from '@mui/icons-material/Description';
+
+import SettingsIcon from '@mui/icons-material/Settings';
 
 // Soft UI Dashboard React base styles
-import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
+import { useTheme } from '@mui/material/styles';
 
-// Images
-import burceMars from "@rob097/common-lib/assets/images/bruce-mars.jpg";
-import curved0 from "@rob097/common-lib/assets/images/curved-images/curved0.jpg";
-
-import { useAuthStore } from "context/AuthStore";
+import { useAuthStore } from "shared/stores/AuthStore";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
   const [store] = useAuthStore();
+  const theme = useTheme();
+  const { breakpoints } = theme;
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -60,11 +59,11 @@ function Header() {
         position="relative"
         minHeight="18.75rem"
         sx={{
-          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
+          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { info } }) =>
             `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
-            )}, url(${curved0})`,
+              rgba(info.main, 0.6),
+              rgba(info.main, 0.6)
+            )}, url(${""})`,
           backgroundSize: "cover",
           backgroundPosition: "50%",
           overflow: "hidden",
@@ -74,7 +73,7 @@ function Header() {
       <Card
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,
-          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
+          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white, 0.8),
           boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
           position: "relative",
           mt: -8,
@@ -86,7 +85,7 @@ function Header() {
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <Avatar
-              src={burceMars}
+              src={""}
               alt="profile-image"
               variant="rounded"
               size="xl"
@@ -96,12 +95,12 @@ function Header() {
           </Grid>
           <Grid item>
             <Box height="100%" mt={0.5} lineHeight={1}>
-              <SoftTypography variant="h5" fontWeight="medium">
+              <Typography variant="h5" fontWeight="medium">
                 {store.user?.firstName} {store.user?.lastName}
-              </SoftTypography>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
+              </Typography>
+              <Typography variant="button" color="text" fontWeight="medium">
                 CEO / Co-Founder
-              </SoftTypography>
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
@@ -112,9 +111,9 @@ function Header() {
                 onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
               >
-                <Tab label="Bio" icon={<Cube />} />
-                <Tab label="Projects" icon={<Document />} />
-                <Tab label="Diary" icon={<Settings />} />
+                <Tab label="Bio" icon={<ViewInArIcon />} />
+                <Tab label="Projects" icon={<DescriptionIcon />} />
+                <Tab label="Diary" icon={<SettingsIcon />} />
               </Tabs>
             </AppBar>
           </Grid>

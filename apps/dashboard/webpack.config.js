@@ -1,32 +1,38 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
+const webpack = require('webpack');
 const deps = require("./package.json").dependencies;
 const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
-const webpack = require('webpack');
-const getEnvKeys = require('@rob097/common-lib/environments/utils.js');
 
 module.exports = (_, argv) => {
 
-  const envKeys = getEnvKeys(argv.mode);
+  var dotenv = require('dotenv').config({ path: __dirname + '/.env.' + (argv.mode || 'development') });
+  let runtimeChunk;
+  if (dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "true" || dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "false") {
+    runtimeChunk = dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "true";
+  } else {
+    runtimeChunk = dotenv.parsed.REACT_APP_RUNTIME_CHUNK;
+  }
 
   return {
     output: {
-      publicPath: `${envKeys['process.env.DASHBOARD_URL']}/`,
+      publicPath: `${dotenv.parsed.REACT_APP_DASHBOARD_URL}/`,
     },
 
     resolve: {
       extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
       alias: {
         'components': path.resolve(__dirname, './src/components'),
-        'assets': path.resolve(__dirname, './src/assets')
+        'public': path.resolve(__dirname, './public'),
+        '@': path.resolve(__dirname, './src')
       },
     },
 
     devServer: {
-      port: `${envKeys['process.env.DASHBOARD_PORT']}`,
+      port: `${dotenv.parsed.REACT_APP_DASHBOARD_PORT}`,
       historyApiFallback: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -36,7 +42,7 @@ module.exports = (_, argv) => {
     },
 
     optimization: {
-      runtimeChunk: envKeys['process.env.REACT_RUNTIME_CHUNK']
+      runtimeChunk: runtimeChunk
     },
 
     performance: {
@@ -94,13 +100,13 @@ module.exports = (_, argv) => {
         name: "dashboard",
         filename: "remoteEntry.js",
         remotes: {
-          context: `context@${envKeys['process.env.CONTEXT_URL']}/remoteEntry.js`
+          shared: `shared@${dotenv.parsed.REACT_APP_SHARED_URL}/remoteEntry.js`
         },
         exposes: {
           "./Dashboard": "./src/pages/Dashboard",
           "./Home": "./src/pages/Home",
           "./UserProfile": "./src/pages/UserProfile",
-          "./i18n": "./assets/i18n/i18n"
+          "./i18n": "./public/i18n/i18n"
         },
         shared: {
           ...parentDeps,
@@ -116,13 +122,13 @@ module.exports = (_, argv) => {
             eager: true,
             singleton: true,
             requiredVersion: parentDeps["react-dom"],
-          },
+          }
         }
       }),
       new HtmlWebPackPlugin({
         template: "./src/index.html",
       }),
-      new webpack.DefinePlugin(envKeys)
+      new webpack.DefinePlugin(dotenv.parsed)
     ],
   }
 };

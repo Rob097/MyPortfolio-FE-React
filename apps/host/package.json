@@ -12,10 +12,11 @@
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
   "devDependencies": {
-    "react-router-dom": "^6.11.2"
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.14",
-    "@heroicons/react": "^2.0.18"
+    "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.11.2"
   }
 }

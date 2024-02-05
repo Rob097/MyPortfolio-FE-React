@@ -1,31 +1,27 @@
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Modal, TextField, Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import Box from '@mui/material/Box';
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import logoSpotify from "@rob097/common-lib/assets/images/small-logos/logo-spotify.svg";
-import team2 from "@rob097/common-lib/assets/images/team-2.jpg";
-import Box from '@mui/material/Box';
-import SoftInput from "@rob097/common-lib/components/SoftInput";
-import SoftModal from "@rob097/common-lib/components/SoftModal";
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 import Breadcrumbs from "components/Breadcrumbs";
 import NotificationItem from "components/NotificationItem";
-import { useAuthStore } from "context/AuthStore";
+import { useAuthStore } from "shared/stores/AuthStore";
 import {
   setMiniSidenav,
   setOpenConfigurator,
   setTransparentNavbar,
   useSoftUIController,
-} from "context/DashboardStore";
+} from "shared/stores/DashboardStore";
 import * as React from 'react';
 import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  navbar,
   customContainer,
+  navbar,
   navbarIconButton,
   navbarMobileMenu,
   navbarRow,
@@ -97,13 +93,13 @@ function Navbar({ absolute, light, isMini }) {
       sx={{ mt: 2 }}
     >
       <NotificationItem
-        image={<img src={team2} alt="person" />}
+        image={<img src={""} alt="person" />}
         title={["New message", "from Laur"]}
         date="13 minutes ago"
         onClick={handleCloseMenu}
       />
       <NotificationItem
-        image={<img src={logoSpotify} alt="person" />}
+        image={<img src={""} alt="person" />}
         title={["New album", "by Travis Scott"]}
         date="1 day"
         onClick={handleCloseMenu}
@@ -111,7 +107,7 @@ function Navbar({ absolute, light, isMini }) {
       <NotificationItem
         color="secondary"
         image={
-          <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white.main }}>
+          <Icon fontSize="small" sx={{ color: ({ palette: { white } }) => white }}>
             payment
           </Icon>
         }
@@ -123,7 +119,7 @@ function Navbar({ absolute, light, isMini }) {
   );
 
   const SignOutConfirmModal = () => (
-    <SoftModal
+    <Modal
       id="sign-out-modal"
       open={openSignOutModal}
       handleClose={closeSignOutModal}
@@ -132,10 +128,10 @@ function Navbar({ absolute, light, isMini }) {
       confirmLabel={t('common:confirm')}
       closeLabel={t('common:cancel')}
     >
-      <SoftTypography sx={{ mt: 2 }}>
+      <Typography sx={{ mt: 2 }}>
         {t('dashboard:navbar.sign-out-confirm')}
-      </SoftTypography>
-    </SoftModal>
+      </Typography>
+    </Modal>
   )
 
   return (
@@ -151,7 +147,7 @@ function Navbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <Box sx={(theme) => navbarRow(theme, { isMini })}>
             <Box pr={1}>
-              <SoftInput
+              <TextField
                 placeholder="Type here..."
                 icon={{ component: "search", direction: "left" }}
               />
@@ -163,16 +159,16 @@ function Navbar({ absolute, light, isMini }) {
                   <IconButton sx={navbarIconButton} size="small" onClick={openSignOutConfirm}>
                     <LogoutIcon
                       sx={({ palette: { dark, white } }) => ({
-                        color: light ? white.main : dark.main,
+                        color: light ? white : dark.main,
                       })}
                     />
-                    <SoftTypography
+                    <Typography
                       variant="button"
                       fontWeight="medium"
                       color={light ? "white" : "dark"}
                     >
                       {t('dashboard:navbar.sign-out-button')}
-                    </SoftTypography>
+                    </Typography>
                   </IconButton>
                   <SignOutConfirmModal />
                 </>

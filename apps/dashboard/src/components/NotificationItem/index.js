@@ -1,7 +1,7 @@
+import { Typography } from "@mui/material";
+import Box from '@mui/material/Box';
 import Icon from "@mui/material/Icon";
 import MenuItem from "@mui/material/MenuItem";
-import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { menuImage, menuItem } from "./styles";
@@ -19,10 +19,10 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
       {image}
     </Box>
     <Box>
-      <SoftTypography variant="button" textTransform="capitalize" fontWeight="regular">
+      <Typography variant="button" textTransform="capitalize" fontWeight="regular">
         <strong>{title[0]}</strong> {title[1]}
-      </SoftTypography>
-      <SoftTypography
+      </Typography>
+      <Typography
         variant="caption"
         color="secondary"
         sx={{
@@ -31,7 +31,7 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
           mt: 0.5,
         }}
       >
-        <SoftTypography variant="button" color="secondary">
+        <Typography variant="button" color="secondary">
           <Icon
             sx={{
               lineHeight: 1.2,
@@ -40,9 +40,9 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
           >
             watch_later
           </Icon>
-        </SoftTypography>
+        </Typography>
         {date}
-      </SoftTypography>
+      </Typography>
     </Box>
   </MenuItem>
 ));

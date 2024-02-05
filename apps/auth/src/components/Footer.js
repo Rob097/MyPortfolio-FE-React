@@ -1,11 +1,10 @@
-import Grid from "@mui/material/Grid";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import PinterestIcon from "@mui/icons-material/Pinterest";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import PinterestIcon from "@mui/icons-material/Pinterest";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { Grid, Typography } from "@mui/material";
 import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 
 function Footer() {
   return (
@@ -14,34 +13,34 @@ function Footer() {
         <Grid item xs={10} lg={8}>
           <Box display="flex" justifyContent="center" flexWrap="wrap" mb={3}>
             <Box mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 Company
-              </SoftTypography>
+              </Typography>
             </Box>
             <Box mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 About Us
-              </SoftTypography>
+              </Typography>
             </Box>
             <Box mr={{ xs: 0, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 Team
-              </SoftTypography>
+              </Typography>
             </Box>
             <Box mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 Product
-              </SoftTypography>
+              </Typography>
             </Box>
             <Box mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 Blog
-              </SoftTypography>
+              </Typography>
             </Box>
             <Box>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <Typography component="a" href="#" variant="body2" color="secondary">
                 Pricing
-              </SoftTypography>
+              </Typography>
             </Box>
           </Box>
         </Grid>
@@ -65,9 +64,9 @@ function Footer() {
           </Box>
         </Grid>
         <Grid item xs={12} lg={8} sx={{ textAlign: "center" }}>
-          <SoftTypography variant="body2" color="secondary">
+          <Typography variant="body2" color="secondary">
             Copyright &copy; 2021 Soft by Creative Tim.
-          </SoftTypography>
+          </Typography>
         </Grid>
       </Grid>
     </Box>

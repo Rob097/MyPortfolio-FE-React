@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Box from '@mui/material/Box';
 
 // Soft UI Dashboard React context
-import { useSoftUIController, setLayout } from "context/DashboardStore";
+import { useSoftUIController, setLayout } from "shared/stores/DashboardStore";
 
 function PageLayout({ background, children }) {
   const [, dispatch] = useSoftUIController();

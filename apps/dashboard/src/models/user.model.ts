@@ -1,9 +1,4 @@
-import { Filters } from "@rob097/common-lib/criteria.model";
-import { Diary } from './diary.model';
-import { Education } from './education.model';
-import { Experience } from './experience.model';
-import { Skill } from './skill.model';
-
+const { Filters } = require('shared/utilities/criteria');
 export class User {
     id: number;
     email: string;
@@ -17,10 +12,6 @@ export class User {
     city: string;
     cap: string;
     address: string;
-    skills?: Skill[];
-    educations?: Education[];
-    experiences?: Experience[];
-    diaries?: Diary[];
     avatar?: string;
     status?: string;
 
@@ -37,10 +28,6 @@ export class User {
         this.city = obj.city;
         this.cap = obj.cap;
         this.address = obj.address;
-        this.skills = obj.skills;
-        this.educations = obj.educations;
-        this.experiences = obj.experiences;
-        this.diaries = obj.diaries;
         this.avatar = obj.avatar;
         this.status = obj.status;
     }

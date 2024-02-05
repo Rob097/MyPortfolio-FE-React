@@ -1,5 +1,5 @@
-const constants = require('@rob097/common-lib/constants');
-import { Filters, View } from "@rob097/common-lib/criteria.model";
+const constants = require('shared/utilities/constants');
+const { View } = require('shared/utilities/criteria');
 import { User, UserQ } from "../models/user.model";
 import { BaseService } from "./base.service";
 const USERS_URL = constants.BASE_URL + '/core/users';

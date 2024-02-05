@@ -15,17 +15,12 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "file-loader": "^6.2.0",
-    "ts-loader": "^9.4.4",
-    "typescript": "^5.1.6"
+    "@types/react-dom": "^18.2.6"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.14",
-    "@heroicons/react": "^2.0.18",
     "@tinymce/tinymce-react": "^4.3.0",
-    "react-router-dom": "^6.11.2",
     "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.11.2",
     "tinymce": "^5.10.7"
   }
 }

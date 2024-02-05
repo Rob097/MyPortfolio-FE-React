@@ -1,10 +1,10 @@
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import itFlag from "@rob097/common-lib/assets/images/flags/IT.svg";
-import usFlag from "@rob097/common-lib/assets/images/flags/US.svg";
-import { getLang, setLang } from '@rob097/common-lib/i18n/i18n';
+import { getLang, setLang } from 'shared/i18n';
 import { useTranslation } from 'react-i18next';
+import itFlag from 'public/images/flags/IT.svg';
+import usFlag from 'public/images/flags/US.svg';
 
 const LanguageSelector = ({ isMobile }) => {
     const { t, i18n } = useTranslation("auth");

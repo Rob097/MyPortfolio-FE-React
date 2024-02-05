@@ -1,8 +1,7 @@
 function menuItem(theme) {
-  const { palette, borders, transitions } = theme;
+  const { palette, rounded, transitions } = theme;
 
   const { secondary, light } = palette;
-  const { borderRadius } = borders;
 
   return {
     display: "flex",
@@ -11,7 +10,7 @@ function menuItem(theme) {
     color: secondary.main,
     py: 1,
     px: 2,
-    borderRadius: borderRadius.md,
+    borderRadius: rounded.md,
     transition: transitions.create("background-color", {
       easing: transitions.easing.easeInOut,
       duration: transitions.duration.standard,
@@ -28,24 +27,22 @@ function menuItem(theme) {
 }
 
 function menuImage(theme, ownerState) {
-  const { functions, palette, borders } = theme;
+  const { functions, palette, rounded } = theme;
   const { color } = ownerState;
 
   const { linearGradient } = functions;
-  const { gradients } = palette;
-  const { borderRadius } = borders;
 
   return {
     display: "grid",
     placeItems: "center",
-    backgroundImage: gradients[color]
-      ? linearGradient(gradients[color].main, gradients[color].state)
-      : linearGradient(gradients.dark.main, gradients.dark.state),
+    backgroundImage: palette[color]
+      ? linearGradient(palette[color].main, palette[color].state)
+      : linearGradient(palette.dark.main, palette.dark.state),
       borderRadius: '12px',
 
     "& img": {
       width: "100%",
-      borderRadius: borderRadius.lg,
+      borderRadius: rounded.lg,
     },
   };
 }

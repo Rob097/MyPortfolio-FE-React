@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
+import { Box, Icon, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import Icon from "@mui/material/Icon";
-import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
+import { Link } from "react-router-dom";
 
 function AuthNavbarLink({ icon, name, route, light }) {
   return (
@@ -17,13 +15,13 @@ function AuthNavbarLink({ icon, name, route, light }) {
     >
       <Icon
         sx={{
-          color: ({ palette: { white, secondary } }) => (light ? white.main : secondary.main),
+          color: ({ palette: { white, secondary } }) => (light ? white : secondary.main),
           verticalAlign: "middle",
         }}
       >
         {icon}
       </Icon>
-      <SoftTypography
+      <Typography
         variant="button"
         fontWeight="regular"
         color={light ? "white" : "dark"}
@@ -31,7 +29,7 @@ function AuthNavbarLink({ icon, name, route, light }) {
         sx={{ width: "100%", lineHeight: 0 }}
       >
         &nbsp;{name}
-      </SoftTypography>
+      </Typography>
     </Box>
   );
 }

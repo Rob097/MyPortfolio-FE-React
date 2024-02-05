@@ -1,17 +1,15 @@
+import { Button, TextField, Typography } from "@mui/material";
 import Alert from '@mui/material/Alert';
-import Switch from "@mui/material/Switch";
-import curved9 from "@rob097/common-lib/assets/images/curved-images/curved-6.jpg";
 import Box from '@mui/material/Box';
-import SoftButton from "@rob097/common-lib/components/SoftButton";
-import SoftInput from "@rob097/common-lib/components/SoftInput";
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
-import { useAuthStore } from "context/AuthStore";
+import Switch from "@mui/material/Switch";
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "shared/stores/AuthStore";
 import CoverLayout from "../components/CoverLayout";
-// import { signUp } from "../utilities/AuthService";
+import curved6 from "public/images/curved-6.jpg";
+// import { signIn } from "../services/auth.service";
 
 function SignUp() {
     const { t, i18n } = useTranslation("auth");
@@ -58,7 +56,7 @@ function SignUp() {
         <CoverLayout
             title={t('sign-up.title')}
             description={t('sign-up.instruction')}
-            image={curved9}
+            image={curved6}
         >
 
             {
@@ -70,81 +68,79 @@ function SignUp() {
             <Box component="form" role="form" onSubmit={handleSubmit(handleSignUp)}>
                 <Box mb={2}>
                     <Box mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        <Typography component="label" variant="caption" fontWeight="bold">
                             {t('sign-up.fields.firstName')}
-                        </SoftTypography>
+                        </Typography>
                     </Box>
-                    <SoftInput id='firstName' type="text" placeholder={t('sign-up.fields.firstName')} {...register("firstName", { required: t('sign-up.validations.firstName-required') })} error={errors.firstName && true} helpertext={errors.firstName?.message} />
+                    <TextField id='firstName' type="text" placeholder={t('sign-up.fields.firstName')} {...register("firstName", { required: t('sign-up.validations.firstName-required') })} error={errors.firstName && true} helpertext={errors.firstName?.message} />
                 </Box>
                 <Box mb={2}>
                     <Box mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        <Typography component="label" variant="caption" fontWeight="bold">
                             {t('sign-up.fields.lastName')}
-                        </SoftTypography>
+                        </Typography>
                     </Box>
-                    <SoftInput id='lastName' type="text" placeholder={t('sign-up.fields.lastName')} {...register("lastName", { required: t('sign-up.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} />
+                    <TextField id='lastName' type="text" placeholder={t('sign-up.fields.lastName')} {...register("lastName", { required: t('sign-up.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} />
                 </Box>
                 <Box mb={2}>
                     <Box mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        <Typography component="label" variant="caption" fontWeight="bold">
                             {t('sign-up.fields.email')}
-                        </SoftTypography>
+                        </Typography>
                     </Box>
-                    <SoftInput id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-up.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+                    <TextField id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-up.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
                 </Box>
                 <Box mb={2}>
                     <Box mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        <Typography component="label" variant="caption" fontWeight="bold">
                             {t('sign-up.fields.password')}
-                        </SoftTypography>
+                        </Typography>
                     </Box>
-                    <SoftInput id='password' type={passwordShown ? "text" : "password"} placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} icon={{ component: (!passwordShown ? "visibility" : "visibility_off"), direction: "right", onClick: togglePasswordVisiblity }} />
+                    <TextField id='password' type={passwordShown ? "text" : "password"} placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} icon={{ component: (!passwordShown ? "visibility" : "visibility_off"), direction: "right", onClick: togglePasswordVisiblity }} />
                 </Box>
                 <Box mb={2}>
                     <Box mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        <Typography component="label" variant="caption" fontWeight="bold">
                             {t('sign-up.fields.matchingPassword')}
-                        </SoftTypography>
+                        </Typography>
                     </Box>
-                    <SoftInput id='matchingPassword' type={passwordShown ? "text" : "password"} placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => { if (watch('password') != val) { return t('sign-up.validations.matchingPassword-notMatch') } } })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
+                    <TextField id='matchingPassword' type={passwordShown ? "text" : "password"} placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => { if (watch('password') != val) { return t('sign-up.validations.matchingPassword-notMatch') } } })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
                 </Box>
                 <Box display="flex" alignItems="center">
                     <Switch required {...register("terms", { required: true })} />
-                    <SoftTypography
+                    <Typography
                         variant="button"
                         fontWeight="regular"
                         sx={{ cursor: "pointer", userSelect: "none" }}
                     >
                         &nbsp;&nbsp;{t('sign-up.terms')}
-                    </SoftTypography>
+                    </Typography>
                 </Box>
                 <Box mt={4} mb={1}>
-                    <SoftButton
+                    <Button
                         type="submit"
                         variant="gradient"
                         color="info"
                         fullWidth
-                        loading={isProcessing}
-                        loadingPosition="start"
+                        loading={isProcessing ? true : undefined}
                         startIcon={<span />}
                     >
                         {t('sign-up.sign-up')}
-                    </SoftButton>
+                    </Button>
                 </Box>
                 <Box mt={3} textAlign="center">
-                    <SoftTypography variant="submit" color="text" fontWeight="regular">
+                    <Typography variant="submit" color="text" fontWeight="regular">
                         {t('sign-up.have-account')}{" "}
-                        <SoftTypography
+                        <Typography
                             component={Link}
                             to="../sign-in"
                             variant="button"
                             color="info"
                             fontWeight="medium"
-                            textGradient
                         >
                             {t('sign-up.login')}
-                        </SoftTypography>
-                    </SoftTypography>
+                        </Typography>
+                    </Typography>
                 </Box>
             </Box>
         </CoverLayout>

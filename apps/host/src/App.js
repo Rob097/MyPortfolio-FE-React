@@ -1,19 +1,24 @@
 
-import { ThemeProvider } from "@mui/material";
-import theme from "@rob097/common-lib/assets/theme";
-import "@rob097/common-lib/styles.scss";
-import { AuthStoreProvider } from "context/AuthStore";
-import { SoftUIControllerProvider } from "context/DashboardStore";
-import { StoreProvider } from "context/Store";
+import "./index.scss";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import { Suspense } from "react";
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from "react-i18next";
-import i18n from "../assets/i18n/i18n";
+import { AuthStoreProvider } from "shared/stores/AuthStore";
+import { SoftUIControllerProvider } from "shared/stores/DashboardStore";
+import { StoreProvider } from "shared/stores/Store";
+import createCustomTheme from "shared/theme";
+import i18n from "../public/i18n/i18n";
+import tailwindConfig from '../tailwind.config';
 import CustomRouterProvider from "./Routes";
-import "./styles/index.scss";
 
 export const App = () => {
+  const theme = createCustomTheme(tailwindConfig);
+
   console.debug("i18n for host initialized: %O", i18n);
+  console.debug("theme for host initialized: %O", theme);
+
   return (
     // Suspense for microfrontends loading
     <Suspense fallback={<div>Loading...</div>}>
@@ -21,6 +26,7 @@ export const App = () => {
       {/* Theme providers */}
       <SoftUIControllerProvider>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
 
           {/* Internationalization provider */}
           <I18nextProvider i18n={i18n}>

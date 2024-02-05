@@ -1,22 +1,27 @@
 
+import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
-import brand from "@rob097/common-lib/assets/images/logo-ct.png";
 import Navbar from "components/Navbar";
 import Sidenav from "components/Sidenav";
-import Box from '@mui/material/Box';
-import { setLayout, setMiniSidenav, useSoftUIController } from "context/DashboardStore";
+import { setLayout, setMiniSidenav, useSoftUIController } from "shared/stores/DashboardStore";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 // Soft UI Dashboard React icons
-import CreditCard from "@rob097/common-lib/assets/Icons/CreditCard";
-import Cube from "@rob097/common-lib/assets/Icons/Cube";
-import CustomerSupport from "@rob097/common-lib/assets/Icons/CustomerSupport";
-import Document from "@rob097/common-lib/assets/Icons/Document";
-import Office from "@rob097/common-lib/assets/Icons/Office";
-import Settings from "@rob097/common-lib/assets/Icons/Settings";
-import Shop from "@rob097/common-lib/assets/Icons/Shop";
-import SpaceShip from "@rob097/common-lib/assets/Icons/SpaceShip";
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+
+import DescriptionIcon from '@mui/icons-material/Description';
+
+import BusinessIcon from '@mui/icons-material/Business';
+
+import StorefrontIcon from '@mui/icons-material/Storefront';
+
+import RocketIcon from '@mui/icons-material/Rocket';
+import { Typography } from '@mui/material';
 
 const routes = [
   {
@@ -24,7 +29,7 @@ const routes = [
     name: "Home",
     key: "home",
     route: "home",
-    icon: <Shop size="12px" />,
+    icon: <StorefrontIcon />,
     noCollapse: true,
   },
   {
@@ -32,7 +37,7 @@ const routes = [
     name: "Tables",
     key: "tables",
     route: "/tables",
-    icon: <Office size="12px" />,
+    icon: <BusinessIcon />,
     component: <p>tables</p>,
     noCollapse: true,
   },
@@ -41,7 +46,7 @@ const routes = [
     name: "Billing",
     key: "billing",
     route: "/billing",
-    icon: <CreditCard size="12px" />,
+    icon: <CreditCardIcon />,
     component: <p>billing</p>,
     noCollapse: true,
   },
@@ -50,7 +55,7 @@ const routes = [
     name: "Virtual Reality",
     key: "virtual-reality",
     route: "/virtual-reality",
-    icon: <Cube size="12px" />,
+    icon: <ViewInArIcon />,
     component: <p>virtual-reality</p>,
     noCollapse: true,
   },
@@ -60,7 +65,7 @@ const routes = [
     name: "Profile",
     key: "profile",
     route: "profile",
-    icon: <CustomerSupport size="12px" />,
+    icon: <SupportAgentIcon />,
     component: <p>profile</p>,
     noCollapse: true,
     navbar: {
@@ -73,7 +78,7 @@ const routes = [
     name: "Sign In",
     key: "sign-in",
     route: "/auth/sign-in",
-    icon: <Document size="12px" />,
+    icon: <DescriptionIcon />,
     component: <p>sign-in</p>,
     noCollapse: true,
   },
@@ -82,7 +87,7 @@ const routes = [
     name: "Sign Up",
     key: "sign-up",
     route: "/auth/sign-up",
-    icon: <SpaceShip size="12px" />,
+    icon: <RocketIcon />,
     component: <p>sign-up</p>,
     noCollapse: true,
   },
@@ -97,7 +102,7 @@ function Dashboard() {
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
-    setCurrentRoute(routes.filter(route => route.route===pathname)?.[0]);
+    setCurrentRoute(routes.filter(route => route.route === pathname)?.[0]);
   }, [pathname]);
 
   // Open sidenav when mouse enter on mini sidenav
@@ -134,7 +139,7 @@ function Dashboard() {
       <Navbar absolute={currentRoute?.navbar?.absolute} light={currentRoute?.navbar?.light} />
       <Sidenav
         color={sidenavColor}
-        brand={brand}
+        brand={""}
         brandName="Soft UI Dashboard"
         routes={routes}
         onMouseEnter={handleOnMouseEnter}
@@ -143,6 +148,9 @@ function Dashboard() {
       <Box py={currentRoute?.navbar?.absolute ? 0 : 3} style={{ minHeight: '200vh' }}>
         <Box mb={3}>
           <Outlet />
+          <h1 className='text-7xl font-bold underline'>This is a test</h1>
+          <Typography variant="h1">This is a test</Typography>
+          <a href="https://www.google.com">This is a test of a link</a>
         </Box>
         <Box mb={3}>
           <Grid container spacing={3}>

@@ -1,19 +1,16 @@
-import Container from "@mui/material/Container";
-import Icon from "@mui/material/Icon";
-import breakpoints from "@rob097/common-lib/assets/theme/base/breakpoints";
-import Box from '@mui/material/Box';
-import SoftButton from "@rob097/common-lib/components/SoftButton";
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
+import { Box, Button, Container, Icon, Typography } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthNavbarLink from "./AuthNavbarLink";
 import AuthNavbarMobile from "./AuthNavbarMobile";
 import LanguageSelector from "./LanguageSelector";
-import boxShadows from "@rob097/common-lib/assets/theme/base/boxShadows"
 import navbarClasses from './navbar.module.css';
 
 function AuthNavbar({ transparent, light, action }) {
+  const theme = useTheme();
+  const { breakpoints, boxShadows } = theme;
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
 
@@ -61,16 +58,16 @@ function AuthNavbar({ transparent, light, action }) {
         left={0}
         zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
-          backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
+          backgroundColor: transparent ? transparentColor.main : rgba(white, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
           borderRadius: '10rem',
           boxShadow: transparent ? "none" : boxShadows["md"]
         })}
       >
         <Box component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
-          <SoftTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
+          <Typography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
             Soft UI Dashboard
-          </SoftTypography>
+          </Typography>
         </Box>
         <Box color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
           <AuthNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
@@ -91,7 +88,7 @@ function AuthNavbar({ transparent, light, action }) {
         {action &&
           (action.type === "internal" ? (
             <Box display={{ xs: "none", lg: "inline-block" }}>
-              <SoftButton
+              <Button
                 component={Link}
                 to={action.route}
                 variant="gradient"
@@ -100,11 +97,11 @@ function AuthNavbar({ transparent, light, action }) {
                 circular
               >
                 {action.label}
-              </SoftButton>
+              </Button>
             </Box>
           ) : (
             <Box display={{ xs: "none", lg: "inline-block" }}>
-              {/* <SoftButton
+              {/* <Button
                 component="a"
                 href={action.route}
                 target="_blank"
@@ -115,7 +112,7 @@ function AuthNavbar({ transparent, light, action }) {
                 circular
               >
                 {action.label}
-              </SoftButton> */}
+              </Button> */}
               <LanguageSelector />
             </Box>
           ))}

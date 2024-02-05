@@ -1,3 +1,5 @@
+import { Button, Typography } from "@mui/material";
+import Box from '@mui/material/Box';
 import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
 import Link from "@mui/material/Link";
@@ -5,10 +7,7 @@ import List from "@mui/material/List";
 import SidenavCollapse from "components/Sidenav/SidenavCollapse";
 import SidenavRoot from "components/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "components/Sidenav/styles/sidenav";
-import Box from '@mui/material/Box';
-import SoftButton from "@rob097/common-lib/components/SoftButton";
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
-import { setMiniSidenav, useSoftUIController } from "context/DashboardStore";
+import { setMiniSidenav, useSoftUIController } from "shared/stores/DashboardStore";
 import PropTypes from "prop-types";
 import { NavLink, useLocation } from "react-router-dom";
 import LanguageSelector from "./LanguageSelector";
@@ -19,7 +18,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const splitted = pathname.split("/").slice(1);
-  const collapseName = splitted[splitted.length-1];
+  const collapseName = splitted[splitted.length - 1];
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -58,7 +57,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       );
     } else if (type === "title") {
       returnValue = (
-        <SoftTypography
+        <Typography
           key={key}
           display="block"
           variant="caption"
@@ -71,7 +70,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           ml={1}
         >
           {title}
-        </SoftTypography>
+        </Typography>
       );
     } else if (type === "divider") {
       returnValue = <Divider key={key} />;
@@ -92,9 +91,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           onClick={closeSidenav}
           sx={{ cursor: "pointer" }}
         >
-          <SoftTypography variant="h6" color="secondary">
+          <Typography variant="h6" color="secondary">
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
-          </SoftTypography>
+          </Typography>
         </Box>
         <Box component={NavLink} to="/" display="flex" alignItems="center">
           {brand && <Box component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
@@ -102,9 +101,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
-            <SoftTypography component="h6" variant="button" fontWeight="medium">
+            <Typography component="h6" variant="button" fontWeight="medium">
               {brandName}
-            </SoftTypography>
+            </Typography>
           </Box>
         </Box>
       </Box>
@@ -112,7 +111,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <Box pt={2} my={2} mx={2} mt="auto">
         <Box mt={2}>
-          <SoftButton
+          <Button
             component="a"
             href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
             target="_blank"
@@ -122,7 +121,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             fullWidth
           >
             upgrade to pro
-          </SoftButton>
+          </Button>
         </Box>
         <Box mt={2} className="flex justify-center">
           <LanguageSelector />

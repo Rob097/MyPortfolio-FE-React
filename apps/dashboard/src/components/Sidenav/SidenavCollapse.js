@@ -10,7 +10,7 @@ import {
   collapseText,
 } from "components/Sidenav/styles/sidenavCollapse";
 import Box from '@mui/material/Box';
-import { useSoftUIController } from "context/DashboardStore";
+import { useSoftUIController } from "shared/stores/DashboardStore";
 import PropTypes from "prop-types";
 
 function SidenavCollapse({ color, icon, name, children, active, noCollapse, open, ...rest }) {

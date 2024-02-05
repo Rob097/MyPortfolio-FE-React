@@ -1,10 +1,8 @@
+import { Box, Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import Grid from "@mui/material/Grid";
-import Box from '@mui/material/Box';
-import SoftTypography from "@rob097/common-lib/components/SoftTypography";
 import AuthNavbar from "./AuthNavbar/AuthNavbar";
-import PageLayout from "./PageLayout";
 import Footer from "./Footer";
+import PageLayout from "./PageLayout";
 
 function CoverLayout({ color, header, title, description, image, top, children }) {
   return (
@@ -31,13 +29,13 @@ function CoverLayout({ color, header, title, description, image, top, children }
               {!header ? (
                 <>
                   <Box mb={1}>
-                    <SoftTypography variant="h3" fontWeight="bold" color={color} textGradient>
+                    <Typography variant="h3" fontWeight="bold" color={color}>
                       {title}
-                    </SoftTypography>
+                    </Typography>
                   </Box>
-                  <SoftTypography variant="body2" fontWeight="regular" color="text">
+                  <Typography variant="body2" fontWeight="regular" color="text">
                     {description}
-                  </SoftTypography>
+                  </Typography>
                 </>
               ) : (
                 header
@@ -56,7 +54,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
             sx={{
               transform: "skewX(-10deg)",
               overflow: "hidden",
-              borderBottomLeftRadius: ({ borders: { borderRadius } }) => borderRadius.lg,
+              borderBottomLeftRadius: ({ rounded }) => rounded.lg,
             }}
           >
             <Box

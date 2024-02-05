@@ -1,23 +1,22 @@
 function navbar(theme, ownerState) {
-  const { palette, boxShadows, functions, transitions, breakpoints, borders } = theme;
+  const { palette, boxShadows, functions, transitions, breakpoints, rounded } = theme;
   const { transparentNavbar, absolute, light } = ownerState;
 
   const { dark, white, text, transparent } = palette;
   const { navbarBoxShadow } = boxShadows;
   const { rgba, pxToRem } = functions;
-  const { borderRadius } = borders;
 
   return {
     boxShadow: transparentNavbar || absolute ? "none" : navbarBoxShadow,
     backdropFilter: transparentNavbar || absolute ? "none" : `saturate(200%) blur(${pxToRem(30)})`,
     backgroundColor:
-      transparentNavbar || absolute ? `${transparent.main} !important` : rgba(white.main, 0.8),
+      transparentNavbar || absolute ? `${transparent} !important` : rgba(white, 0.8),
 
     color: () => {
       let color;
 
       if (light) {
-        color = white.main;
+        color = white;
       } else if (transparentNavbar) {
         color = text.main;
       } else {
@@ -33,7 +32,7 @@ function navbar(theme, ownerState) {
     minHeight: pxToRem(75),
     display: "grid",
     alignItems: "center",
-    borderRadius: borderRadius.xl,
+    borderRadius: rounded.xl,
     paddingTop: pxToRem(8),
     paddingBottom: pxToRem(8),
     paddingRight: absolute ? pxToRem(8) : 0,

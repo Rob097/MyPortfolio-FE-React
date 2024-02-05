@@ -4,17 +4,17 @@
   "description": "",
   "author": "Roberto Dellantonio",
   "scripts": {
-    "install:all": "concurrently \"cd shared/context && npm install\" \"cd shared/common && npm install\" \"cd apps/dashboard && npm install\" \"cd apps/application && npm install\" \"cd apps/auth && npm install\" \"cd apps/host && npm install\"",
-    "start:all:dev": "concurrently \"npm run start:dashboard:dev\" \"npm run start:context:dev\" \"npm run start:auth:dev\" \"npm run start:host:dev\"",
-    "start:all:prod": "concurrently \"npm run start:dashboard:prod\" \"npm run start:context:prod\" \"npm run start:application:prod\" \"npm run start:auth:prod\" \"npm run start:host:prod\"",
-    "build:all:dev": "concurrently \"npm run build:dashboard:dev\" \"npm run build:context:dev\" \"npm run build:application:dev\" \"npm run build:auth:dev\" \"npm run build:host:dev\"",
-    "build:all:prod": "concurrently \"npm run build:dashboard:prod\" \"npm run build:context:prod\" \"npm run build:application:prod\" \"npm run build:auth:prod\" \"npm run build:host:prod\"",
-    "build:all:start": "concurrently \"npm run build:dashboard:start\" \"npm run build:context:start\" \"npm run build:application:start\" \"npm run build:auth:start\" \"npm run build:host:start\"",
-    "start:context:dev": "concurrently \"cd shared/context && webpack serve --open --mode development\"",
-    "start:context:prod": "concurrently \"cd shared/context && webpack serve --mode production\"",
-    "build:context:dev": "concurrently \"cd shared/context && webpack --mode development\"",
-    "build:context:prod": "concurrently \"cd shared/context && webpack --mode production\"",
-    "build:context:start": "concurrently \"cd shared/context/dist && PORT=4201 npx serve\"",
+    "install:all": "concurrently \"cd shared && npm install\" \"cd apps/dashboard && npm install\" \"cd apps/application && npm install\" \"cd apps/auth && npm install\" \"cd apps/host && npm install\"",
+    "start:all:dev": "concurrently \"npm run start:dashboard:dev\" \"npm run start:shared:dev\" \"npm run start:auth:dev\" \"npm run start:host:dev\"",
+    "start:all:prod": "concurrently \"npm run start:dashboard:prod\" \"npm run start:shared:prod\" \"npm run start:application:prod\" \"npm run start:auth:prod\" \"npm run start:host:prod\"",
+    "build:all:dev": "concurrently \"npm run build:dashboard:dev\" \"npm run build:shared:dev\" \"npm run build:application:dev\" \"npm run build:auth:dev\" \"npm run build:host:dev\"",
+    "build:all:prod": "concurrently \"npm run build:dashboard:prod\" \"npm run build:shared:prod\" \"npm run build:application:prod\" \"npm run build:auth:prod\" \"npm run build:host:prod\"",
+    "build:all:start": "concurrently \"npm run build:dashboard:start\" \"npm run build:shared:start\" \"npm run build:application:start\" \"npm run build:auth:start\" \"npm run build:host:start\"",
+    "start:shared:dev": "concurrently \"cd shared && webpack serve --open --mode development\"",
+    "start:shared:prod": "concurrently \"cd shared && webpack serve --mode production\"",
+    "build:shared:dev": "concurrently \"cd shared && webpack --mode development\"",
+    "build:shared:prod": "concurrently \"cd shared && webpack --mode production\"",
+    "build:shared:start": "concurrently \"cd shared/dist && PORT=4201 npx serve\"",
     "start:dashboard:dev": "concurrently \"cd apps/dashboard && webpack serve --open --mode development\"",
     "start:dashboard:prod": "concurrently \"cd apps/dashboard && webpack serve --mode production\"",
     "build:dashboard:dev": "concurrently \"cd apps/dashboard && webpack --mode development\"",
@@ -34,9 +34,7 @@
     "start:host:prod": "concurrently \"cd apps/host && webpack serve --mode production\"",
     "build:host:dev": "concurrently \"cd apps/host && webpack --mode development\"",
     "build:host:prod": "concurrently \"cd apps/host && webpack --mode production\"",
-    "build:host:start": "concurrently \"cd apps/host/dist && PORT=3001 npx serve\"",
-    "build:common:dev": "concurrently \"cd shared/common && rm -rf dist && NODE_ENV=development ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__\"",
-    "build:common:prod": "concurrently \"cd shared/common && rm -rf dist && NODE_ENV=production ./node_modules/.bin/babel src/lib --out-dir dist --copy-files --include-dotfiles --ignore __tests__,spec.js,test.js,__snapshots__\""
+    "build:host:start": "concurrently \"cd apps/host/dist && PORT=3001 npx serve\""
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -56,7 +54,9 @@
     "tailwindcss": "^3.3.2",
     "webpack": "^5.87.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.3.1"
+    "webpack-dev-server": "^4.3.1",
+    "dotenv-webpack": "^8.0.1",
+    "file-loader": "^6.2.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
@@ -71,13 +71,14 @@
     "@mui/icons-material": "^5.14.0",
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.14.0",
-    "@rob097/common-lib": "^1.0.22",
     "chroma-js": "^2.4.2",
     "i18next": "^22.5.1",
     "json-loader": "^0.5.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.3.1",
-    "sass": "^1.64.0"
+    "sass": "^1.64.0",
+    "tailwindcss-fluid-type": "^2.0.3",
+    "ts-loader": "^9.5.1"
   }
 }

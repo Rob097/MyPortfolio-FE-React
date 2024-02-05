@@ -1,14 +1,13 @@
-import { ROLES as roles } from "@rob097/common-lib/constants";
-import { ErrorPage, NotAllowed, PageNotFound } from "@rob097/common-lib/pages/ErrorPages";
-import { useAuthStore } from "context/AuthStore";
-import Dashboard from "dashboard/Dashboard";
-import { lazy } from "react";
-import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import Example from "./components/example";
 import Home from "dashboard/Home";
 import UserProfile from "dashboard/UserProfile";
+import { lazy } from "react";
+import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ErrorPage, NotAllowed, PageNotFound } from "shared/pages/ErrorPages";
+import { useAuthStore } from "shared/stores/AuthStore";
+import { ROLES as roles } from "shared/utilities/constants";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
+const Dashboard = lazy(() => import("dashboard/Dashboard"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
@@ -39,11 +38,7 @@ const AuthRoutes = (isLoggedIn) => [
 const HostRoutes = (authStore) => [
     {
         path: "",
-        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/sign-in"}><Example /></ProtectedRoute>
-    },
-    {
-        path: "/test",
-        element: <ProtectedRoute isAllowed={true}><p>TEST</p></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={authStore?.user?.roles.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/sign-in"}></ProtectedRoute>
     }
 ];
 
