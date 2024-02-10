@@ -1,10 +1,8 @@
 import Menu from "@mui/material/Menu";
-import Box from '@mui/material/Box';
 import PropTypes from "prop-types";
-import AuthNavbarLink from "./AuthNavbarLink";
-import LanguageSelector from "./LanguageSelector";
+import { NavbarLinks } from './index';
 
-function AuthNavbarMobile({ open, close }) {
+function NavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();
 
   return (
@@ -21,22 +19,17 @@ function AuthNavbarMobile({ open, close }) {
       open={Boolean(open)}
       onClose={close}
       MenuListProps={{ style: { width: `calc(${width}px - 4rem)` } }}
+      inputprops={{ MenuProps: { disableScrollLock: true } }}
     >
-      <Box px={0.5}>
-        <AuthNavbarLink icon="donut_large" name="dashboard" route="/dashboard" />
-        <AuthNavbarLink icon="person" name="profile" route="/profile" />
-        <AuthNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" />
-        <AuthNavbarLink icon="key" name="sign in" route="/authentication/sign-in" />
-        <LanguageSelector isMobile />
-      </Box>
+      <NavbarLinks isMobile closeMobileNavbar={close} />
     </Menu>
   );
 }
 
 // Typechecking props for the AuthNavbarMenu
-AuthNavbarMobile.propTypes = {
+NavbarMobile.propTypes = {
   open: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
   close: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object]).isRequired,
 };
 
-export default AuthNavbarMobile;
+export default NavbarMobile;

@@ -7,9 +7,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "shared/stores/AuthStore";
-import CoverLayout from "../components/CoverLayout";
+import CoverLayout from "@/layout/CoverLayout";
 import curved6 from "public/images/curved-6.jpg";
-// import { signIn } from "../services/auth.service";
+import { signUp } from "../services/auth.service";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function SignUp() {
     const { t, i18n } = useTranslation("auth");
@@ -26,29 +27,33 @@ function SignUp() {
 
     async function handleSignUp(data) {
         console.log(data);
-        /*setIsProcessing(true);
+        setIsProcessing(true);
 
         signUp(data).then(async response => {
-          const bodyResponse = await response.json();
-    
-          const decodedToken = jwtDecode(bodyResponse.token);
-          const user = new User(decodedToken);
-    
-          dispatch({
-            type: "login",
-            payload: {
-              token: bodyResponse.token,
-              user: user
+            const bodyResponse = await response.json();
+            if (!response.ok) {
+                throw bodyResponse.messages;
             }
-          });
-    
-          setIsProcessing(false);
-    
-          navigate('/welcome');
+
+            const decodedToken = jwtDecode(bodyResponse.token);
+            const user = new User(decodedToken);
+
+            dispatch({
+                type: "login",
+                payload: {
+                    token: bodyResponse.token,
+                    user: user
+                }
+            });
+
+            navigate('/welcome');
         }).catch(error => {
-          setIsProcessing(false);
-          setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-up.generic-error'));
-        }); */
+            if (error.length > 0) {
+                setErrorMessage(error[0]?.text);
+            } else {
+                setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-in.generic-error'));
+            }
+        }).finally(() => setIsProcessing(false));
 
     }
 
@@ -67,44 +72,19 @@ function SignUp() {
             }
             <Box component="form" role="form" onSubmit={handleSubmit(handleSignUp)}>
                 <Box mb={2}>
-                    <Box mb={1} ml={0.5}>
-                        <Typography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.firstName')}
-                        </Typography>
-                    </Box>
-                    <TextField id='firstName' type="text" placeholder={t('sign-up.fields.firstName')} {...register("firstName", { required: t('sign-up.validations.firstName-required') })} error={errors.firstName && true} helpertext={errors.firstName?.message} />
+                    <TextField id='firstName' type="text" label={t('sign-up.fields.firstName')} placeholder={t('sign-up.fields.firstName')} {...register("firstName", { required: t('sign-up.validations.firstName-required') })} error={errors.firstName && true} helpertext={errors.firstName?.message} className="w-full" />
                 </Box>
                 <Box mb={2}>
-                    <Box mb={1} ml={0.5}>
-                        <Typography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.lastName')}
-                        </Typography>
-                    </Box>
-                    <TextField id='lastName' type="text" placeholder={t('sign-up.fields.lastName')} {...register("lastName", { required: t('sign-up.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} />
+                    <TextField id='lastName' type="text" label={t('sign-up.fields.lastName')} placeholder={t('sign-up.fields.lastName')} {...register("lastName", { required: t('sign-up.validations.lastName-required') })} error={errors.lastName && true} helpertext={errors.lastName?.message} className="w-full" />
                 </Box>
                 <Box mb={2}>
-                    <Box mb={1} ml={0.5}>
-                        <Typography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.email')}
-                        </Typography>
-                    </Box>
-                    <TextField id='email' type="email" placeholder="Email" {...register("email", { required: t('sign-up.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} />
+                    <TextField id='email' type="email" label={t('sign-up.fields.email')} placeholder="Email" {...register("email", { required: t('sign-up.validations.email-required') })} error={errors.email && true} helpertext={errors.email?.message} className="w-full" />
                 </Box>
                 <Box mb={2}>
-                    <Box mb={1} ml={0.5}>
-                        <Typography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.password')}
-                        </Typography>
-                    </Box>
-                    <TextField id='password' type={passwordShown ? "text" : "password"} placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} icon={{ component: (!passwordShown ? "visibility" : "visibility_off"), direction: "right", onClick: togglePasswordVisiblity }} />
+                    <TextField id='password' type={passwordShown ? "text" : "password"} label={t('sign-up.fields.password')} placeholder="Password" {...register("password", { required: t('sign-up.validations.password-required') })} error={errors.password && true} helpertext={errors.password?.message} icon={{ component: (!passwordShown ? "visibility" : "visibility_off"), direction: "right", onClick: togglePasswordVisiblity }} className="w-full" />
                 </Box>
                 <Box mb={2}>
-                    <Box mb={1} ml={0.5}>
-                        <Typography component="label" variant="caption" fontWeight="bold">
-                            {t('sign-up.fields.matchingPassword')}
-                        </Typography>
-                    </Box>
-                    <TextField id='matchingPassword' type={passwordShown ? "text" : "password"} placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => { if (watch('password') != val) { return t('sign-up.validations.matchingPassword-notMatch') } } })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} />
+                    <TextField id='matchingPassword' type={passwordShown ? "text" : "password"} label={t('sign-up.fields.matchingPassword')} placeholder="Matching Password" {...register("matchingPassword", { required: t('sign-up.validations.matchingPassword-required'), validate: (val) => { if (watch('password') != val) { return t('sign-up.validations.matchingPassword-notMatch') } } })} error={errors.matchingPassword && true} helpertext={errors.matchingPassword?.message} className="w-full" />
                 </Box>
                 <Box display="flex" alignItems="center">
                     <Switch required {...register("terms", { required: true })} />
@@ -117,16 +97,16 @@ function SignUp() {
                     </Typography>
                 </Box>
                 <Box mt={4} mb={1}>
-                    <Button
+                    <LoadingButton
                         type="submit"
-                        variant="gradient"
-                        color="info"
+                        variant="contained"
+                        color="primary"
                         fullWidth
                         loading={isProcessing ? true : undefined}
                         startIcon={<span />}
                     >
                         {t('sign-up.sign-up')}
-                    </Button>
+                    </LoadingButton>
                 </Box>
                 <Box mt={3} textAlign="center">
                     <Typography variant="submit" color="text" fontWeight="regular">
@@ -135,7 +115,7 @@ function SignUp() {
                             component={Link}
                             to="../sign-in"
                             variant="button"
-                            color="info"
+                            color="primary.main"
                             fontWeight="medium"
                         >
                             {t('sign-up.login')}

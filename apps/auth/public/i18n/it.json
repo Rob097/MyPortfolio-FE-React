@@ -1,4 +1,11 @@
 {
+    "navbar": {
+        "dashboard": "Dashboard",
+        "sign-in": "Login",
+        "sign-up": "Registrati",
+        "sign-out": "Logout",
+        "explore": "Esplora"
+    },
     "sign-in": {
         "generic-error": "Errore nell'effettuare il login",
         "welcome-back": "Bentornato",

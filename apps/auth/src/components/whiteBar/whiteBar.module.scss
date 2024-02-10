@@ -1,0 +1,44 @@
+$--screen-xxl: theme('screens.2xl');
+$--screen-xl: theme('screens.xl');
+$--screen-lg: theme('screens.lg');
+$--screen-md: theme('screens.md');
+$--screen-sm: theme('screens.sm');
+
+.customContainer {
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  width: 100% !important;
+  position: relative;
+}
+
+@media (min-width: $--screen-sm) {
+  .customContainer {
+    max-width: 540px !important;
+  }
+}
+
+@media (min-width: ($--screen-md)) {
+  .customContainer {
+    max-width: 720px !important;
+  }
+}
+
+@media (min-width: ($--screen-lg)) {
+  .customContainer {
+    max-width: 960px !important;
+  }
+}
+
+@media (min-width: ($--screen-xl)) {
+  .customContainer {
+    max-width: 1140px !important;
+  }
+}
+
+@media (min-width: ($--screen-xxl)) {
+  .customContainer {
+    max-width: 1320px !important;
+  }
+}

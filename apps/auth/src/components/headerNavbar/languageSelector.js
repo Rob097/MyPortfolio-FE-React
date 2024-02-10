@@ -22,6 +22,8 @@ const LanguageSelector = ({ isMobile }) => {
                 value={getLang()}
                 onChange={languageChengeHandler}
                 autoWidth
+                inputprops={{ MenuProps: { disableScrollLock: true } }}
+                size="small"
             >
                 <MenuItem value={"it"} style={{ marginBottom: '0.5rem' }}><span style={{ display: 'flex' }}><img src={itFlag} style={{ maxWidth: '25px', marginRight: '0.5rem', float: 'left' }} />Italiano</span></MenuItem>
                 <MenuItem value={"en"} style={{ marginTop: '0.5rem' }}><span style={{ display: 'flex' }}><img src={usFlag} style={{ maxWidth: '25px', marginRight: '0.5rem', float: 'left' }} />English</span></MenuItem>
