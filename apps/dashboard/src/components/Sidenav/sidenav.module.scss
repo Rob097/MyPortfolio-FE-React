@@ -1,0 +1,27 @@
+.sidenav {
+    background-color: #f5f5f5;
+    border-left: 1px solid #ddd;
+  
+    &.MuiDrawer-root {
+      width: 250px;
+      transition: width 5s ease-in-out;
+    }
+  
+    &.MuiDrawer-anchorRight {
+      right: 0;
+    }
+  
+    &.MuiDrawer-open {
+      width: 250px;
+    }
+  
+    &.MuiDrawer-closed {
+      width: 50px;
+    }
+  }
+  
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  

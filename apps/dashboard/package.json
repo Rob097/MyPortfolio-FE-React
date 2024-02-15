@@ -21,6 +21,7 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "react-hook-form": "^7.44.3",
     "react-router-dom": "^6.11.2",
-    "tinymce": "^5.10.7"
+    "tinymce": "^5.10.7",
+    "notistack": "^3.0.1"
   }
 }

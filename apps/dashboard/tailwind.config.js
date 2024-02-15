@@ -198,7 +198,7 @@ export default {
         main: '#67748e'
       },
       background: {
-        main: '#fdf8f7',
+        main: '#f8f9fa',
         secondary: '#f5f7fa'
       }
     },

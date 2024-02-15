@@ -10,6 +10,7 @@ import createCustomTheme from "shared/theme";
 import i18n from "../public/i18n/i18n";
 import tailwindConfig from '../tailwind.config';
 import CustomRouterProvider from "./Routes";
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts/snack";
 
 const App = () => {
   const theme = createCustomTheme(tailwindConfig);
@@ -24,15 +25,21 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {/* Store providers */}
-        <StoreProvider>
-          <AuthStoreProvider>
+        <CustomSnackProvider>
 
-            {/* Routes */}
-            <CustomRouterProvider />
+          {/* Store providers */}
+          <StoreProvider>
+            <AuthStoreProvider>
 
-          </AuthStoreProvider>
-        </StoreProvider>
+              <SnackbarUtilsConfigurator />
+
+              {/* Routes */}
+              <CustomRouterProvider />
+
+            </AuthStoreProvider>
+          </StoreProvider>
+
+        </CustomSnackProvider>
 
       </ThemeProvider>
     </SoftUIControllerProvider>

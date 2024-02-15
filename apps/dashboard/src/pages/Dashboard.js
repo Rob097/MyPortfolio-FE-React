@@ -1,27 +1,20 @@
 
+import BusinessIcon from '@mui/icons-material/Business';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import DescriptionIcon from '@mui/icons-material/Description';
+import RocketIcon from '@mui/icons-material/Rocket';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
-import Navbar from "components/Navbar";
-import Sidenav from "components/Sidenav";
-import { setLayout, setMiniSidenav, useSoftUIController } from "shared/stores/DashboardStore";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-
-// Soft UI Dashboard React icons
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
-
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-
-import DescriptionIcon from '@mui/icons-material/Description';
-
-import BusinessIcon from '@mui/icons-material/Business';
-
-import StorefrontIcon from '@mui/icons-material/Storefront';
-
-import RocketIcon from '@mui/icons-material/Rocket';
-import { Typography } from '@mui/material';
+import { REPLACE_USER, useAuthStore } from 'shared/stores/AuthStore';
+import { setLayout, setMiniSidenav, useSoftUIController } from "shared/stores/DashboardStore";
+import NewNavbar from '../components/Navbar/new';
+import { UserService } from "../services/user.service";
 
 const routes = [
   {
@@ -99,11 +92,23 @@ function Dashboard() {
   const { pathname } = useLocation();
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [currentRoute, setCurrentRoute] = useState();
+  const [authState, authDispatch] = useAuthStore();
+  const [user, setUser] = useState();
+  const userService = new UserService();
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
     setCurrentRoute(routes.filter(route => route.route === pathname)?.[0]);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!authState.user.id && authState.user.email) {
+      userService.getByEmail(authState.user.email)
+        .then(response => {
+          authDispatch({ type: REPLACE_USER, payload: { user: response.content[0] } });
+        })
+    }
+  }, [authState.user])
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -136,21 +141,19 @@ function Dashboard() {
         },
       })}
     >
-      <Navbar absolute={currentRoute?.navbar?.absolute} light={currentRoute?.navbar?.light} />
-      <Sidenav
-        color={sidenavColor}
-        brand={""}
-        brandName="Soft UI Dashboard"
-        routes={routes}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      />
+      {/* <Navbar absolute={currentRoute?.navbar?.absolute} light={currentRoute?.navbar?.light} /> */}
+      <Box className="w-full relative">
+        <NewNavbar />
+      </Box>
       <Box py={currentRoute?.navbar?.absolute ? 0 : 3} style={{ minHeight: '200vh' }}>
         <Box mb={3}>
           <Outlet />
           <h1 className='text-7xl font-bold underline'>This is a test</h1>
           <Typography variant="h1">This is a test</Typography>
           <a href="https://www.google.com">This is a test of a link</a>
+
+          {JSON.stringify(authState.user)}
+
         </Box>
         <Box mb={3}>
           <Grid container spacing={3}>

@@ -1,24 +1,34 @@
 import { createContext, useContext, useReducer } from "react";
 
+export const LOCAL_STORAGE_KEY = "AuthContext";
+
+export const REPLACE = "replace";
+export const REPLACE_USER = "replaceUser";
+export const LOGIN = "login";
+export const LOGOUT = "logout";
+
 const DEFAULT_STATE = { isLoggedIn: false, token: null, user: null };
 
 function reducer(state, action) {
     let newState = {};
     switch (action.type) {
-        case "replace":
+        case REPLACE:
             newState = action.payload;
             break;
-        case "login":
+        case REPLACE_USER:
+            newState = { ...state, user: action.payload.user }
+            break;
+        case LOGIN:
             newState = { isLoggedIn: true, token: action.payload.token, user: action.payload.user };
             break;
-        case "logout":
+        case LOGOUT:
             newState = { isLoggedIn: false, token: null, user: null };
             break;
         default:
             throw new Error('No action type found');
     }
 
-    localStorage.setItem("AuthContext", JSON.stringify(newState));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
     return newState;
 }
 
@@ -35,5 +45,5 @@ export const useAuthStore = () => {
 };
 
 function getLocalValues() {
-    return JSON.parse(localStorage.getItem("AuthContext")) || DEFAULT_STATE;
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || DEFAULT_STATE;
 }

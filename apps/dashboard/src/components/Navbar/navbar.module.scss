@@ -1,0 +1,26 @@
+$--background-main: theme('colors.background.main');
+
+.customAppBar {
+    background-color: transparent;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.customToolbar{
+    background-color: white;
+}
+
+.customAppBar::after {
+    display: block;
+    background: $--background-main;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-inline: auto;
+    width: 98vw;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: -1;
+}
