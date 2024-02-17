@@ -1,8 +1,160 @@
 @import "tailwindcss/base";
+
+html, body {
+  width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+@layer base {
+  /*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    /* 1 */
+    border-width: 0;
+    /* 2 */
+    border-style: solid;
+    /* 2 */
+    border-color: theme('borderColor.DEFAULT', currentColor);
+    /* 2 */
+  }
+
+  ::before,
+  ::after {
+    --tw-content: '';
+  }
+
+  [type='search'] {
+    -webkit-appearance: textfield;
+    /* 1 */
+    outline-offset: -2px;
+    /* 2 */
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+    /* 1 */
+    color: theme('colors.gray.400', #9ca3af);
+    /* 2 */
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  audio,
+  canvas,
+  embed,
+  iframe,
+  img,
+  object,
+  svg,
+  video {
+    display: block;
+    vertical-align: middle;
+  }
+}
+
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+
+.grecaptcha-badge { 
+  visibility: hidden;
+}
+
+/** SCROLLBAR STYLES **/
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+
+  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera*/
+  }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FF8500 #DFE9EB;
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: #FF8500;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #E37700;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #E37700;
+}
+
+/** HIDE highlight **/
+html,
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/** MUI INPUT **/
+:not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%) translateX(0);
+}
+
+li.MuiMenuItem-root {
+  margin: 8px;
+  border-radius: 8px;
+}
+
 a {
-    text-decoration: none;
-    color: theme('colors.secondary.main');
+  text-decoration: none;
+  color: theme('colors.secondary.main');
+}
+
+.notistack-SnackbarContainer {
+  top: 104px !important;
+}
+
+// Add styles to all .notistack-SnackbarContainer children:
+.notistack-SnackbarContainer>* {
+  width: 100%;
+}
+
+// set color white to all div children of .gjs-custom-editor
+.gjs-custom-editor div:not(.MuiInputBase-formControl):not(.MuiSelect-select) {
+  color: white;
 }
