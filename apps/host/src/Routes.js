@@ -7,7 +7,7 @@ import { useAuthStore } from "shared/stores/AuthStore";
 import { ROLES as roles } from "shared/utilities/constants";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
-const Dashboard = lazy(() => import("dashboard/Dashboard"));
+const StandardLayout = lazy(() => import("dashboard/StandardLayout"));
 
 const DashboardRoutes = (isLoggedIn) => [
     {
@@ -58,7 +58,7 @@ const Router = (authStore) => {
         },
         {
             path: "/dashboard",
-            element: <Dashboard />,
+            element: <StandardLayout />,
             children: DashboardRoutes(authStore.isLoggedIn),
             errorElement: <ErrorPage />
         },

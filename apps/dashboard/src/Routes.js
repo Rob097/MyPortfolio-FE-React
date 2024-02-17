@@ -1,10 +1,9 @@
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ErrorPage, PageNotFound } from "shared/pages/ErrorPages";
 import { useAuthStore } from "shared/stores/AuthStore";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import StandardLayout from "./layout/standard";
 import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
-import StandardLayout from "./layout/standard";
 
 const Router = () => {
     return createBrowserRouter([
@@ -14,19 +13,12 @@ const Router = () => {
             errorElement: <ErrorPage />,
             children: [
                 {
-                    path: "/",
-                    element: <Dashboard />,
-                    errorElement: <ErrorPage />,
-                    children: [
-                        {
-                            path: "home",
-                            element: <Home />,
-                        },
-                        {
-                            path: "profile",
-                            element: <UserProfile />,
-                        }
-                    ]
+                    path: "home",
+                    element: <Home />,
+                },
+                {
+                    path: "profile",
+                    element: <UserProfile />
                 }
             ]
         },
