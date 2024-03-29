@@ -174,7 +174,16 @@ module.exports = {
       rose: colors.rose,
 
       primary: {
-        main: '#ff8500'
+        main: '#ff8500',
+        100: '#ffdb99',
+        200: '#ffbf66',
+        300: '#ffa333',
+        400: '#ff8a00',
+        500: '#ff8500',
+        600: '#ff6b00',
+        700: '#ff5100',
+        800: '#ff3700',
+        900: '#ff1d00',
       },
       secondary: {
         main: "#e69500",

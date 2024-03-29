@@ -5,6 +5,14 @@ html, body {
   overflow-x: hidden !important;
 }
 
+.slick-active:focus-visible {
+  outline: none !important;
+}
+// Same to children and grandchildren:
+.slick-active *:focus-visible {
+  outline: none !important;
+}
+
 @layer base {
   /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -157,4 +165,9 @@ a {
 // set color white to all div children of .gjs-custom-editor
 .gjs-custom-editor div:not(.MuiInputBase-formControl):not(.MuiSelect-select) {
   color: white;
+}
+
+// label with class Mui-error without class Mui-focused
+label.Mui-error:not(.Mui-focused) {
+  top: 35% !important;
 }

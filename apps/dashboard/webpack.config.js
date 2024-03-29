@@ -106,6 +106,7 @@ module.exports = (_, argv) => {
           "./StandardLayout": "./src/layout/standard",
           "./Home": "./src/pages/Home",
           "./UserProfile": "./src/pages/UserProfile",
+          "./ProfileSetUp": "./src/pages/profile/setup",
           "./i18n": "./public/i18n/i18n"
         },
         shared: {
@@ -128,7 +129,10 @@ module.exports = (_, argv) => {
       new HtmlWebPackPlugin({
         template: "./src/index.html",
       }),
-      new webpack.DefinePlugin(dotenv.parsed)
+      new webpack.DefinePlugin(dotenv.parsed),
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify(process.env)
+     })
     ],
   }
 };

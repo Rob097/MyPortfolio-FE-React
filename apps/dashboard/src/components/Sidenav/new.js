@@ -19,14 +19,14 @@ import { Link, useLocation } from "react-router-dom";
 import LanguageSelector from './LanguageSelector';
 
 const primaryLinks = [
-    { text: 'Dashboard', icon: <Dashboard />, to: '/' },
-    { text: 'Profile', icon: <AccountCircle />, to: '/profile' }
+    { text: 'Dashboard', icon: <Dashboard />, to: '/dashboard/home' },
+    { text: 'Profile', icon: <AccountCircle />, to: '/dashboard/profile' }
 ];
 
 const secondaryLinks = [
-    { text: 'Projects', icon: <InboxIcon />, to: '/all-mail' },
-    { text: 'Experiences', icon: <MailIcon />, to: '/trash' },
-    { text: 'Educations', icon: <InboxIcon />, to: '/spam' },
+    { text: 'Projects', icon: <InboxIcon />, to: '/dashboard/all-mail' },
+    { text: 'Experiences', icon: <MailIcon />, to: '/dashboard/trash' },
+    { text: 'Educations', icon: <InboxIcon />, to: '/dashboard/spam' },
 ];
 
 function Sidebar(props) {

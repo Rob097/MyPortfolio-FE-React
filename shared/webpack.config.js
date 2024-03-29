@@ -92,20 +92,10 @@ module.exports = (env, argv) => {
         filename: "remoteEntry.js",
         remotes: {},
         exposes: {
-          "./stores/Store": "./src/stores/Store",
-          "./stores/AuthStore": "./src/stores/AuthStore",
-          "./stores/DashboardStore": "./src/stores/DashboardStore",
-          "./i18n": "./src/i18n/i18n",
-          "./pages/ErrorPages": "./src/pages/ErrorPages",
-          "./theme": "./src/theme/index",
-          "./utilities/constants": "./src/utilities/constants",
-          "./utilities/criteria": "./src/utilities/criteria.model.ts",
-          "./utilities/functions/boxShadow": "./src/utilities/functions/boxShadow",
-          "./utilities/functions/gradientChartLine": "./src/utilities/functions/gradientChartLine",
-          "./utilities/functions/hexToRgb": "./src/utilities/functions/hexToRgb",
-          "./utilities/functions/linearGradient": "./src/utilities/functions/linearGradient",
-          "./utilities/functions/pxToRem": "./src/utilities/functions/pxToRem",
-          "./utilities/functions/rgba": "./src/utilities/functions/rgba"
+          ...getUtilitiesToExpose(),
+          ...getStoresToExpose(),
+          ...getComponentsToExpose(),
+          ...getOtherToExpose(),
         },
         shared: {
           ...parentDeps,
@@ -131,3 +121,43 @@ module.exports = (env, argv) => {
     ]
   }
 };
+
+function getUtilitiesToExpose() {
+  const utilities = {
+    "./utilities/constants": "./src/utilities/constants",
+    "./utilities/criteria": "./src/utilities/criteria.model.ts",
+    "./utilities/functions/boxShadow": "./src/utilities/functions/boxShadow",
+    "./utilities/functions/gradientChartLine": "./src/utilities/functions/gradientChartLine",
+    "./utilities/functions/hexToRgb": "./src/utilities/functions/hexToRgb",
+    "./utilities/functions/linearGradient": "./src/utilities/functions/linearGradient",
+    "./utilities/functions/pxToRem": "./src/utilities/functions/pxToRem",
+    "./utilities/functions/rgba": "./src/utilities/functions/rgba",
+  };
+  return utilities;
+}
+
+function getStoresToExpose() {
+  const stores = {
+    "./stores/Store": "./src/stores/Store",
+    "./stores/AuthStore": "./src/stores/AuthStore",
+    "./stores/DashboardStore": "./src/stores/DashboardStore",
+  };
+  return stores;
+}
+
+function getComponentsToExpose() {
+  const components = {
+    "./components/TextArea": "./src/components/TextArea",
+    "./components/ShowIf": "./src/components/ShowIf",
+  };
+  return components;
+}
+
+function getOtherToExpose() {
+  const other = {
+    "./i18n": "./src/i18n/i18n",
+    "./pages/ErrorPages": "./src/pages/ErrorPages",
+    "./theme": "./src/theme/index",
+  };
+  return other;
+}
