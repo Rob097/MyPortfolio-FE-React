@@ -1,4 +1,5 @@
 export class User {
+    id: number;
     email: string = '';
     roles = [];
     permissions = [];
@@ -6,12 +7,15 @@ export class User {
     lastName: string = '';
     password: string = '';
     matchingPassword: string = '';
+    customizations: any = {};
 
     constructor(obj: any){
-        this.email = obj.sub;
+        this.id = obj.id;
+        this.email = obj.email;
         this.firstName = obj.firstName;
         this.lastName = obj.lastName;
         this.roles = obj.roles;
-        this.permissions = obj.authorities;
+        this.permissions = obj.authorities ?? obj.permissions;
+        this.customizations = JSON.parse(obj.customizations);
     }
 }

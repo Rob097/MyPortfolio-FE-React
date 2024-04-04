@@ -1,21 +1,22 @@
 const { Filters } = require('shared/utilities/criteria');
 export class User {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-    age: number;
-    sex: string;
-    nationality: string;
-    nation: string;
-    province: string;
-    city: string;
-    cap: string;
-    address: string;
-    avatar?: string;
-    status?: string;
+    id;
+    email;
+    firstName;
+    lastName;
+    age;
+    sex;
+    nationality;
+    nation;
+    province;
+    city;
+    cap;
+    address;
+    avatar;
+    status;
+    customizations;
 
-    constructor(obj: any) {
+    constructor(obj) {
         this.id = obj.id;
         this.email = obj.email;
         this.firstName = obj.firstName;
@@ -30,6 +31,7 @@ export class User {
         this.address = obj.address;
         this.avatar = obj.avatar;
         this.status = obj.status;
+        this.customizations = obj.customizations;
     }
 }
 

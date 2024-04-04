@@ -18,3 +18,9 @@ export const METHODS = {
     PUT: "PUT",
     PATCH: "PATCH",
 }
+
+export const HEADERS = {
+    JSON_HEADER: {
+        "Content-Type": "application/json"
+    }
+}

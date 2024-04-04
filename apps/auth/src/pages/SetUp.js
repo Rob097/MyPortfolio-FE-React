@@ -1,3 +1,4 @@
+import { setUpProfile } from '@/services/auth.service';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Button, Chip, FormControl, FormHelperText, Grid, LinearProgress, MenuItem, Select, TextField, Typography } from "@mui/material";
 import Step from '@mui/material/Step';
@@ -6,14 +7,17 @@ import Stepper from '@mui/material/Stepper';
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useTranslation } from "react-i18next";
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
+import Loading from "shared/components/Loading";
 import TextArea from 'shared/components/TextArea';
 import { useAuthStore } from "shared/stores/AuthStore";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import { User } from "../models/user.model";
 
-const ProfileSetUp = () => {
+const SetUp = () => {
     const [store, dispatch] = useAuthStore();
     const navigate = useNavigate();
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -21,7 +25,9 @@ const ProfileSetUp = () => {
 
     // If not allowed, redirect to home
     useEffect(() => {
-        if (!store.user || !store.user.customizations || JSON.parse(store.user.customizations).isSet === true) {
+        if (!store.user) {
+            navigate('/auth/sign-in', { replace: true });
+        } else if (store.user?.customizations.isSet === true) {
             navigate('/dashboard/home', { replace: true });
         }
     }, []);
@@ -54,7 +60,7 @@ const ProfileSetUp = () => {
                     ref={slider => setSlickSlider(slider)}
                 >
                     <div>
-                        <FirstSlide firstName={store.user.firstName} isActive={currentSlideIndex === 0} />
+                        <FirstSlide firstName={store.user?.firstName} isActive={currentSlideIndex === 0} />
                     </div>
                     <div>
                         <SecondSlide isActive={currentSlideIndex === 1} />
@@ -72,7 +78,7 @@ const ProfileSetUp = () => {
     );
 };
 
-export default ProfileSetUp;
+export default SetUp;
 
 const SimpleSlide = (props) => {
     const [progress, setProgress] = useState(0);
@@ -134,7 +140,7 @@ const FourthSlide = ({ isActive }) => {
             <Box className="mt-20">
                 <Typography variant='h3'>You're all set!</Typography>
                 <Typography variant='body1'>Redirecting you to your dashboard...</Typography>
-                <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/party-popper.png`} alt="party-popper" width={150} height={150} className='mx-auto mt-10' />
+                <img src={`${process.env.REACT_APP_AUTH_URL}/images/party-popper.png`} alt="party-popper" width={150} height={150} className='mx-auto mt-10' />
             </Box>
         </SimpleSlide>
     );
@@ -146,6 +152,7 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
     const [activeStep, setActiveStep] = useState(0);
     const [store, dispatch] = useAuthStore();
     const [info, setInfo] = useState({});
+    const { promiseInProgress } = usePromiseTracker();
 
     const isStepOptional = (step) => {
         return false;
@@ -170,23 +177,37 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
     }
 
     function saveSkills(data) {
-        console.log(data);
-        if (data.skill?.length > 3) {
-            data.skill = data.skill.slice(0, 3);
+        if (data.skills?.length > 3) {
+            data.skills = data.skills.slice(0, 3);
         }
 
         setInfo(oldData => ({ ...oldData, ...data }));
     }
 
     useEffect(() => {
-        if (activeStep === 2 && info?.skill) {
-            const customizations = JSON.parse(store.user.customizations);
-            customizations.isSet = true;
-            customizations.profile = info;
-            console.log(customizations);
-            // dispatch({ type: 'SET_CUSTOMIZATIONS', payload: customizations });
-            // navigate('/dashboard/home');
-            slickSlider.slickGoTo(3);
+        if (activeStep === 2 && info?.skills) {
+            trackPromise(
+                setUpProfile(info, store.user?.id, store.token)
+                    .then(async response => {
+                        const bodyResponse = await response.json();
+                        if (!response.ok) {
+                            throw bodyResponse.messages;
+                        }
+
+                        const newCustostomizations = bodyResponse.content.customizations;
+                        const user = new User({ ...store.user, customizations: newCustostomizations });
+
+                        dispatch({ 
+                            type: 'replaceUser', 
+                            payload: { user: user }
+                        });
+                        slickSlider.slickGoTo(3);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        throw error;
+                    })
+            );
         }
     }, [activeStep, info]);
 
@@ -237,6 +258,8 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
                     />
                 )}
             </Box>
+
+            {promiseInProgress && <Loading adaptToComponent />}
         </Box>
     );
 };
@@ -446,7 +469,13 @@ const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
 const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
     const { t } = useTranslation();
     const { register, handleSubmit, formState: { errors }, watch, getValues, setValue, getFieldState } = useForm();
-    const skill = watch('skill', []);
+    const skills = watch('skills', []);
+
+    const availableSkills = [
+        { id: 1, name: 'Java' },
+        { id: 2, name: 'React' },
+        { id: 3, name: 'MySql' },
+    ]
 
     useEffect(() => {
         for (const key in info) {
@@ -458,9 +487,9 @@ const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
 
     const handleDeleteSkill = (e, skill) => {
         e.preventDefault();
-        const values = getValues('skill');
+        const values = getValues('skills');
         const newValues = values.filter(value => value !== skill);
-        setValue('skill', newValues);
+        setValue('skills', newValues);
     }
 
     /* Form with a chip input where a user can write in three different skills */
@@ -478,15 +507,15 @@ const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
             <Box component="div" className="flex flex-col" style={{ maxWidth: '40rem' }}>
                 <FormControl fullWidth>
                     <Select
-                        labelId="skill-label"
-                        id="skill"
-                        name="skill"
-                        {...register("skill", { required: t('profile.set-up.validations.skill-required'), validate: value => value.length === 3 })}
-                        error={errors.skill && true}
+                        labelId="skills-label"
+                        id="skills"
+                        name="skills"
+                        {...register("skills", { required: t('profile.set-up.validations.skill-required'), validate: value => value.length === 3 })}
+                        error={errors.skills && true}
                         color='primary'
                         size="small"
                         multiple
-                        value={skill ? skill : []}
+                        value={skills ? skills : []}
                         className="text-left"
                         renderValue={(selected) => (
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -494,7 +523,7 @@ const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
                                     <Chip
                                         key={value}
                                         id={value}
-                                        label={value}
+                                        label={availableSkills.find(skill => skill.id === value).name}
                                         deleteIcon={
                                             <CancelIcon
                                                 onMouseDown={(event) => event.stopPropagation()}
@@ -507,13 +536,13 @@ const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
                             </Box>
                         )}
                     >
-                        {['React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS', 'GCP', 'Azure', 'Firebase', 'Python', 'Django', 'Flask', 'FastAPI', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'SASS', 'TailwindCSS', 'Bootstrap', 'Material-UI', 'Chakra-UI', 'Styled-Components', 'Jest', 'Mocha', 'Chai', 'Cypress', 'React Testing Library', 'Jasmine', 'Karma', 'Puppeteer', 'Playwright', 'Selenium', 'WebdriverIO', 'Cucumber', 'JBehave', 'Gherkin', 'Appium', 'Detox', 'XCTest', 'Espresso', 'Robotium', 'Calabash', 'Selendroid', 'MonkeyTalk', 'KIF', 'Frank', 'EarlGrey', 'UIAutomator', 'XCUITest'].map((name) => (
-                            <MenuItem key={name} value={name} disabled={skill?.length >= 3 && !skill?.includes(name)}>
-                                {name}
+                        {availableSkills.map((availableSkill) => (
+                            <MenuItem key={availableSkill.id} value={availableSkill.id} disabled={skills?.length >= 3 && !skills?.includes(availableSkill.id)}>
+                                {availableSkill.name}
                             </MenuItem>
                         ))}
                     </Select>
-                    {errors.skill && <FormHelperText error>{t('profile.set-up.validations.skill-required')}</FormHelperText>}
+                    {errors.skills && <FormHelperText error>{t('profile.set-up.validations.skill-required')}</FormHelperText>}
                 </FormControl>
             </Box>
 

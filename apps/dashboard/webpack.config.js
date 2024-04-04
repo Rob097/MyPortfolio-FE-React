@@ -7,9 +7,9 @@ const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
 
-module.exports = (_, argv) => {
+module.exports = (env, argv) => {
 
-  var dotenv = require('dotenv').config({ path: __dirname + '/.env.' + (argv.mode || 'development') });
+  var dotenv = require('dotenv').config({ path: __dirname + '/.env.' + (env.NODE_ENV || 'development') });
   let runtimeChunk;
   if (dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "true" || dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "false") {
     runtimeChunk = dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "true";
@@ -106,7 +106,6 @@ module.exports = (_, argv) => {
           "./StandardLayout": "./src/layout/standard",
           "./Home": "./src/pages/Home",
           "./UserProfile": "./src/pages/UserProfile",
-          "./ProfileSetUp": "./src/pages/profile/setup",
           "./i18n": "./public/i18n/i18n"
         },
         shared: {
@@ -132,7 +131,7 @@ module.exports = (_, argv) => {
       new webpack.DefinePlugin(dotenv.parsed),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env)
-     })
+      })
     ],
   }
 };

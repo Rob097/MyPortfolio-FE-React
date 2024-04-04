@@ -2,15 +2,17 @@ import { Button, TextField, Typography } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Switch from "@mui/material/Switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "shared/stores/AuthStore";
 import CoverLayout from "@/layout/CoverLayout";
 import curved6 from "public/images/curved-6.jpg";
-import { signUp } from "../services/auth.service";
+import { signIn, signUp } from "../services/auth.service";
 import LoadingButton from '@mui/lab/LoadingButton';
+import { User } from "../models/user.model";
+import jwtDecode from "jwt-decode";
 
 function SignUp() {
     const { t, i18n } = useTranslation("auth");
@@ -21,12 +23,19 @@ function SignUp() {
     const [errorMessage, setErrorMessage] = useState();
     const [passwordShown, setPasswordShown] = useState(false);
 
+    useEffect(() => {
+        if(store?.user && store?.user?.customizations && store?.user?.customizations?.isSet !== true) {
+          navigate('/auth/setup');
+        } else if (store?.isLoggedIn && store?.user) {
+          navigate('/dashboard');
+        }
+      }, [])
+
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
     };
 
     async function handleSignUp(data) {
-        console.log(data);
         setIsProcessing(true);
 
         signUp(data).then(async response => {
@@ -41,17 +50,18 @@ function SignUp() {
             dispatch({
                 type: "login",
                 payload: {
-                    token: bodyResponse.token,
-                    user: user
+                  token: bodyResponse.token,
+                  user: user
                 }
-            });
+              });
 
-            navigate('/welcome');
+            navigate('/auth/setup');
+
         }).catch(error => {
             if (error.length > 0) {
-                setErrorMessage(error[0]?.text);
+                setErrorMessage(error[0]?.text ?? t('sign-up.generic-error'));
             } else {
-                setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-in.generic-error'));
+                setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-up.generic-error'));
             }
         }).finally(() => setIsProcessing(false));
 

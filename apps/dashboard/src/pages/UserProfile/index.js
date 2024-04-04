@@ -6,7 +6,7 @@ const UserProfile = () => {
 
     // redirect to "${root}/profile/setup":
     useEffect(() => {
-        navigate('/dashboard/profile/setup', { replace: true });
+        navigate('/auth/setup', { replace: true });
     }, []);
 
     return (

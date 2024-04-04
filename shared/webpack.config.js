@@ -9,7 +9,7 @@ const parentDevDeps = require("../package.json").devDependencies;
 
 module.exports = (env, argv) => {
 
-  var dotenv = require('dotenv').config({ path: __dirname + '/.env.' + (argv.mode || 'development') });
+  var dotenv = require('dotenv').config({ path: __dirname + '/.env.' + (env.NODE_ENV || 'development') });
 
   let runtimeChunk;
   if (dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "true" || dotenv.parsed.REACT_APP_RUNTIME_CHUNK === "false") {
@@ -60,7 +60,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(css|s[ac]ss)$/i,
-          use: ["style-loader", "css-loader", "postcss-loader"],
+          use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
         },
         {
           test: /\.(ts|tsx|js|jsx)$/,
@@ -117,7 +117,10 @@ module.exports = (env, argv) => {
       new HtmlWebPackPlugin({
         template: "./src/index.html",
       }),
-      new webpack.DefinePlugin(dotenv.parsed)
+      new webpack.DefinePlugin(dotenv.parsed),
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify(process.env)
+      })
     ]
   }
 };
@@ -149,6 +152,7 @@ function getComponentsToExpose() {
   const components = {
     "./components/TextArea": "./src/components/TextArea",
     "./components/ShowIf": "./src/components/ShowIf",
+    "./components/Loading": "./src/components/Loading",
   };
   return components;
 }

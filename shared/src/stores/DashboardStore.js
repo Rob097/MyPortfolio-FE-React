@@ -1,96 +1,47 @@
-import { createContext, useContext, useReducer, useMemo } from "react";
+import { createContext, useContext, useReducer } from "react";
 
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+export const LOCAL_STORAGE_KEY = "DashboardContext";
 
-// The Soft UI Dashboard PRO Material main context
-const SoftUI = createContext(null);
+export const REPLACE = "replace";
+export const REPLACE_USER = "replaceUser";
+export const AUTH_TOKEN = "authToken";
 
-// Setting custom name for the context which is visible on react dev tools
-SoftUI.displayName = "SoftUIContext";
+const DEFAULT_STATE = { user: null, authToken: null };
 
-// Soft UI Dashboard React reducer
 function reducer(state, action) {
-  switch (action.type) {
-    case "MINI_SIDENAV": {
-      return { ...state, miniSidenav: action.value };
+  console.log("reducer called", action);
+    let newState = {};
+    switch (action.type) {
+        case REPLACE:
+            newState = action.payload;
+            break;
+        case REPLACE_USER:
+            newState = { ...state, user: action.payload.user }
+            break;
+        case AUTH_TOKEN:
+            newState = { ...state, authToken: action.payload.authToken }
+            break;
+
+        default:
+            throw new Error('No action type found');
     }
-    case "TRANSPARENT_SIDENAV": {
-      return { ...state, transparentSidenav: action.value };
-    }
-    case "SIDENAV_COLOR": {
-      return { ...state, sidenavColor: action.value };
-    }
-    case "TRANSPARENT_NAVBAR": {
-      return { ...state, transparentNavbar: action.value };
-    }
-    case "FIXED_NAVBAR": {
-      return { ...state, fixedNavbar: action.value };
-    }
-    case "OPEN_CONFIGURATOR": {
-      return { ...state, openConfigurator: action.value };
-    }
-    case "LAYOUT": {
-      return { ...state, layout: action.value };
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
-  }
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
+    return newState;
 }
 
-// Soft UI Dashboard React context provider
-function SoftUIControllerProvider({ children }) {
-  const initialState = {
-    miniSidenav: false,
-    transparentSidenav: false,
-    sidenavColor: "info",
-    transparentNavbar: true,
-    fixedNavbar: true,
-    openConfigurator: false,
-    layout: "dashboard",
-  };
+export const DashboardContext = createContext();
 
-  const [controller, dispatch] = useReducer(reducer, initialState);
+export const DashboardStoreProvider = ({ children }) => {
+    const value = useReducer(reducer, getLocalValues());
 
-  const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
-
-  return <SoftUI.Provider value={value}>{children}</SoftUI.Provider>;
-}
-
-// Soft UI Dashboard React custom hook for using context
-function useSoftUIController() {
-  const context = useContext(SoftUI);
-
-  if (!context) {
-    throw new Error("useSoftUIController should be used inside the SoftUIControllerProvider.");
-  }
-
-  return context;
-}
-
-// Typechecking props for the SoftUIControllerProvider
-SoftUIControllerProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+    return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
 };
 
-// Context module functions
-const setMiniSidenav = (dispatch, value) => dispatch({ type: "MINI_SIDENAV", value });
-const setTransparentSidenav = (dispatch, value) => dispatch({ type: "TRANSPARENT_SIDENAV", value });
-const setSidenavColor = (dispatch, value) => dispatch({ type: "SIDENAV_COLOR", value });
-const setTransparentNavbar = (dispatch, value) => dispatch({ type: "TRANSPARENT_NAVBAR", value });
-const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", value });
-const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
-const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
-
-export {
-  SoftUIControllerProvider,
-  useSoftUIController,
-  setMiniSidenav,
-  setTransparentSidenav,
-  setSidenavColor,
-  setTransparentNavbar,
-  setFixedNavbar,
-  setOpenConfigurator,
-  setLayout,
+export const useDashboardStore = () => {
+    return useContext(DashboardContext);
 };
+
+function getLocalValues() {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || DEFAULT_STATE;
+}

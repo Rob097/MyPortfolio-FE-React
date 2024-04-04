@@ -1,16 +1,15 @@
-import "./index.scss";
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts/snack";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthStoreProvider } from "shared/stores/AuthStore";
-import { SoftUIControllerProvider } from "shared/stores/DashboardStore";
-import { StoreProvider } from "shared/stores/Store";
+import { DashboardStoreProvider } from "shared/stores/DashboardStore";
 import createCustomTheme from "shared/theme";
 import i18n from "../public/i18n/i18n";
 import tailwindConfig from '../tailwind.config';
 import CustomRouterProvider from "./Routes";
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts/snack";
+import "./index.scss";
 
 const App = () => {
   const theme = createCustomTheme(tailwindConfig);
@@ -21,28 +20,26 @@ const App = () => {
 
   return (
     // Theme providers
-    <SoftUIControllerProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
 
-        <CustomSnackProvider>
+      <CustomSnackProvider>
 
-          {/* Store providers */}
-          <StoreProvider>
-            <AuthStoreProvider>
+        {/* Store providers */}
+        <AuthStoreProvider>
+          <DashboardStoreProvider>
 
-              <SnackbarUtilsConfigurator />
+            <SnackbarUtilsConfigurator />
 
-              {/* Routes */}
-              <CustomRouterProvider />
+            {/* Routes */}
+            <CustomRouterProvider />
 
-            </AuthStoreProvider>
-          </StoreProvider>
+          </DashboardStoreProvider>
+        </AuthStoreProvider>
 
-        </CustomSnackProvider>
+      </CustomSnackProvider>
 
-      </ThemeProvider>
-    </SoftUIControllerProvider>
+    </ThemeProvider>
   )
 };
 const root = createRoot(document.getElementById("app"));

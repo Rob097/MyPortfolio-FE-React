@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "shared/stores/AuthStore";
 import { User } from "../models/user.model";
 import { signIn } from "../services/auth.service";
+import { useEffect } from "react";
 
 function SignIn() {
   const { t, i18n } = useTranslation("auth");
@@ -21,6 +22,14 @@ function SignIn() {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+
+  useEffect(() => {
+    if(store?.user && store?.user?.customizations && store?.user?.customizations?.isSet !== true) {
+      navigate('/auth/setup');
+    } else if (store?.isLoggedIn && store?.user) {
+      navigate('/dashboard');
+    }
+  }, [])
 
   async function handleSignIn(data) {
     setIsProcessing(true);

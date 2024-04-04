@@ -1,6 +1,6 @@
 const constants = require('shared/utilities/constants');
 import { User } from "../models/user.model";
-const AUTH_URL = constants.BASE_URL/* 'https://myportfolio-backend.it/api' */ + '/auth';
+const AUTH_URL = process.env.NEXT_PUBLIC_BASE_URL + '/auth';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function signIn(data: any) {
@@ -30,5 +30,16 @@ export function signUp(data: User) {
             "password": data.password,
             "matchingPassword": data.matchingPassword
         })
+    })
+}
+
+export function setUpProfile(infos: any, userId: any, authToken: any) {
+    return fetch(`${AUTH_URL}/${userId}/setup`, {
+        method: constants.METHODS.PUT,
+        headers: {
+            ...JSON_HEADER,
+            "Authorization": "Bearer " + authToken
+        },
+        body: JSON.stringify(infos)
     })
 }

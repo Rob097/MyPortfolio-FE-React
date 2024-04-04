@@ -1,17 +1,17 @@
 
-import "./index.scss";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { Suspense } from "react";
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from "react-i18next";
+import Loading from "shared/components/Loading";
 import { AuthStoreProvider } from "shared/stores/AuthStore";
-import { SoftUIControllerProvider } from "shared/stores/DashboardStore";
-import { StoreProvider } from "shared/stores/Store";
+import { DashboardStoreProvider } from "shared/stores/DashboardStore";
 import createCustomTheme from "shared/theme";
 import i18n from "../public/i18n/i18n";
 import tailwindConfig from '../tailwind.config';
 import CustomRouterProvider from "./Routes";
+import "./index.scss";
 
 export const App = () => {
   const theme = createCustomTheme(tailwindConfig);
@@ -21,30 +21,27 @@ export const App = () => {
 
   return (
     // Suspense for microfrontends loading
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div><Loading /></div>}>
 
       {/* Theme providers */}
-      <SoftUIControllerProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
 
-          {/* Internationalization provider */}
-          <I18nextProvider i18n={i18n}>
+        {/* Internationalization provider */}
+        <I18nextProvider i18n={i18n}>
 
-            {/* Store providers */}
-            <StoreProvider>
-              <AuthStoreProvider>
+          {/* Store providers */}
+          <AuthStoreProvider>
+            <DashboardStoreProvider>
 
-                {/* Routes */}
-                <CustomRouterProvider />
+              {/* Routes */}
+              <CustomRouterProvider />
 
-              </AuthStoreProvider>
-            </StoreProvider>
+            </DashboardStoreProvider>
+          </AuthStoreProvider>
+        </I18nextProvider>
 
-          </I18nextProvider>
-
-        </ThemeProvider>
-      </SoftUIControllerProvider>
+      </ThemeProvider>
 
     </Suspense>
   );

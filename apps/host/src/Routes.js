@@ -1,6 +1,6 @@
 import Home from "dashboard/Home";
 import UserProfile from "dashboard/UserProfile";
-import ProfileSetUp from "dashboard/ProfileSetUp";
+import SetUp from "auth/SetUp";
 import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ErrorPage, NotAllowed, PageNotFound } from "shared/pages/ErrorPages";
@@ -31,6 +31,10 @@ const AuthRoutes = (isLoggedIn) => [
         element: <Navigate to="sign-in" />,
     },
     {
+        path: "setup",
+        element: <SetUp />
+    },
+    {
         path: "sign-in",
         element: <ProtectedRoute isAllowed={!isLoggedIn}><SignIn /></ProtectedRoute>
     },
@@ -43,7 +47,7 @@ const AuthRoutes = (isLoggedIn) => [
 const HostRoutes = (authStore) => [
     {
         path: "",
-        element: <ProtectedRoute isAllowed={authStore?.user?.roles?.includes(roles.ROLE_BASIC)} customRedirect={authStore?.isLoggedIn ? "/dashboard" : "/auth/sign-in"}></ProtectedRoute>
+        element: <Navigate to="/dashboard" replace />
     }
 ];
 
@@ -66,10 +70,6 @@ const Router = (authStore) => {
             element: <StandardLayout />,
             children: DashboardRoutes(authStore.isLoggedIn),
             errorElement: <ErrorPage />
-        },
-        {
-            path: "/dashboard/profile/setup",
-            element: <ProfileSetUp />
         },
         {
             path: "/not-allowed",
