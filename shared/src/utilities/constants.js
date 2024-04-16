@@ -22,5 +22,8 @@ export const METHODS = {
 export const HEADERS = {
     JSON_HEADER: {
         "Content-Type": "application/json"
+    },
+    FORM_HEADER: {
+        "ContentType": "multipart/form-data"
     }
 }

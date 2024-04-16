@@ -1,4 +1,4 @@
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts/snack";
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';

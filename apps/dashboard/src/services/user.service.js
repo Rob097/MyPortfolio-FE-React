@@ -1,8 +1,9 @@
 const constants = require('shared/utilities/constants');
 const { View, Criteria, Filters, Operation } = require('shared/utilities/criteria');
 import { User, UserQ } from "../models/user.model";
-import { BaseService, fetcher } from "./base.service";
+import { fetcher } from "./base.service";
 const USERS_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/users';
+const FILES_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/files';
 
 export class UserService {
 
@@ -38,5 +39,33 @@ export class UserService {
             constants.METHODS.PUT,
             user
         );
+    }
+
+    static updateSomeData(originalUser, dataToChange) {
+        const user = new User(originalUser);
+        Object.keys(dataToChange).forEach(key => {
+            user[key] = dataToChange[key];
+        });
+        user.customizations.profileImage = dataToChange.customizations.profileImage;
+        user.customizations.CV = dataToChange.customizations.CV;
+        user.customizations = JSON.stringify(user.customizations);
+        return this.update(user);
+    }
+
+    static uploadAvatar(id, file) {
+        let formData = new FormData();
+        formData.append('files', file);
+        formData.append('fileType', 'PROFILE_IMAGE');
+
+        const h = {};
+        h.Authorization = `Bearer ${JSON.parse(localStorage.getItem("AuthContext"))?.token}`;
+        h.ContentType = "multipart/form-data";
+        h.Accept = "application/json";
+
+        return fetch(`${FILES_URL}/USER/${id}`, {
+            method: constants.METHODS.POST,
+            headers: h,
+            body: formData
+        });
     }
 }

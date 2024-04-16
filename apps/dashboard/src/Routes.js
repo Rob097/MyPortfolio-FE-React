@@ -4,7 +4,6 @@ import { useAuthStore } from "shared/stores/AuthStore";
 import StandardLayout from "./layout/standard";
 import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
-import ProfileSetUp from "./pages/profile/setup";
 
 const Router = () => {
     return createBrowserRouter([
@@ -35,11 +34,6 @@ const Router = () => {
                             element: <UserProfile />
                         }
                     ]
-                },
-                {
-                    path: "profile/setup",
-                    element: <ProfileSetUp />,
-                    errorElement: <ErrorPage />
                 }
             ]
         },

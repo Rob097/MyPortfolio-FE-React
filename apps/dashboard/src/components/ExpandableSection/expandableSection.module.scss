@@ -1,0 +1,17 @@
+.secondaryAccordion {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.secondaryAccordion::before {
+    content: none !important;
+}
+
+.secondaryAccordionDetails {
+    padding: 0 !important;
+}
