@@ -1,5 +1,6 @@
 const constants = require('shared/utilities/constants');
 const { View, Criteria, Filters, Operation } = require('shared/utilities/criteria');
+import { mutate } from 'swr';
 import { User, UserQ } from "../models/user.model";
 import { fetcher } from "./base.service";
 const USERS_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/users';
@@ -46,26 +47,55 @@ export class UserService {
         Object.keys(dataToChange).forEach(key => {
             user[key] = dataToChange[key];
         });
-        user.customizations.profileImage = dataToChange.customizations.profileImage;
-        user.customizations.CV = dataToChange.customizations.CV;
         user.customizations = JSON.stringify(user.customizations);
         return this.update(user);
     }
 
-    static uploadAvatar(id, file) {
-        let formData = new FormData();
-        formData.append('files', file);
-        formData.append('fileType', 'PROFILE_IMAGE');
+    /////////////////////////////////////////////////////////////////
 
+    static uploadAvatar(id, file) {
+        return this.makeMultipartRequest(id, constants.METHODS.POST, 'PROFILE_IMAGE', file);
+    }
+    
+    static removeAvatar(id) {
+        return this.makeMultipartRequest(id, constants.METHODS.DELETE, 'PROFILE_IMAGE');
+    }
+
+    static uploadCV(id, file, lang) {
+        return this.makeMultipartRequest(id, constants.METHODS.POST, 'CURRICULUM_VITAE', file, lang);
+    }
+    
+    static removeCV(id, lang) {
+        return this.makeMultipartRequest(id, constants.METHODS.DELETE, 'CURRICULUM_VITAE', null, lang);
+    }
+
+    static makeMultipartRequest(id, method, fileType, file, lang) {
+        let formData = new FormData();
+        formData.append('fileType', fileType);
+        if (file) {
+            formData.append('files', file);
+        }
+        if (lang) {
+            formData.append('language', lang);
+        }
+    
         const h = {};
         h.Authorization = `Bearer ${JSON.parse(localStorage.getItem("AuthContext"))?.token}`;
         h.ContentType = "multipart/form-data";
         h.Accept = "application/json";
-
+    
         return fetch(`${FILES_URL}/USER/${id}`, {
-            method: constants.METHODS.POST,
+            method: method,
             headers: h,
             body: formData
         });
     }
+
+    /////////////////////////////////////////////////////////////////
+
+    static invalidateCurrentUser() {
+        const userId = JSON.parse(localStorage.getItem("AuthContext"))?.user?.id;
+        mutate(this.getByIdUrl(userId, View.verbose));
+    }
+
 }

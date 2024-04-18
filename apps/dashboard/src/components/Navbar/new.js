@@ -51,8 +51,8 @@ function Navbar(props) {
       <AppBar
         position="fixed"
         sx={(theme) => ({
-          width: { md: `calc(100% - ${props.drawerWidth}px)` },
-          ml: { md: `${props.drawerWidth}px` },
+          width: { lg: `calc(100% - ${props.drawerWidth}px)` },
+          ml: { lg: `${props.drawerWidth}px` },
           marginBottom: theme.spacing(2),
         })}
         color='transparent'
@@ -77,7 +77,7 @@ function Navbar(props) {
               aria-label="open drawer"
               edge="start"
               onClick={props.handleDrawerToggle}
-              sx={{ mr: 2, display: { md: 'none' } }}
+              sx={{ mr: 2, display: { lg: 'none' } }}
             >
               <MenuIcon />
             </IconButton>

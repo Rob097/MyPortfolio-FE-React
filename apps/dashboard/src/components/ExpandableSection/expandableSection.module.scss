@@ -1,3 +1,10 @@
+.primaryAccordion {
+    &:global(.MuiAccordion-rounded.Mui-expanded) {
+        border-radius: 10px !important;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+}
+
 .secondaryAccordion {
     background-color: transparent !important;
     border: none !important;

@@ -7,13 +7,16 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import classes from './expandableSection.module.scss';
 
-const ExpandableSection = ({ mainTitle, secondaryTitle, badge, info, MainBody, SecondaryBody }) => {
+const ExpandableSection = ({ mainTitle, secondaryTitle, badge, info, MainBody, SecondaryBody, defaultExpanded = false }) => {
+    const { t } = useTranslation("dashboard");
+
     return (
         <>
-            <Accordion>
+            <Accordion defaultExpanded={defaultExpanded} id={`accordion-${mainTitle}`} className={classes.primaryAccordion}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1-content"
@@ -41,7 +44,7 @@ const ExpandableSection = ({ mainTitle, secondaryTitle, badge, info, MainBody, S
                                 className={classes.secondaryAccordionSummary + ' w-fit'}
                                 classes={{ content: 'flex justify-end mr-2' }}
                             >
-                                <Typography color='primary'>More Options</Typography>
+                                <Typography color='primary'>{t('labels.more-options')}</Typography>
                             </AccordionSummary>
                             <AccordionDetails className={classes.secondaryAccordionDetails}>
                                 <Divider />

@@ -73,5 +73,109 @@
                 "other": "Other"
             }
         }
+    },
+    "files": {
+        "errors": {
+            "too-large": "File {{fileName}} is too large. Max size is {{maxSize}}Mb",
+            "wrong-type": "File {{fileName}} has a wrong type. Allowed types are Pdf, Text or Image",
+            "generic": "An error occurred while uploading the file {{fileName}}"
+        },
+        "defaultDisplayedName": "Your {{label}}",
+        "inputPlaceholder": "Drop File Here <br /> OR <br /> Browse Files"
+    },
+    "skills": {
+        "search": "Search skills",
+        "already-exists": "Skill already exists",
+        "already-present": "Skill is already present",
+        "no-skill-selected": "You havn't selected any skill",
+        "created-successfully": "Skill created successfully",
+        "name-label": "Skill Name",
+        "name-required": "Skill name is required",
+        "category-label": "Category",
+        "category-required": "Category is required",
+        "category-placeholder": "Search categories",
+        "add-skill": "Add \"{{name}}\""
+    },
+    "user-profile": {
+        "title": "My Profile",
+        "no-changes-to-save": "No changes to save",
+        "general-information": {
+            "main-title": "General Information",
+            "secondary-title": "Address",
+            "percentage": "{{percentage}}% completed",
+            "fields": {
+                "profile-picture": "Profile Picture",
+                "first-name": {
+                    "label": "First Name",
+                    "required": "Your first name is a mandatory field."
+                },
+                "last-name": {
+                    "label": "Last Name",
+                    "required": "Your last name is a mandatory field."
+                },
+                "email": {
+                    "label": "Email",
+                    "required": "Your email is a mandatory field."
+                },
+                "profession": {
+                    "label": "Profession"
+                },
+                "slug": {
+                    "label": "Slug",
+                    "required": "The slug of your profile is a mandatory field."
+                },
+                "presentation": {
+                    "label": "Presentation",
+                    "placeholder": "Write something about yourself..."
+                },
+                "nationality": {
+                    "label": "Nationality"
+                },
+                "nation": {
+                    "label": "Country",
+                    "required": "Your country is a mandatory field."
+                },
+                "province": {
+                    "label": "State / Province",
+                    "required": "Your state or province is a mandatory field."
+                },
+                "city": {
+                    "label": "City",
+                    "required": "Your city is a mandatory field."
+                },
+                "cap": {
+                    "label": "Zip / Cap",
+                    "required": "Your zip or cap is a mandatory field."
+                },
+                "address": {
+                    "label": "Address",
+                    "required": "Your address is a mandatory field."
+                }
+            }
+        },
+        "about": {
+            "main-title": "About",
+            "cv": {
+                "title": "CV",
+                "en": "English CV",
+                "it": "Italian CV"
+            },
+            "socials": {
+                "title": "Socials"
+            }
+        },
+        "skills": {
+            "main-title": "Skills",
+            "secondary-title": "New Skill",
+            "badge": "{{number}} skills",
+            "info": "The first three are the main skills"
+        }
+    },
+    "labels": {
+        "more-options": "More Options",
+        "add": "Add",
+        "save": "Save",
+        "change": "Change",
+        "remove": "Remove"
     }
 }

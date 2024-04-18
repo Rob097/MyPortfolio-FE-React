@@ -17,6 +17,7 @@ export const METHODS = {
     POST: "POST",
     PUT: "PUT",
     PATCH: "PATCH",
+    DELETE: "DELETE"
 }
 
 export const HEADERS = {
@@ -27,3 +28,5 @@ export const HEADERS = {
         "ContentType": "multipart/form-data"
     }
 }
+
+export const MAX_FILE_SIZE = 1048576; // 1MB

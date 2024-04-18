@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { debounce } from '@mui/material/utils';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
@@ -15,6 +16,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
     const [store, dispatch] = useDashboardStore();
     const [searchedSkills, setSearchedSkills] = useState([]);
     const formSkills = myForm.watch('skills');
+    const { t } = useTranslation("dashboard");
 
     useEffect(() => {
         fetchSkills();
@@ -77,7 +79,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            placeholder="Search skills"
+                            placeholder={t('skills.search')}
                             variant="outlined"
                             InputProps={{
                                 ...params.InputProps,
@@ -96,7 +98,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
 
                             // Check if the skill is already in the list
                             if (newSkills.find(s => s?.skill?.id === value.id)) {
-                                displayMessages([{ text: 'Skill già presente', level: 'info' }]);
+                                displayMessages([{ text: t('skills.already-exists'), level: 'info' }]);
                                 return;
                             }
 
@@ -118,7 +120,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
 
             <Grid item xs={12} sm={8} >
 
-                {formSkills?.length <= 0 ? <p className="text-gray-500">Nessuna skill selezionata</p> :
+                {formSkills?.length <= 0 ? <p className="text-gray-500">{t('skills.no-skill-selected')}</p> :
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="droppable" direction="horizontal" className="flex-wrap">
                             {(provided, snapshot) => (

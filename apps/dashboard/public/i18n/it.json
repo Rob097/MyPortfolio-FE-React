@@ -73,5 +73,109 @@
                 "other": "Altro"
             }
         }
+    },
+    "files": {
+        "errors": {
+            "too-large": "Il file {{fileName}} è troppo grande. La dimensione massima è {{maxSize}}Mb",
+            "wrong-type": "Il file {{fileName}} ha un tipo errato. I tipi consentiti sono Pdf, Testo o Immagine",
+            "generic": "Si è verificato un errore durante il caricamento del file {{fileName}}"
+        },
+        "defaultDisplayedName": "Il tuo {{label}}",
+        "inputPlaceholder": "Trascina qui il file <br /> O <br /> Sfoglia i file"
+    },
+    "skills": {
+        "search": "Cerca skills",
+        "already-exists": "La skill esiste già",
+        "already-present": "La skill è già presente",
+        "no-skill-selected": "Non hai selezionato nessuna skill",
+        "created-successfully": "Skill creata con successo",
+        "name-label": "Nome skill",
+        "name-required": "Il nome della skill è obbligatorio",
+        "category-label": "Categoria",
+        "category-required": "La categoria è obbligatoria",
+        "category-placeholder": "Cerca categorie",
+        "add-skill": "Aggiungi \"{{name}}\""
+    },
+    "user-profile": {
+        "title": "Il mio profilo",
+        "no-changes-to-save": "Nessuna modifica da salvare",
+        "general-information": {
+            "main-title": "Informazioni generali",
+            "secondary-title": "Indirizzo",
+            "percentage": "{{percentage}}% completato",
+            "fields": {
+                "profile-picture": "Foto del profilo",
+                "first-name": {
+                    "label": "Nome",
+                    "required": "Il tuo nome è un campo obbligatorio."
+                },
+                "last-name": {
+                    "label": "Cognome",
+                    "required": "Il tuo cognome è un campo obbligatorio."
+                },
+                "email": {
+                    "label": "Email",
+                    "required": "La tua email è un campo obbligatorio."
+                },
+                "profession": {
+                    "label": "Professione"
+                },
+                "slug": {
+                    "label": "Slug",
+                    "required": "Lo slug del tuo profilo è un campo obbligatorio."
+                },
+                "presentation": {
+                    "label": "Presentazione",
+                    "placeholder": "Scrivi qualcosa su di te..."
+                },
+                "nationality": {
+                    "label": "Nazionalità"
+                },
+                "nation": {
+                    "label": "Paese",
+                    "required": "Il tuo paese è un campo obbligatorio."
+                },
+                "province": {
+                    "label": "Provincia",
+                    "required": "La tua provincia è un campo obbligatorio."
+                },
+                "city": {
+                    "label": "Città",
+                    "required": "La tua città è un campo obbligatorio."
+                },
+                "cap": {
+                    "label": "CAP",
+                    "required": "Il tuo CAP è un campo obbligatorio."
+                },
+                "address": {
+                    "label": "Indirizzo",
+                    "required": "Il tuo indirizzo è un campo obbligatorio."
+                }
+            }
+        },
+        "about": {
+            "main-title": "Informazioni",
+            "cv": {
+                "title": "CV",
+                "en": "CV Inglese",
+                "it": "CV Italiano"
+            },
+            "socials": {
+                "title": "Social"
+            }
+        },
+        "skills": {
+            "main-title": "Skills",
+            "secondary-title": "Nuova skill",
+            "badge": "{{number}} skills",
+            "info": "Le prime tre sono le skills principali"
+        }
+    },
+    "labels": {
+        "more-options": "Altre opzioni",
+        "add": "Aggiungi",
+        "save": "Salva",
+        "change": "Cambia",
+        "remove": "Rimuovi"
     }
 }

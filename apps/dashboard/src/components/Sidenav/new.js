@@ -33,7 +33,7 @@ function Sidebar(props) {
     // Get the current location from the last route
     const route = useLocation().pathname.split("/").slice(1);
 
-    const isBiggerThanMd = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const isBiggerThanMd = useMediaQuery((theme) => theme.breakpoints.up('lg'));
     let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => el.to === `/${route[0]}`);
 
     const CustomListItem = ({ element, index }) => {
@@ -104,7 +104,7 @@ function Sidebar(props) {
 
         <Box
             component="nav"
-            sx={{ width: { md: props.drawerWidth }, flexShrink: { md: 0 } }}
+            sx={{ width: { lg: props.drawerWidth }, flexShrink: { lg: 0 } }}
             aria-label="mailbox folders"
         >
             {!isBiggerThanMd &&
@@ -117,7 +117,7 @@ function Sidebar(props) {
                         keepMounted: true, // Better open performance on mobile.
                     }}
                     sx={{
-                        display: { xs: 'block', md: 'none' },
+                        display: { xs: 'block', lg: 'none' },
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawerWidth },
                     }}
                 >
@@ -128,7 +128,7 @@ function Sidebar(props) {
                 <Drawer
                     variant="permanent"
                     sx={{
-                        display: { xs: 'none', md: 'block' },
+                        display: { xs: 'none', lg: 'block' },
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawerWidth },
                     }}
                     open

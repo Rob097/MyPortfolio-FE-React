@@ -33,7 +33,7 @@ export class User {
         this.address = obj.address ? new Address(obj.address) : {};
         this.profession = obj.profession;
         this.presentation = obj.presentation;
-        this.customizations = obj.customizations ? JSON.parse(obj.customizations) : {};
+        this.customizations = obj.customizations ? (obj.customizations instanceof String || typeof obj.customizations === 'string' ? JSON.parse(obj.customizations) : obj.customizations) : {};
         this.diaries = obj.diaries;
         this.projects = obj.projects;
         this.educations = obj.educations;

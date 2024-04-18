@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar/new';
 import Sidebar from '@/components/Sidenav/new';
+import { User } from "@/models/user.model";
 import { fetcher } from "@/services/base.service";
 import { UserService } from "@/services/user.service";
 import Box from '@mui/material/Box';
@@ -36,6 +37,7 @@ function ResponsiveDrawer() {
     }
   };
 
+  // sidebar will collapse when the screen is smaller than lg
   return (
 
     <Box sx={{ display: 'flex' }}>
@@ -45,7 +47,7 @@ function ResponsiveDrawer() {
 
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
+        sx={{ flexGrow: 1, p: 3, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
         className='min-h-screen text-dark-main'
       >
         {promiseInProgress && <Loading adaptToComponent />}
@@ -74,7 +76,8 @@ function authLogicsForAllPages() {
 
   useEffect(() => {
     if (data) {
-      dispatch({ type: "replaceUser", payload: { user: data.content } });
+      const user = new User(data.content);
+      dispatch({ type: "replaceUser", payload: { user: user } });
     }
   }, [data]);
 

@@ -6,13 +6,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { debounce } from '@mui/material/utils';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { manuallyDecrementPromiseCounter, manuallyIncrementPromiseCounter } from 'react-promise-tracker';
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
 import { displayMessages } from '../alerts';
 
+const SKILLS_TO_DISPLAY = 5;
 const NewSkill = ({ afterCreationAction }) => {
-    const { register, handleSubmit, setValue, reset } = useForm();
+    const { register, handleSubmit, setValue, reset, formState } = useForm();
     const [searchedCategories, setSearchedCategories] = useState([]);
+    const { t } = useTranslation("dashboard");
 
     useEffect(() => {
         fetchCategories();
@@ -22,7 +25,7 @@ const NewSkill = ({ afterCreationAction }) => {
         const categoryName = new Criteria(SkillQ.skillName, Operation.equals, "*" + query?.replace(" ", "*") + "*");
 
         const criterias = query ? [categoryName] : null;
-        const filters = new SkillQ(criterias, View.verbose, 0, 5, null);
+        const filters = new SkillQ(criterias, View.verbose, 0, SKILLS_TO_DISPLAY, null);
         SkillService.getCategoriesByCriteria(filters).then((response) => {
             const categories = response?.content;
             setSearchedCategories(categories);
@@ -45,7 +48,7 @@ const NewSkill = ({ afterCreationAction }) => {
             }
 
             reset();
-            displayMessages([{ text: "Skill created successfully", level: "success" }]);
+            displayMessages([{ text: t('skills.created-successfully'), level: "success" }]);
 
         } catch (error) {
             console.error(error);
@@ -63,13 +66,15 @@ const NewSkill = ({ afterCreationAction }) => {
                     name="name"
                     required
                     id="name"
-                    label="Skill Name"
+                    label={t('skills.name-label')}
                     autoFocus
-                    {...register("name", { required: true })}
+                    {...register("name", { required: t('skills.name-required') })}
+                    error={formState.errors.name !== undefined}
+                    helperText={formState.errors.name?.message}
                 />
                 <Autocomplete
                     id="categories"
-                    {...register("category", { required: true })}
+                    {...register("category", { required: t('skills.category-required') })}
                     freeSolo
                     options={searchedCategories}
                     getOptionLabel={(option) => {
@@ -87,10 +92,18 @@ const NewSkill = ({ afterCreationAction }) => {
                             option.name.toLowerCase().includes(params.inputValue.toLowerCase())
                         );
 
-                        if (params.inputValue !== '') {
+                        if (params.inputValue === '' && filtered.length === SKILLS_TO_DISPLAY) {
                             filtered.push({
                                 inputValue: params.inputValue,
-                                name: `Add "${params.inputValue}"`,
+                                name: '...',
+                                disabled: true
+                            });
+                        }
+
+                        if (params.inputValue !== '' && !filtered.find((option) => option.name.toLowerCase() === params.inputValue.toLowerCase())) {
+                            filtered.push({
+                                inputValue: params.inputValue,
+                                name: t('skills.add-skill', { name: params.inputValue }),
                             });
                         }
 
@@ -99,7 +112,9 @@ const NewSkill = ({ afterCreationAction }) => {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            placeholder="Search categories"
+                            error={formState.errors.category !== undefined}
+                            helperText={formState.errors.category?.message}
+                            placeholder={t('skills.category-placeholder')}
                             variant="outlined"
                             fullWidth
                             InputProps={{
@@ -116,7 +131,19 @@ const NewSkill = ({ afterCreationAction }) => {
                             }}
                         />
                     )}
-                    renderOption={(props, option) => <li {...props}>{option?.name}</li>}
+                    renderOption={(props, option) => (
+                        <li {...props} style={{ cursor: option.disabled ? 'default' : 'pointer' }} onClick={(e) => {
+                            if (!option.disabled) {
+                                props.onClick(e);
+                            } else {
+                                return;
+                            }
+                        }
+                        }>
+                            {option.name}
+                        </li>
+
+                    )}
                     isOptionEqualToValue={(option, value) => option?.name === value?.name}
                     onChange={(e, value) => {
                         if (typeof value === 'string') {
@@ -136,7 +163,7 @@ const NewSkill = ({ afterCreationAction }) => {
                     color="primary"
                     onClick={handleSubmit(myHandleSubmit)}
                 >
-                    Add
+                    {t('labels.add')}
                 </Button>
 
             </Box>
