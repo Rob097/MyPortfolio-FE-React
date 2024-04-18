@@ -11,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import styled from '@mui/material/styles/styled';
-import { t } from 'i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -352,38 +351,9 @@ const About = ({ myForm }) => {
         }
     }, [store.user]);
 
-    function handleReplaceCV(file, lang) {
-        trackPromise(
-            UserService.uploadCV(store.user.id, file, lang)
-                .then(async response => {
-                    const json = await response.json();
-                    if (json.messages) {
-                        displayMessages(json.messages);
-                    }
-                    UserService.invalidateCurrentUser();
-                }).catch(err => {
-                    console.error('error', err);
-                })
-        );
-    }
-
-    function handleRemoveCV(lang) {
-        trackPromise(
-            UserService.removeCV(store.user.id, lang)
-                .then(async response => {
-                    const json = await response.json();
-                    if (json.messages) {
-                        displayMessages(json.messages);
-                    }
-                    UserService.invalidateCurrentUser();
-                }).catch(err => {
-                    console.error('error', err);
-                })
-        );
-    }
-
     const MainBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
+        
         return (
             <>
                 <h1>Sezione MainBody</h1>
@@ -391,7 +361,7 @@ const About = ({ myForm }) => {
         )
     }
 
-    const SecondaryBody = ({ myForm, handleReplaceCV, handleRemoveCV }) => {
+    const SecondaryBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
 
         const enCvLabel = t('user-profile.about.cv.en');
@@ -407,20 +377,36 @@ const About = ({ myForm }) => {
             name: 'customizations.CV.it'
         });
 
-        function replaceCv(file, label) {
-            if (label === enCvLabel) {
-                handleReplaceCV(file, 'en');
-            } else {
-                handleReplaceCV(file, 'it');
-            }
+        function handleReplaceCV(file, label) {
+            const lang = label === enCvLabel ? 'en' : 'it';
+            trackPromise(
+                UserService.uploadCV(store.user.id, file, lang)
+                    .then(async response => {
+                        const json = await response.json();
+                        if (json.messages) {
+                            displayMessages(json.messages);
+                        }
+                        UserService.invalidateCurrentUser();
+                    }).catch(err => {
+                        console.error('error', err);
+                    })
+            );
         }
 
-        function removeCv(label) {
-            if (label === enCvLabel) {
-                handleRemoveCV('en');
-            } else {
-                handleRemoveCV('it');
-            }
+        function handleRemoveCV(label) {
+            const lang = label === enCvLabel ? 'en' : 'it';
+            trackPromise(
+                UserService.removeCV(store.user.id, lang)
+                    .then(async response => {
+                        const json = await response.json();
+                        if (json.messages) {
+                            displayMessages(json.messages);
+                        }
+                        UserService.invalidateCurrentUser();
+                    }).catch(err => {
+                        console.error('error', err);
+                    })
+            );
         }
 
         return (
@@ -434,16 +420,16 @@ const About = ({ myForm }) => {
                                 <CustomFileInput
                                     label={enCvLabel}
                                     field={fieldEn}
-                                    replaceFile={replaceCv}
-                                    removeFile={removeCv}
+                                    replaceFile={handleReplaceCV}
+                                    removeFile={handleRemoveCV}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <CustomFileInput
                                     label={itCvLabel}
                                     field={fieldIt}
-                                    replaceFile={replaceCv}
-                                    removeFile={removeCv}
+                                    replaceFile={handleReplaceCV}
+                                    removeFile={handleRemoveCV}
                                 />
                             </Grid>
                         </Grid>
@@ -523,7 +509,7 @@ const About = ({ myForm }) => {
         <ExpandableSection
             mainTitle={t('user-profile.about.main-title')}
             MainBody={<MainBody myForm={myForm} />}
-            SecondaryBody={<SecondaryBody myForm={myForm} handleReplaceCV={handleReplaceCV} handleRemoveCV={handleRemoveCV} />}
+            SecondaryBody={<SecondaryBody myForm={myForm} />}
         />
     )
 }
