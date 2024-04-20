@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar/new';
 import Sidebar from '@/components/Sidenav/new';
+import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts';
 import { User } from "@/models/user.model";
 import { fetcher } from "@/services/base.service";
 import { UserService } from "@/services/user.service";
@@ -39,21 +40,23 @@ function ResponsiveDrawer() {
 
   // sidebar will collapse when the screen is smaller than lg
   return (
+    <CustomSnackProvider>
+      <SnackbarUtilsConfigurator />
+      <Box sx={{ display: 'flex' }}>
+        <Navbar drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
 
-    <Box sx={{ display: 'flex' }}>
-      <Navbar drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
+        <Sidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerTransitionEnd={handleDrawerTransitionEnd} handleDrawerClose={handleDrawerClose} />
 
-      <Sidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerTransitionEnd={handleDrawerTransitionEnd} handleDrawerClose={handleDrawerClose} />
-
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
-        className='min-h-screen text-dark-main'
-      >
-        {promiseInProgress && <Loading adaptToComponent />}
-        <Outlet />
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
+          className='min-h-screen text-dark-main'
+        >
+          {promiseInProgress && <Loading adaptToComponent />}
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
+    </CustomSnackProvider>
   );
 }
 

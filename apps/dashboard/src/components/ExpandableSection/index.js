@@ -28,7 +28,8 @@ const ExpandableSection = ({ mainTitle, secondaryTitle, badge, info, MainBody, S
                         <Chip variant="outlined" color="primary" size='small' label={badge} className='ml-2' />
                     </ShowIf>
                     <ShowIf condition={info !== undefined}>
-                        <Tooltip title={info} arrow>
+                        {/* tooltip title is html */}
+                        <Tooltip arrow title={<div dangerouslySetInnerHTML={{ __html: info }}></div>}>
                             <InfoIcon className='ml-2' color='primary' />
                         </Tooltip>
                     </ShowIf>

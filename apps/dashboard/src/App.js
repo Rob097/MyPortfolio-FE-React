@@ -1,7 +1,5 @@
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from "@/components/alerts";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthStoreProvider } from "shared/stores/AuthStore";
 import { DashboardStoreProvider } from "shared/stores/DashboardStore";
@@ -23,21 +21,15 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <CustomSnackProvider>
+      {/* Store providers */}
+      <AuthStoreProvider>
+        <DashboardStoreProvider>
 
-        {/* Store providers */}
-        <AuthStoreProvider>
-          <DashboardStoreProvider>
+          {/* Routes */}
+          <CustomRouterProvider />
 
-            <SnackbarUtilsConfigurator />
-
-            {/* Routes */}
-            <CustomRouterProvider />
-
-          </DashboardStoreProvider>
-        </AuthStoreProvider>
-
-      </CustomSnackProvider>
+        </DashboardStoreProvider>
+      </AuthStoreProvider>
 
     </ThemeProvider>
   )

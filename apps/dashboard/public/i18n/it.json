@@ -162,13 +162,15 @@
             },
             "socials": {
                 "title": "Social"
-            }
+            },
+            "main-story-not-found": "Storia principale non trovata"
         },
         "skills": {
             "main-title": "Skills",
             "secondary-title": "Nuova skill",
             "badge": "{{number}} skills",
-            "info": "Le prime tre sono le skills principali"
+            "info": "<ul><li>Le prime tre sono le principali</li><li>Trascina le skills per cambiare l'ordine</li></ul>",
+            "at-least-three": "Perfavore, seleziona almeno tre skills"
         }
     },
     "labels": {
@@ -177,5 +179,84 @@
         "save": "Salva",
         "change": "Cambia",
         "remove": "Rimuovi"
+    },
+    "messages": {
+        "success": "Successo",
+        "error": "Errore",
+        "info": "Info",
+        "warning": "Attenzione",
+        "default": "Default"
+    },
+    "services": {
+        "user": {
+            "create": {
+                "ok": "Profilo creato con successo",
+                "ko": "Errore durante la creazione del profilo"
+            },
+            "update": {
+                "ok": "Profilo aggiornato con successo",
+                "ko": "Errore durante l'aggiornamento del profilo"
+            }
+        },
+        "skills": {
+            "create": {
+                "ok": "Skills create con successo",
+                "ko": "Errore durante la creazione delle skills"
+            },
+            "update": {
+                "ok": "Skills aggiornate con successo",
+                "ko": "Errore durante l'aggiornamento delle skills"
+            }
+        },
+        "diary": {
+            "create": {
+                "ok": "Agenda creata con successo",
+                "ko": "Errore durante la creazione dell'agenda"
+            },
+            "update": {
+                "ok": "Agenda aggiornata con successo",
+                "ko": "Errore durante l'aggiornamento dell'agenda"
+            }
+        },
+        "story": {
+            "create": {
+                "ok": "Storia creata con successo",
+                "ko": "Errore durante la creazione della storia"
+            },
+            "update": {
+                "ok": "Storia aggiornata con successo",
+                "ko": "Errore durante l'aggiornamento della storia"
+            }
+        },
+        "project": {
+            "create": {
+                "ok": "Progetto creato con successo",
+                "ko": "Errore durante la creazione del progetto"
+            },
+            "update": {
+                "ok": "Progetto aggiornato con successo",
+                "ko": "Errore durante l'aggiornamento del progetto"
+            }
+        },
+        "education": {
+            "create": {
+                "ok": "Formazione creata con successo",
+                "ko": "Errore durante la creazione della formazione"
+            },
+            "update": {
+                "ok": "Formazione aggiornata con successo",
+                "ko": "Errore durante l'aggiornamento della formazione"
+            }
+        },
+        "experience": {
+            "create": {
+                "ok": "Esperienza creata con successo",
+                "ko": "Errore durante la creazione dell'esperienza"
+            },
+            "update": {
+                "ok": "Esperienza aggiornata con successo",
+                "ko": "Errore durante l'aggiornamento dell'esperienza"
+            }
+        }
     }
 }

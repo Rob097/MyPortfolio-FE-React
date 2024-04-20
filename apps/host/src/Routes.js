@@ -67,7 +67,7 @@ const Router = (authStore) => {
         },
         {
             path: "/dashboard",
-            element: <StandardLayout />,
+            element: <ProtectedRoute isAllowed={authStore.isLoggedIn} customRedirect="/auth/sign-in" ><StandardLayout /></ProtectedRoute>,
             children: DashboardRoutes(authStore.isLoggedIn),
             errorElement: <ErrorPage />
         },

@@ -18,10 +18,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Breadcrumbs from "components/Breadcrumbs";
 import * as React from 'react';
 import { Link, useLocation } from "react-router-dom";
-import { useAuthStore } from "shared/stores/AuthStore";
+import { useDashboardStore } from "shared/stores/DashboardStore";
 import classes from './navbar.module.scss';
 
 function Navbar(props) {
+  const [store, dispatch] = useDashboardStore();
   const route = useLocation().pathname.split("/").slice(1);
 
   // Account Menu state: START
@@ -104,7 +105,7 @@ function Navbar(props) {
             </Box>
             <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', sm: 'inherit' } }} className='whitespace-nowrap' >+ Add New</Button>
             <NotificationsNoneOutlinedIcon fontSize='large' className='cursor-pointer' onClick={handleNotificationsClick} aria-controls={openNotifications ? 'notifications-menu' : undefined} aria-haspopup="true" aria-expanded={openNotifications ? 'true' : undefined} />
-            <Avatar alt="Remy Sharp" className='cursor-pointer' onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
+            <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
           </Box>
         </Toolbar>
       </AppBar>
@@ -120,7 +121,7 @@ function Navbar(props) {
 export default Navbar;
 
 const AccountMenu = (props) => {
-  const [store, dispatch] = useAuthStore();
+  const [store, dispatch] = useDashboardStore();
 
   function handleLogout() {
     props.handleClose();
@@ -182,8 +183,8 @@ const AccountMenu = (props) => {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       color='primary'
     >
-      <CustomMenuItem onClick={props.handleClose} component={Link} to="/profile">
-        <Avatar /> Profile
+      <CustomMenuItem onClick={props.handleClose} component={Link} to="/dashboard/profile">
+        <Avatar src={store.user.customizations?.profileImage ?? ''} /> Profile
       </CustomMenuItem>
       <Divider />
       <CustomMenuItem onClick={props.handleClose}>

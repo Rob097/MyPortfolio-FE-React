@@ -1,6 +1,7 @@
 import { Alert, AlertTitle } from '@mui/material';
 import { SnackbarContent, SnackbarProvider, closeSnackbar, useSnackbar } from 'notistack';
 import { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const VariantType = {
   default: 'default',
@@ -60,7 +61,8 @@ const Snack = {
 export default Snack;
 
 export const CustomAlert = forwardRef((props, ref) => {
-
+  const { t } = useTranslation("dashboard");
+  
   const {
     id,
     message,
@@ -76,7 +78,7 @@ export const CustomAlert = forwardRef((props, ref) => {
     >
       <Alert severity={variant} onClose={() => closeSnackbar(id)} sx={{ width: '100%', maxWidth: '30em' }}>
         <AlertTitle>
-          {variant.charAt(0).toUpperCase() + variant.slice(1)}
+          {t(`messages.${variant}`)}
         </AlertTitle>
         {message}
       </Alert>

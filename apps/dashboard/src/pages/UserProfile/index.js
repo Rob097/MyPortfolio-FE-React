@@ -1,8 +1,10 @@
 import CustomFileInput from '@/components/CustomFileInput';
 import ExpandableSection from '@/components/ExpandableSection';
+import MuiEditor from '@/components/MuiEditor';
 import { displayMessages } from '@/components/alerts';
 import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
+import { StoryService } from "@/services/story.service";
 import { UserService } from "@/services/user.service";
 import { Facebook, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 import { Box, Button, Typography } from '@mui/material';
@@ -29,6 +31,11 @@ const UserProfile = () => {
         data.customizations.CV = store.user.customizations?.CV;
         data.customizations.profileImage = store.user.customizations?.profileImage;
 
+        if(data.skills?.length < 3) {
+            displayMessages([{ text: t('user-profile.skills.at-least-three'), level: 'error' }]);
+            return;
+        }
+
         // If all the fields are the same, don't update the user's profile
         const dataToCheck = {};
         Object.keys(data).forEach(key => {
@@ -39,17 +46,19 @@ const UserProfile = () => {
             return;
         }
 
-
-
         // Update the user's profile
         trackPromise(
             UserService.updateSomeData(store.user, data)
                 .then((response) => {
                     console.log(response);
+                    if (response.messages?.length === 0) {
+                        displayMessages([{ text: t('services.user.update.ok'), level: 'success' }]);
+                    }
                     UserService.invalidateCurrentUser();
                 })
                 .catch((error) => {
                     console.log(error);
+                    displayMessages([{ text: t('services.user.update.ko'), level: 'error' }]);
                 })
         );
 
@@ -353,10 +362,41 @@ const About = ({ myForm }) => {
 
     const MainBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
-        
+
+        const currentMainStory = useMemo(() => (
+            store.user
+                ?.diaries?.find(d => d?.isMain)
+                ?.stories?.find(s => s?.id === store.user?.mainStoryId)
+        ), [store.user.diaries, store.user.mainStoryId]);
+
+
+        function handleSave(data) {
+            if (!currentMainStory) {
+                console.error('Main story not found');
+                displayMessages([{ text: t('user-profile.about.main-story-not-found'), level: 'error' }]);
+                return;
+            }
+            currentMainStory.description = data;
+
+            trackPromise(
+                StoryService.update(currentMainStory)
+                    .then(async response => {
+                        if (response.messages?.length === 0) {
+                            displayMessages([{ text: t('services.story.update.ok'), level: 'success' }]);
+                        }
+                        UserService.invalidateCurrentUser();
+                    }).catch(err => {
+                        console.error('error', err);
+                        displayMessages([{ text: t('services.story.update.ko'), level: 'error' }]);
+                    })
+            );
+
+        }
+
         return (
             <>
                 <h1>Sezione MainBody</h1>
+                <MuiEditor useComplete={false} existingText={currentMainStory?.description ?? ''} handleSave={handleSave} />
             </>
         )
     }

@@ -176,3 +176,7 @@ label.Mui-error:not(.Mui-focused) {
   pointer-events:none; //This makes it not clickable
   opacity:0.6;         //This grays it out to look disabled
 }
+
+pre {
+  white-space: normal !important;
+}

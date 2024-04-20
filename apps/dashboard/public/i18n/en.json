@@ -162,13 +162,15 @@
             },
             "socials": {
                 "title": "Socials"
-            }
+            },
+            "main-story-not-found": "Main story not found"
         },
         "skills": {
             "main-title": "Skills",
             "secondary-title": "New Skill",
             "badge": "{{number}} skills",
-            "info": "The first three are the main skills"
+            "info": "<ul><li>The first three are the main ones</li><li>Drag the skills to change the order</li></ul>",
+            "at-least-three": "Please, select at least three skills"
         }
     },
     "labels": {
@@ -177,5 +179,84 @@
         "save": "Save",
         "change": "Change",
         "remove": "Remove"
+    },
+    "messages": {
+        "success": "Success",
+        "error": "Error",
+        "info": "Info",
+        "warning": "Warning",
+        "default": "Default"
+    },
+    "services": {
+        "user": {
+            "create": {
+                "ok": "Profile successfully created",
+                "ko": "Error during profile creation"
+            },
+            "update": {
+                "ok": "Profile successfully updated",
+                "ko": "Error during profile update"
+            }
+        },
+        "skills": {
+            "create": {
+                "ok": "Skills successfully created",
+                "ko": "Error during skills creation"
+            },
+            "update": {
+                "ok": "Skills successfully updated",
+                "ko": "Error during skills update"
+            }
+        },
+        "diary": {
+            "create": {
+                "ok": "Diary successfully created",
+                "ko": "Error during diary creation"
+            },
+            "update": {
+                "ok": "Diary successfully updated",
+                "ko": "Error during diary update"
+            }
+        },
+        "story": {
+            "create": {
+                "ok": "Story successfully created",
+                "ko": "Error during story creation"
+            },
+            "update": {
+                "ok": "Story successfully updated",
+                "ko": "Error during story update"
+            }
+        },
+        "project": {
+            "create": {
+                "ok": "Project successfully created",
+                "ko": "Error during project creation"
+            },
+            "update": {
+                "ok": "Project successfully updated",
+                "ko": "Error during project update"
+            }
+        },
+        "education": {
+            "create": {
+                "ok": "Education successfully created",
+                "ko": "Error during education creation"
+            },
+            "update": {
+                "ok": "Education successfully updated",
+                "ko": "Error during education update"
+            }
+        },
+        "experience": {
+            "create": {
+                "ok": "Experience successfully created",
+                "ko": "Error during experience creation"
+            },
+            "update": {
+                "ok": "Experience successfully updated",
+                "ko": "Error during experience update"
+            }
+        }
     }
 }

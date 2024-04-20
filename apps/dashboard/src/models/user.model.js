@@ -21,6 +21,7 @@ export class User {
     educations;
     experiences;
     skills;
+    mainStoryId;
 
     constructor(obj) {
         this.id = obj.id;
@@ -39,6 +40,7 @@ export class User {
         this.educations = obj.educations;
         this.experiences = obj.experiences;
         this.skills = obj.skills;
+        this.mainStoryId = obj.mainStoryId;
     }
 }
 
