@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import classes from './userTimeline.module.scss';
+import ShowIf from '../utils/showIf';
 
 const UserTimeline = ({ user }) => {
     const { t } = useTranslation(['user-home', 'common']);
@@ -57,45 +58,51 @@ const UserTimeline = ({ user }) => {
                         <img src='/images/Group.svg' />
                     </Box>
 
-                    <TimelineElement
-                        userSlug={user?.slug}
-                        entityType='experiences'
-                        entitySlug={experience?.slug}
-                        separatorImage='/images/workIcon.png'
-                        title={t('quick-overview.what-i-do')}
-                        subtitle={experience?.title}
-                        firstCaption={t('quick-overview.company')}
-                        firstOverline={`${experience?.companyName}, ${experience?.location}`}
-                        secondCaption={t('quick-overview.period')}
-                        secondOverline={`${new Date(experience?.fromDate).getFullYear()} - ${experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}`}
-                        description={experience?.description}
-                    />
+                    <ShowIf condition={experience !== undefined && experience != null}>
+                        <TimelineElement
+                            userSlug={user?.slug}
+                            entityType='experiences'
+                            entitySlug={experience?.slug}
+                            separatorImage='/images/workIcon.png'
+                            title={t('quick-overview.what-i-do')}
+                            subtitle={experience?.title}
+                            firstCaption={t('quick-overview.company')}
+                            firstOverline={`${experience?.companyName}, ${experience?.location}`}
+                            secondCaption={t('quick-overview.period')}
+                            secondOverline={`${new Date(experience?.fromDate).getFullYear()} - ${experience?.toDate ? new Date(experience?.toDate).getFullYear() : t('quick-overview.present')}`}
+                            description={experience?.description}
+                        />
+                    </ShowIf>
 
-                    <TimelineElement
-                        userSlug={user?.slug}
-                        entityType='educations'
-                        entitySlug={education?.slug}
-                        separatorImage='/images/educationIcon.png'
-                        title={t('quick-overview.what-i-studied')}
-                        subtitle={education?.field}
-                        firstCaption={t('quick-overview.institute')}
-                        firstOverline={education?.school}
-                        secondCaption={t('quick-overview.period')}
-                        secondOverline={`${new Date(education?.fromDate).getFullYear()} - ${education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}`}
-                        description={education?.description}
-                    />
+                    <ShowIf condition={education !== undefined && education != null}>
+                        <TimelineElement
+                            userSlug={user?.slug}
+                            entityType='educations'
+                            entitySlug={education?.slug}
+                            separatorImage='/images/educationIcon.png'
+                            title={t('quick-overview.what-i-studied')}
+                            subtitle={education?.field}
+                            firstCaption={t('quick-overview.institute')}
+                            firstOverline={education?.school}
+                            secondCaption={t('quick-overview.period')}
+                            secondOverline={`${new Date(education?.fromDate).getFullYear()} - ${education?.toDate ? new Date(education?.toDate).getFullYear() : t('quick-overview.present')}`}
+                            description={education?.description}
+                        />
+                    </ShowIf>
 
-                    <TimelineElement
-                        userSlug={user?.slug}
-                        entityType='projects'
-                        entitySlug={project?.slug}
-                        separatorImage='/images/projectIcon.png'
-                        title={t('quick-overview.what-im-working-on')}
-                        subtitle={project?.title}
-                        firstCaption={t('quick-overview.period')}
-                        firstOverline={`${new Date(project?.fromDate).getFullYear()} - ${project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}`}
-                        description={project?.description}
-                    />
+                    <ShowIf condition={project !== undefined && project != null}>
+                        <TimelineElement
+                            userSlug={user?.slug}
+                            entityType='projects'
+                            entitySlug={project?.slug}
+                            separatorImage='/images/projectIcon.png'
+                            title={t('quick-overview.what-im-working-on')}
+                            subtitle={project?.title}
+                            firstCaption={t('quick-overview.period')}
+                            firstOverline={`${new Date(project?.fromDate).getFullYear()} - ${project?.toDate ? new Date(project?.toDate).getFullYear() : t('quick-overview.present')}`}
+                            description={project?.description}
+                        />
+                    </ShowIf>
 
                 </Timeline>
             </Container>

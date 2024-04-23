@@ -5,6 +5,7 @@ import CodeEditor from './CodeEditor';
 const HtmlContent = ({ children }) => {
     return (
         <JsxParser
+            autoCloseVoidElements={true}
             components={{ Typography, Box, Grid, Button, Card, CardActions, CardContent, CardMedia, Chip, CodeEditor }}
             jsx={children}
         />

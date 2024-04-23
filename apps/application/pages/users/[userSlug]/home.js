@@ -119,24 +119,26 @@ const UserHome = () => {
                 {/* <PersonalCard image='https://mui.com/static/images/avatar/1.jpg' phone={user?.phone} email={user?.email} city={User.getUserAddress(user)} sectionToScrollTo='#contact-section' /> */}
             </Box>
 
-            <Box id='user-timeline' component='section' className='flex flex-col justify-center mt-12 mb-10 xl:mt-0'>
-                <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', flexDirection: 'column' }}>
-                    {/* h3 */}
-                    <Typography variant="h3" gutterBottom>
-                        {t('quick-overview.title')}
-                    </Typography>
-                    {/* link to user's diary */}
-                    <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
-                        <Box fontSize={(theme) => theme.typography.size.md} >{t('read-my-complete-diary')}</Box>
-                    </Link>
-                </Box>
+            <ShowIf condition={user?.experiences?.length > 0 || user?.educations?.length > 0 || user?.projects?.length > 0}>
+                <Box id='user-timeline' component='section' className='flex flex-col justify-center mt-12 mb-10 xl:mt-0'>
+                    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', flexDirection: 'column' }}>
+                        {/* h3 */}
+                        <Typography variant="h3" gutterBottom>
+                            {t('quick-overview.title')}
+                        </Typography>
+                        {/* link to user's diary */}
+                        <Link href='/users/[userSlug]/diary' as={`/users/${userSlug}/diary`}>
+                            <Box fontSize={(theme) => theme.typography.size.md} >{t('read-my-complete-diary')}</Box>
+                        </Link>
+                    </Box>
 
-                <UserTimeline user={user} />
+                    <UserTimeline user={user} />
 
-                <Box className="w-full flex justify-center px-4 mb-4 mt-32">
-                    <MouseControlledButton href={`/users/${userSlug}/diary`} text={t('read-my-complete-diary')} icon={<AutoStoriesIcon className="sm:mr-2" fontSize="large" />} />
+                    <Box className="w-full flex justify-center px-4 mb-4 mt-32">
+                        <MouseControlledButton href={`/users/${userSlug}/diary`} text={t('read-my-complete-diary')} icon={<AutoStoriesIcon className="sm:mr-2" fontSize="large" />} />
+                    </Box>
                 </Box>
-            </Box>
+            </ShowIf>
 
             {/* Contact Me Section */}
             <Box id='contact-section' component='section' className={userClasses.section} sx={{ backgroundImage: `linear-gradient(180deg, ${colors.white}, ${colors.background.main} 30%);` }}>

@@ -3,17 +3,22 @@
 export default function ShowIf(props) {
     // const [globalState, dispatch] = useGlobalState();
 
-    const not = props.not ? true : false;
+    // const not = props.not ? true : false;
 
     // props.condition accetta solo valori booleani o undefined (quando la condizione non è presente)
-    if (props.condition !== false && props.condition !== true && props.condition !== undefined) {
+    /*if (props.condition !== false && props.condition !== true && props.condition !== undefined) {
         throw new Error('ShowIf - condition must be a boolean or undefined. Value: ' + JSON.stringify(props.condition));
-    }
+    }*/
 
     // Se è specificata una condizione, deve essere vera
-    if ((props.condition === false && !not) || (props.condition === true && not)) {
+    /*if ((props.condition === false && !not) || (props.condition === true && not)) {
+        return null;
+    }*/
+
+    if (!props.condition) {
         return null;
     }
+
 
     /* Se è specificata una lista di ruoli, quello selezionato deve essere uno di quelli elencati
     if (props.roles) {
