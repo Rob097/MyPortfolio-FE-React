@@ -5,6 +5,7 @@ export const LOCAL_STORAGE_KEY = "DashboardContext";
 export const REPLACE = "replace";
 export const REPLACE_USER = "replaceUser";
 export const AUTH_TOKEN = "authToken";
+export const LOGOUT = "logout";
 
 const DEFAULT_STATE = { user: null, authToken: null };
 
@@ -20,6 +21,9 @@ function reducer(state, action) {
             break;
         case AUTH_TOKEN:
             newState = { ...state, authToken: action.payload.authToken }
+            break;
+        case LOGOUT:
+            newState = DEFAULT_STATE;
             break;
 
         default:
