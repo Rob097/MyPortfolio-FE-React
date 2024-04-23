@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
 const ONE_MB = 1024 * 1024;
-const CustomFileInput = ({ field, label, replaceFile, removeFile }) => {
+const CustomFileInput = ({ field, label, replaceFile, removeFile, ...rest }) => {
     const { t } = useTranslation("dashboard");
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -48,7 +48,7 @@ const CustomFileInput = ({ field, label, replaceFile, removeFile }) => {
     return (
         <Box
             {...getRootProps()}
-            className='relative flex flex-col items-center justify-center text-center border border-dashed border-gray-500 rounded-md p-2 cursor-pointer bg-background-main h-full'
+            className={'relative flex flex-col items-center justify-center text-center border border-dashed border-gray-500 rounded-md p-2 cursor-pointer bg-background-main h-full ' + rest.rootClassName}
         >
             {label && <Typography variant="h6" sx={{ position: 'absolute', top: '-1.5rem', left: '1rem' }}>{label}</Typography>}
             <input {...getInputProps()} />

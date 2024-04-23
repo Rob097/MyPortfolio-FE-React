@@ -105,7 +105,7 @@ function Navbar(props) {
             </Box>
             <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', sm: 'inherit' } }} className='whitespace-nowrap' >+ Add New</Button>
             <NotificationsNoneOutlinedIcon fontSize='large' className='cursor-pointer' onClick={handleNotificationsClick} aria-controls={openNotifications ? 'notifications-menu' : undefined} aria-haspopup="true" aria-expanded={openNotifications ? 'true' : undefined} />
-            <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
+            <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user?.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
           </Box>
         </Toolbar>
       </AppBar>
@@ -184,7 +184,7 @@ const AccountMenu = (props) => {
       color='primary'
     >
       <CustomMenuItem onClick={props.handleClose} component={Link} to="/dashboard/profile">
-        <Avatar src={store.user.customizations?.profileImage ?? ''} /> Profile
+        <Avatar src={store.user?.customizations?.profileImage ?? ''} /> Profile
       </CustomMenuItem>
       <Divider />
       <CustomMenuItem onClick={props.handleClose}>

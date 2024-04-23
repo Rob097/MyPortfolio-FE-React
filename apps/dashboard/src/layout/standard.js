@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar/new';
 import Sidebar from '@/components/Sidenav/new';
-import { CustomSnackProvider, SnackbarUtilsConfigurator } from '@/components/alerts';
+import { CustomSnackProvider, SnackbarUtilsConfigurator, displayMessages } from '@/components/alerts';
 import { User } from "@/models/user.model";
 import { fetcher } from "@/services/base.service";
 import { UserService } from "@/services/user.service";
@@ -13,6 +13,7 @@ import { useAuthStore } from "shared/stores/AuthStore";
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { View } from "shared/utilities/criteria";
 import useSWR from 'swr';
+import jwtDecode from "jwt-decode";
 
 const drawerWidth = 300;
 
@@ -74,6 +75,16 @@ function authLogicsForAllPages() {
       navigate('/auth/sign-in');
     } else if (authStore.user && authStore.user.customizations && authStore.user.customizations.isSet !== true) {
       navigate('/auth/setup');
+    } else if (authStore.isLoggedIn && authStore.token) {
+      // check if the token is expired:
+      const decodedToken = jwtDecode(authStore.token);
+      const currentTime = Date.now() / 1000;
+      if (decodedToken.exp < currentTime) {
+        displayMessages([{ text: "Session expired, please login again", level: 'error' }]);
+        authDispatch({ type: "logout" });
+        dispatch({ type: "logout" });
+        navigate('/auth/sign-in');
+      }
     }
   }, [store.user, authStore.user]);
 

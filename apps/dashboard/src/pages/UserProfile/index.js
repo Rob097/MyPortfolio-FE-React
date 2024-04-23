@@ -6,8 +6,8 @@ import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
 import { StoryService } from "@/services/story.service";
 import { UserService } from "@/services/user.service";
-import { Facebook, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
-import { Box, Button, Typography } from '@mui/material';
+import { Facebook, Info, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
+import { Box, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -31,36 +31,64 @@ const UserProfile = () => {
         data.customizations.CV = store.user.customizations?.CV;
         data.customizations.profileImage = store.user.customizations?.profileImage;
 
-        if(data.skills?.length < 3) {
+        if (data.skills?.length < 3) {
             displayMessages([{ text: t('user-profile.skills.at-least-three'), level: 'error' }]);
             return;
         }
 
         // If all the fields are the same, don't update the user's profile
+        let isMainStoryToUpdate = false;
+        let isUserToUpdate = false;
         const dataToCheck = {};
         Object.keys(data).forEach(key => {
             dataToCheck[key] = store.user[key];
         });
-        if (JSON.stringify(dataToCheck) === JSON.stringify(data)) {
+        dataToCheck.customizations.mainStory = data.customizations.mainStory;
+
+        isMainStoryToUpdate = data.customizations.mainStory!==undefined && data.customizations.mainStory.description !== store.user?.diaries?.find(d => d.isMain)?.stories?.find(s => s.id === store.user?.mainStoryId)?.description;
+        isUserToUpdate = JSON.stringify(dataToCheck) !== JSON.stringify(data);
+
+        console.log('isMainStoryToUpdate', isMainStoryToUpdate, data.customizations.mainStory, store.user?.diaries?.find(d => d.isMain)?.stories?.find(s => s.id === store.user?.mainStoryId));
+        console.log('isUserToUpdate', isUserToUpdate, data);
+
+        if (!isMainStoryToUpdate && !isUserToUpdate) {
             displayMessages([{ text: t('user-profile.no-changes-to-save'), level: 'info' }]);
             return;
         }
 
+        if (isMainStoryToUpdate) {
+            trackPromise(
+                StoryService.update(data.customizations.mainStory)
+                    .then(async response => {
+                        if (response.messages?.length === 0 && !isUserToUpdate) {
+                            displayMessages([{ text: t('services.story.update.ok'), level: 'success' }]);
+                        }
+                        UserService.invalidateCurrentUser();
+                    }).catch(err => {
+                        console.error('error', err);
+                        displayMessages([{ text: t('services.story.update.ko'), level: 'error' }]);
+                    })
+            );
+        }
+
         // Update the user's profile
-        trackPromise(
-            UserService.updateSomeData(store.user, data)
-                .then((response) => {
-                    console.log(response);
-                    if (response.messages?.length === 0) {
-                        displayMessages([{ text: t('services.user.update.ok'), level: 'success' }]);
-                    }
-                    UserService.invalidateCurrentUser();
-                })
-                .catch((error) => {
-                    console.log(error);
-                    displayMessages([{ text: t('services.user.update.ko'), level: 'error' }]);
-                })
-        );
+        if (isUserToUpdate) {
+            delete data.customizations.mainStory;
+            trackPromise(
+                UserService.updateSomeData(store.user, data)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.messages?.length === 0) {
+                            displayMessages([{ text: t('services.user.update.ok'), level: 'success' }]);
+                        }
+                        UserService.invalidateCurrentUser();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        displayMessages([{ text: t('services.user.update.ko'), level: 'error' }]);
+                    })
+            );
+        }
 
     }
 
@@ -179,94 +207,102 @@ const GeneralInformation = ({ myForm }) => {
     const MainBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
         return (
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h6" fontWeight={theme => theme.typography.fontWeightMedium} gutterBottom>
-                        {t('user-profile.general-information.fields.profile-picture')}
-                    </Typography>
-                    <Box className='flex flex-row items-center justify-start mb-5'>
-                        <Avatar alt="Profile Picture" src={avatar} sx={{ width: 76, height: 76 }} />
+            <>
+                <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" fontWeight={theme => theme.typography.fontWeightMedium} gutterBottom>
+                            {t('user-profile.general-information.fields.profile-picture')}
+                        </Typography>
+                        <Box className='flex flex-row items-center justify-start mb-5'>
+                            <Avatar alt="Profile Picture" src={avatar} sx={{ width: 76, height: 76 }} />
 
-                        <Button variant="outlined" color='primary' size='small' sx={{ ml: 2 }} onClick={replaceAvatar}>
-                            {t('labels.change')}
-                        </Button>
-                        <Button variant="outlined" color='text' size='small' sx={{ ml: 2 }} onClick={removeAvatar}>
-                            {t('labels.remove')}
-                        </Button>
-                    </Box>
+                            <Button variant="outlined" color='primary' size='small' sx={{ ml: 2 }} onClick={replaceAvatar}>
+                                {t('labels.change')}
+                            </Button>
+                            <Button variant="outlined" color='text' size='small' sx={{ ml: 2 }} onClick={removeAvatar}>
+                                {t('labels.remove')}
+                            </Button>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <CustomTextField
+                            label={t('user-profile.general-information.fields.first-name.label')}
+                            variant="outlined"
+                            fullWidth
+                            {...myForm.register('firstName', { required: t('user-profile.general-information.fields.first-name.required') })}
+                            error={myForm.formState.errors.firstName !== undefined}
+                            helperText={myForm.formState.errors.firstName?.message}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <CustomTextField
+                            label={t('user-profile.general-information.fields.last-name.label')}
+                            variant="outlined"
+                            fullWidth
+                            {...myForm.register('lastName', { required: t('user-profile.general-information.fields.last-name.required') })}
+                            error={myForm.formState.errors.lastName !== undefined}
+                            helperText={myForm.formState.errors.lastName?.message}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <CustomTextField
+                            label={t('user-profile.general-information.fields.email.label')}
+                            variant="outlined"
+                            fullWidth
+                            {...myForm.register('email', { required: t('user-profile.general-information.fields.email.required') })}
+                            error={myForm.formState.errors.email !== undefined}
+                            helperText={myForm.formState.errors.email?.message}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.first-name.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('firstName', { required: t('user-profile.general-information.fields.first-name.required') })}
-                        error={myForm.formState.errors.firstName !== undefined}
-                        helperText={myForm.formState.errors.firstName?.message}
-                    />
+                <Grid container spacing={4} className='pt-8'>
+                    <Grid item xs={12} md={4}>
+                        <Grid container spacing={4}>
+                            <Grid item xs={12}>
+                                <CustomTextField
+                                    label={t('user-profile.general-information.fields.profession.label')}
+                                    variant="outlined"
+                                    fullWidth
+                                    {...myForm.register('profession', { required: false })}
+                                    error={myForm.formState.errors.profession !== undefined}
+                                    helperText={myForm.formState.errors.profession?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <CustomTextField
+                                    label={t('user-profile.general-information.fields.slug.label')}
+                                    variant="outlined"
+                                    fullWidth
+                                    {...myForm.register('slug', { required: t('user-profile.general-information.fields.slug.required') })}
+                                    error={myForm.formState.errors.slug !== undefined}
+                                    helperText={myForm.formState.errors.slug?.message}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                        <CustomTextArea
+                            label={t('user-profile.general-information.fields.presentation.label')}
+                            placeholder={t('user-profile.general-information.fields.presentation.placeholder')}
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            {...myForm.register('presentation', { required: false })}
+                            error={myForm.formState.errors.presentation !== undefined}
+                            helperText={myForm.formState.errors.presentation?.message}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.last-name.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('lastName', { required: t('user-profile.general-information.fields.last-name.required') })}
-                        error={myForm.formState.errors.lastName !== undefined}
-                        helperText={myForm.formState.errors.lastName?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.email.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('email', { required: t('user-profile.general-information.fields.email.required') })}
-                        error={myForm.formState.errors.email !== undefined}
-                        helperText={myForm.formState.errors.email?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.profession.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('profession', { required: false })}
-                        error={myForm.formState.errors.profession !== undefined}
-                        helperText={myForm.formState.errors.profession?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.slug.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('slug', { required: t('user-profile.general-information.fields.slug.required') })}
-                        error={myForm.formState.errors.slug !== undefined}
-                        helperText={myForm.formState.errors.slug?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <CustomTextArea
-                        label={t('user-profile.general-information.fields.presentation.label')}
-                        placeholder={t('user-profile.general-information.fields.presentation.placeholder')}
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        {...myForm.register('presentation', { required: false })}
-                        error={myForm.formState.errors.presentation !== undefined}
-                        helperText={myForm.formState.errors.presentation?.message}
-                    />
-                </Grid>
-            </Grid>
+            </>
         )
     }
 
     const SecondaryBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
         return (
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+            <Grid container spacing={4}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.nationality.label')}
                         variant="outlined"
@@ -276,7 +312,7 @@ const GeneralInformation = ({ myForm }) => {
                         helperText={myForm.formState.errors.nationality?.message}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.nation.label')}
                         variant="outlined"
@@ -286,7 +322,7 @@ const GeneralInformation = ({ myForm }) => {
                         helperText={myForm.formState.errors.nation?.message}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.province.label')}
                         variant="outlined"
@@ -296,7 +332,7 @@ const GeneralInformation = ({ myForm }) => {
                         helperText={myForm.formState.errors.province?.message}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.city.label')}
                         variant="outlined"
@@ -306,7 +342,7 @@ const GeneralInformation = ({ myForm }) => {
                         helperText={myForm.formState.errors.city?.message}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.cap.label')}
                         variant="outlined"
@@ -316,7 +352,7 @@ const GeneralInformation = ({ myForm }) => {
                         helperText={myForm.formState.errors.cap?.message}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} lg={4}>
                     <CustomTextField
                         label={t('user-profile.general-information.fields.address.label')}
                         variant="outlined"
@@ -345,6 +381,7 @@ const GeneralInformation = ({ myForm }) => {
 const About = ({ myForm }) => {
     const [store, dispatch] = useDashboardStore();
     const { t } = useTranslation("dashboard");
+    const isBiggerThanSm = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
     useEffect(() => {
         if (store.user) {
@@ -369,6 +406,11 @@ const About = ({ myForm }) => {
                 ?.stories?.find(s => s?.id === store.user?.mainStoryId)
         ), [store.user.diaries, store.user.mainStoryId]);
 
+        function handleEditorChange(content) {
+            console.log('content changed', content);
+            const newStory = { ...currentMainStory, description: content };
+            myForm.setValue('customizations.mainStory', newStory);
+        }
 
         function handleSave(data) {
             if (!currentMainStory) {
@@ -395,14 +437,22 @@ const About = ({ myForm }) => {
 
         return (
             <>
-                <h1>Sezione MainBody</h1>
-                <MuiEditor useComplete={false} existingText={currentMainStory?.description ?? ''} handleSave={handleSave} />
+                <Box className='w-fit flex flex-row items-center justify-center'>
+                    <Typography variant="h5" fontWeight={theme => theme.typography.fontWeightMedium} gutterBottom className='w-fit mr-2'>
+                        {t('user-profile.about.your-story')}
+                    </Typography>
+                    <Tooltip title={t('user-profile.about.your-story-info')} arrow placement={isBiggerThanSm ? 'right-end' : 'bottom'}>
+                        <Info color='primary' className='ml-2' />
+                    </Tooltip>
+                </Box>
+                <MuiEditor useComplete={false} existingText={currentMainStory?.description ?? ''} handleSave={handleSave} onChange={handleEditorChange} />
             </>
         )
     }
 
     const SecondaryBody = ({ myForm }) => {
         const { t } = useTranslation("dashboard");
+        const isBiggerThanXl = useMediaQuery((theme) => theme.breakpoints.up('xl'));
 
         const enCvLabel = t('user-profile.about.cv.en');
         const itCvLabel = t('user-profile.about.cv.it');
@@ -452,94 +502,87 @@ const About = ({ myForm }) => {
         return (
 
             <>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
-                        <Typography color='dark.main' fontWeight={theme => theme.typography.fontWeightMedium} className='!mt-5 !mb-5' >{t('user-profile.about.cv.title')}</Typography>
-                        <Grid container spacing={2} marginY={4}>
-                            <Grid item xs={12} sm={6}>
-                                <CustomFileInput
-                                    label={enCvLabel}
-                                    field={fieldEn}
-                                    replaceFile={handleReplaceCV}
-                                    removeFile={handleRemoveCV}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <CustomFileInput
-                                    label={itCvLabel}
-                                    field={fieldIt}
-                                    replaceFile={handleReplaceCV}
-                                    removeFile={handleRemoveCV}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12} md={8}>
-                        <Typography color='dark.main' fontWeight={theme => theme.typography.fontWeightMedium} className='!mt-5 !mb-5' >{t('user-profile.about.socials.title')}</Typography>
-                        <Grid container spacing={2} marginY={4}>
-                            <Grid item xs={12} sm={6}>
-                                <CustomTextField
-                                    {...myForm.register('customizations.socials.facebook')}
-                                    variant="outlined"
-                                    placeholder='John.Doe'
-                                    fullWidth
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Facebook />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <CustomTextField
-                                    {...myForm.register('customizations.socials.twitter')}
-                                    variant="outlined"
-                                    placeholder='JohnDoe'
-                                    fullWidth
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Twitter />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <CustomTextField
-                                    {...myForm.register('customizations.socials.instagram')}
-                                    variant="outlined"
-                                    placeholder='johndoe'
-                                    fullWidth
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Instagram />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <CustomTextField
-                                    {...myForm.register('customizations.socials.linkedin')}
-                                    variant="outlined"
-                                    placeholder='john-doe'
-                                    fullWidth
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <LinkedIn />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
+
+                <Box className={`w-full flex ${isBiggerThanXl ? 'flex-row' : 'flex-col'} gap-x-8 items-start justify-start`}>
+
+                    <Box className='w-full max-w-md flex flex-col items-start justify-start'>
+                        <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} className='!mt-5 !mb-10' >{t('user-profile.about.cv.title')}</Typography>
+                        <Box className='w-full max-w-md flex flex-row gap-x-4 items-start justify-start mt-4'>
+                            <CustomFileInput
+                                label={enCvLabel}
+                                field={fieldEn}
+                                replaceFile={handleReplaceCV}
+                                removeFile={handleRemoveCV}
+                                rootClassName='w-full'
+                            />
+                            <CustomFileInput
+                                label={itCvLabel}
+                                field={fieldIt}
+                                replaceFile={handleReplaceCV}
+                                removeFile={handleRemoveCV}
+                                rootClassName='w-full'
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box className='w-full max-w-md flex flex-col items-start justify-start'>
+                        <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} className={isBiggerThanXl ? '!mt-5 !mb-10' : '!mt-10'}>{t('user-profile.about.socials.title')}</Typography>
+                        <Box className='w-full max-w-md flex flex-col gap-y-4 items-start justify-start mt-4'>
+                            <CustomTextField
+                                {...myForm.register('customizations.socials.facebook')}
+                                variant="outlined"
+                                placeholder='John.Doe'
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Facebook />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <CustomTextField
+                                {...myForm.register('customizations.socials.twitter')}
+                                variant="outlined"
+                                placeholder='JohnDoe'
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Twitter />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <CustomTextField
+                                {...myForm.register('customizations.socials.instagram')}
+                                variant="outlined"
+                                placeholder='johndoe'
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Instagram />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <CustomTextField
+                                {...myForm.register('customizations.socials.linkedin')}
+                                variant="outlined"
+                                placeholder='john-doe'
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LinkedIn />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
             </>
 
         )

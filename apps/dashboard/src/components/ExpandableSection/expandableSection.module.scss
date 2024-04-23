@@ -10,9 +10,12 @@
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
     width: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 2rem !important;
 }
 
 .secondaryAccordion::before {
@@ -20,5 +23,8 @@
 }
 
 .secondaryAccordionDetails {
-    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 2rem !important;
 }

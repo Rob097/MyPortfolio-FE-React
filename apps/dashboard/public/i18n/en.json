@@ -163,7 +163,9 @@
             "socials": {
                 "title": "Socials"
             },
-            "main-story-not-found": "Main story not found"
+            "main-story-not-found": "Main story not found",
+            "your-story": "Your Story",
+            "your-story-info": "Write your personal story here. This is the first thing people will see when they visit your profile."
         },
         "skills": {
             "main-title": "Skills",
@@ -175,6 +177,7 @@
     },
     "labels": {
         "more-options": "More Options",
+        "less-options": "Less Options",
         "add": "Add",
         "save": "Save",
         "change": "Change",

@@ -1,5 +1,6 @@
 import { Lock, LockOpen, TextFields } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { debounce } from '@mui/material/utils';
 import {
     LinkBubbleMenu,
     MenuButton,
@@ -157,6 +158,12 @@ const MuiEditor = (props) => {
                     handlePaste: handlePaste,
                 }}
                 renderControls={() => <EditorMenuControls useComplete={props.useComplete} />}
+                // debounce((e, value) => fetchSkills(value), 500)
+                /* onUpdate={({ editor }) => {
+                    props.onChange(editor.getHTML());
+                }} */
+                // onUpdate should call props.onUpdate if it exists but through a debounce function:
+                onUpdate={props.onChange ? debounce(({ editor }) => props.onChange(editor.getHTML()), 500) : undefined}
                 RichTextFieldProps={{
                     // The "outlined" variant is the default (shown here only as
                     // example), but can be changed to "standard" to remove the outlined
@@ -168,7 +175,7 @@ const MuiEditor = (props) => {
                     // Below is an example of adding a toggle within the outlined field
                     // for showing/hiding the editor menu bar, and a "submit" button for
                     // saving/viewing the HTML content
-                    footer: (
+                    footer: props.showFooter ? (
                         <Stack
                             direction="row"
                             spacing={2}
@@ -180,7 +187,7 @@ const MuiEditor = (props) => {
                                 px: 1.5,
                             }}
                         >
-                            <MenuButton
+                            {props.showHideFormatting && <MenuButton
                                 value="formatting"
                                 tooltipLabel={
                                     showMenuBar ? "Hide formatting" : "Show formatting"
@@ -191,9 +198,9 @@ const MuiEditor = (props) => {
                                 }
                                 selected={showMenuBar}
                                 IconComponent={TextFields}
-                            />
+                            />}
 
-                            <MenuButton
+                            {props.showOnlyReading && <MenuButton
                                 value="formatting"
                                 tooltipLabel={
                                     isEditable
@@ -204,9 +211,9 @@ const MuiEditor = (props) => {
                                 onClick={() => setIsEditable((currentState) => !currentState)}
                                 selected={!isEditable}
                                 IconComponent={isEditable ? Lock : LockOpen}
-                            />
+                            />}
 
-                            <Button
+                            {props.showSaveButton && <Button
                                 variant="contained"
                                 size="small"
                                 onClick={() => {
@@ -217,8 +224,9 @@ const MuiEditor = (props) => {
                             >
                                 Save
                             </Button>
+                            }
                         </Stack>
-                    ),
+                    ) : null,
                 }}
             >
                 {() => (
