@@ -103,9 +103,7 @@ module.exports = (env, argv) => {
           shared: `shared@${dotenv.parsed.REACT_APP_SHARED_URL}/remoteEntry.js`
         },
         exposes: {
-          "./StandardLayout": "./src/layout/standard",
-          "./Home": "./src/pages/Home",
-          "./UserProfile": "./src/pages/UserProfile",
+          "./Routes": "./src/Routes",
           "./i18n": "./public/i18n/i18n"
         },
         shared: {

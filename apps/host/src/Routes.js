@@ -1,29 +1,11 @@
-import Home from "dashboard/Home";
-import UserProfile from "dashboard/UserProfile";
 import SetUp from "auth/SetUp";
+import { Routes as DashboardInternalRoutes } from "dashboard/Routes";
 import { lazy } from "react";
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ErrorPage, NotAllowed, PageNotFound } from "shared/pages/ErrorPages";
 import { useAuthStore } from "shared/stores/AuthStore";
-import { ROLES as roles } from "shared/utilities/constants";
 const SignIn = lazy(() => import("auth/SignIn"));
 const SignUp = lazy(() => import("auth/SignUp"));
-const StandardLayout = lazy(() => import("dashboard/StandardLayout"));
-
-const DashboardRoutes = (isLoggedIn) => [
-    {
-        path: "",
-        element: <Navigate to="home" replace/>
-    },
-    {
-        path: "home",
-        element: <ProtectedRoute isAllowed={isLoggedIn}><Home /></ProtectedRoute>
-    },
-    {
-        path: "profile",
-        element: <ProtectedRoute isAllowed={isLoggedIn}><UserProfile /></ProtectedRoute>
-    }
-]
 
 const AuthRoutes = (isLoggedIn) => [
     {
@@ -67,8 +49,8 @@ const Router = (authStore) => {
         },
         {
             path: "/dashboard",
-            element: <ProtectedRoute isAllowed={authStore.isLoggedIn} customRedirect="/auth/sign-in" ><StandardLayout /></ProtectedRoute>,
-            children: DashboardRoutes(authStore.isLoggedIn),
+            element: <ProtectedRoute isAllowed={authStore.isLoggedIn} customRedirect="/auth/sign-in" ><Outlet /></ProtectedRoute>,
+            children: DashboardInternalRoutes,
             errorElement: <ErrorPage />
         },
         {

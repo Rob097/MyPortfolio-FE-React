@@ -24,17 +24,17 @@ const primaryLinks = [
 ];
 
 const secondaryLinks = [
-    { text: 'Projects', icon: <InboxIcon />, to: '/dashboard/all-mail' },
-    { text: 'Experiences', icon: <MailIcon />, to: '/dashboard/trash' },
-    { text: 'Educations', icon: <InboxIcon />, to: '/dashboard/spam' },
+    { text: 'Projects', icon: <InboxIcon />, to: '/dashboard/projects' },
+    { text: 'Experiences', icon: <MailIcon />, to: '/dashboard/experiences' },
+    { text: 'Educations', icon: <InboxIcon />, to: '/dashboard/educations' },
 ];
 
 function Sidebar(props) {
     // Get the current location from the last route
-    const route = useLocation().pathname.split("/").slice(1);
+    const route = useLocation().pathname;
 
     const isBiggerThanMd = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-    let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => el.to === `/${route[0]}`);
+    let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => el.to === route);
 
     const CustomListItem = ({ element, index }) => {
         return (
@@ -61,7 +61,7 @@ function Sidebar(props) {
                 <Typography variant='h1' className="!text-xl" fontWeight="bold"><span className='text-primary-main' >My</span><span>Portfolio</span></Typography>
             </Toolbar>
 
-            <Box className="!sticky bg-white z-10 flex justify-center items-center left-0 px-4 pb-4" sx={{ top: {xs: '48px', sm: '64px'}, display: { xs: 'inherit', xl: 'none' } }}>
+            <Box className="!sticky bg-white z-10 flex justify-center items-center left-0 px-4 pb-4" sx={{ top: { xs: '48px', sm: '64px' }, display: { xs: 'inherit', xl: 'none' } }}>
                 <TextField
                     id="input-with-sx"
                     variant="outlined"
