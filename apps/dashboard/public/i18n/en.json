@@ -173,7 +173,8 @@
             "badge": "{{number}} skills",
             "info": "<ul><li>The first three are the main ones</li><li>Drag the skills to change the order</li></ul>",
             "at-least-three": "Please, select at least three skills"
-        }
+        },
+        "unsaved-changes": "You have unsaved changes, do you want to leave the page?"
     },
     "labels": {
         "more-options": "More Options",

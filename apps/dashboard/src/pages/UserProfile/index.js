@@ -6,7 +6,7 @@ import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
 import { StoryService } from "@/services/story.service";
 import { UserService } from "@/services/user.service";
-import { Facebook, Info, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
+import { Facebook, Info, Instagram, LinkedIn, Save, Twitter } from '@mui/icons-material';
 import { Box, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { trackPromise } from 'react-promise-tracker';
+import { useBlocker } from 'react-router-dom';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
@@ -36,26 +37,16 @@ const UserProfile = () => {
             return;
         }
 
-        // If all the fields are the same, don't update the user's profile
-        let isMainStoryToUpdate = false;
-        let isUserToUpdate = false;
-        const dataToCheck = {};
-        Object.keys(data).forEach(key => {
-            dataToCheck[key] = store.user[key];
-        });
-        dataToCheck.customizations.mainStory = data.customizations.mainStory;
+        const isMainStoryToUpdate = hasMainStoryChanged();
+        const isUserToUpdate = hasUserInfoChanged();
 
-        isMainStoryToUpdate = data.customizations.mainStory!==undefined && data.customizations.mainStory.description !== store.user?.diaries?.find(d => d.isMain)?.stories?.find(s => s.id === store.user?.mainStoryId)?.description;
-        isUserToUpdate = JSON.stringify(dataToCheck) !== JSON.stringify(data);
-
-        console.log('isMainStoryToUpdate', isMainStoryToUpdate, data.customizations.mainStory, store.user?.diaries?.find(d => d.isMain)?.stories?.find(s => s.id === store.user?.mainStoryId));
-        console.log('isUserToUpdate', isUserToUpdate, data);
-
+        // If there are no changes, don't update the user's profile
         if (!isMainStoryToUpdate && !isUserToUpdate) {
             displayMessages([{ text: t('user-profile.no-changes-to-save'), level: 'info' }]);
             return;
         }
 
+        // Update the main story
         if (isMainStoryToUpdate) {
             trackPromise(
                 StoryService.update(data.customizations.mainStory)
@@ -92,19 +83,54 @@ const UserProfile = () => {
 
     }
 
+    // Check if the user's info has changed
+    function hasUserInfoChanged() {
+        const data = myForm.getValues();
+        const dataToCheck = {};
+        Object.keys(data).forEach(key => {
+            if (key !== 'customizations.profileImage' && key !== 'customizations.CV') {
+                dataToCheck[key] = store.user[key];
+            } else {
+                dataToCheck[key] = data[key];
+            }
+        });
+        return JSON.stringify(dataToCheck) !== JSON.stringify(data);
+    }
+
+    // Check if the main story has changed
+    function hasMainStoryChanged() {
+        const data = myForm.getValues();
+        return data.customizations.mainStory !== undefined
+            && data.customizations.mainStory.description !== store.user?.diaries
+                ?.find(d => d.isMain)?.stories
+                ?.find(s => s.id === store.user?.mainStoryId)
+                ?.description;
+    }
+
+    // If the user tries to leave the page with unsaved changes, ask for confirmation
+    let blocker = useBlocker(() => hasUserInfoChanged() || hasMainStoryChanged());
+    useEffect(() => {
+        if (blocker?.state === "blocked") {
+            if (window.confirm(t('user-profile.unsaved-changes'))) {
+                blocker.proceed();
+            } else {
+                blocker.reset();
+            }
+        }
+    }, [blocker?.state]);
+
     return (
         <>
-            <h1>{t('user-profile.title')}</h1>
             <Box component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate sx={{ mt: 1 }}>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                    {t('labels.save')}
-                </Button>
+                <Box className='flex flex-row items-center justify-between'>
+                    <h1>{t('user-profile.title')}</h1>
+                    <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} startIcon={<Save />}>
+                        {t('labels.save')}
+                    </Button>
+                </Box>
                 <GeneralInformation myForm={myForm} />
                 <About myForm={myForm} />
                 <Skills myForm={myForm} />
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                    {t('labels.save')}
-                </Button>
             </Box>
         </>
     )
@@ -407,14 +433,12 @@ const About = ({ myForm }) => {
         ), [store.user.diaries, store.user.mainStoryId]);
 
         function handleEditorChange(content) {
-            console.log('content changed', content);
             const newStory = { ...currentMainStory, description: content };
             myForm.setValue('customizations.mainStory', newStory);
         }
 
         function handleSave(data) {
             if (!currentMainStory) {
-                console.error('Main story not found');
                 displayMessages([{ text: t('user-profile.about.main-story-not-found'), level: 'error' }]);
                 return;
             }
@@ -648,7 +672,6 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
 }));
 
-// Create a styled version of the TextField to represent a textarea. Set the background color to the theme's background.main color and also remove the paddings:
 const CustomTextArea = styled(TextField)(({ theme }) => ({
     '& .MuiInputBase-root': {
         padding: 0,
