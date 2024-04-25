@@ -1,7 +1,8 @@
 // Sidebar.js
 import { AccountCircle, Dashboard, Search } from '@mui/icons-material';
-import MailIcon from '@mui/icons-material/Mail';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import SchoolIcon from '@mui/icons-material/School';
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import WorkIcon from '@mui/icons-material/Work';
 import { Button, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -24,9 +25,9 @@ const primaryLinks = [
 ];
 
 const secondaryLinks = [
-    { text: 'Projects', icon: <InboxIcon />, to: '/dashboard/projects' },
-    { text: 'Experiences', icon: <MailIcon />, to: '/dashboard/experiences' },
-    { text: 'Educations', icon: <InboxIcon />, to: '/dashboard/educations' },
+    { text: 'Projects', icon: <WidgetsIcon />, to: '/dashboard/projects' },
+    { text: 'Experiences', icon: <WorkIcon />, to: '/dashboard/experiences' },
+    { text: 'Educations', icon: <SchoolIcon />, to: '/dashboard/educations' },
 ];
 
 function Sidebar(props) {

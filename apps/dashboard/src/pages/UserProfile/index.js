@@ -123,7 +123,7 @@ const UserProfile = () => {
         <>
             <Box component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate sx={{ mt: 1 }}>
                 <Box className='flex flex-row items-center justify-between'>
-                    <h1>{t('user-profile.title')}</h1>
+                    <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{t('user-profile.title')}</Typography>
                     <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} startIcon={<Save />}>
                         {t('labels.save')}
                     </Button>

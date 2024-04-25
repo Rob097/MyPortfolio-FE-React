@@ -51,7 +51,7 @@ function ResponsiveDrawer() {
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
-          className='min-h-screen text-dark-main'
+          className='flex flex-col min-h-screen text-dark-main'
         >
           {promiseInProgress && <Loading adaptToComponent />}
           <Outlet />

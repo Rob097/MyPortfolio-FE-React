@@ -70,7 +70,7 @@
     },
     {
       "target": "context",
-      "public": "./shared/context/dist",
+      "public": "./shared/dist",
       "ignore": [
         "firebase.json",
         "**/.*",
