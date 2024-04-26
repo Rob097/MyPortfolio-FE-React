@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import styled from '@mui/material/styles/styled';
+import { cloneDeep } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -85,7 +86,7 @@ const UserProfile = () => {
 
     // Check if the user's info has changed
     function hasUserInfoChanged() {
-        const data = myForm.getValues();
+        const data = cloneDeep(myForm.getValues());
         const dataToCheck = {};
         Object.keys(data).forEach(key => {
             if (key !== 'customizations.profileImage' && key !== 'customizations.CV') {
@@ -99,7 +100,7 @@ const UserProfile = () => {
 
     // Check if the main story has changed
     function hasMainStoryChanged() {
-        const data = myForm.getValues();
+        const data = cloneDeep(myForm.getValues());
         return data.customizations.mainStory !== undefined
             && data.customizations.mainStory.description !== store.user?.diaries
                 ?.find(d => d.isMain)?.stories
@@ -146,7 +147,7 @@ const GeneralInformation = ({ myForm }) => {
 
     useEffect(() => {
         if (store.user) {
-            myForm.setValue('customizations.profileImage', (store.user.customizations?.profileImage ?? ''));
+            store.user.customizations?.profileImage !== undefined && store.user.customizations?.profileImage != null ? myForm.setValue('customizations.profileImage', (store.user.customizations?.profileImage)) : null;
             myForm.setValue('firstName', store.user.firstName);
             myForm.setValue('lastName', store.user.lastName);
             myForm.setValue('email', store.user.email);
@@ -413,8 +414,8 @@ const About = ({ myForm }) => {
         if (store.user) {
             const customizations = store.user.customizations;
 
-            myForm.setValue('customizations.CV.en', customizations?.CV?.en ?? '');
-            myForm.setValue('customizations.CV.it', customizations?.CV?.it ?? '');
+            customizations?.CV?.en !== undefined && customizations?.CV?.en != null ? myForm.setValue('customizations.CV.en', customizations?.CV?.en) : null;
+            customizations?.CV?.it !== undefined && customizations?.CV?.it != null ? myForm.setValue('customizations.CV.it', customizations?.CV?.it) : null;
 
             myForm.setValue('customizations.socials.facebook', customizations?.socials?.facebook ?? '');
             myForm.setValue('customizations.socials.twitter', customizations?.socials?.twitter ?? '');

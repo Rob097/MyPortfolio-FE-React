@@ -1,5 +1,6 @@
 import { SkillQ } from '@/models/skill.model';
 import { SkillService } from "@/services/skill.service";
+import { Add } from '@mui/icons-material';
 import Search from '@mui/icons-material/Search';
 import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -71,10 +72,12 @@ const NewSkill = ({ afterCreationAction }) => {
                     {...register("name", { required: t('skills.name-required') })}
                     error={formState.errors.name !== undefined}
                     helperText={formState.errors.name?.message}
+                    sx={{ width: { xs: '100%', sm: '33.33%' } }}
                 />
                 <Autocomplete
                     id="categories"
                     {...register("category", { required: t('skills.category-required') })}
+                    classes={{ root: '!w-full sm:!w-auto' }}
                     freeSolo
                     options={searchedCategories}
                     getOptionLabel={(option) => {
@@ -162,6 +165,9 @@ const NewSkill = ({ afterCreationAction }) => {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit(myHandleSubmit)}
+                    className='!w-full sm:!w-auto'
+                    startIcon={<Add />}
+                    sx={{ maxHeight: '60px' }}
                 >
                     {t('labels.add')}
                 </Button>

@@ -91,6 +91,13 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                             }}
                         />
                     )}
+                    renderOption={(props, option) => (
+                        <Tooltip title={option?.category?.name}>
+                            <li {...props}>
+                                {option.name}
+                            </li>
+                        </Tooltip>
+                    )}
                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
                     onChange={(e, value) => {
                         if (value) {
