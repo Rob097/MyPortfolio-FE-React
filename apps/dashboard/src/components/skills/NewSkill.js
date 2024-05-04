@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { manuallyDecrementPromiseCounter, manuallyIncrementPromiseCounter } from 'react-promise-tracker';
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
 import { displayMessages } from '../alerts';
+import { CustomTextField } from '../CustomForm';
 
 const SKILLS_TO_DISPLAY = 5;
 const NewSkill = ({ afterCreationAction }) => {
@@ -62,7 +63,7 @@ const NewSkill = ({ afterCreationAction }) => {
         <>
 
             <Box sx={{ mt: 1 }} className="flex flex-wrap gap-4">
-                <TextField
+                <CustomTextField
                     autoComplete="name"
                     name="name"
                     required
@@ -113,7 +114,7 @@ const NewSkill = ({ afterCreationAction }) => {
                         return filtered;
                     }}
                     renderInput={(params) => (
-                        <TextField
+                        <CustomTextField
                             {...params}
                             error={formState.errors.category !== undefined}
                             helperText={formState.errors.category?.message}

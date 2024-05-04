@@ -77,17 +77,20 @@
     "files": {
         "errors": {
             "too-large": "File {{fileName}} is too large. Max size is {{maxSize}}Mb",
-            "wrong-type": "File {{fileName}} has a wrong type. Allowed types are Pdf, Text or Image",
+            "wrong-type": "File {{fileName}} has a wrong type. Allowed types are {{allowedTypes}}",
             "generic": "An error occurred while uploading the file {{fileName}}"
         },
         "defaultDisplayedName": "Your {{label}}",
-        "inputPlaceholder": "Drop File Here <br /> OR <br /> Browse Files"
+        "inputPlaceholder": "Drop File Here <br /> OR <br /> <span class=\"text-primary-main font-bold\">Browse Files</span>",
+        "imageTypes": "Images",
+        "documentTypes": "Pdf or Text",
+        "allTypes": "Pdf, Text or Images"
     },
     "skills": {
         "search": "Search skills",
         "already-exists": "Skill already exists",
         "already-present": "Skill is already present",
-        "no-skill-selected": "You havn't selected any skill",
+        "no-skill-selected": "You have not selected any skill",
         "created-successfully": "Skill created successfully",
         "name-label": "Skill Name",
         "name-required": "Skill name is required",

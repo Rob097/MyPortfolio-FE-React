@@ -1,12 +1,15 @@
 const { Filters } = require('shared/utilities/criteria');
 
-export class Project {
+export class Education {
     id;
     createdAt;
     updatedAt;
     slug;
     userId;
-    title;
+    field;
+    school;
+    degree;
+    grade;
     description;
     fromDate;
     toDate;
@@ -21,7 +24,10 @@ export class Project {
         this.updatedAt = obj.updatedAt;
         this.slug = obj.slug;
         this.userId = obj.userId;
-        this.title = obj.title;
+        this.school = obj.school;
+        this.degree = obj.degree;
+        this.field = obj.field;
+        this.grade = obj.grade;
         this.description = obj.description;
         this.fromDate = obj.fromDate;
         this.toDate = obj.toDate;
@@ -32,12 +38,16 @@ export class Project {
     }
 }
 
-export class ProjectQ extends Filters {
+export class EducationQ extends Filters {
     static id = 'id';
     static userId = 'user.id';
-    static title = 'title';
-    static entryDateTime = 'entryDateTime';
-    static skillName = 'skills.name';
+    static school = 'school';
+    static degree = 'degree';
+    static field = 'field';
+    static grade = 'grade';
+    static description = 'description';
+    static fromDate = 'fromDate';
+    static toDate = 'toDate';
     static slug = 'slug';
     static createdAt = 'createdAt';
     static updatedAt = 'updatedAt';

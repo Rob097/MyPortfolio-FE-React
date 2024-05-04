@@ -13,6 +13,7 @@ import { useCallback, useRef, useState } from "react";
 import ShowIf from 'shared/components/ShowIf';
 import EditorMenuControls from "./EditorMenuControls";
 import useExtensions from "./useExtensions";
+import classes from './MuiEditor.module.scss';
 
 const MuiEditor = (props) => {
     const rteRef = useRef(null);
@@ -156,6 +157,10 @@ const MuiEditor = (props) => {
                 editorProps={{
                     handleDrop: handleDrop,
                     handlePaste: handlePaste,
+                    attributes: {
+                        class: `${classes['custom-editor-min-height']}`
+
+                    }
                 }}
                 renderControls={() => <EditorMenuControls useComplete={props.useComplete} />}
                 // debounce((e, value) => fetchSkills(value), 500)
@@ -163,7 +168,7 @@ const MuiEditor = (props) => {
                     props.onChange(editor.getHTML());
                 }} */
                 // onUpdate should call props.onUpdate if it exists but through a debounce function:
-                onUpdate={props.onChange ? debounce(({ editor }) => props.onChange(editor.getHTML()), 500) : undefined}
+                onUpdate={props.onChange ? debounce(({ editor }) => props.onChange(editor.getHTML() !== '<p></p>' ? editor.getHTML() : null), 500) : undefined}
                 RichTextFieldProps={{
                     // The "outlined" variant is the default (shown here only as
                     // example), but can be changed to "standard" to remove the outlined
@@ -171,6 +176,9 @@ const MuiEditor = (props) => {
                     variant: "outlined",
                     MenuBarProps: {
                         hide: !showMenuBar,
+                    },
+                    classes: {
+                        outlined: `${props.error ? classes['error-outline'] : ''}`
                     },
                     // Below is an example of adding a toggle within the outlined field
                     // for showing/hiding the editor menu bar, and a "submit" button for
@@ -236,6 +244,11 @@ const MuiEditor = (props) => {
                     </>
                 )}
             </RichTextEditor>
+            {props.error?.message &&
+                <Typography variant="caption" sx={{ mt: 2 }} className={classes['error-message']}>
+                    {props.error?.message}
+                </Typography>
+            }
 
             <ShowIf condition={props.showPreview === true}>
                 {submittedContent ? (

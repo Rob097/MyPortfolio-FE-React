@@ -7,10 +7,17 @@ export const REPLACE_USER = "replaceUser";
 export const AUTH_TOKEN = "authToken";
 export const LOGOUT = "logout";
 
-const DEFAULT_STATE = { user: null, authToken: null };
+const FUNCTIONS = {
+    getMainDiary: function () {
+        return this.user?.diaries?.find(d => d.isMain);
+    }
+}
+const DEFAULT_STATE = { 
+    user: null, 
+    authToken: null
+};
 
 function reducer(state, action) {
-  console.log("reducer called", action);
     let newState = {};
     switch (action.type) {
         case REPLACE:
@@ -31,6 +38,10 @@ function reducer(state, action) {
     }
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
+
+    /* TODO: Keep this commented for a wile to see if it is necessary (Today is 03/05/2024)
+    newState = { ...newState, ...FUNCTIONS}; */
+
     return newState;
 }
 
@@ -47,5 +58,8 @@ export const useDashboardStore = () => {
 };
 
 function getLocalValues() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || DEFAULT_STATE;
+    const localValues = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || DEFAULT_STATE;
+    const completeValues = { ...localValues, ...FUNCTIONS};
+
+    return completeValues;
 }

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
+import { CustomTextField } from '../CustomForm';
 
 const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
     const [store, dispatch] = useDashboardStore();
@@ -77,7 +78,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                     getOptionLabel={(option) => option?.name}
                     onInputChange={debounce((e, value) => fetchSkills(value), 500)}
                     renderInput={(params) => (
-                        <TextField
+                        <CustomTextField
                             {...params}
                             placeholder={t('skills.search')}
                             variant="outlined"
@@ -92,8 +93,8 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                         />
                     )}
                     renderOption={(props, option) => (
-                        <Tooltip title={option?.category?.name}>
-                            <li {...props}>
+                        <Tooltip title={option?.category?.name} key={'tooltip-' + option?.id}>
+                            <li {...props} key={'li-' + option?.id}>
                                 {option.name}
                             </li>
                         </Tooltip>
@@ -110,13 +111,11 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                             }
 
                             let newSkill = value;
-                            if (numberOfMain) {
-                                newSkill = {
-                                    skill: value,
-                                    isMain: newSkills.length < numberOfMain,
-                                    orderId: newSkills.length + 1,
-                                    userId: store.user.id
-                                }
+                            newSkill = {
+                                skill: value,
+                                isMain: numberOfMain ? newSkills.length < numberOfMain : false,
+                                orderId: numberOfMain ? newSkills.length + 1 : undefined,
+                                userId: store.user.id
                             }
                             newSkills.push(newSkill);
                             myForm.setValue('skills', newSkills);
@@ -127,7 +126,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
 
             <Grid item xs={12} sm={8} >
 
-                {formSkills?.length <= 0 ? <p className="text-gray-500">{t('skills.no-skill-selected')}</p> :
+                {(formSkills || [])?.length <= 0 ? <p className="text-gray-500">{t('skills.no-skill-selected')}</p> :
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="droppable" direction="horizontal" className="flex-wrap">
                             {(provided, snapshot) => (
@@ -136,7 +135,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                                     {...provided.droppableProps}
                                     className="flex flex-wrap p-2 overflow-auto"
                                 >
-                                    {formSkills?.map((skill, index) => (
+                                    {(formSkills || [])?.map((skill, index) => (
                                         <div key={`skill-main-div-${skill?.skill?.id}`} className='relative w-fit h-fit flex' >
 
                                             <ShowIf condition={numberOfMain != null && numberOfMain !== undefined && numberOfMain > 0 && index === numberOfMain}>
@@ -158,7 +157,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                                                                 label={skill?.skill?.name}
                                                                 className={(skill.orderId !== undefined ? '!cursor-grab' : '')}
                                                                 onDelete={() => {
-                                                                    let newSkills = formSkills?.filter((s, i) => i !== index);
+                                                                    let newSkills = (formSkills || [])?.filter((s, i) => i !== index);
                                                                     if (numberOfMain) {
                                                                         newSkills.forEach((skill, index) => {
                                                                             skill.orderId = index + 1;

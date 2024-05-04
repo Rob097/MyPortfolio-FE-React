@@ -1,4 +1,5 @@
 import CustomFileInput from '@/components/CustomFileInput';
+import { CustomTextArea, CustomTextField } from '@/components/CustomForm';
 import ExpandableSection from '@/components/ExpandableSection';
 import MuiEditor from '@/components/MuiEditor';
 import { displayMessages } from '@/components/alerts';
@@ -11,8 +12,6 @@ import { Box, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import styled from '@mui/material/styles/styled';
 import { cloneDeep } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
@@ -665,20 +664,3 @@ const Skills = ({ myForm }) => {
         />
     )
 }
-
-
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    '& .MuiInputBase-input': {
-        backgroundColor: theme.palette.background.main,
-    },
-}));
-
-const CustomTextArea = styled(TextField)(({ theme }) => ({
-    '& .MuiInputBase-root': {
-        padding: 0,
-    },
-    '& .MuiInputBase-input': {
-        backgroundColor: theme.palette.background.main,
-        padding: '16.5px 14px',
-    },
-}));

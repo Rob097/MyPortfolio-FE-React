@@ -172,6 +172,7 @@ export default {
 
       primary: {
         main: '#ff8500',
+        50: '#ffebd5',
         100: '#ffdb99',
         200: '#ffbf66',
         300: '#ffa333',

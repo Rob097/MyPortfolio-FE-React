@@ -7,6 +7,7 @@ import ExperiencesList from "./pages/Experiences/list";
 import Home from "./pages/Home";
 import ProjectsList from "./pages/Projects/list";
 import UserProfile from "./pages/UserProfile";
+import EditProject from "./pages/Projects/edit";
 
 export const Routes = [
     {
@@ -33,6 +34,10 @@ export const Routes = [
                     {
                         path: "",
                         element: <ProjectsList />
+                    },
+                    {
+                        path: ":id",
+                        element: <EditProject />
                     }
                 ]
             },

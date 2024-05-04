@@ -6,11 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
 const ONE_MB = 1024 * 1024;
-const CustomFileInput = ({ field, label, replaceFile, removeFile, ...rest }) => {
+const CustomFileInput = ({ field, label, replaceFile, removeFile, onlyImages, onlyDocuments, ...rest }) => {
     const { t } = useTranslation("dashboard");
 
+    const acceptImages = {'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']};
+    const acceptDocuments = { 'application/pdf': ['.pdf', '.PDF'], 'application/msword': ['.doc', '.docx'], 'text/plain': ['.txt']};
+    const accept = onlyImages ? acceptImages : onlyDocuments ? acceptDocuments : {...acceptImages, ...acceptDocuments};
+
     const { getRootProps, getInputProps } = useDropzone({
-        accept: { 'application/pdf': ['.pdf', '.PDF'], 'application/msword': ['.doc', '.docx'], 'text/plain': ['.txt'], 'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'] },
+        accept: accept, //{ 'application/pdf': ['.pdf', '.PDF'], 'application/msword': ['.doc', '.docx'], 'text/plain': ['.txt'], 'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'] },
         maxFiles: 1,
         maxSize: MAX_FILE_SIZE,
         onDrop: (acceptedFiles, rejectedFiles) => {
@@ -27,13 +31,13 @@ const CustomFileInput = ({ field, label, replaceFile, removeFile, ...rest }) => 
                             errorMessage = t('files.errors.too-large', { fileName: file?.file?.name, maxSize: MAX_FILE_SIZE / ONE_MB });
                             break;
                         case 'file-invalid-type':
-                            errorMessage = t('files.errors.wrong-type', { fileName: file?.file?.name });
+                            errorMessage = t('files.errors.wrong-type', { fileName: file?.file?.name, allowedTypes: onlyImages ? t('files.imageTypes') : onlyDocuments ? t('files.documentTypes') : t('files.allTypes') });
                             break;
                         default:
                             errorMessage = t('files.errors.generic', { fileName: file?.file?.name });
                             break;
                     }
-                    errorMessages.push({ text: tooLargeError, level: 'error' });
+                    errorMessages.push({ text: errorMessage, level: 'error' });
                 }
                 displayMessages(errorMessages);
             }
@@ -48,11 +52,11 @@ const CustomFileInput = ({ field, label, replaceFile, removeFile, ...rest }) => 
     return (
         <Box
             {...getRootProps()}
-            className={'relative flex flex-col items-center justify-center text-center border border-dashed border-gray-500 rounded-md p-2 cursor-pointer bg-background-main h-full ' + rest.rootClassName}
+            className={'relative flex flex-col items-center justify-center text-center border-2 border-dashed border-primary-main rounded-md p-2 cursor-pointer bg-primary-main/[.05] h-full ' + rest.rootClassName}
         >
             {label && <Typography variant="h6" sx={{ position: 'absolute', top: '-1.5rem', left: '1rem' }}>{label}</Typography>}
             <input {...getInputProps()} />
-            <CloudUploadIcon style={{ fontSize: 40 }} />
+            <CloudUploadIcon style={{ fontSize: 40 }} color='primary' />
             {field.value ? (
                 <>
                     <Box className='flex items-center justify-center w-full mt-2 overflow-hidden'>

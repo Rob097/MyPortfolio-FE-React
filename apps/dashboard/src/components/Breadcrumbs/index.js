@@ -31,21 +31,24 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
             <Icon>{icon}</Icon>
           </Typography>
         </Link>
-        {routes.map((el) => (
-          <Link to={`/${el}`} key={el}>
-            <Typography
-              component="span"
-              variant="button"
-              fontWeight="regular"
-              textTransform="capitalize"
-              color={light ? "white" : "dark"}
-              opacity={light ? 0.8 : 0.5}
-              sx={{ lineHeight: 0 }}
-            >
-              {el === '' ? 'Dashboard' : el.replace("-", " ")}
-            </Typography>
-          </Link>
-        ))}
+        {routes.map((el) => {
+          const link = routes.slice(0, routes.indexOf(el) + 1).join('/');
+          return (
+            <Link to={`/${link}`} key={el}>
+              <Typography
+                component="span"
+                variant="button"
+                fontWeight="regular"
+                textTransform="capitalize"
+                color={light ? "white" : "dark"}
+                opacity={light ? 0.8 : 0.5}
+                sx={{ lineHeight: 0 }}
+              >
+                {el === '' ? 'Dashboard' : el.replace("-", " ")}
+              </Typography>
+            </Link>
+          )
+        })}
         <Typography
           variant="button"
           fontWeight="regular"
