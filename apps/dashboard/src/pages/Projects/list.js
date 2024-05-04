@@ -29,7 +29,7 @@ const ProjectsList = () => {
                 <Link to="/dashboard/projects/new" className="!text-white">
                     <Button variant="contained" color="primary" startIcon={<Add />}>New Project</Button>
                 </Link>
-                <Link to="/dashboard/projects/1" className="!text-white">
+                <Link to="/dashboard/projects/quarto-progetto" className="!text-white">
                     <Button variant="contained" color="primary" startIcon={<Add />}>Edit Project</Button>
                 </Link>
             </Box>

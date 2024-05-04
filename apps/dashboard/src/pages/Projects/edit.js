@@ -7,12 +7,13 @@ import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
 import { EducationQ } from '@/models/education.model';
 import { ExperienceQ } from '@/models/experience.model';
+import { Project } from '@/models/project.model';
 import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
-import { Add, ArrowBack, Close, Delete, Edit, ExpandMore, Image, Receipt, School, Widgets, Work } from '@mui/icons-material';
+import { Add, ArrowBack, ChevronLeft, ChevronRight, Close, Delete, Edit, ExpandMore, Image, Receipt, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, CardActions, Divider, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -24,12 +25,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Pagination from '@mui/material/Pagination';
 import { styled } from '@mui/material/styles';
 import { debounce } from '@mui/material/utils';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Controller, useController, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -39,27 +41,68 @@ import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 import { Criteria, Operation, View } from "shared/utilities/criteria";
+import { RichTextReadOnly } from "mui-tiptap";
+import useExtensions from "@/components/MuiEditor/useExtensions";
+import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
 
 const ONE_MB = 1024 * 1024;
 const defaultValues = {
     published: false,
-    title: null,
+    title: '',
     fromDate: null,
     toDate: null,
-    description: null
+    description: '',
+    stories: [],
+    skills: [],
+    coverImage: '',
 };
 
 const EditProject = () => {
     const [store, dispatch] = useDashboardStore();
     const navigate = useNavigate();
     const { t } = useTranslation("dashboard");
-    const { id: projectId } = useParams();
-    if (!projectId) {
+    const { slug: projectSlug } = useParams();
+    if (!projectSlug) {
         displayMessages([{ text: 'Project ID is required', level: 'error' }]);
         navigate('/dashboard/projects');
     }
-    const isCreate = useMemo(() => projectId === 'new', [projectId]);
-    const [isAddingNewStory, setIsAddingNewStory] = useState(true);
+    const isCreate = useMemo(() => projectSlug === 'new', [projectSlug]);
+    const [isAddingNewStory, setIsAddingNewStory] = useState(false);
+
+    const [originalProject, setOriginalProject] = useState(null);
+    const [coverImageUrl, setCoverImageUrl] = useState(null);
+
+    useEffect(() => {
+        if (!isCreate) {
+            // Fetch the project
+            trackPromise(
+                ProjectService.getBySlug(projectSlug, View.verbose).then((response) => {
+                    const project = new Project(response.content);
+                    if (project) {
+                        const stories = project.stories.sort((a, b) => a.orderInProject - b.orderInProject);
+                        const skills = project.skills?.map(s => ({ skill: s }));
+                        const coverImage = project.coverImage;
+                        const values = {
+                            published: project.published,
+                            title: project.title,
+                            fromDate: moment(project.fromDate),
+                            toDate: project.toDate ? moment(project.toDate) : null,
+                            description: project.description,
+                            stories: stories,
+                            skills: skills,
+                            coverImage: coverImage
+                        };
+                        myForm.reset(values);
+                        setOriginalProject(project);
+                        setCoverImageUrl(coverImage);
+                    }
+                }).catch((error) => {
+                    displayMessages([{ text: 'Error while fetching the project', level: 'error' }]);
+                    console.error(error);
+                })
+            );
+        }
+    }, [projectSlug, isCreate]);
 
     // Form elements
     const myForm = useForm({
@@ -69,6 +112,8 @@ const EditProject = () => {
         control: myForm.control,
         name: 'coverImage'
     });
+    const formTitle = myForm.watch('title');
+    const stories = myForm.watch('stories');
 
 
     // Form functions -- BEGIN
@@ -77,20 +122,18 @@ const EditProject = () => {
         const stories = data.stories;
         const skills = data.skills?.map(s => s.skill);
 
-        if (isCreate && stories) {
+        if (stories) {
             stories.forEach(story => {
+                story.fromDate = moment(story.fromDate).toISOString();
+                story.toDate = story.toDate ? moment(story.toDate).toISOString() : null;
+                if (!isCreate) {
+                    story.projectId = originalProject.id;
+                }
                 delete story.connectedProject;
             });
         }
 
-        if(stories) {
-            stories.forEach(story => {
-                story.fromDate = moment(story.fromDate).toISOString();
-                story.toDate = story.toDate ? moment(story.toDate).toISOString() : null;
-            });
-        }
-
-        const project = {
+        let project = {
             userId: store.user.id,
             published: data.published,
             title: data.title,
@@ -101,34 +144,73 @@ const EditProject = () => {
             skills: skills
         };
 
-        trackPromise(
-            ProjectService.create(project).then((response) => {
-                displayMessages([{ text: 'Project created successfully', level: 'success' }]);
+        if (!isCreate && originalProject) {
+            project = { ...originalProject, ...project };
+        }
 
-                if (coverImage) {
-                    trackPromise(
-                        ProjectService.uploadCoverImage(response.content.id, coverImage).then(() => {
-                            displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
-                            navigate('/dashboard/projects');
-                        }).catch((error) => {
-                            displayMessages([{ text: 'Error while uploading the cover image', level: 'error' }]);
-                            console.error(error);
-                        })
-                    );
-                } else {
-                    navigate('/dashboard/projects');
-                }
+        console.log('Project to save', project);
 
-            }).catch((error) => {
-                displayMessages([{ text: 'Error while creating the project', level: 'error' }]);
-                console.error(error);
-            })
-        );
+        if (isCreate) {
+            trackPromise(
+                ProjectService.create(project).then((response) => {
+                    displayMessages([{ text: 'Project created successfully', level: 'success' }]);
+
+                    if (coverImage) {
+                        trackPromise(
+                            ProjectService.uploadCoverImage(response.content.id, coverImage).then(() => {
+                                displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
+                                navigate('/dashboard/projects');
+                            }).catch((error) => {
+                                displayMessages([{ text: 'Error while uploading the cover image', level: 'error' }]);
+                                console.error(error);
+                            })
+                        );
+                    } else {
+                        navigate('/dashboard/projects');
+                    }
+
+                }).catch((error) => {
+                    displayMessages([{ text: 'Error while creating the project', level: 'error' }]);
+                    console.error(error);
+                })
+            );
+        } else {
+            trackPromise(
+                ProjectService.update(project).then((response) => {
+                    displayMessages([{ text: 'Project updated successfully', level: 'success' }]);
+
+                    if (coverImageUrl && coverImageUrl !== originalProject.coverImage) {
+                        console.log('Cover image to upload', coverImageUrl);
+                        console.log('Original cover image', originalProject.coverImage);
+                        trackPromise(
+                            ProjectService.uploadCoverImage(projectSlug, coverImage).then(() => {
+                                displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
+                                navigate('/dashboard/projects');
+                            }).catch((error) => {
+                                displayMessages([{ text: 'Error while uploading the cover image', level: 'error' }]);
+                                console.error(error);
+                            })
+                        );
+                    } else {
+                        navigate('/dashboard/projects');
+                    }
+
+                }).catch((error) => {
+                    displayMessages([{ text: 'Error while updating the project', level: 'error' }]);
+                    console.error(error);
+                })
+            );
+        }
 
     }
 
     function handleReplaceCoverImage(file) {
         myForm.setValue('coverImage', file);
+        if (file) {
+            setCoverImageUrl(URL.createObjectURL(file));
+        } else {
+            setCoverImageUrl(null);
+        }
     }
 
     function handleChooseCoverImage() {
@@ -177,7 +259,42 @@ const EditProject = () => {
         }
     }
 
-    const formTitle = myForm.watch('title');
+    // Define the minimum width
+    const minWidth = 275;
+    const parentRef = useRef(null);
+    const [parentWidth, setParentWidth] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const storiesPerPage = Math.floor(parentWidth / Math.max(250, Math.min(350, parentWidth)));
+    const extensions = useExtensions({
+        placeholder: "Add your own content here...",
+    });
+
+
+    useEffect(() => {
+        const updateParentWidth = () => {
+            if (parentRef.current) {
+                setParentWidth(parentRef.current.offsetWidth);
+            }
+        };
+
+        window.addEventListener('resize', updateParentWidth);
+        updateParentWidth();
+
+        return () => {
+            window.removeEventListener('resize', updateParentWidth);
+        };
+    }, []);
+
+    const swapStories = (index, direction) => {
+        let newStories = [...stories];
+        if (direction === 'left' && index > 0) {
+          [newStories[index].orderInProject, newStories[index - 1].orderInProject] = [newStories[index - 1].orderInProject, newStories[index].orderInProject];
+        } else if (direction === 'right' && index < newStories.length - 1) {
+          [newStories[index].orderInProject, newStories[index + 1].orderInProject] = [newStories[index + 1].orderInProject, newStories[index].orderInProject];
+        }
+        myForm.setValue('stories', newStories);
+      };
+      
 
     return (
         <>
@@ -196,8 +313,8 @@ const EditProject = () => {
                                     }
                                 />
                                 <CustomCardContent>
-                                    {coverImage?.value ?
-                                        <Box className='w-full relative h-48 xl:h-80 rounded-md shadow-md bg-no-repeat bg-cover bg-center' sx={{ backgroundImage: `url(${coverImage.value ? URL.createObjectURL(coverImage.value) : ''})` }}>
+                                    {coverImageUrl ?
+                                        <Box className='w-full relative h-48 xl:h-80 rounded-md shadow-md bg-no-repeat bg-cover bg-center' sx={{ backgroundImage: `url(${coverImageUrl})` }}>
                                             <Box className='absolute -top-6 -right-4 flex flex-col items-center space-y-2'>
                                                 <Box className='p-1 bg-gray-100 rounded-md shadow-md cursor-pointer hover:bg-primary-50 transition-colors' onClick={() => handleReplaceCoverImage(null)}>
                                                     <Close color='error' width='32' height='32' className='font-bold !text-3xl' />
@@ -260,13 +377,21 @@ const EditProject = () => {
 
                                     <Grid container spacing={2} padding={2}>
                                         <Grid item xs={12}>
-                                            <CustomTextField
-                                                label={t('Title')}
-                                                variant="outlined"
-                                                fullWidth
-                                                {...myForm.register('title', { required: t('Title is required') })}
-                                                error={myForm.formState.errors.title !== undefined}
-                                                helperText={myForm.formState.errors.title?.message}
+                                            <Controller
+                                                control={myForm.control}
+                                                name="title"
+                                                rules={{ required: t('Title is required') }}
+                                                render={({ field, fieldState: { error } }) => (
+                                                    <CustomTextField
+                                                        label={t('Title')}
+                                                        variant="outlined"
+                                                        fullWidth
+                                                        error={error}
+                                                        helperText={error?.message}
+                                                        onChange={(e) => field.onChange(e.target.value)}
+                                                        value={field.value}
+                                                    />
+                                                )}
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
@@ -322,15 +447,23 @@ const EditProject = () => {
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <CustomTextArea
-                                                label={t('Description')}
-                                                variant="outlined"
-                                                fullWidth
-                                                multiline
-                                                rows={4}
-                                                {...myForm.register('description', { required: t('Description is required') })}
-                                                error={myForm.formState.errors.description !== undefined}
-                                                helperText={myForm.formState.errors.description?.message}
+                                            <Controller
+                                                control={myForm.control}
+                                                name="description"
+                                                rules={{ required: t('Description is required') }}
+                                                render={({ field, fieldState: { error } }) => (
+                                                    <CustomTextArea
+                                                        label={t('Description')}
+                                                        variant="outlined"
+                                                        fullWidth
+                                                        multiline
+                                                        rows={4}
+                                                        onChange={(e) => field.onChange(e.target.value)}
+                                                        value={field.value}
+                                                        error={error}
+                                                        helperText={error?.message}
+                                                    />
+                                                )}
                                             />
                                         </Grid>
                                     </Grid>
@@ -347,15 +480,77 @@ const EditProject = () => {
                                 <CustomCard className='hover:!shadow-lg cursor-pointer' onClick={() => toggleStoriesMode(true)}>
                                     <CustomCardContent className='justify-center items-center'>
                                         <Add color='primary' className='!text-5xl' />
-                                        <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >Add a new Story</Typography>
+                                        <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4 text-center" >Add a new Story</Typography>
                                     </CustomCardContent>
                                 </CustomCard>
                             </Grid>
 
                             <Grid item xs={12} md={7}>
                                 <CustomCard>
-                                    <CustomCardContent className='justify-center items-center'>
-                                        <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl text-center" >This project doesn't have<br />any story, yet...</Typography>
+                                    <CustomCardContent ref={parentRef} id="stories-content-container" className={stories?.length == 0 ? 'justify-center items-center' : 'justify-start items-start'}>
+                                        {stories?.length == 0 ? (
+                                            <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl text-center">
+                                                This project doesn't have<br />any story, yet...
+                                            </Typography>
+                                        ) :
+                                            <>
+                                                <Box className='w-full flex flex-row space-x-4'>
+                                                    {stories.sort((a, b) => a.orderInProject - b.orderInProject).slice((currentPage - 1) * storiesPerPage, currentPage * storiesPerPage).map((story, index) => (
+                                                        <Box key={story.id} className='w-full' sx={{ maxWidth: '350px', minWidth: '250px' }}>
+                                                            <CustomCard id={story.id}>
+                                                                <CustomCardHeader
+                                                                    title={story.title}
+                                                                    // Show the dates (which are moment object) formatted as MM/DD/YYYY
+                                                                    subheader={<Typography variant="body2" color="primary">{moment(story.fromDate).format('MM/DD/YYYY')} - {story.toDate ? moment(story.toDate).format('MM/DD/YYYY') : 'Present'}</Typography>}
+                                                                />
+                                                                <CustomCardContent adaptheight="true">
+                                                                    <Box className='w-full h-40' sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", }}>
+                                                                        <RichTextReadOnly
+                                                                            content={story.description}
+                                                                            extensions={extensions}
+                                                                        />
+                                                                    </Box>
+                                                                    <Divider className='!my-4' />
+                                                                    <Box className='w-full flex flex-col space-y-4'>
+                                                                        <Box className='w-full flex flex-row items-center justify-between'>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Status</Typography>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>
+                                                                                <Tooltip title={story.published ? 'Published' : 'Draft'} placement='top' arrow>
+                                                                                    <TripOriginRoundedIcon color={story.published ? 'success' : 'error'} />
+                                                                                </Tooltip>
+                                                                            </Typography>
+                                                                        </Box>
+                                                                        <Box className='w-full flex flex-row items-center justify-between'>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Relevant Sections</Typography>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>{story.relevantSections?.length ?? 0}</Typography>
+                                                                        </Box>
+                                                                        <Box className='w-full flex flex-row items-center justify-between'>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Skills</Typography>
+                                                                            <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>{story.skills?.length ?? 0}</Typography>
+                                                                        </Box>
+                                                                    </Box>
+                                                                </CustomCardContent>
+                                                                <CardActions className='flex flex-row justify-between !px-4'>
+                                                                    <Box className='flex flex-row space-x-2'>
+                                                                        <Edit color='primary' fontSize='medium' />
+                                                                        <Delete color='error' fontSize='medium' />
+                                                                    </Box>
+                                                                    <Box className='flex flex-row space-x-2'>
+                                                                        <Tooltip title="Move Back" placement='top' arrow>
+                                                                            <ChevronLeft color='primary' fontSize='medium' onClick={() => swapStories(index, 'left')} className='cursor-pointer' />
+                                                                        </Tooltip>
+                                                                        <Tooltip title="Move Forward" placement='top' arrow>
+                                                                            <ChevronRight color='primary' fontSize='medium' onClick={() => swapStories(index, 'right')} className='cursor-pointer' />
+                                                                        </Tooltip>
+                                                                    </Box>
+                                                                </CardActions>
+                                                            </CustomCard>
+                                                        </Box>
+                                                    ))}
+                                                </Box>
+                                                <Pagination count={Math.ceil(stories.length / storiesPerPage)} className='mx-auto my-4' page={currentPage} onChange={(event, page) => setCurrentPage(page)} />
+                                            </>
+                                        }
                                     </CustomCardContent>
                                 </CustomCard>
                             </Grid>
@@ -374,7 +569,7 @@ const EditProject = () => {
                             defaultExpanded
                             mainTitle={t('user-profile.skills.main-title')}
                             secondaryTitle={t('user-profile.skills.secondary-title')}
-                            badge={t('user-profile.skills.badge', { number: 0 })}
+                            badge={t('user-profile.skills.badge', { number: myForm.watch('skills')?.length ?? 0 })}
                             MainBody={<SkillsSearchSelect myForm={myForm} />}
                             SecondaryBody={<NewSkill afterCreationAction={addNewSkill} />}
                         />
@@ -402,7 +597,7 @@ const CustomCard = styled(Card)(({ theme }) => ({
     flexDirection: 'column'
 }));
 
-const CustomCardHeader = styled(CardHeader)(({ theme }) => ({
+const CustomCardHeader = styled(CardHeader)(({ theme, fullheight }) => ({
     overflowX: 'auto',
     minHeight: '71px',
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -412,19 +607,22 @@ const CustomCardHeader = styled(CardHeader)(({ theme }) => ({
     },
     '& .MuiCardHeader-content': {
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         '& span.MuiTypography-root': {
-            height: '100%',
+            height: fullheight ? '100%' : 'fit-content',
+            margin: 'auto 0',
             display: 'flex',
             alignItems: 'center'
         }
     }
 }));
 
-const CustomCardContent = styled(CardContent)(({ theme }) => ({
+const CustomCardContent = styled(CardContent)(({ theme, adaptheight }) => ({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    minHeight: '40vh',
+    minHeight: adaptheight ? 'auto' : '40vh',
     height: '100%'
 }));
 
@@ -572,6 +770,7 @@ const AddNewStory = (props) => {
             <CustomCard className='w-full'>
                 <CustomCardHeader
                     className='!p-0'
+                    fullheight="true"
                     title={
                         <Box className='w-full h-full flex justify-between items-center'>
                             <Box className="h-full flex flex-row items-center space-x-4">
@@ -864,7 +1063,7 @@ const AddNewStory = (props) => {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Are you sure you want to delete the section <b>{relevantSections[relevantSectionToDeleteIndex]?.title}</b>?
-                        <br/>
+                        <br />
                         This action cannot be undone.
                     </DialogContentText>
                 </DialogContent>

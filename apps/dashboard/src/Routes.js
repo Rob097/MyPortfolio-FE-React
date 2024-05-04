@@ -36,7 +36,7 @@ export const Routes = [
                         element: <ProjectsList />
                     },
                     {
-                        path: ":id",
+                        path: ":slug",
                         element: <EditProject />
                     }
                 ]

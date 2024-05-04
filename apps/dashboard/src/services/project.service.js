@@ -9,6 +9,9 @@ export class ProjectService {
     static getByIdUrl(id, view) {
         return PROJECTS_URL + `/${id}` + '?view=' + (view || View.normal);
     }
+    static getBySlugUrl(slug, view) {
+        return PROJECTS_URL + `/slug/${slug}` + '?view=' + (view || View.normal);
+    }
     static getByCriteriaUrl(criteria) {
         return PROJECTS_URL + criteria.toString();
     }
@@ -17,6 +20,10 @@ export class ProjectService {
 
     static getById(id, view) {
         return fetcher(this.getByIdUrl(id, view));
+    }
+
+    static getBySlug(slug, view) {
+        return fetcher(this.getBySlugUrl(slug, view));
     }
 
     static getByCriteria(criteria, returnHeaders) {
