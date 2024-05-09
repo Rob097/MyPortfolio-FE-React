@@ -27,6 +27,33 @@ const MuiEditor = (props) => {
 
     ////////////////// IMAGE FUNCTIONS - START //////////////////////////
 
+    /*
+    TODO:
+    Gestione immagini in-editor:
+    Per gestire al meglio le immagini aggiunte alle storie tramite l'editor, sarà necessario implementare un architettura ad-hoc. (soluzione più corretta e semplice):
+    Innanzitutto servirà una tabella a DB con:
+     - id (autoincrement)
+     - user_id
+     - image_url
+    Dopodiché servirà un API a cui passare un file che caricherà su FireBase nella cartella chiamata "USER_${user_id}" e salverà l'url ritornato nella nuova tabella (userImages)
+    Servirà anche un API che, dato un url, elimini l'immagine da firebase e dalla tabella.
+    Infine, servirà un API che, dato un user_id, ritorni tutte le immagini associate a quell'utente.
+
+    NOTA PER IL BE:
+    In generale, quando un utente viene eliminato dal sistema, bisogna eliminare tutte le immagini associate a quell'utente da firebase e dalla tabella userImages.
+    Servirà comunque revisionare tutto il funzionamento dell'applicazione quando un utente viene rimosso (mai testato).
+
+    Per quanto riguarda il FE invece, servirà implementare un componente che è una modale che permette di:
+     - visualizzare tutte le immagini dell'utente
+     - selezionare un'immagine da inserire nell'editor (url)
+     - eliminare un'immagine
+     - caricare un'immagine
+
+    Servirà chiamare questo componente sia dai EditorMenuControls che dalla funzione di drag&drop e paste delle immagini.
+    Valutare se creare il componente normalemente e fare una versione "modale" in modo da poter usare il componente anche in altre parti dell'applicazione.
+
+    */
+
     function fileListToImageFiles(fileList) {
         // You may want to use a package like attr-accept
         // (https://www.npmjs.com/package/attr-accept) to restrict to certain file
