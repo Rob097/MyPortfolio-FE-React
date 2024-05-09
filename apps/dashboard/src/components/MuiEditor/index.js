@@ -25,12 +25,6 @@ const MuiEditor = (props) => {
         placeholder: "Add your own content here...",
     });
 
-    const exampleContent =
-        '<h2 style="text-align: center">Hey there 👋</h2><p>This is a <em>basic</em> example of <code>mui-tiptap</code>, which combines <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev/">Tiptap</a> with customizable <a target="_blank" rel="noopener noreferrer nofollow" href="https://mui.com/">MUI (Material-UI)</a> styles, plus a suite of additional components and extensions! Sure, there are <strong>all <em>kinds</em> of <s>text</s> <u>formatting</u> options</strong> you’d probably expect from a rich text editor. But wait until you see the <span data-type="mention" data-id="15" data-label="Axl Rose">@Axl Rose</span> mentions and lists:</p><ul><li><p>That’s a bullet list with one …</p></li><li><p>… or two list items.</p></li></ul><p>Isn’t that great? And all of that is editable. <strong><span style="color: #ff9900">But wait, </span><span style="color: #403101"><mark data-color="#ffd699" style="background-color: #ffd699; color: inherit">there’s more!</mark></span></strong> Let’s try a code block:</p><pre><code class="language-css">body {\n  display: none;\n}</code></pre><p></p><p>That’s only the tip of the iceberg. Feel free to add and resize images:</p><img height="auto" src="https://picsum.photos/600/400" alt="random image" width="350" style="aspect-ratio: 3 / 2"><p></p><p>Organize information in tables:</p><table><tbody><tr><th colspan="1" rowspan="1"><p>Name</p></th><th colspan="1" rowspan="1"><p>Role</p></th><th colspan="1" rowspan="1"><p>Team</p></th></tr><tr><td colspan="1" rowspan="1"><p>Alice</p></td><td colspan="1" rowspan="1"><p>PM</p></td><td colspan="1" rowspan="1"><p>Internal tools</p></td></tr><tr><td colspan="1" rowspan="1"><p>Bob</p></td><td colspan="1" rowspan="1"><p>Software</p></td><td colspan="1" rowspan="1"><p>Infrastructure</p></td></tr></tbody></table><p></p><p>Or write down your groceries:</p><ul data-type="taskList"><li data-checked="true" data-type="taskItem"><label><input type="checkbox" checked="checked"><span></span></label><div><p>Milk</p></div></li><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Eggs</p></div></li><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span></span></label><div><p>Sriracha</p></div></li></ul><blockquote><p>Wow, that’s amazing. Good work! 👏 <br>— Mom</p></blockquote><p>Give it a try and click around!</p>';
-
-    const exampleContent3 =
-        "<p>As a recent graduate of the University of Trento with a degree in Information Engineering and Business Organization, I have gained a strong foundation in computer science and a passion for developing scalable, reliable and efficient solutions for complex software projects. In addition to my studies, I also completed a three-month internship in Barcelona at an e-commerce company, where I gained hands-on experience in web marketing and e-commerce development. <br/> Since April 2023, I have been working as a Full Stack developer at Fleap, where I have been actively contributing to the development of simple and reliable software solutions for the company. In my career, I have had the opportunity to work with talented teams of developers and have developed a range of skills and expertise. <br/> Some of my key achievements include:<br/> 🚀 Successfully developed and launched an e-commerce platform for a family business<br/> 📈 Contributed to the development of various software projects, consistently meeting project deadlines and exceeding quality standards<br/> 💻 Demonstrated strong problem-solving and communication skills in a fast-paced, team-oriented environment<br/> 🙍 Developed many personal projects with new technologies and published on my personal GitHub portfolio with an important documentation.<br/> 📅 In the future, I am eager to continue learning and growing as a software engineer, and hope to take on more leadership roles and work on challenging and meaningful projects that make a positive impact.</p>";
-
     ////////////////// IMAGE FUNCTIONS - START //////////////////////////
 
     function fileListToImageFiles(fileList) {
@@ -43,8 +37,15 @@ const MuiEditor = (props) => {
         });
     }
 
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+
     const handleNewImageFiles = useCallback(
-        (files, insertPosition) => {
+        async (files, insertPosition) => {
 
             if (!props.useComplete) {
                 return;
@@ -62,10 +63,14 @@ const MuiEditor = (props) => {
             // into the editor content, though that can make the editor content very
             // large. You will probably want to use the same upload function here as
             // for the MenuButtonImageUpload `onUploadFiles` prop.
-            const attributesForImageFiles = files.map((file) => ({
-                src: URL.createObjectURL(file),
-                alt: file.name,
+            const attributesForImageFiles = await Promise.all(files.map(async (file) => {
+                const src = await toBase64(file);
+                return {
+                    src,
+                    alt: file.name,
+                };
             }));
+            console.log(attributesForImageFiles);
 
             insertImages({
                 images: attributesForImageFiles,

@@ -32,6 +32,14 @@ import {
 
 export default function EditorMenuControls(props) {
     const theme = useTheme();
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+
     return (
         <MenuControlsContainer>
 
@@ -129,7 +137,7 @@ export default function EditorMenuControls(props) {
                     <MenuDivider />
 
                     <MenuButtonImageUpload
-                        onUploadFiles={(files) =>
+                        onUploadFiles={async (files) =>
                             // For the sake of a demo, we don't have a server to upload the files
                             // to, so we'll instead convert each one to a local "temporary" object
                             // URL. This will not persist properly in a production setting. You
@@ -137,9 +145,17 @@ export default function EditorMenuControls(props) {
                             // convert the images to bas64 if you would like to encode the image
                             // data directly into the editor content, though that can make the
                             // editor content very large.
-                            files.map((file) => ({
+                            /* files.map((file) => ({
                                 src: URL.createObjectURL(file),
                                 alt: file.name,
+                            })) */
+
+                            await Promise.all(files.map(async (file) => {
+                                const src = await toBase64(file);
+                                return {
+                                    src,
+                                    alt: file.name,
+                                };
                             }))
                         }
                     />

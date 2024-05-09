@@ -155,7 +155,9 @@ export default function useExtensions({
             Highlight.configure({ multicolor: true }),
             HorizontalRule,
 
-            ResizableImage,
+            ResizableImage.configure({
+                allowBase64: true,
+            }),
             // When images are dragged, we want to show the "drop cursor" for where they'll
             // land
             Dropcursor,
