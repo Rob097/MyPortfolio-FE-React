@@ -2,7 +2,7 @@ import { SkillQ } from '@/models/skill.model';
 import { SkillService } from "@/services/skill.service";
 import { Add } from '@mui/icons-material';
 import Search from '@mui/icons-material/Search';
-import { Autocomplete, Box, Button, TextField } from '@mui/material';
+import { Autocomplete, Box, Button } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { debounce } from '@mui/material/utils';
 import { useEffect, useState } from 'react';
@@ -10,8 +10,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { manuallyDecrementPromiseCounter, manuallyIncrementPromiseCounter } from 'react-promise-tracker';
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
+import { CustomTextField } from '../Custom/FormComponents';
 import { displayMessages } from '../alerts';
-import { CustomTextField } from '../CustomForm';
 
 const SKILLS_TO_DISPLAY = 5;
 const NewSkill = ({ afterCreationAction }) => {

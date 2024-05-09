@@ -40,7 +40,7 @@ function Sidebar(props) {
     const CustomListItem = ({ element, index }) => {
         return (
             <ListItem key={element.text} disablePadding className='rounded-lg overflow-hidden my-2' >
-                <ListItemButton className='rounded-xl' selected={selectedItem === index} to={element.to} component={Link}>
+                <ListItemButton className='rounded-xl' selected={selectedItem === index} to={element.to} component={Link} onClick={() => !isBiggerThanMd && props.handleDrawerClose && props.handleDrawerClose()} >
                     <ListItemIcon color={selectedItem === index ? 'primary' : 'inherit'} >
                         {element.icon && React.cloneElement(element.icon, { color: selectedItem === index ? 'primary' : 'inherit' })}
                     </ListItemIcon>

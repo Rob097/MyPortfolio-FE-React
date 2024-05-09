@@ -5,6 +5,7 @@ import { User } from "@/models/user.model";
 import { fetcher } from "@/services/base.service";
 import { UserService } from "@/services/user.service";
 import Box from '@mui/material/Box';
+import jwtDecode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -13,7 +14,6 @@ import { useAuthStore } from "shared/stores/AuthStore";
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { View } from "shared/utilities/criteria";
 import useSWR from 'swr';
-import jwtDecode from "jwt-decode";
 
 const drawerWidth = 300;
 
@@ -50,7 +50,7 @@ function ResponsiveDrawer() {
 
         <Box
           component="main"
-          sx={{ flexGrow: 1, p: 3, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
+          sx={{ flexGrow: 1, py: 3, px: { xs: 1, md: 3 }, width: { lg: `calc(100% - ${drawerWidth}px)` }, backgroundColor: "background.main", paddingTop: "100px" }}
           className='flex flex-col max-w-full min-h-screen text-dark-main'
         >
           {promiseInProgress && <Loading adaptToComponent />}

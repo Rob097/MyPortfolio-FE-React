@@ -16,6 +16,7 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
           },
           "& .MuiBreadcrumbs-ol": {
             flexWrap: "nowrap",
+            textWrap: "nowrap"
           }
         }}
       >

@@ -55,6 +55,9 @@ export class ProjectService {
     static uploadCoverImage(id, file) {
         return this.makeMultipartRequest(id, constants.METHODS.POST, 'COVER_IMAGE', file);
     }
+    static removeCoverImage(id) {
+        return this.makeMultipartRequest(id, constants.METHODS.DELETE, 'COVER_IMAGE');
+    }
 
     static makeMultipartRequest(id, method, fileType, file) {
         let formData = new FormData();

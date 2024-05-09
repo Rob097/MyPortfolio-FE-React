@@ -1,38 +1,30 @@
+import CreateOrEditStory from '@/components/CreateOrEditStory';
+import { CustomCard, CustomCardContent, CustomCardHeader } from '@/components/Custom/CardComponents';
+import { CustomDatePicker, CustomTextArea, CustomTextField } from '@/components/Custom/FormComponents';
 import CustomFileInput from '@/components/CustomFileInput';
-import { CustomDatePicker, CustomTextArea, CustomTextField } from '@/components/CustomForm';
 import ExpandableSection from '@/components/ExpandableSection';
-import MuiEditor from '@/components/MuiEditor';
+import useExtensions from "@/components/MuiEditor/useExtensions";
 import { displayMessages } from '@/components/alerts';
 import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
-import { EducationQ } from '@/models/education.model';
-import { ExperienceQ } from '@/models/experience.model';
+import { EntitiesStatus } from "@/models/enums";
 import { Project } from '@/models/project.model';
-import { EducationService } from '@/services/education.service';
-import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
-import { Add, ArrowBack, ChevronLeft, ChevronRight, Close, Delete, Edit, ExpandMore, Image, Receipt, School, Widgets, Work } from '@mui/icons-material';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { Autocomplete, Box, Button, CardActions, Divider, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import { Add, ChevronLeft, ChevronRight, Close, Delete, Edit, Image, Receipt, Save } from '@mui/icons-material';
+import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
+import { Box, Button, CardActions, Divider, FormControl, FormControlLabel, FormGroup, Grid, Switch, Tooltip, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Fab from '@mui/material/Fab';
 import Pagination from '@mui/material/Pagination';
-import { styled } from '@mui/material/styles';
-import { debounce } from '@mui/material/utils';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'moment';
+import { RichTextReadOnly } from "mui-tiptap";
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Controller, useController, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { trackPromise } from 'react-promise-tracker';
@@ -40,14 +32,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
-import { Criteria, Operation, View } from "shared/utilities/criteria";
-import { RichTextReadOnly } from "mui-tiptap";
-import useExtensions from "@/components/MuiEditor/useExtensions";
-import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
+import { View } from "shared/utilities/criteria";
 
 const ONE_MB = 1024 * 1024;
 const defaultValues = {
-    published: false,
+    status: EntitiesStatus.DRAFT,
     title: '',
     fromDate: null,
     toDate: null,
@@ -56,51 +45,32 @@ const defaultValues = {
     skills: [],
     coverImage: '',
 };
+const dateToSaveFormat = 'YYYY-MM-DD';
 
 const EditProject = () => {
     const [store, dispatch] = useDashboardStore();
     const navigate = useNavigate();
     const { t } = useTranslation("dashboard");
     const { slug: projectSlug } = useParams();
+    const extensions = useExtensions();
+
     if (!projectSlug) {
         displayMessages([{ text: 'Project ID is required', level: 'error' }]);
         navigate('/dashboard/projects');
     }
     const isCreate = useMemo(() => projectSlug === 'new', [projectSlug]);
-    const [isAddingNewStory, setIsAddingNewStory] = useState(false);
-
     const [originalProject, setOriginalProject] = useState(null);
-    const [coverImageUrl, setCoverImageUrl] = useState(null);
 
+    const [coverImageUrl, setCoverImageUrl] = useState(null);
+    const [storyToEdit, setStoryToEdit] = useState(null);
+    const [isAddingNewStory, setIsAddingNewStory] = useState(false);
+    const [deleteStoryModalOpen, setDeleteStoryModalOpen] = useState(false);
+    const [storyToDeleteIndex, setStoryToDeleteIndex] = useState(null);
+
+    // Fetch the project if it's not a new one
     useEffect(() => {
         if (!isCreate) {
-            // Fetch the project
-            trackPromise(
-                ProjectService.getBySlug(projectSlug, View.verbose).then((response) => {
-                    const project = new Project(response.content);
-                    if (project) {
-                        const stories = project.stories.sort((a, b) => a.orderInProject - b.orderInProject);
-                        const skills = project.skills?.map(s => ({ skill: s }));
-                        const coverImage = project.coverImage;
-                        const values = {
-                            published: project.published,
-                            title: project.title,
-                            fromDate: moment(project.fromDate),
-                            toDate: project.toDate ? moment(project.toDate) : null,
-                            description: project.description,
-                            stories: stories,
-                            skills: skills,
-                            coverImage: coverImage
-                        };
-                        myForm.reset(values);
-                        setOriginalProject(project);
-                        setCoverImageUrl(coverImage);
-                    }
-                }).catch((error) => {
-                    displayMessages([{ text: 'Error while fetching the project', level: 'error' }]);
-                    console.error(error);
-                })
-            );
+            fetchProject();
         }
     }, [projectSlug, isCreate]);
 
@@ -118,90 +88,98 @@ const EditProject = () => {
 
     // Form functions -- BEGIN
     function handleSubmit(data) {
-        const coverImage = data.coverImage;
-        const stories = data.stories;
-        const skills = data.skills?.map(s => s.skill);
+        const { coverImage, stories, skills, published, title, description, fromDate, toDate, status } = data;
+        const formattedSkills = skills?.map(s => s.skill);
 
-        if (stories) {
-            stories.forEach(story => {
-                story.fromDate = moment(story.fromDate).toISOString();
-                story.toDate = story.toDate ? moment(story.toDate).toISOString() : null;
-                if (!isCreate) {
-                    story.projectId = originalProject.id;
-                }
-                delete story.connectedProject;
-            });
-        }
+        const formattedStories = stories?.map(story => {
+            const formattedStory = {
+                ...story,
+                fromDate: moment(story.fromDate).format(dateToSaveFormat),
+                toDate: story.toDate ? moment(story.toDate).format(dateToSaveFormat) : null,
+                projectId: !isCreate ? originalProject.id : story.projectId,
+            };
+            delete formattedStory.connectedProject;
+            delete formattedStory.tmpId;
+            return formattedStory;
+        });
 
         let project = {
             userId: store.user.id,
-            published: data.published,
-            title: data.title,
-            description: data.description,
-            fromDate: moment(data.fromDate).toISOString(),
-            toDate: data.toDate ? moment(data.toDate).toISOString() : null,
-            stories: stories,
-            skills: skills
+            published,
+            title,
+            description,
+            fromDate: moment(fromDate).format(dateToSaveFormat),
+            toDate: toDate ? moment(toDate).format(dateToSaveFormat) : null,
+            status,
+            stories: formattedStories,
+            skills: formattedSkills,
         };
 
         if (!isCreate && originalProject) {
             project = { ...originalProject, ...project };
         }
 
-        console.log('Project to save', project);
+        const projectPromise = isCreate ? ProjectService.create(project) : ProjectService.update(project);
+        const successMessage = isCreate ? 'Project created successfully' : 'Project updated successfully';
+        const errorMessage = isCreate ? 'Error while creating the project' : 'Error while updating the project';
 
-        if (isCreate) {
-            trackPromise(
-                ProjectService.create(project).then((response) => {
-                    displayMessages([{ text: 'Project created successfully', level: 'success' }]);
+        trackPromise(
+            projectPromise.then((response) => {
+                displayMessages([{ text: successMessage, level: 'success' }]);
 
-                    if (coverImage) {
-                        trackPromise(
-                            ProjectService.uploadCoverImage(response.content.id, coverImage).then(() => {
-                                displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
-                                navigate('/dashboard/projects');
-                            }).catch((error) => {
-                                displayMessages([{ text: 'Error while uploading the cover image', level: 'error' }]);
-                                console.error(error);
-                            })
-                        );
-                    } else {
-                        navigate('/dashboard/projects');
-                    }
+                if (coverImage && coverImage !== originalProject?.coverImage) {
+                    return trackPromise(
+                        ProjectService.uploadCoverImage(response.content.id, coverImage).then(() => {
+                            displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
+                            fetchProject();
+                        })
+                    );
+                } else if (originalProject?.coverImage && !coverImage) {
+                    return trackPromise(
+                        ProjectService.removeCoverImage(response.content.id).then(() => {
+                            displayMessages([{ text: 'Cover image removed successfully', level: 'success' }]);
+                            fetchProject();
+                        })
+                    );
+                } else {
+                    fetchProject();
+                }
 
-                }).catch((error) => {
-                    displayMessages([{ text: 'Error while creating the project', level: 'error' }]);
-                    console.error(error);
-                })
-            );
-        } else {
-            trackPromise(
-                ProjectService.update(project).then((response) => {
-                    displayMessages([{ text: 'Project updated successfully', level: 'success' }]);
+            }).catch((error) => {
+                displayMessages([{ text: errorMessage, level: 'error' }]);
+                console.error(error);
+            })
+        );
+    }
 
-                    if (coverImageUrl && coverImageUrl !== originalProject.coverImage) {
-                        console.log('Cover image to upload', coverImageUrl);
-                        console.log('Original cover image', originalProject.coverImage);
-                        trackPromise(
-                            ProjectService.uploadCoverImage(projectSlug, coverImage).then(() => {
-                                displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
-                                navigate('/dashboard/projects');
-                            }).catch((error) => {
-                                displayMessages([{ text: 'Error while uploading the cover image', level: 'error' }]);
-                                console.error(error);
-                            })
-                        );
-                    } else {
-                        navigate('/dashboard/projects');
-                    }
-
-                }).catch((error) => {
-                    displayMessages([{ text: 'Error while updating the project', level: 'error' }]);
-                    console.error(error);
-                })
-            );
-        }
-
+    function fetchProject() {
+        trackPromise(
+            ProjectService.getBySlug(projectSlug, View.verbose).then((response) => {
+                const project = new Project(response.content);
+                if (project) {
+                    const stories = project.stories.sort((a, b) => a.orderInProject - b.orderInProject);
+                    const skills = project.skills?.map(s => ({ skill: s }));
+                    const coverImage = project.coverImage;
+                    const values = {
+                        published: project.published,
+                        title: project.title,
+                        fromDate: moment(project.fromDate),
+                        toDate: project.toDate ? moment(project.toDate) : null,
+                        description: project.description,
+                        stories: stories,
+                        skills: skills,
+                        coverImage: coverImage,
+                        status: project.status
+                    };
+                    myForm.reset(values);
+                    setOriginalProject(project);
+                    setCoverImageUrl(coverImage);
+                }
+            }).catch((error) => {
+                displayMessages([{ text: 'Error while fetching the project', level: 'error' }]);
+                console.error(error);
+            })
+        );
     }
 
     function handleReplaceCoverImage(file) {
@@ -248,10 +226,29 @@ const EditProject = () => {
         newSkills.push(newSkill);
         myForm.setValue('skills', newSkills);
     }
+
+    const handleOpenDeleteStoryDialog = (event, index) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setStoryToDeleteIndex(index);
+        setDeleteStoryModalOpen(true);
+    }
+
+    const handleDeleteStory = () => {
+        const stories = myForm.getValues('stories');
+        stories.splice(storyToDeleteIndex, 1);
+        myForm.setValue('stories', stories);
+        setDeleteStoryModalOpen(false);
+    }
+
     // Form functions -- END
 
+    // Generic functions -- BEGIN
     function toggleStoriesMode(isToAddNewStory) {
         setIsAddingNewStory(isToAddNewStory);
+        if (!isToAddNewStory) {
+            setStoryToEdit(null);
+        }
         // scroll to #stories-section:
         const storiesSection = document.getElementById('stories-section');
         if (storiesSection) {
@@ -259,16 +256,30 @@ const EditProject = () => {
         }
     }
 
-    // Define the minimum width
-    const minWidth = 275;
+    const swapStories = (index, direction) => {
+        let newStories = [...stories];
+        if (direction === 'left' && index > 0) {
+            [newStories[index].orderInProject, newStories[index - 1].orderInProject] = [newStories[index - 1].orderInProject, newStories[index].orderInProject];
+        } else if (direction === 'right' && index < newStories.length - 1) {
+            [newStories[index].orderInProject, newStories[index + 1].orderInProject] = [newStories[index + 1].orderInProject, newStories[index].orderInProject];
+        }
+        myForm.setValue('stories', newStories);
+    };
+
+    function handleEditStory(story) {
+        setStoryToEdit(story);
+        setIsAddingNewStory(true);
+    }
+
+    // Generic functions -- END
+
+    // Stories Card styles -- BEGIN
+    const minWidth = 250;
+    const maxWidth = 350;
     const parentRef = useRef(null);
     const [parentWidth, setParentWidth] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const storiesPerPage = Math.floor(parentWidth / Math.max(250, Math.min(350, parentWidth)));
-    const extensions = useExtensions({
-        placeholder: "Add your own content here...",
-    });
-
+    const storiesPerPage = Math.floor(parentWidth / Math.max(minWidth, Math.min(maxWidth, parentWidth)));
 
     useEffect(() => {
         const updateParentWidth = () => {
@@ -285,23 +296,13 @@ const EditProject = () => {
         };
     }, []);
 
-    const swapStories = (index, direction) => {
-        let newStories = [...stories];
-        if (direction === 'left' && index > 0) {
-          [newStories[index].orderInProject, newStories[index - 1].orderInProject] = [newStories[index - 1].orderInProject, newStories[index].orderInProject];
-        } else if (direction === 'right' && index < newStories.length - 1) {
-          [newStories[index].orderInProject, newStories[index + 1].orderInProject] = [newStories[index + 1].orderInProject, newStories[index].orderInProject];
-        }
-        myForm.setValue('stories', newStories);
-      };
-      
+    // Stories Card styles -- END
 
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterMoment}>
                 <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{!formTitle ? (isCreate ? 'New Project' : 'Edit Project') : formTitle}</Typography>
                 <Box className="w-full flex-auto mt-10 bg-white rounded-md" component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate>
-                    <Button type="submit" variant="contained" color="primary">TEST Submit</Button>
                     <Grid container spacing={2} padding={2} component="section" id="main-info-section">
 
                         <Grid item xs={12} md={5} className='!flex !flex-col'>
@@ -351,12 +352,13 @@ const EditProject = () => {
                                                         value="start"
                                                         control={
                                                             <Controller
-                                                                name="published"
+                                                                name="status"
                                                                 control={myForm.control}
                                                                 render={({ field }) => (
                                                                     <Switch
                                                                         {...field}
-                                                                        checked={field.value}
+                                                                        checked={field.value === EntitiesStatus.PUBLISHED}
+                                                                        onChange={(e) => field.onChange(e.target.checked ? EntitiesStatus.PUBLISHED : EntitiesStatus.DRAFT)}
                                                                         color="primary"
                                                                     />
                                                                 )}
@@ -496,7 +498,7 @@ const EditProject = () => {
                                             <>
                                                 <Box className='w-full flex flex-row space-x-4'>
                                                     {stories.sort((a, b) => a.orderInProject - b.orderInProject).slice((currentPage - 1) * storiesPerPage, currentPage * storiesPerPage).map((story, index) => (
-                                                        <Box key={story.id} className='w-full' sx={{ maxWidth: '350px', minWidth: '250px' }}>
+                                                        <Box key={story.id ?? story.tmpId} className='w-full' sx={{ maxWidth: '350px', minWidth: '250px' }}>
                                                             <CustomCard id={story.id}>
                                                                 <CustomCardHeader
                                                                     title={story.title}
@@ -506,8 +508,9 @@ const EditProject = () => {
                                                                 <CustomCardContent adaptheight="true">
                                                                     <Box className='w-full h-40' sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", }}>
                                                                         <RichTextReadOnly
-                                                                            content={story.description}
+                                                                            content={story.description?.replace(/<[^>]*>?/gm, '') ?? ''}
                                                                             extensions={extensions}
+
                                                                         />
                                                                     </Box>
                                                                     <Divider className='!my-4' />
@@ -515,8 +518,8 @@ const EditProject = () => {
                                                                         <Box className='w-full flex flex-row items-center justify-between'>
                                                                             <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Status</Typography>
                                                                             <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>
-                                                                                <Tooltip title={story.published ? 'Published' : 'Draft'} placement='top' arrow>
-                                                                                    <TripOriginRoundedIcon color={story.published ? 'success' : 'error'} />
+                                                                                <Tooltip title={story.status ? story.status.charAt(0).toUpperCase() + story.status.slice(1).toLowerCase() : EntitiesStatus.DRAFT.charAt(0).toUpperCase() + EntitiesStatus.DRAFT.slice(1).toLowerCase()} placement='top' arrow>
+                                                                                    <TripOriginRoundedIcon color={story.status === EntitiesStatus.PUBLISHED ? 'success' : 'error'} />
                                                                                 </Tooltip>
                                                                             </Typography>
                                                                         </Box>
@@ -532,15 +535,23 @@ const EditProject = () => {
                                                                 </CustomCardContent>
                                                                 <CardActions className='flex flex-row justify-between !px-4'>
                                                                     <Box className='flex flex-row space-x-2'>
-                                                                        <Edit color='primary' fontSize='medium' />
-                                                                        <Delete color='error' fontSize='medium' />
+                                                                        <Tooltip title="Edit" placement='top' arrow>
+                                                                            <Button variant='text' className='!w-fit !min-w-fit' classes={{ startIcon: '!m-0' }} onClick={() => handleEditStory(story)} startIcon={
+                                                                                <Edit color='primary' fontSize='medium' />
+                                                                            } />
+                                                                        </Tooltip>
+                                                                        <Tooltip title="Delete" placement='top' arrow>
+                                                                            <Button variant='text' color='error' className='!w-fit !min-w-fit' classes={{ startIcon: '!m-0' }} onClick={(e) => handleOpenDeleteStoryDialog(e, index)} startIcon={
+                                                                                <Delete color='error' fontSize='medium' />
+                                                                            } />
+                                                                        </Tooltip>
                                                                     </Box>
                                                                     <Box className='flex flex-row space-x-2'>
                                                                         <Tooltip title="Move Back" placement='top' arrow>
-                                                                            <ChevronLeft color='primary' fontSize='medium' onClick={() => swapStories(index, 'left')} className='cursor-pointer' />
+                                                                            <ChevronLeft color='primary' fontSize='medium' onClick={() => swapStories(index, 'left')} className={index === 0 ? 'cursor-not-allowed !text-gray-300' : 'cursor-pointer'} />
                                                                         </Tooltip>
                                                                         <Tooltip title="Move Forward" placement='top' arrow>
-                                                                            <ChevronRight color='primary' fontSize='medium' onClick={() => swapStories(index, 'right')} className='cursor-pointer' />
+                                                                            <ChevronRight color='primary' fontSize='medium' onClick={() => swapStories(index, 'right')} className={index === stories.length - 1 ? 'cursor-not-allowed !text-gray-300' : 'cursor-pointer'} />
                                                                         </Tooltip>
                                                                     </Box>
                                                                 </CardActions>
@@ -558,7 +569,7 @@ const EditProject = () => {
 
                         <ShowIf condition={isAddingNewStory}>
                             <Grid item xs={12}>
-                                <AddNewStory myForm={myForm} goBack={() => toggleStoriesMode(false)} isCreate={isCreate} />
+                                <CreateOrEditStory myForm={myForm} goBack={() => toggleStoriesMode(false)} isCreate={isCreate} existingStory={storyToEdit ?? null} isProject />
                             </Grid>
                         </ShowIf>
 
@@ -576,510 +587,40 @@ const EditProject = () => {
                     </Box>
                 </Box>
             </LocalizationProvider>
-        </>
-    );
-};
 
-export default EditProject;
-
-
-////////////////////////////////
-// COMPONENTI CUSTOM -- BEGIN //
-////////////////////////////////
-
-const CustomCard = styled(Card)(({ theme }) => ({
-    boxShadow: 'none',
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.rounded.md,
-    minHeight: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-}));
-
-const CustomCardHeader = styled(CardHeader)(({ theme, fullheight }) => ({
-    overflowX: 'auto',
-    minHeight: '71px',
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    '& span': {
-        fontWeight: theme.typography.fontWeightBold,
-        fontSize: theme.typography.size.xl
-    },
-    '& .MuiCardHeader-content': {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        '& span.MuiTypography-root': {
-            height: fullheight ? '100%' : 'fit-content',
-            margin: 'auto 0',
-            display: 'flex',
-            alignItems: 'center'
-        }
-    }
-}));
-
-const CustomCardContent = styled(CardContent)(({ theme, adaptheight }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    minHeight: adaptheight ? 'auto' : '40vh',
-    height: '100%'
-}));
-
-//////////////////////////////
-// COMPONENTI CUSTOM -- END //
-//////////////////////////////
-
-
-///////////////////////////////////
-// COMPONENTI SECONDARI -- BEGIN //
-///////////////////////////////////
-
-const AddNewStory = (props) => {
-    const [store, dispatch] = useDashboardStore();
-    const { register, getValues, setValue, watch, handleSubmit, control, formState: { isDirty, isValid, errors }, ...rest } = useForm({
-        defaultValues: {
-            title: null,
-            fromDate: null,
-            toDate: null,
-            description: null,
-            relevantSections: [],
-            diaryId: store.getMainDiary()?.id
-        }
-    });
-    const { t } = useTranslation('dashboard');
-
-    const projectTitle = props.myForm.watch('title');
-    const formEducation = watch('connectedEducation');
-    const formExperience = watch('connectedExperience');
-    const relevantSections = watch('relevantSections');
-
-    const [searchedEducations, setSearchedEducations] = useState([]);
-    const [searchedExperiences, setSearchedExperiences] = useState([]);
-
-    const [deleteRelevantSectionModalOpen, setDeleteRelevantSectionModalOpen] = useState(false);
-    const [relevantSectionToDeleteIndex, setRelevantSectionToDeleteIndex] = useState(null);
-
-    useEffect(() => {
-        if (projectTitle) {
-            setValue('connectedProject', { title: projectTitle });
-        } else {
-            setValue('connectedProject', { title: 'The current Project' });
-        }
-    }, [projectTitle]);
-
-    useEffect(() => {
-        fetchEducations();
-        fetchExperiences();
-    }, []);
-
-    async function fetchEducations(query) {
-        const educationField = new Criteria(EducationQ.field, Operation.equals, "*" + query?.replace(" ", "*") + "*");
-        const userId = new Criteria(EducationQ.userId, Operation.equals, store.user.id);
-
-        const criterias = [userId];
-        if (query) {
-            criterias.push(educationField);
-        }
-        const filters = new EducationQ(criterias, View.verbose, 0, 5, null);
-        EducationService.getByCriteria(filters).then((response) => {
-            const educations = response?.content;
-            setSearchedEducations(educations);
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-
-    async function fetchExperiences(query) {
-        const experienceField = new Criteria(ExperienceQ.title, Operation.equals, "*" + query?.replace(" ", "*") + "*");
-        const userId = new Criteria(ExperienceQ.userId, Operation.equals, store.user.id);
-
-        const criterias = [userId];
-        if (query) {
-            criterias.push(experienceField);
-        }
-        const filters = new ExperienceQ(criterias, View.verbose, 0, 5, null);
-        ExperienceService.getByCriteria(filters).then((response) => {
-            const experiences = response?.content;
-            setSearchedExperiences(experiences);
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-
-    function handleDragEnd(result) {
-        if (!result.destination) return;
-
-        const items = Array.from(relevantSections);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
-
-        setValue('relevantSections', items);
-    }
-
-    function goBack() {
-        handleSubmit(submit)().then(() => {
-            if (isDirty && !isValid && !window.confirm('Are you sure you want to go back? You will lose all the changes you made.')) {
-                return;
-            }
-            props.goBack();
-        }).catch(error => {
-            console.error('Error while going back', error);
-        });
-
-
-        function submit(data) {
-            const story = data;
-            const stories = props.myForm.getValues('stories') || [];
-            stories.push(story);
-            props.myForm.setValue('stories', stories);
-            console.log('Story added', story);
-        }
-    }
-
-    function addNewRelevantSection() {
-        const relevantSections = getValues('relevantSections');
-        const id = Math.random().toString(36).substring(7);
-        const newRelevantSection = {
-            tmpId: id,
-            title: `Relevant Section #${relevantSections?.length + 1 ?? 1}`,
-            description: ''
-        };
-        relevantSections.push(newRelevantSection);
-        setValue('relevantSections', relevantSections);
-    }
-
-    // Function to open dialog
-    const handleClickOpen = (event, index) => {
-        event.stopPropagation();
-        event.preventDefault();
-        setRelevantSectionToDeleteIndex(index);
-        setDeleteRelevantSectionModalOpen(true);
-    };
-
-    // Function to confirm deletion
-    const handleDeleteRelevantSection = () => {
-        const newSections = [...relevantSections];
-        newSections.splice(relevantSectionToDeleteIndex, 1);
-        setValue('relevantSections', newSections);
-        setDeleteRelevantSectionModalOpen(false);
-    };
-
-    return (
-        <>
-            <CustomCard className='w-full'>
-                <CustomCardHeader
-                    className='!p-0'
-                    fullheight="true"
-                    title={
-                        <Box className='w-full h-full flex justify-between items-center'>
-                            <Box className="h-full flex flex-row items-center space-x-4">
-                                <Box onClick={goBack} className="h-full bg-background-main hover:bg-primary-main/[.05] transition-colors flex flex-row flex-auto px-4 items-center space-x-2 cursor-pointer">
-                                    <ArrowBack color='primary' fontSize='large' />
-                                    <Typography variant='body2' color="dark.main" fontWeight={theme => theme.typography.fontWeightMedium}>Back</Typography>
-                                </Box>
-                                <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl" >New Story</Typography>
-                            </Box>
-                            <Box className="h-full flex flex-row items-center space-x-4 px-4">
-                                <Tooltip title="Last Update" placement='top' arrow>
-                                    <Typography variant='body2' color="dark.main">{new Date().toLocaleDateString()}</Typography>
-                                </Tooltip>
-                            </Box>
-                        </Box>
-                    }
-                />
-                <CustomCardContent>
-
-                    {/* Story main infos */}
-                    <Grid container spacing={2} padding={2} component="section">
-                        <Grid item xs={12} md={5}>
-                            <Box className='w-full flex flex-col space-y-6'>
-                                <CustomTextField
-                                    label="Title"
-                                    variant="outlined"
-                                    fullWidth
-                                    {...register('title', { required: 'Title is required' })}
-                                    error={errors.title !== undefined}
-                                    helperText={errors.title?.message}
-                                />
-                                <Controller
-                                    control={control}
-                                    name="fromDate"
-                                    defaultValue={null}
-                                    rules={{ required: t('From Date is required') }}
-                                    render={({ field, fieldState: { error } }) => (
-                                        <CustomDatePicker
-                                            label={t('From Date')}
-                                            value={field.value}
-                                            inputRef={field.ref}
-                                            onChange={(date) => {
-                                                field.onChange(date);
-                                            }}
-                                            maxDate={watch('toDate') ?? moment()}
-                                            slotProps={{
-                                                textField: {
-                                                    fullWidth: true,
-                                                    variant: 'outlined',
-                                                    error: !!error,
-                                                    helperText: error?.message,
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                <Controller
-                                    control={control}
-                                    name="toDate"
-                                    defaultValue={null}
-                                    render={({ field, fieldState: { error } }) => (
-                                        <CustomDatePicker
-                                            label={t('To Date')}
-                                            value={field.value}
-                                            inputRef={field.ref}
-                                            onChange={(date) => {
-                                                field.onChange(date);
-                                            }}
-                                            minDate={watch('fromDate') ?? null}
-                                            maxDate={moment()}
-                                            slotProps={{
-                                                textField: {
-                                                    fullWidth: true,
-                                                    variant: 'outlined',
-                                                    error: !!error,
-                                                    helperText: error?.message,
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12} md={7}>
-                            <Box className='w-full flex flex-col space-y-6'>
-                                {/* Add three mui selects components which allows the user to select between some data and visualize the selected element as a chip (single select not multiple). The components are relative to: "Connected Education", "Connected Experience", and "Connected Project": */}
-                                <Autocomplete
-                                    id="connectedEducation"
-                                    options={searchedEducations}
-                                    getOptionLabel={(option) => option?.field}
-                                    onInputChange={debounce((e, value) => fetchEducations(value), 500)}
-                                    renderInput={(params) => (
-                                        <CustomTextField
-                                            {...params}
-                                            placeholder={formEducation ? null : "Connected Education"}
-                                            label={formEducation ? "Connected Education" : null}
-                                            variant="outlined"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <School
-                                                        // sx={{ color: theme => rgba(theme.palette.primary.main, 0.5) }}
-                                                        />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                    renderOption={(props, option) => (
-                                        <li {...props} key={'li-' + option?.id}>
-                                            {option?.field}
-                                        </li>
-                                    )}
-                                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                                    onChange={(e, value) => setValue('connectedEducation', value)}
-                                />
-                                <Autocomplete
-                                    id="connectedExperience"
-                                    options={searchedExperiences}
-                                    getOptionLabel={(option) => option?.title}
-                                    onInputChange={debounce((e, value) => fetchExperiences(value), 500)}
-                                    renderInput={(params) => (
-                                        <CustomTextField
-                                            {...params}
-                                            placeholder={formExperience ? null : "Connected Experience"}
-                                            label={formExperience ? "Connected Experience" : null}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <Work />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
-                                    renderOption={(props, option) => (
-                                        <li {...props}>
-                                            {option?.title}
-                                        </li>
-                                    )}
-                                    isOptionEqualToValue={(option, value) => option === value}
-                                    onChange={(e, value) => setValue('connectedExperience', value)}
-                                />
-                                <Controller
-                                    control={control}
-                                    name="connectedProject"
-                                    rules={{ required: t('Connected Project is required') }}
-                                    render={({ field, fieldState: { error } }) => {
-                                        return (
-                                            <CustomTextField
-                                                disabled
-                                                placeholder={field?.value ? null : "Connected Project"}
-                                                label={field?.value ? "Connected Project" : null}
-                                                value={field?.value ? field?.value?.title : ''}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <Widgets />
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        )
-                                    }}
-                                />
-                            </Box>
-                        </Grid>
-                    </Grid>
-
-                    {/* Description of the story */}
-                    <Grid container spacing={2} padding={2} component="section">
-                        <Grid item xs={12}>
-                            <Box className='w-fit flex flex-row items-center justify-center'>
-                                <Typography variant="h5" fontWeight={theme => theme.typography.fontWeightMedium} gutterBottom className='w-fit mr-2'>
-                                    {t('Description')}
-                                </Typography>
-                            </Box>
-                            <Controller
-                                control={control}
-                                name="description"
-                                defaultValue={null}
-                                rules={{ required: t('Description is required') }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <MuiEditor useComplete={true} existingText={field?.value ?? ''} onChange={field.onChange} error={error} />
-                                )}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    {/* Relevant Sections  */}
-                    <Grid container spacing={2} padding={2} component="section">
-                        <Grid item xs={12}>
-                            <Button className='!mb-4' variant='outlined' onClick={addNewRelevantSection} startIcon={<Add />}>
-                                Add new Relevant section
-                            </Button>
-
-                            <DragDropContext onDragEnd={handleDragEnd}>
-                                <Droppable droppableId="relevantSections">
-                                    {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef} className='space-y-4'>
-                                            {relevantSections?.map((section, index) => {
-                                                return (
-                                                    <Draggable key={section.id ?? section.tmpId} draggableId={section.id ?? section.tmpId} index={index}>
-                                                        {(provided) => {
-
-                                                            /* Allow only vertical movements while dragging: */
-                                                            var transform = provided.draggableProps.style.transform
-                                                            if (transform) {
-                                                                var t = transform.split(",")[1]
-                                                                provided.draggableProps.style.transform = "translate(0px," + t
-                                                            }
-
-                                                            return (
-                                                                <div {...provided.draggableProps} ref={provided.innerRef}>
-                                                                    <Accordion
-                                                                        sx={theme => ({
-                                                                            border: `1px solid ${theme.palette.divider}`,
-                                                                        })}
-                                                                        id={section.title + '-accordion'}
-                                                                    >
-                                                                        <AccordionSummary
-                                                                            expandIcon={<ExpandMore className='cursor-pointer' />}
-                                                                            className='!cursor-default flex '
-                                                                            sx={theme => ({
-                                                                                borderBottom: `1px solid ${theme.palette.divider}`,
-                                                                            })}
-                                                                        >
-                                                                            <Box className='w-full flex flex-row items-center justify-between'>
-                                                                                <Box className='w-full flex flex-row items-center'>
-                                                                                    <span {...provided.dragHandleProps} className='flex items-center'>
-                                                                                        <DragHandleIcon color='primary' className='cursor-pointer' />
-                                                                                    </span>
-                                                                                    <Typography variant="h6" fontWeight={theme => theme.typography.fontWeightMedium} className='w-fit !mx-2'>
-                                                                                        {section.title}
-                                                                                    </Typography>
-                                                                                </Box>
-                                                                                <Delete color='error' className='cursor-pointer' fontSize='small' onClick={event => handleClickOpen(event, index)} />
-                                                                            </Box>
-                                                                        </AccordionSummary>
-                                                                        <AccordionDetails className='space-y-4 mt-4'>
-                                                                            <CustomTextField
-                                                                                label="Title"
-                                                                                value={section.title}
-                                                                                fullWidth
-                                                                                onChange={(e) => {
-                                                                                    const newSections = [...relevantSections];
-                                                                                    newSections[index].title = e.target.value;
-                                                                                    setValue('relevantSections', newSections);
-                                                                                }}
-                                                                            />
-                                                                            <MuiEditor
-                                                                                label="Description"
-                                                                                existingText={section.description}
-                                                                                fullWidth
-                                                                                useComplete={true}
-                                                                                onChange={(value) => {
-                                                                                    const newSections = [...relevantSections];
-                                                                                    newSections[index].description = value;
-                                                                                    setValue('relevantSections', newSections);
-                                                                                }}
-                                                                            />
-                                                                        </AccordionDetails>
-                                                                    </Accordion>
-                                                                </div>
-                                                            )
-                                                        }}
-                                                    </Draggable>
-                                                )
-                                            })}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                        </Grid>
-                    </Grid>
-
-                </CustomCardContent>
-            </CustomCard>
+            <Tooltip title={isAddingNewStory ? 'Save the story before saving the project' : (myForm.formState.isValid ? 'Save the project' : 'Fill all the required fields')} placement='top' arrow>
+                <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
+                    <Fab color="primary" aria-label="save" onClick={myForm.handleSubmit(handleSubmit)} disabled={isAddingNewStory || !myForm.formState.isValid}>
+                        <Save className='text-white' />
+                    </Fab>
+                </span>
+            </Tooltip>
 
             <Dialog
-                open={deleteRelevantSectionModalOpen}
-                onClose={() => setDeleteRelevantSectionModalOpen(false)}
+                open={deleteStoryModalOpen}
+                onClose={() => setDeleteStoryModalOpen(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Delete Section"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Delete Story"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete the section <b>{relevantSections[relevantSectionToDeleteIndex]?.title}</b>?
+                        Are you sure you want to delete the story <b>{stories[storyToDeleteIndex]?.title}</b>?
                         <br />
                         This action cannot be undone.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setDeleteRelevantSectionModalOpen(false)} color="primary">
+                    <Button onClick={() => setDeleteStoryModalOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleDeleteRelevantSection} color="primary" autoFocus>
+                    <Button onClick={handleDeleteStory} color="primary" autoFocus>
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
         </>
-    )
-}
+    );
+};
 
-/////////////////////////////////
-// COMPONENTI SECONDARI -- END //
-/////////////////////////////////
+export default EditProject;

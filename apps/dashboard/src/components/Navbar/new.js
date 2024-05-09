@@ -72,7 +72,7 @@ function Navbar(props) {
             flexWrap: 'nowrap',
           })}
         >
-          <Box id="left-side-navbar" className="flex justify-center items-center">
+          <Box id="left-side-navbar" className="flex justify-start items-center overflow-x-hidden">
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -82,11 +82,11 @@ function Navbar(props) {
             >
               <MenuIcon />
             </IconButton>
-            <Box color="inherit" className="m-auto" display={{ xs: 'none', sm: 'inherit' }}>
+            <Box color="inherit" className="m-auto" display={{ xs: 'none', sm: 'inherit' }} sx={{ overflowX: "scroll", scrollbarWidth: "none", msOverflowStyle: "none", "&::-webkit-scrollbar": { display: "none" } }}>
               <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} />
             </Box>
           </Box>
-          <Box id="right-side-navbar" className="flex justify-center items-center space-x-2">
+          <Box id="right-side-navbar" className="flex justify-center items-center space-x-2 pl-4">
             {/* Search bar: */}
             <Box sx={{ display: { xs: 'none', xl: 'inherit' }, alignItems: 'flex-end' }}>
               <TextField
@@ -103,7 +103,7 @@ function Navbar(props) {
                 }}
               />
             </Box>
-            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', sm: 'inherit' } }} className='whitespace-nowrap' >+ Add New</Button>
+            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', lg: 'inherit' } }} className='whitespace-nowrap' >+ Add New</Button>
             <NotificationsNoneOutlinedIcon fontSize='large' className='cursor-pointer' onClick={handleNotificationsClick} aria-controls={openNotifications ? 'notifications-menu' : undefined} aria-haspopup="true" aria-expanded={openNotifications ? 'true' : undefined} />
             <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user?.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
           </Box>

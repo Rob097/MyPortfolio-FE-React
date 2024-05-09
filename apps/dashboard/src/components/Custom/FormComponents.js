@@ -13,7 +13,7 @@ export const CustomTextArea = styled(TextField)(({ theme }) => ({
         padding: 0,
         backgroundColor: theme.palette.background.main
     },
-    '& .MuiInputBase-input': {        
+    '& .MuiInputBase-input': {
         padding: '16.5px 14px',
     },
     '& .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused)': {

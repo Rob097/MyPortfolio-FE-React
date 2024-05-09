@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { Criteria, Operation, View } from 'shared/utilities/criteria';
-import { CustomTextField } from '../CustomForm';
+import { CustomTextField } from '../Custom/FormComponents';
 
 const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
     const [store, dispatch] = useDashboardStore();

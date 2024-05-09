@@ -1,5 +1,5 @@
+import { CustomTextArea, CustomTextField } from '@/components/Custom/FormComponents';
 import CustomFileInput from '@/components/CustomFileInput';
-import { CustomTextArea, CustomTextField } from '@/components/CustomForm';
 import ExpandableSection from '@/components/ExpandableSection';
 import MuiEditor from '@/components/MuiEditor';
 import { displayMessages } from '@/components/alerts';
@@ -10,6 +10,7 @@ import { UserService } from "@/services/user.service";
 import { Facebook, Info, Instagram, LinkedIn, Save, Twitter } from '@mui/icons-material';
 import { Box, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import { cloneDeep } from 'lodash';
@@ -124,14 +125,18 @@ const UserProfile = () => {
             <Box component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate sx={{ mt: 1 }}>
                 <Box className='flex flex-row items-center justify-between'>
                     <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{t('user-profile.title')}</Typography>
-                    <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} startIcon={<Save />}>
-                        {t('labels.save')}
-                    </Button>
                 </Box>
                 <GeneralInformation myForm={myForm} />
                 <About myForm={myForm} />
                 <Skills myForm={myForm} />
             </Box>
+            <Tooltip title={myForm.formState.isValid ? t('labels.save') : 'Fill all the required fields'} placement='top' arrow>
+                <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
+                    <Fab color="primary" aria-label="save" onClick={myForm.handleSubmit(handleSubmit)} disabled={!myForm.formState.isValid}>
+                        <Save className='text-white' />
+                    </Fab>
+                </span>
+            </Tooltip>
         </>
     )
 }
