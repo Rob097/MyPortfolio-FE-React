@@ -236,7 +236,7 @@ const CreateOrEditStory = (props) => {
                             <Box className="h-full flex flex-row items-center space-x-4">
                                 <Box onClick={goBack} className="h-full bg-background-main hover:bg-primary-main/[.05] transition-colors flex flex-row flex-auto px-4 items-center space-x-2 cursor-pointer">
                                     <ArrowBack color='primary' fontSize='large' />
-                                    <Typography variant='body2' color="dark.main" fontWeight={theme => theme.typography.fontWeightMedium}>Save</Typography>
+                                    <Typography variant='body2' color="dark.main" fontWeight={theme => theme.typography.fontWeightMedium}>{isDirty && isValid ? 'Save' : 'Back'}</Typography>
                                 </Box>
                                 <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} noWrap className="!text-2xl" >{storyTitle ? storyTitle : 'New Story'}</Typography>
                             </Box>
@@ -436,7 +436,8 @@ const CreateOrEditStory = (props) => {
                                 defaultValue={null}
                                 rules={{ required: t('Description is required') }}
                                 render={({ field, fieldState: { error } }) => (
-                                    <MuiEditor useComplete={true} existingText={field?.value ?? ''} onChange={field.onChange} error={error} />
+                                    /* TODO: set useComplete to true when images are correctely managed */
+                                    <MuiEditor useComplete={false} existingText={field?.value ?? ''} onChange={field.onChange} error={error} />
                                 )}
                             />
                         </Grid>
@@ -503,11 +504,12 @@ const CreateOrEditStory = (props) => {
                                                                                     setValue('relevantSections', newSections);
                                                                                 }}
                                                                             />
+                                                                            {/* TODO: set useComplete to true when images are correctely managed */}
                                                                             <MuiEditor
                                                                                 label="Description"
                                                                                 existingText={section.description}
                                                                                 fullWidth
-                                                                                useComplete={true}
+                                                                                useComplete={false}
                                                                                 onChange={(value) => {
                                                                                     const newSections = [...relevantSections];
                                                                                     newSections[index].description = value;
