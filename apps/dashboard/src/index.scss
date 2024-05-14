@@ -180,3 +180,17 @@ label.Mui-error:not(.Mui-focused) {
 pre {
   white-space: normal !important;
 }
+
+.striped-row-odd {
+  background-color: white;
+}
+.striped-row-odd:hover {
+  background-color: #ffebd5 !important;
+}
+
+.striped-row-even {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.striped-row-even:hover {
+  background-color: #ffebd5 !important;
+}

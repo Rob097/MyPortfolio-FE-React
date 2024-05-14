@@ -49,6 +49,15 @@ export class ProjectService {
             project
         );
     }
+
+    static delete(projectId) {
+        return fetcher(
+            PROJECTS_URL + `/${projectId}`,
+            false,
+            constants.METHODS.DELETE,
+            null
+        );
+    }
     
     /////////////////////////////////////////////////////////////////
 

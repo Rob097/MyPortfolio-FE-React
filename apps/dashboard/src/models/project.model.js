@@ -38,7 +38,8 @@ export class ProjectQ extends Filters {
     static id = 'id';
     static userId = 'user.id';
     static title = 'title';
-    static entryDateTime = 'entryDateTime';
+    static fromDate = 'fromDate';
+    static toDate = 'toDate';
     static skillName = 'skills.name';
     static slug = 'slug';
     static createdAt = 'createdAt';

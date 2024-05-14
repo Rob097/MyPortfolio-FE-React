@@ -27,7 +27,11 @@ export const fetcher = async (url, returnHeaders, method, body, customHeaders) =
       }
 
       if (returnHeaders) {
-        result["headers"] = r.headers;
+        const responseHeaders = {};
+        r.headers.forEach((value, key) => {
+          responseHeaders[key] = value;
+        });
+        result.headers = responseHeaders;
       }
 
       if (result.messages) {
