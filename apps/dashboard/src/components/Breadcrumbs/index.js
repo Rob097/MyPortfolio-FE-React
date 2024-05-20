@@ -45,7 +45,7 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
                 opacity={light ? 0.8 : 0.5}
                 sx={{ lineHeight: 0 }}
               >
-                {el === '' ? 'Dashboard' : el.replace("-", " ")}
+                {el === '' ? 'Dashboard' : el.replaceAll("-", " ")}
               </Typography>
             </Link>
           )
@@ -57,7 +57,7 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {title === '' ? 'Dashboard' : title.replace("-", " ")}
+          {title === '' ? 'Dashboard' : title.replaceAll("-", " ")}
         </Typography>
       </MuiBreadcrumbs>
       <Typography
@@ -68,7 +68,7 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
         noWrap
         display={showTitle ? "block" : "none"}
       >
-        {title === '' ? 'Dashboard' : title.replace("-", " ")}
+        {title === '' ? 'Dashboard' : title.replaceAll("-", " ")}
       </Typography>
     </Box>
   );

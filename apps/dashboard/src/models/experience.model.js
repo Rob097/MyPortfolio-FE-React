@@ -53,3 +53,15 @@ export class ExperienceQ extends Filters {
     static createdAt = 'createdAt';
     static updatedAt = 'updatedAt';
 }
+
+export class EmploymentTypeEnum {
+    static FULL_TIME = 'FULL_TIME';
+    static PART_TIME = 'PART_TIME';
+    static SELF_EMPLOYED = 'SELF_EMPLOYED';
+    static FREELANCE = 'FREELANCE';
+    static CONTRACT = 'CONTRACT';
+    static INTERNSHIP = 'INTERNSHIP';
+    static APPRENTICESHIP = 'APPRENTICESHIP';
+    static SEASONAL = 'SEASONAL';
+    static VOLUNTEER = 'VOLUNTEER';
+}

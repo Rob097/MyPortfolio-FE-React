@@ -3,23 +3,24 @@ import { CustomCard, CustomCardContent, CustomCardHeader } from '@/components/Cu
 import { CustomDatePicker, CustomTextArea, CustomTextField } from '@/components/Custom/FormComponents';
 import { EntityTypeEnum } from '@/models/categories.model';
 import { EntitiesStatus } from "@/models/enums";
+import { EmploymentTypeEnum } from '@/models/experience.model';
 import { Receipt } from '@mui/icons-material';
-import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
+import { Box, FormControl, FormControlLabel, FormGroup, Grid, MenuItem, Switch } from '@mui/material';
 import moment from 'moment';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-const EditProject = () => {
+const EditExperience = () => {
     return (
         <CreateOrEditEntity
-            entitiesType={EntityTypeEnum.PROJECTS}
+            entitiesType={EntityTypeEnum.EXPERIENCES}
         />
     )
 }
-export default EditProject;
+export default EditExperience;
 
-// Custom fields for the entity Project
-export const ProjectSpecificFields = () => {
+// Custom fields for the entity Experience
+export const ExperienceSpecificFields = () => {
     const { t } = useTranslation("dashboard");
     const myForm = useFormContext();
 
@@ -62,7 +63,7 @@ export const ProjectSpecificFields = () => {
             <CustomCardContent id="entity-specific-fields">
 
                 <Grid container spacing={2} padding={2}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                         <Controller
                             control={myForm.control}
                             name="title"
@@ -71,6 +72,71 @@ export const ProjectSpecificFields = () => {
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
                                     label={t('Title')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="employmentType"
+                            rules={{ required: t('Employment Type is required') }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    select
+                                    label={t('Employment Type')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                >
+                                    <MenuItem value="" disabled> {t('Select Employment Type')} </MenuItem>
+                                    {Object.values(EmploymentTypeEnum).map((value) => (
+                                        <MenuItem key={value} value={value}>
+                                            {value}
+                                        </MenuItem>
+                                    ))}
+                                </CustomTextField>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="companyName"
+                            rules={{ required: t('Company Name is required') }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('Company Name')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="location"
+                            rules={{ required: t('Location is required') }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('Location')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}

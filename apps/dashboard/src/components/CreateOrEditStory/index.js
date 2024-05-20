@@ -1,22 +1,21 @@
 import { CustomCard, CustomCardContent, CustomCardHeader } from '@/components/Custom/CardComponents';
+import CustomDialog from '@/components/Custom/DialogComponents';
 import { CustomDatePicker, CustomTextField } from '@/components/Custom/FormComponents';
 import MuiEditor from '@/components/MuiEditor';
 import { EducationQ } from '@/models/education.model';
 import { EntitiesStatus } from "@/models/enums";
 import { ExperienceQ } from '@/models/experience.model';
+import { ProjectQ } from '@/models/project.model';
 import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
+import { ProjectService } from '@/services/project.service';
+import { StoryService } from '@/services/story.service';
 import { Add, ArrowBack, Delete, ExpandMore, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Autocomplete, Box, Button, CardActions, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { debounce } from '@mui/material/utils';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
@@ -27,6 +26,12 @@ import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { Criteria, Operation, View } from "shared/utilities/criteria";
 import { displayMessages } from '../alerts';
+
+const fieldMapping = {
+    isProject: 'connectedProject',
+    isExperience: 'connectedExperience',
+    isEducation: 'connectedEducation',
+};
 
 const CreateOrEditStory = (props) => {
     const [store, dispatch] = useDashboardStore();
@@ -47,19 +52,6 @@ const CreateOrEditStory = (props) => {
         };
 
         const allValues = { ...commonValues };
-
-        const stories = props.myForm.getValues('stories');
-        if (props.isProject) {
-            const highestOrderInProject = stories?.filter(s => s.orderInProject !== undefined).sort((a, b) => b.orderInProject - a.orderInProject)[0]?.orderInProject ?? 0;
-            allValues.orderInProject = existingStory?.orderInProject ?? highestOrderInProject + 1;
-        } else if (props.isEducation) {
-            const highestOrderInEducation = stories?.filter(s => s.orderInEducation !== undefined).sort((a, b) => b.orderInEducation - a.orderInEducation)[0]?.orderInEducation ?? 0;
-            allValues.orderInEducation = existingStory?.orderInEducation ?? highestOrderInEducation + 1;
-        } else if (props.isExperience) {
-            const highestOrderInExperience = stories?.filter(s => s.orderInExperience !== undefined).sort((a, b) => b.orderInExperience - a.orderInExperience)[0]?.orderInExperience ?? 0;
-            allValues.orderInExperience = existingStory?.orderInExperience ?? highestOrderInExperience + 1;
-        }
-
         return allValues;
     }, [existingStory, props.isProject, props.isEducation, props.isExperience]);
 
@@ -67,25 +59,41 @@ const CreateOrEditStory = (props) => {
         defaultValues: defaultValues
     });
 
-    const projectTitle = props.myForm.watch('title');
     const storyTitle = watch('title');
     const formEducation = watch('connectedEducation');
     const formExperience = watch('connectedExperience');
+    const formProject = watch('connectedProject');
     const relevantSections = watch('relevantSections');
 
     const [searchedEducations, setSearchedEducations] = useState([]);
     const [searchedExperiences, setSearchedExperiences] = useState([]);
+    const [searchedProjects, setSearchedProjects] = useState([]);
 
     const [deleteRelevantSectionModalOpen, setDeleteRelevantSectionModalOpen] = useState(false);
     const [relevantSectionToDeleteIndex, setRelevantSectionToDeleteIndex] = useState(null);
 
-    useEffect(() => {
-        if (projectTitle) {
-            setValue('connectedProject', { title: projectTitle });
-        } else {
-            setValue('connectedProject', { title: 'The current Project' });
+    const [deleteStoryModalOpen, setDeleteStoryModalOpen] = useState(false);
+
+    const entityTitle = props.myForm.watch('title');
+    const entityField = props.myForm.watch('field');
+    const entityName = useMemo(() => {
+        if (props.isProject || props.isExperience) {
+            return entityTitle;
+        } else if (props.isEducation) {
+            return entityField;
         }
-    }, [projectTitle]);
+    }, [entityTitle, entityField]);
+
+    useEffect(() => {
+        const fieldName = Object.keys(fieldMapping).find(key => props[key]);
+        if (fieldName) {
+            const valueKey = fieldName === 'isEducation' ? 'field' : 'title';
+            const value = {
+                [valueKey]: entityName || `The current ${fieldName.slice(2)}`
+            };
+            setValue(fieldMapping[fieldName], value);
+        }
+    }, [entityName]);
 
     useEffect(() => {
         setExistingStory(props.existingStory);
@@ -101,14 +109,67 @@ const CreateOrEditStory = (props) => {
     useEffect(() => {
         fetchEducations();
         fetchExperiences();
+        fetchProjects();
     }, []);
 
+    /*
+    In ogni caso, bisonga guardare se c'è un existingStory.
+    Se c'è, allora facciamo il fetch del projectId, experienceId e educationId (se presenti)
+    E aggiungiamo il risultato alle option e lo settiamo come valore per il campo "connectedProject", "connectedExperience" e "connectedEducation".
+    */
+    useEffect(() => {
+        if (existingStory) {
+            const projectId = existingStory.projectId;
+            const experienceId = existingStory.experienceId;
+            const educationId = existingStory.educationId;
+
+            if (projectId) {
+                ProjectService.getById(projectId).then((response) => {
+                    const project = response.content;
+
+                    const validOptions = props.isProject ? [project] : [...searchedProjects, project];
+                    setSearchedProjects(validOptions);
+                    setValue('connectedProject', project);
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+
+            if (experienceId) {
+                ExperienceService.getById(experienceId).then((response) => {
+                    const experience = response.content;
+
+                    const validOptions = props.isExperience ? [experience] : [...searchedExperiences, experience];
+                    setSearchedExperiences(validOptions);
+                    setValue('connectedExperience', experience);
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+
+            if (educationId) {
+                EducationService.getById(educationId).then((response) => {
+                    const education = response.content;
+
+                    const validOptions = props.isEducation ? [education] : [...searchedEducations, education];
+                    setSearchedEducations(validOptions);
+                    setValue('connectedEducation', education);
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        }
+    }, [existingStory]);
 
     ///////////////////////
     // General functions //
     ///////////////////////
 
     async function fetchEducations(query) {
+        if (props.isEducation) {
+            return;
+        }
+
         const educationField = new Criteria(EducationQ.field, Operation.equals, "*" + query?.replace(" ", "*") + "*");
         const userId = new Criteria(EducationQ.userId, Operation.equals, store.user.id);
 
@@ -116,7 +177,7 @@ const CreateOrEditStory = (props) => {
         if (query) {
             criterias.push(educationField);
         }
-        const filters = new EducationQ(criterias, View.verbose, 0, 5, null);
+        const filters = new EducationQ(criterias, View.normal, 0, 5, null);
         EducationService.getByCriteria(filters).then((response) => {
             const educations = response?.content;
             setSearchedEducations(educations);
@@ -126,6 +187,10 @@ const CreateOrEditStory = (props) => {
     }
 
     async function fetchExperiences(query) {
+        if (props.isExperience) {
+            return;
+        }
+
         const experienceField = new Criteria(ExperienceQ.title, Operation.equals, "*" + query?.replace(" ", "*") + "*");
         const userId = new Criteria(ExperienceQ.userId, Operation.equals, store.user.id);
 
@@ -133,10 +198,31 @@ const CreateOrEditStory = (props) => {
         if (query) {
             criterias.push(experienceField);
         }
-        const filters = new ExperienceQ(criterias, View.verbose, 0, 5, null);
+        const filters = new ExperienceQ(criterias, View.normal, 0, 5, null);
         ExperienceService.getByCriteria(filters).then((response) => {
             const experiences = response?.content;
             setSearchedExperiences(experiences);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    async function fetchProjects(query) {
+        if (props.isProject) {
+            return;
+        }
+
+        const projectField = new Criteria(ProjectQ.title, Operation.equals, "*" + query?.replace(" ", "*") + "*");
+        const userId = new Criteria(ProjectQ.userId, Operation.equals, store.user.id);
+
+        const criterias = [userId];
+        if (query) {
+            criterias.push(projectField);
+        }
+        const filters = new ProjectQ(criterias, View.normal, 0, 5, null);
+        ProjectService.getByCriteria(filters).then((response) => {
+            const projects = response?.content;
+            setSearchedProjects(projects);
         }).catch((error) => {
             console.error(error);
         });
@@ -180,6 +266,48 @@ const CreateOrEditStory = (props) => {
         setDeleteRelevantSectionModalOpen(false);
     };
 
+    // Function to confirm deletion of the story
+    const handleDeleteStory = () => {
+        const removeStoryFromList = (id) => {
+            // Read the list of stories
+            const stories = props.myForm.getValues('stories') || [];
+
+            // Remove the story from the list
+            const storyIndex = stories.findIndex(s => s.tmpId === id);
+            if (storyIndex !== -1) {
+                stories.splice(storyIndex, 1);
+            }
+
+            // set the field "tmpOrder" of each story as the current index
+            stories.forEach((story, index) => {
+                story.tmpOrder = index;
+            });
+
+            // set the new list of stories
+            props.myForm.setValue('stories', stories);
+        }
+
+        const closeAndGoBack = () => {
+            setDeleteStoryModalOpen(false);
+            props.goBack();
+        }
+
+        if (existingStory) {
+            if (existingStory.id) {
+                StoryService.delete(existingStory.id).then(() => {
+                    displayMessages([{ text: 'Story deleted', level: 'info' }]);
+                    removeStoryFromList(existingStory.tmpId);
+                    closeAndGoBack();
+                }).catch(console.error);
+            } else {
+                removeStoryFromList(existingStory.tmpId);
+                closeAndGoBack();
+            }
+        } else {
+            closeAndGoBack();
+        }
+    };
+
 
     ////////////////////
     // Save functions //
@@ -207,9 +335,7 @@ const CreateOrEditStory = (props) => {
     function submit(data) {
         if (existingStory) {
             const stories = props.myForm.getValues('stories');
-            const index = stories.findIndex(s => s.tmpId === existingStory.tmpId);
-            console.log('existingStory.id', existingStory.id);
-            console.log('Index', index);
+            const index = existingStory.id ? stories.findIndex(s => s.id === existingStory.id) : stories.findIndex(s => s.tmpId === existingStory.tmpId);
 
             // Replace only the fields that have been changed
             stories[index] = { ...stories[index], ...data };
@@ -218,7 +344,16 @@ const CreateOrEditStory = (props) => {
             console.log('Story updated', stories[index]);
         } else {
             const stories = props.myForm.getValues('stories') || [];
-            stories.push(data);
+
+            // add the new story to the list as the first element
+            stories.unshift(data);
+
+            // set the field "tmpOrder" of each story as the current index
+            stories.forEach((story, index) => {
+                story.tmpOrder = index;
+            });
+
+            // set the new list of stories
             props.myForm.setValue('stories', stories);
             setExistingStory(data);
             console.log('Story added', data);
@@ -337,8 +472,9 @@ const CreateOrEditStory = (props) => {
                         </Grid>
                         <Grid item xs={12} md={7}>
                             <Box className='w-full flex flex-col space-y-6'>
+
                                 <Autocomplete
-                                    id="connectedEducation"
+                                    id={"connectedEducation"}
                                     options={searchedEducations}
                                     getOptionLabel={(option) => option?.field}
                                     onInputChange={debounce((e, value) => fetchEducations(value), 500)}
@@ -352,9 +488,7 @@ const CreateOrEditStory = (props) => {
                                                 ...params.InputProps,
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <School
-                                                        // sx={{ color: theme => rgba(theme.palette.primary.main, 0.5) }}
-                                                        />
+                                                        <School />
                                                     </InputAdornment>
                                                 ),
                                             }}
@@ -365,11 +499,20 @@ const CreateOrEditStory = (props) => {
                                             {option?.field}
                                         </li>
                                     )}
+                                    value={watch('connectedEducation') || null}
                                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                                    onChange={(e, value) => setValue('connectedEducation', value)}
+                                    onChange={(e, value) => {
+                                        setValue("connectedEducation", value);
+                                        setValue("educationId", value?.id ?? null);
+                                        if (!value?.id) {
+                                            setValue("orderInEducation", null);
+                                        }
+                                    }}
+                                    disabled={props.isEducation}
                                 />
+
                                 <Autocomplete
-                                    id="connectedExperience"
+                                    id={"connectedExperience"}
                                     options={searchedExperiences}
                                     getOptionLabel={(option) => option?.title}
                                     onInputChange={debounce((e, value) => fetchExperiences(value), 500)}
@@ -378,6 +521,7 @@ const CreateOrEditStory = (props) => {
                                             {...params}
                                             placeholder={formExperience ? null : "Connected Experience"}
                                             label={formExperience ? "Connected Experience" : null}
+                                            variant="outlined"
                                             InputProps={{
                                                 ...params.InputProps,
                                                 startAdornment: (
@@ -389,35 +533,60 @@ const CreateOrEditStory = (props) => {
                                         />
                                     )}
                                     renderOption={(props, option) => (
-                                        <li {...props}>
+                                        <li {...props} key={'li-' + option?.id}>
                                             {option?.title}
                                         </li>
                                     )}
-                                    isOptionEqualToValue={(option, value) => option === value}
-                                    onChange={(e, value) => setValue('connectedExperience', value)}
-                                />
-                                <Controller
-                                    control={control}
-                                    name="connectedProject"
-                                    rules={{ required: t('Connected Project is required') }}
-                                    render={({ field, fieldState: { error } }) => {
-                                        return (
-                                            <CustomTextField
-                                                disabled
-                                                placeholder={field?.value ? null : "Connected Project"}
-                                                label={field?.value ? "Connected Project" : null}
-                                                value={field?.value ? field?.value?.title : ''}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <Widgets />
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        )
+                                    value={watch('connectedExperience') || null}
+                                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                                    onChange={(e, value) => {
+                                        setValue("connectedExperience", value);
+                                        setValue("experienceId", value?.id ?? null);
+                                        if (!value?.id) {
+                                            setValue("orderInExperience", null);
+                                        }
                                     }}
+                                    disabled={props.isExperience}
                                 />
+
+                                <Autocomplete
+                                    id={"connectedProject"}
+                                    options={searchedProjects}
+                                    getOptionLabel={(option) => option?.title}
+                                    onInputChange={debounce((e, value) => fetchProjects(value), 500)}
+                                    renderInput={(params) => (
+                                        <CustomTextField
+                                            {...params}
+                                            placeholder={formProject ? null : "Connected Project"}
+                                            label={formProject ? "Connected Project" : null}
+                                            variant="outlined"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <Widgets />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    )}
+                                    renderOption={(props, option) => (
+                                        <li {...props} key={'li-' + option?.id}>
+                                            {option?.title}
+                                        </li>
+                                    )}
+                                    value={watch('connectedProject') || null}
+                                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                                    onChange={(e, value) => {
+                                        setValue("connectedProject", value);
+                                        setValue("projectId", value?.id ?? null);
+                                        if (!value?.id) {
+                                            setValue("orderInProject", null);
+                                        }
+                                    }}
+                                    disabled={props.isProject}
+                                />
+
                             </Box>
                         </Grid>
                     </Grid>
@@ -533,40 +702,42 @@ const CreateOrEditStory = (props) => {
                     </Grid>
 
                 </CustomCardContent>
-                <CardActions className='!px-8 justify-center sm:justify-start'>
-                    <Button variant='outlined' color='primary' onClick={props.goBack}>
-                        Cancel
-                    </Button>
-                    <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty}>
-                        Save
-                    </Button>
+                <CardActions className='!px-8 justify-center sm:justify-between'>
+                    <Box className='space-x-4'>
+                        <Button variant='outlined' color='primary' onClick={props.goBack}>
+                            Cancel
+                        </Button>
+                        <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty}>
+                            Save
+                        </Button>
+                    </Box>
+                    {existingStory && (
+                        <Box>
+                            <Button variant='contained' color='error' onClick={() => setDeleteStoryModalOpen(true)}>
+                                Delete
+                            </Button>
+                        </Box>
+                    )}
                 </CardActions>
 
             </CustomCard>
 
-            <Dialog
-                open={deleteRelevantSectionModalOpen}
-                onClose={() => setDeleteRelevantSectionModalOpen(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Delete Section"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete the section <b>{relevantSections[relevantSectionToDeleteIndex]?.title}</b>?
-                        <br />
-                        This action cannot be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setDeleteRelevantSectionModalOpen(false)} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDeleteRelevantSection} color="primary" autoFocus>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <CustomDialog
+                isOpen={deleteStoryModalOpen}
+                title="Delete Story"
+                text={<>Are you sure you want to delete the story <b>{storyTitle}</b>?<br /><br /><b>ATTENTION</b>: The Story will be removed from the project, experience and education it is connected to.<br /><br /><b>This action cannot be undone.</b></>}
+                onCancel={() => setDeleteStoryModalOpen(false)}
+                onDelete={handleDeleteStory}
+            />
+
+            <CustomDialog
+                isOpen={deleteRelevantSectionModalOpen}
+                title="Delete Section"
+                text={<>Are you sure you want to delete the section <b>{relevantSections[relevantSectionToDeleteIndex]?.title}</b>?<br />This action cannot be undone.</>}
+                onCancel={() => setDeleteRelevantSectionModalOpen(false)}
+                onDelete={handleDeleteRelevantSection}
+            />
+
         </>
     )
 }

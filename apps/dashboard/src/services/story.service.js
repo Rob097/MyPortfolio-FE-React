@@ -42,4 +42,28 @@ export class StoryService {
         );
     }
 
+    static delete(storyId) {
+        return fetcher(
+            STORIES_URL + `/${storyId}`,
+            false,
+            constants.METHODS.DELETE
+        );
+    }
+
+    static removeEntity(storyId, entityType) {
+        const dto = [
+            { 
+                op: constants.OPERATIONS.REMOVE,
+                path: '/' + entityType
+            }
+        ];
+
+        return fetcher(
+            STORIES_URL + `/${storyId}`,
+            false,
+            constants.METHODS.PATCH,
+            dto
+        );
+    }
+
 }

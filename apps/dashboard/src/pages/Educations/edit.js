@@ -9,17 +9,18 @@ import moment from 'moment';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-const EditProject = () => {
+
+const EditEducation = () => {
     return (
         <CreateOrEditEntity
-            entitiesType={EntityTypeEnum.PROJECTS}
+            entitiesType={EntityTypeEnum.EDUCATIONS}
         />
     )
 }
-export default EditProject;
+export default EditEducation;
 
-// Custom fields for the entity Project
-export const ProjectSpecificFields = () => {
+// Custom fields for the entity Education
+export const EducationSpecificFields = () => {
     const { t } = useTranslation("dashboard");
     const myForm = useFormContext();
 
@@ -62,22 +63,86 @@ export const ProjectSpecificFields = () => {
             <CustomCardContent id="entity-specific-fields">
 
                 <Grid container spacing={2} padding={2}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                         <Controller
                             control={myForm.control}
-                            name="title"
-                            rules={{ required: t('Title is required') }}
+                            name="field"
+                            rules={{ required: t('Field is required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Title')}
+                                    label={t('Field')}
                                     variant="outlined"
                                     fullWidth
-                                    error={!!error}
+                                    error={error}
                                     helperText={error?.message}
                                     onChange={(e) => field.onChange(e.target.value)}
-                                    value={field.value || ''}
+                                    value={field.value}
                                 />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="school"
+                            rules={{ required: t('School is required') }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('School')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="degree"
+                            rules={{ required: t('Degree is required') }}
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('Degree')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            control={myForm.control}
+                            name="grade"
+                            defaultValue=""
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('Grade')}
+                                    variant="outlined"
+                                    type='number'
+                                    InputProps={{
+                                        inputProps: {
+                                            min: 0,
+                                            step: 0.1
+                                        }
+                                    }}
+                                    fullWidth
+                                    error={error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value}
+                                />
+
                             )}
                         />
                     </Grid>
@@ -90,7 +155,7 @@ export const ProjectSpecificFields = () => {
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
                                     label={t('From Date')}
-                                    value={field.value || null}
+                                    value={field.value}
                                     inputRef={field.ref}
                                     onChange={(date) => {
                                         field.onChange(date);
@@ -116,7 +181,7 @@ export const ProjectSpecificFields = () => {
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
                                     label={t('To Date')}
-                                    value={field.value || null}
+                                    value={field.value}
                                     inputRef={field.ref}
                                     onChange={(date) => {
                                         field.onChange(date);
@@ -149,8 +214,8 @@ export const ProjectSpecificFields = () => {
                                     multiline
                                     rows={4}
                                     onChange={(e) => field.onChange(e.target.value)}
-                                    value={field.value || ''}
-                                    error={!!error}
+                                    value={field.value}
+                                    error={error}
                                     helperText={error?.message}
                                 />
                             )}

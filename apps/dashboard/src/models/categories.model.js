@@ -1,6 +1,6 @@
-import { EducationQ } from "./education.model";
-import { ExperienceQ } from "./experience.model";
-import { ProjectQ } from "./project.model";
+import { Education, EducationQ } from "./education.model";
+import { Experience, ExperienceQ } from "./experience.model";
+import { Project, ProjectQ } from "./project.model";
 
 export class EntityTypeEnum {
     static PROJECTS = 'projects';
@@ -32,6 +32,19 @@ export class EntityTypeEnum {
                 return ExperienceQ;
             case EntityTypeEnum.EDUCATIONS:
                 return EducationQ;
+            default:
+                return null;
+        }
+    }
+
+    static getClass(type) {
+        switch (type) {
+            case EntityTypeEnum.PROJECTS:
+                return Project;
+            case EntityTypeEnum.EXPERIENCES:
+                return Experience;
+            case EntityTypeEnum.EDUCATIONS:
+                return Education;
             default:
                 return null;
         }

@@ -3,7 +3,7 @@ import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
 
-export default class EntityService {
+export class EntityService {
 
     static getService(type) {
         switch (type) {
@@ -22,12 +22,20 @@ export default class EntityService {
         return this.getService(type).getByIdUrl(id, view);
     }
 
+    static getBySlugUrl(type, slug, view) {
+        return this.getService(type).getBySlugUrl(slug, view);
+    }
+
     static getByCriteriaUrl(type, criteria) {
         return this.getService(type).getByCriteriaUrl(criteria);
     }
 
     static getById(type, id, view) {
         return this.getService(type).getById(id, view);
+    }
+
+    static getBySlug(type, slug, view) {
+        return this.getService(type).getBySlug(slug, view);
     }
 
     static getByCriteria(type, criteria, returnHeaders) {
@@ -44,6 +52,18 @@ export default class EntityService {
 
     static delete(type, id) {
         return this.getService(type).delete(id);
+    }
+
+    static uploadCoverImage(type, id, file) {
+        return this.getService(type).uploadCoverImage(id, file);
+    }
+
+    static removeCoverImage(type, id) {
+        return this.getService(type).removeCoverImage(id);
+    }
+
+    static makeMultipartRequest(type, id, method, fileType, file) {
+        return this.getService(type).makeMultipartRequest(id, method, fileType, file);
     }
 
 }

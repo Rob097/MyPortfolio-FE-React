@@ -1,6 +1,6 @@
 import { EntityTypeEnum } from "@/models/categories.model";
 import { EntitiesStatus } from "@/models/enums";
-import EntityService from "@/services/entity.service";
+import { EntityService } from "@/services/entity.service";
 import { Add, Delete, DesignServices, Edit, Public } from '@mui/icons-material';
 import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
 import { Box, Button, Chip, Divider, Fab, Tooltip, Typography } from '@mui/material';
@@ -11,10 +11,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
-import { debounce } from '@mui/material/utils';
 import { DataGrid, GridActionsCellItem, getGridDateOperators, getGridNumericOperators, getGridSingleSelectOperators, getGridStringOperators } from '@mui/x-data-grid';
 import moment from 'moment';
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { trackPromise } from "react-promise-tracker";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDashboardStore } from "shared/stores/DashboardStore";
@@ -50,41 +49,6 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         setFilterModel
     }));
 
-    /* const hasUserEntities = useMemo(() => {
-        switch (entitiesType) {
-            case EntityTypeEnum.PROJECTS:
-                return store.user?.projects?.length > 0;
-            case EntityTypeEnum.EXPERIENCES:
-                return store.user?.experiences?.length > 0;
-            case EntityTypeEnum.EDUCATIONS:
-                return store.user?.educations?.length > 0;
-            default:
-                return false;
-        }
-    }, [store.user, entitiesType]); */
-
-    /* const debouncedSetFilterModel = useCallback(
-        debounce((value) => {
-            let filterItems = [];
-
-            if (entitiesType === EntityTypeEnum.PROJECTS || entitiesType === EntityTypeEnum.EXPERIENCES) {
-                filterItems.push({ field: 'title', operator: 'contains', value: value });
-            }
-
-            if (entitiesType === EntityTypeEnum.EXPERIENCES) {
-                filterItems.push({ field: 'companyName', operator: 'contains', value: value });
-            }
-
-            if (entitiesType === EntityTypeEnum.EDUCATIONS) {
-                filterItems.push(
-                    { field: 'school', operator: 'contains', value: value },
-                    { field: 'field', operator: 'contains', value: value }
-                );
-            }
-
-            setFilterModel({ items: filterItems });
-        }, 500), []); */
-
     const handleSearchChange = (value) => {
         setSearchTerm(value);
         props.debouncedSetFilterModel(value);
@@ -101,7 +65,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     const handleStatusChange = (entity) => {
         setIsLoading(true);
         entity.status = entity.status === EntitiesStatus.PUBLISHED ? EntitiesStatus.DRAFT : EntitiesStatus.PUBLISHED;
-        EntityService.update(entity).then((response) => {
+        EntityService.update(entitiesType, entity).then((response) => {
             console.debug(response);
         }).catch((error) => {
             console.error(error);
@@ -111,7 +75,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
 
     const handleDelete = (entity) => {
         setIsLoading(true);
-        EntityService.delete(entity.id).then(() => {
+        EntityService.delete(entitiesType, entity.id).then(() => {
             setEntities(entities.filter(p => p.id !== entity.id));
         }).catch((error) => {
             console.error(error);
@@ -231,7 +195,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                     label="Edit"
                     color="primary"
                     showInMenu
-                    onClick={() => navigate(`/dashboard/projects/${params.row.slug}`)}
+                    onClick={() => navigate(`/dashboard/${entitiesType}/${params.row.slug}`)}
                 />,
                 <GridActionsCellItem
                     label=""
@@ -245,7 +209,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                     color="error"
                     showInMenu
                     onClick={() => {
-                        setSelectedProject(params.row);
+                        setSelectedEntity(params.row);
                         handleDialogOpen();
                     }}
                 />,
@@ -360,10 +324,11 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
 
     return (
         <>
-            <div className="w-full overflow-x-auto">
-                <div style={{ maxHeight: 400, width: '100%', minWidth: '800px' }}>
+            <div className="flex w-full overflow-x-auto overflow-y-hidden">
+                {/* max height is header (56) + 10 elements (52) plus the footer (52) */}
+                <div style={{ maxHeight: '628px', width: '100%', minWidth: '800px' }}>
                     <DataGrid
-                        autoHeight
+                        autoHeight={entities?.length < 10}
                         rows={entities}
                         columns={columns}
                         rowCount={totalNumberOfEntities}

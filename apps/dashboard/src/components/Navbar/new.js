@@ -55,6 +55,7 @@ function Navbar(props) {
           width: { lg: `calc(100% - ${props.drawerWidth}px)` },
           ml: { lg: `${props.drawerWidth}px` },
           marginBottom: theme.spacing(2),
+          paddingInline: '1rem !important',
         })}
         color='transparent'
         elevation={0}

@@ -29,4 +29,13 @@ export const HEADERS = {
     }
 }
 
+export const OPERATIONS = {
+    ADD: "add",
+    REMOVE: "remove",
+    REPLACE: "replace",
+    MOVE: "move",
+    COPY: "copy",
+    TEST: "test"
+}
+
 export const MAX_FILE_SIZE = 1048576; // 1MB

@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import ProjectsList from "./pages/Projects/list";
 import UserProfile from "./pages/UserProfile";
 import EditProject from "./pages/Projects/edit";
+import EditExperience from "./pages/Experiences/edit";
+import EditEducation from "./pages/Educations/edit";
 
 export const Routes = [
     {
@@ -48,6 +50,10 @@ export const Routes = [
                     {
                         path: "",
                         element: <ExperiencesList />
+                    },
+                    {
+                        path: ":slug",
+                        element: <EditExperience />
                     }
                 ]
             },
@@ -58,6 +64,10 @@ export const Routes = [
                     {
                         path: "",
                         element: <EducationsList />
+                    },
+                    {
+                        path: ":slug",
+                        element: <EditEducation />
                     }
                 ]
             },

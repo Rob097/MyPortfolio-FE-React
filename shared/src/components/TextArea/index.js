@@ -1,5 +1,5 @@
 
-import TextareaAutosize from '@mui/base/TextareaAutosize';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { Grid } from "@mui/material";
 import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
