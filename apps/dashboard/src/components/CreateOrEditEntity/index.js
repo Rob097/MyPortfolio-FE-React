@@ -17,7 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import _, { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { trackPromise } from 'react-promise-tracker';
 import { useBlocker, useNavigate, useParams } from 'react-router-dom';
@@ -72,9 +72,7 @@ const CreateOrEditEntity = (props) => {
         }
     }, [entitiesType]);
 
-    const myForm = useForm({
-        defaultValues: defaultValues,
-    });
+    const myForm = useFormContext();
     const formTitle = myForm.watch('title');
     const formField = myForm.watch('field');
 
@@ -363,7 +361,7 @@ const CreateOrEditEntity = (props) => {
             <FormProvider {...myForm}>
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                     <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{!formTitle && !formField ? (isCreate ? `New ${EntityTypeEnum.getLabel(entitiesType, false, true)}` : `Edit ${EntityTypeEnum.getLabel(entitiesType, false, true)}`) : (formTitle ?? formField)}</Typography>
-                    <Box className="w-full flex-auto mt-10 bg-white rounded-md" component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate>
+                    <Box className="w-full flex-auto mt-10" component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate>
                         <Grid container spacing={2} padding={2} component="section" id="main-info-section">
 
                             <Grid item xs={12} md={5} className='!flex !flex-col'>
@@ -436,7 +434,7 @@ const CreateOrEditEntity = (props) => {
                     </Box>
                 </LocalizationProvider>
 
-                <Tooltip title={isAddingNewStory ? `Save the story before saving the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : (myForm.formState.isValid ? `Save the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : 'Fill all the required fields')} placement='top' arrow>
+                <Tooltip title={isAddingNewStory ? `Close the story editor before saving the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : (myForm.formState.isValid ? `Save the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : 'Fill all the required fields')} placement='top' arrow>
                     <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
                         <Fab color="primary" aria-label="save" onClick={myForm.handleSubmit(handleSubmit)} disabled={isAddingNewStory /* || !myForm.formState.isValid */}>
                             <Save className='text-white' />

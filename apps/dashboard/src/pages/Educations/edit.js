@@ -6,15 +6,36 @@ import { EntitiesStatus } from "@/models/enums";
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
 import moment from 'moment';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 
 const EditEducation = () => {
+
+    const defaultValues = {
+        stories: [],
+        skills: [],
+        coverImage: '',
+        field: '',
+        school: '',
+        degree: '',
+        grade: 0,
+        fromDate: null,
+        toDate: null,
+        description: '',
+        status: EntitiesStatus.DRAFT
+    };
+
+    const myForm = useForm({
+        defaultValues: defaultValues
+    });
+
     return (
-        <CreateOrEditEntity
-            entitiesType={EntityTypeEnum.EDUCATIONS}
-        />
+        <FormProvider {...myForm}>
+            <CreateOrEditEntity
+                entitiesType={EntityTypeEnum.EDUCATIONS}
+            />
+        </FormProvider>
     )
 }
 export default EditEducation;

@@ -6,14 +6,32 @@ import { EntitiesStatus } from "@/models/enums";
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
 import moment from 'moment';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, FormProvider, useFormContext, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 const EditProject = () => {
+
+    const defaultValues = {
+        stories: [],
+        skills: [],
+        coverImage: '',
+        title: '',
+        fromDate: null,
+        toDate: null,
+        description: '',
+        status: EntitiesStatus.DRAFT
+    };
+
+    const myForm = useForm({
+        defaultValues: defaultValues
+    });
+
     return (
-        <CreateOrEditEntity
-            entitiesType={EntityTypeEnum.PROJECTS}
-        />
+        <FormProvider {...myForm}>
+            <CreateOrEditEntity
+                entitiesType={EntityTypeEnum.PROJECTS}
+            />
+        </FormProvider>
     )
 }
 export default EditProject;
@@ -37,7 +55,6 @@ export const ProjectSpecificFields = () => {
                                         <Controller
                                             name="status"
                                             control={myForm.control}
-                                            defaultValue={EntitiesStatus.DRAFT}
                                             render={({ field }) => (
                                                 <Switch
                                                     {...field}
@@ -67,7 +84,6 @@ export const ProjectSpecificFields = () => {
                             control={myForm.control}
                             name="title"
                             rules={{ required: t('Title is required') }}
-                            defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
                                     label={t('Title')}
@@ -86,7 +102,6 @@ export const ProjectSpecificFields = () => {
                             control={myForm.control}
                             name="fromDate"
                             rules={{ required: t('From Date is required') }}
-                            defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
                                     label={t('From Date')}
@@ -112,7 +127,6 @@ export const ProjectSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="toDate"
-                            defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
                                     label={t('To Date')}
@@ -140,7 +154,6 @@ export const ProjectSpecificFields = () => {
                             control={myForm.control}
                             name="description"
                             rules={{ required: t('Description is required') }}
-                            defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextArea
                                     label={t('Description')}

@@ -21,7 +21,7 @@ const EducationsList = () => {
     const debouncedSetFilterModel = useCallback(
         debounce((value) => {
             let filterItems = [];
-            filterItems.push({ field: 'school', operator: 'contains', value: value });
+            // Commented because BE don't filters with OR but with AND: filterItems.push({ field: 'school', operator: 'contains', value: value });
             filterItems.push({ field: 'field', operator: 'contains', value: value });
             dataGridRef.current.setFilterModel({ items: filterItems });
         }, 500), []);

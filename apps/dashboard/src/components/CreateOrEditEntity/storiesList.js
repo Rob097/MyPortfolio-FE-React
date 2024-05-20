@@ -100,27 +100,37 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
 
     const handleRemoveStory = () => {
         const storyIndex = stories.findIndex(story => story.tmpId === storyToDeleteTmpId);
-        const storyId = stories[storyIndex].id;
+        const storyToRemove = stories[storyIndex];
+        const storyId = storyToRemove?.id;
 
-        StoryService.removeEntity(storyId, EntityTypeEnum.getLabel(entitiesType, false, false))
-            .then(() => {
-                console.log('Story removed successfully');
-                const newStories = [...stories];
-                newStories.splice(storyIndex, 1);
+        const removeStoryFromList = () => {
 
-                // Update the tmpOrder field for each story
-                newStories?.forEach((story, index) => {
-                    story.tmpOrder = index;
-                });
+            // Remove the story from the list
+            if (storyIndex !== -1) {
+                stories.splice(storyIndex, 1);
+            }
 
-                myForm.setValue('stories', newStories);
-            })
-            .catch((error) => {
-                console.error('Error removing story:', error);
-            })
-            .finally(() => {
-                setRemoveStoryModalOpen(false);
+            // set the field "tmpOrder" of each story as the current index
+            stories.forEach((story, index) => {
+                story.tmpOrder = index;
             });
+
+            // set the new list of stories
+            myForm.setValue('stories', stories);
+        }
+
+        if (storyId) {
+            StoryService.removeEntity(storyId, EntityTypeEnum.getLabel(entitiesType, false, false))
+                .then(() => {
+                    removeStoryFromList();
+                    displayMessages([{ text: 'Story removed', level: 'info' }]);
+                })
+                .catch((error) => console.error('Error removing story:', error))
+                .finally(() => setRemoveStoryModalOpen(false));
+        } else {
+            removeStoryFromList();
+            setRemoveStoryModalOpen(false);
+        }
     }
 
     // Stories Card styles -- BEGIN
@@ -230,7 +240,7 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
             <CustomDialog
                 isOpen={removeStoryModalOpen}
                 title="Delete Story"
-                text={<>Are you sure you want to remove the story <b>{stories.find(story => story.tmpId === storyToDeleteTmpId)?.title}</b>?<br />The story will NOT be removed from your account.</>}
+                text={<>Are you sure you want to remove the story <b>{stories.find(story => story.tmpId === storyToDeleteTmpId)?.title}</b>?<br />The story will NOT be deleted from your account.</>}
                 onCancel={() => setRemoveStoryModalOpen(false)}
                 onRemove={handleRemoveStory}
             />

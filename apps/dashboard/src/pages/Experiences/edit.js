@@ -7,14 +7,35 @@ import { EmploymentTypeEnum } from '@/models/experience.model';
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, MenuItem, Switch } from '@mui/material';
 import moment from 'moment';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 const EditExperience = () => {
+
+    const defaultValues = {
+        stories: [],
+        skills: [],
+        coverImage: '',
+        title: '',
+        employmentType: '',
+        companyName: '',
+        location: '',
+        fromDate: null,
+        toDate: null,
+        description: '',
+        status: EntitiesStatus.DRAFT
+    };
+
+    const myForm = useForm({
+        defaultValues: defaultValues
+    });
+
     return (
-        <CreateOrEditEntity
-            entitiesType={EntityTypeEnum.EXPERIENCES}
-        />
+        <FormProvider {...myForm}>
+            <CreateOrEditEntity
+                entitiesType={EntityTypeEnum.EXPERIENCES}
+            />
+        </FormProvider>
     )
 }
 export default EditExperience;

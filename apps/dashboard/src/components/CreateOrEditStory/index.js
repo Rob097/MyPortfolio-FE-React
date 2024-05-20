@@ -10,7 +10,7 @@ import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
 import { StoryService } from '@/services/story.service';
-import { Add, ArrowBack, Delete, ExpandMore, School, Widgets, Work } from '@mui/icons-material';
+import { Add, ArrowBack, Delete, ExpandMore, Save, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Autocomplete, Box, Button, CardActions, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
@@ -18,9 +18,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { debounce } from '@mui/material/utils';
 import moment from 'moment';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
@@ -39,21 +39,17 @@ const CreateOrEditStory = (props) => {
 
     const [existingStory, setExistingStory] = useState(props.existingStory);
     const [isPublished, setIsPublished] = useState(existingStory?.status === EntitiesStatus.PUBLISHED);
-    const defaultValues = useMemo(() => {
-        const commonValues = {
-            tmpId: Math.random().toString(36).substring(7),
-            title: existingStory?.title ?? null,
-            fromDate: existingStory?.fromDate ? moment(existingStory.fromDate) : null,
-            toDate: existingStory?.toDate ? moment(existingStory.toDate) : null,
-            description: existingStory?.description ?? null,
-            relevantSections: existingStory?.relevantSections ?? [],
-            diaryId: existingStory?.diaryId ?? store.getMainDiary()?.id,
-            status: existingStory?.status ?? EntitiesStatus.DRAFT
-        };
 
-        const allValues = { ...commonValues };
-        return allValues;
-    }, [existingStory, props.isProject, props.isEducation, props.isExperience]);
+    const defaultValues = useMemo(() => ({
+        tmpId: Math.random().toString(36).substring(7),
+        title: existingStory?.title ?? '',
+        fromDate: existingStory?.fromDate ? moment(existingStory.fromDate) : null,
+        toDate: existingStory?.toDate ? moment(existingStory.toDate) : null,
+        description: existingStory?.description ?? '',
+        relevantSections: existingStory?.relevantSections ?? [],
+        diaryId: existingStory?.diaryId ?? store.getMainDiary()?.id,
+        status: existingStory?.status ?? EntitiesStatus.DRAFT,
+    }), [existingStory]);
 
     const { register, getValues, setValue, watch, handleSubmit, control, formState: { isDirty, isValid, errors }, ...rest } = useForm({
         defaultValues: defaultValues
@@ -63,7 +59,10 @@ const CreateOrEditStory = (props) => {
     const formEducation = watch('connectedEducation');
     const formExperience = watch('connectedExperience');
     const formProject = watch('connectedProject');
-    const relevantSections = watch('relevantSections');
+    const { fields: relevantSections, append, move, remove } = useFieldArray({
+        control,
+        name: "relevantSections"
+    });
 
     const [searchedEducations, setSearchedEducations] = useState([]);
     const [searchedExperiences, setSearchedExperiences] = useState([]);
@@ -95,9 +94,9 @@ const CreateOrEditStory = (props) => {
         }
     }, [entityName]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         setExistingStory(props.existingStory);
-    }, [props.existingStory]);
+    }, [props.existingStory]); */
 
     useEffect(() => {
         const newStatus = isPublished ? EntitiesStatus.PUBLISHED : EntitiesStatus.DRAFT;
@@ -165,104 +164,71 @@ const CreateOrEditStory = (props) => {
     // General functions //
     ///////////////////////
 
-    async function fetchEducations(query) {
-        if (props.isEducation) {
-            return;
-        }
-
-        const educationField = new Criteria(EducationQ.field, Operation.equals, "*" + query?.replace(" ", "*") + "*");
+    const fetchEducations = useCallback(debounce(async (query) => {
+        if (props.isEducation) return;
+        const educationField = new Criteria(EducationQ.field, Operation.equals, `*${query?.replace(' ', '*')}*`);
         const userId = new Criteria(EducationQ.userId, Operation.equals, store.user.id);
-
-        const criterias = [userId];
-        if (query) {
-            criterias.push(educationField);
-        }
-        const filters = new EducationQ(criterias, View.normal, 0, 5, null);
-        EducationService.getByCriteria(filters).then((response) => {
-            const educations = response?.content;
-            setSearchedEducations(educations);
-        }).catch((error) => {
+        const filters = new EducationQ([userId, query && educationField].filter(Boolean), View.normal, 0, 5, null);
+        try {
+            const response = await EducationService.getByCriteria(filters);
+            setSearchedEducations(response?.content);
+        } catch (error) {
             console.error(error);
-        });
-    }
-
-    async function fetchExperiences(query) {
-        if (props.isExperience) {
-            return;
         }
+    }, 500), []);
 
-        const experienceField = new Criteria(ExperienceQ.title, Operation.equals, "*" + query?.replace(" ", "*") + "*");
+    const fetchExperiences = useCallback(debounce(async (query) => {
+        if (props.isExperience) return;
+        const experienceField = new Criteria(ExperienceQ.title, Operation.equals, `*${query?.replace(' ', '*')}*`);
         const userId = new Criteria(ExperienceQ.userId, Operation.equals, store.user.id);
-
-        const criterias = [userId];
-        if (query) {
-            criterias.push(experienceField);
-        }
-        const filters = new ExperienceQ(criterias, View.normal, 0, 5, null);
-        ExperienceService.getByCriteria(filters).then((response) => {
-            const experiences = response?.content;
-            setSearchedExperiences(experiences);
-        }).catch((error) => {
+        const filters = new ExperienceQ([userId, query && experienceField].filter(Boolean), View.normal, 0, 5, null);
+        try {
+            const response = await ExperienceService.getByCriteria(filters);
+            setSearchedExperiences(response?.content);
+        } catch (error) {
             console.error(error);
-        });
-    }
-
-    async function fetchProjects(query) {
-        if (props.isProject) {
-            return;
         }
+    }, 500), []);
 
-        const projectField = new Criteria(ProjectQ.title, Operation.equals, "*" + query?.replace(" ", "*") + "*");
+    const fetchProjects = useCallback(debounce(async (query) => {
+        if (props.isProject) return;
+        const projectField = new Criteria(ProjectQ.title, Operation.equals, `*${query?.replace(' ', '*')}*`);
         const userId = new Criteria(ProjectQ.userId, Operation.equals, store.user.id);
-
-        const criterias = [userId];
-        if (query) {
-            criterias.push(projectField);
-        }
-        const filters = new ProjectQ(criterias, View.normal, 0, 5, null);
-        ProjectService.getByCriteria(filters).then((response) => {
-            const projects = response?.content;
-            setSearchedProjects(projects);
-        }).catch((error) => {
+        const filters = new ProjectQ([userId, query && projectField].filter(Boolean), View.normal, 0, 5, null);
+        try {
+            const response = await ProjectService.getByCriteria(filters);
+            setSearchedProjects(response?.content);
+        } catch (error) {
             console.error(error);
-        });
-    }
+        }
+    }, 500), []);
 
     function addNewRelevantSection() {
-        const relevantSections = getValues('relevantSections');
         const id = Math.random().toString(36).substring(7);
         const newRelevantSection = {
             tmpId: id,
             title: `Relevant Section #${relevantSections?.length + 1 ?? 1}`,
             description: ''
         };
-        relevantSections.push(newRelevantSection);
-        setValue('relevantSections', relevantSections);
+        append(newRelevantSection);
     }
 
-    function handleDragEnd(result) {
+    const handleDragEnd = useCallback((result) => {
         if (!result.destination) return;
 
-        const items = Array.from(relevantSections);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
+        move(result.source.index, result.destination.index);
+    }, [relevantSections]);
 
-        setValue('relevantSections', items);
-    }
-
-    // Function to open dialog to delete a relevant section
-    const handleOpenDeleteRelevantSectionDialog = (event, index) => {
+    const handleOpenDeleteRelevantSectionDialog = useCallback((event, index) => {
         event.stopPropagation();
         event.preventDefault();
         setRelevantSectionToDeleteIndex(index);
         setDeleteRelevantSectionModalOpen(true);
-    };
+    }, []);
 
     // Function to confirm deletion of a relevant section
     const handleDeleteRelevantSection = () => {
-        const newSections = [...relevantSections];
-        newSections.splice(relevantSectionToDeleteIndex, 1);
-        setValue('relevantSections', newSections);
+        remove(relevantSectionToDeleteIndex);
         setDeleteRelevantSectionModalOpen(false);
     };
 
@@ -313,16 +279,16 @@ const CreateOrEditStory = (props) => {
     // Save functions //
     ////////////////////
 
-    function goBack() {
+    const goBack = useCallback(() => {
         handleSubmit(submit)().then(() => {
             if (isDirty && !isValid && !window.confirm('Are you sure you want to go back? You will lose all the changes you made.')) {
                 return;
             }
             props.goBack();
-        }).catch(error => {
+        }).catch((error) => {
             console.error('Error while going back', error);
         });
-    }
+    }, [handleSubmit, isDirty, isValid, props]);
 
     function save() {
         handleSubmit(submit)().then(() => {
@@ -333,6 +299,16 @@ const CreateOrEditStory = (props) => {
     }
 
     function submit(data) {
+
+        if (data && data.relevantSections) {
+            // remove the field "id" from each relevantSection if it's not a number:
+            data.relevantSections.forEach((section) => {
+                if (section.id && isNaN(section.id)) {
+                    delete section.id;
+                }
+            });
+        }
+
         if (existingStory) {
             const stories = props.myForm.getValues('stories');
             const index = existingStory.id ? stories.findIndex(s => s.id === existingStory.id) : stories.findIndex(s => s.tmpId === existingStory.tmpId);
@@ -380,6 +356,7 @@ const CreateOrEditStory = (props) => {
                                     <FormGroup aria-label="position" row>
                                         <FormControlLabel
                                             value="start"
+                                            defaultChecked={isPublished}
                                             control={
                                                 <Switch
                                                     checked={isPublished}
@@ -410,13 +387,20 @@ const CreateOrEditStory = (props) => {
                     <Grid container spacing={2} padding={2} component="section">
                         <Grid item xs={12} md={5}>
                             <Box className='w-full flex flex-col space-y-6'>
-                                <CustomTextField
-                                    label="Title"
-                                    variant="outlined"
-                                    fullWidth
-                                    {...register('title', { required: 'Title is required' })}
-                                    error={errors.title !== undefined}
-                                    helperText={errors.title?.message}
+                                <Controller
+                                    control={control}
+                                    name="title"
+                                    rules={{ required: t('Title is required') }}
+                                    render={({ field }) => (
+                                        <CustomTextField
+                                            label={t('Title')}
+                                            variant="outlined"
+                                            fullWidth
+                                            error={!!errors.title}
+                                            helperText={errors.title?.message}
+                                            {...field}
+                                        />
+                                    )}
                                 />
                                 <Controller
                                     control={control}
@@ -602,7 +586,7 @@ const CreateOrEditStory = (props) => {
                             <Controller
                                 control={control}
                                 name="description"
-                                defaultValue={null}
+                                defaultValue={defaultValues.description}
                                 rules={{ required: t('Description is required') }}
                                 render={({ field, fieldState: { error } }) => (
                                     /* TODO: set useComplete to true when images are correctely managed */
@@ -625,7 +609,7 @@ const CreateOrEditStory = (props) => {
                                         <div {...provided.droppableProps} ref={provided.innerRef} className='space-y-4'>
                                             {relevantSections?.map((section, index) => {
                                                 return (
-                                                    <Draggable key={section.id ? String(section.id) : section.tmpId} draggableId={section.id ? String(section.id) : section.tmpId} index={index}>
+                                                    <Draggable key={section.id} draggableId={section.id} index={index}>
                                                         {(provided) => {
 
                                                             /* Allow only vertical movements while dragging: */
@@ -635,6 +619,9 @@ const CreateOrEditStory = (props) => {
                                                                 provided.draggableProps.style.transform = "translate(0px," + t
                                                             }
 
+                                                            const isTitleError = errors?.relevantSections?.[index]?.title;
+                                                            const isDescriptionError = errors?.relevantSections?.[index]?.description;
+
                                                             return (
                                                                 <div {...provided.draggableProps} ref={provided.innerRef}>
                                                                     <Accordion
@@ -642,6 +629,7 @@ const CreateOrEditStory = (props) => {
                                                                             border: `1px solid ${theme.palette.divider}`,
                                                                         })}
                                                                         id={section.title + '-accordion'}
+                                                                        className={isTitleError || isDescriptionError ? '!border-red-700' : ''}
                                                                     >
                                                                         <AccordionSummary
                                                                             expandIcon={<ExpandMore className='cursor-pointer' />}
@@ -663,27 +651,34 @@ const CreateOrEditStory = (props) => {
                                                                             </Box>
                                                                         </AccordionSummary>
                                                                         <AccordionDetails className='space-y-4 mt-4'>
-                                                                            <CustomTextField
-                                                                                label="Title"
-                                                                                value={section.title}
-                                                                                fullWidth
-                                                                                onChange={(e) => {
-                                                                                    const newSections = [...relevantSections];
-                                                                                    newSections[index].title = e.target.value;
-                                                                                    setValue('relevantSections', newSections);
-                                                                                }}
+                                                                            <Controller
+                                                                                control={control}
+                                                                                name={`relevantSections[${index}].title`}
+                                                                                rules={{ required: 'Title is required' }}
+                                                                                render={({ field, fieldState: { error } }) => (
+                                                                                    <CustomTextField
+                                                                                        label={'Title'}
+                                                                                        variant="outlined"
+                                                                                        fullWidth
+                                                                                        error={!!error}
+                                                                                        helperText={error?.message}
+                                                                                        {...field}
+                                                                                    />
+                                                                                )}
                                                                             />
-                                                                            {/* TODO: set useComplete to true when images are correctely managed */}
-                                                                            <MuiEditor
-                                                                                label="Description"
-                                                                                existingText={section.description}
-                                                                                fullWidth
-                                                                                useComplete={false}
-                                                                                onChange={(value) => {
-                                                                                    const newSections = [...relevantSections];
-                                                                                    newSections[index].description = value;
-                                                                                    setValue('relevantSections', newSections);
-                                                                                }}
+                                                                            <Controller
+                                                                                control={control}
+                                                                                name={`relevantSections[${index}].description`}
+                                                                                rules={{ required: 'Description is required' }}
+                                                                                render={({ field, fieldState: { error } }) => (
+                                                                                    /* TODO: set useComplete to true when images are correctely managed */
+                                                                                    <MuiEditor
+                                                                                        useComplete={false}
+                                                                                        existingText={field?.value ?? ''}
+                                                                                        onChange={field.onChange}
+                                                                                        error={error}
+                                                                                    />
+                                                                                )}
                                                                             />
                                                                         </AccordionDetails>
                                                                     </Accordion>
@@ -704,16 +699,16 @@ const CreateOrEditStory = (props) => {
                 </CustomCardContent>
                 <CardActions className='!px-8 justify-center sm:justify-between'>
                     <Box className='space-x-4'>
-                        <Button variant='outlined' color='primary' onClick={props.goBack}>
+                        <Button variant='outlined' color='primary' onClick={props.goBack} startIcon={<ArrowBack />}>
                             Cancel
                         </Button>
-                        <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty}>
+                        <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty} startIcon={<Save />}>
                             Save
                         </Button>
                     </Box>
                     {existingStory && (
                         <Box>
-                            <Button variant='contained' color='error' onClick={() => setDeleteStoryModalOpen(true)}>
+                            <Button variant='contained' color='error' onClick={() => setDeleteStoryModalOpen(true)} startIcon={<Delete />}>
                                 Delete
                             </Button>
                         </Box>
