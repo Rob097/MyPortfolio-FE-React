@@ -30,6 +30,8 @@ const secondaryLinks = [
     { text: 'Educations', icon: <SchoolIcon />, to: '/dashboard/educations' },
 ];
 
+const SHOW_SEARCH_BAR = false;
+
 function Sidebar(props) {
     // Get the current location from the last route
     const route = useLocation().pathname;
@@ -62,7 +64,7 @@ function Sidebar(props) {
                 <Typography variant='h1' className="!text-xl" fontWeight="bold"><span className='text-primary-main' >My</span><span>Portfolio</span></Typography>
             </Toolbar>
 
-            <Box className="!sticky bg-white z-10 flex justify-center items-center left-0 px-4 pb-4" sx={{ top: { xs: '48px', sm: '64px' }, display: { xs: 'inherit', xl: 'none' } }}>
+            {SHOW_SEARCH_BAR && (<Box className="!sticky bg-white z-10 flex justify-center items-center left-0 px-4 pb-4" sx={{ top: { xs: '48px', sm: '64px' }, display: { xs: 'inherit', xl: 'none' } }}>
                 <TextField
                     id="input-with-sx"
                     variant="outlined"
@@ -76,7 +78,7 @@ function Sidebar(props) {
                         placeholder: 'Search',
                     }}
                 />
-            </Box>
+            </Box>)}
 
             <Box className="px-4 pb-4" sx={{ minHeight: { xs: `calc(100% - 200px)`, xl: `calc(100% - 150px)` } }}>
                 <List >
@@ -91,7 +93,7 @@ function Sidebar(props) {
                         <CustomListItem key={`secondary_links_${index}`} element={element} index={primaryLinks.length + index} />
                     ))}
                 </List>
-                <Button variant='contained' color='primary' className='!w-full !mt-4'>+ Add New</Button>
+                <Button variant='contained' color='primary' className='!w-full !mt-4' onClick={props.openNewEntityDialog}>+ Add New</Button>
 
             </Box>
 

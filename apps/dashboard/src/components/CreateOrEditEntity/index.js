@@ -9,6 +9,7 @@ import { EducationSpecificFields } from '@/pages/Educations/edit';
 import { ExperienceSpecificFields } from '@/pages/Experiences/edit';
 import { ProjectSpecificFields } from '@/pages/Projects/edit';
 import { EntityService } from '@/services/entity.service';
+import { DATE_TO_SAVE_FORMAT } from '@/utilities';
 import { Add, Save } from '@mui/icons-material';
 import { Box, Grid, Tooltip, Typography } from '@mui/material';
 import Fab from '@mui/material/Fab';
@@ -16,6 +17,8 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import _, { cloneDeep } from 'lodash';
 import moment from 'moment';
+import 'moment/locale/it';
+// import 'moment/locale/en-us';
 import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -27,19 +30,15 @@ import { View } from "shared/utilities/criteria";
 import CoverImage from './coverImage';
 import StoriesList from './storiesList';
 
-const defaultValues = {
-    stories: [],
-    skills: [],
-    coverImage: '',
-};
-const dateToSaveFormat = 'YYYY-MM-DD';
-
 const CreateOrEditEntity = (props) => {
     const [store, dispatch] = useDashboardStore();
     const navigate = useNavigate();
-    const { t } = useTranslation("dashboard");
+    const { t, i18n } = useTranslation("dashboard");
     const { slug: entitySlug } = useParams();
     const entitiesType = props.entitiesType;
+
+    // if the current lang is italian use the italian locale for moment, otherwise use the default one
+    const dateLocale = useMemo(() => i18n.language === 'it' ? 'it' : 'en-us', [i18n.language]);
 
     if (!entitySlug) {
         displayMessages([{ text: `${EntityTypeEnum.getLabel(entitiesType, false, true)} ID is required`, level: 'error' }]);
@@ -85,8 +84,8 @@ const CreateOrEditEntity = (props) => {
         const formattedStories = stories?.map((story, index) => {
             const formattedStory = {
                 ...story,
-                fromDate: moment(story.fromDate).format(dateToSaveFormat),
-                toDate: story.toDate ? moment(story.toDate).format(dateToSaveFormat) : null
+                fromDate: moment(story.fromDate).format(DATE_TO_SAVE_FORMAT),
+                toDate: story.toDate ? moment(story.toDate).format(DATE_TO_SAVE_FORMAT) : null
             };
 
             if (formattedStory.connectedProject) {
@@ -121,8 +120,8 @@ const CreateOrEditEntity = (props) => {
             userId: store.user.id,
             published,
             description,
-            fromDate: moment(fromDate).format(dateToSaveFormat),
-            toDate: toDate ? moment(toDate).format(dateToSaveFormat) : null,
+            fromDate: moment(fromDate).format(DATE_TO_SAVE_FORMAT),
+            toDate: toDate ? moment(toDate).format(DATE_TO_SAVE_FORMAT) : null,
             status,
             stories: formattedStories,
             skills: formattedSkills,
@@ -282,9 +281,9 @@ const CreateOrEditEntity = (props) => {
             // if the field is a date, compare the formatted date
             if (key === 'fromDate' || key === 'toDate') {
                 if (actualValue && originalValue) {
-                    const hasChanged = moment(actualValue).format(dateToSaveFormat) !== moment(originalValue).format(dateToSaveFormat);
+                    const hasChanged = moment(actualValue).format(DATE_TO_SAVE_FORMAT) !== moment(originalValue).format(DATE_TO_SAVE_FORMAT);
                     if (hasChanged) {
-                        console.log(`Field ${key} has changed`, moment(actualValue).format(dateToSaveFormat), moment(originalValue).format(dateToSaveFormat));
+                        console.log(`Field ${key} has changed`, moment(actualValue).format(DATE_TO_SAVE_FORMAT), moment(originalValue).format(DATE_TO_SAVE_FORMAT));
                     }
                     return hasChanged;
                 }
@@ -303,8 +302,8 @@ const CreateOrEditEntity = (props) => {
             } else if (key === 'stories') {
                 const actualStories = actualValue.map(story => {
                     const formattedStory = cloneDeep(story);
-                    formattedStory.fromDate = moment(story.fromDate).format(dateToSaveFormat);
-                    if (story.toDate) formattedStory.toDate = moment(story.toDate).format(dateToSaveFormat);
+                    formattedStory.fromDate = moment(story.fromDate).format(DATE_TO_SAVE_FORMAT);
+                    if (story.toDate) formattedStory.toDate = moment(story.toDate).format(DATE_TO_SAVE_FORMAT);
                     delete formattedStory.connectedProject;
                     delete formattedStory.connectedExperience;
                     delete formattedStory.connectedEducation;
@@ -359,7 +358,7 @@ const CreateOrEditEntity = (props) => {
     return (
         <>
             <FormProvider {...myForm}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
+                <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={dateLocale}>
                     <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{!formTitle && !formField ? (isCreate ? `New ${EntityTypeEnum.getLabel(entitiesType, false, true)}` : `Edit ${EntityTypeEnum.getLabel(entitiesType, false, true)}`) : (formTitle ?? formField)}</Typography>
                     <Box className="w-full flex-auto mt-10" component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate>
                         <Grid container spacing={2} padding={2} component="section" id="main-info-section">

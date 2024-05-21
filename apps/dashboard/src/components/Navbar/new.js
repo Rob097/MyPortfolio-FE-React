@@ -21,6 +21,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import classes from './navbar.module.scss';
 
+const SHOW_SEARCH_BAR = false;
+
 function Navbar(props) {
   const [store, dispatch] = useDashboardStore();
   const route = useLocation().pathname.split("/").slice(1);
@@ -89,7 +91,7 @@ function Navbar(props) {
           </Box>
           <Box id="right-side-navbar" className="flex justify-center items-center space-x-2 pl-4">
             {/* Search bar: */}
-            <Box sx={{ display: { xs: 'none', xl: 'inherit' }, alignItems: 'flex-end' }}>
+            {SHOW_SEARCH_BAR && (<Box sx={{ display: { xs: 'none', xl: 'inherit' }, alignItems: 'flex-end' }}>
               <TextField
                 id="input-with-sx"
                 variant="outlined"
@@ -103,8 +105,8 @@ function Navbar(props) {
                   placeholder: 'Search',
                 }}
               />
-            </Box>
-            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', lg: 'inherit' } }} className='whitespace-nowrap' >+ Add New</Button>
+            </Box>)}
+            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', lg: 'inherit' } }} className='whitespace-nowrap' onClick={props.openNewEntityDialog} >+ Add New</Button>
             <NotificationsNoneOutlinedIcon fontSize='large' className='cursor-pointer' onClick={handleNotificationsClick} aria-controls={openNotifications ? 'notifications-menu' : undefined} aria-haspopup="true" aria-expanded={openNotifications ? 'true' : undefined} />
             <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user?.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
           </Box>

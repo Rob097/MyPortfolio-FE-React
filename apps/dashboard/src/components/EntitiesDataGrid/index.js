@@ -1,6 +1,7 @@
 import { EntityTypeEnum } from "@/models/categories.model";
 import { EntitiesStatus } from "@/models/enums";
 import { EntityService } from "@/services/entity.service";
+import { DATE_TO_DISPLAY_FORMAT_EN, DATE_TO_DISPLAY_FORMAT_IT } from '@/utilities';
 import { Add, Delete, DesignServices, Edit, Public } from '@mui/icons-material';
 import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
 import { Box, Button, Chip, Divider, Fab, Tooltip, Typography } from '@mui/material';
@@ -13,13 +14,15 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import { DataGrid, GridActionsCellItem, getGridDateOperators, getGridNumericOperators, getGridSingleSelectOperators, getGridStringOperators } from '@mui/x-data-grid';
 import moment from 'moment';
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { trackPromise } from "react-promise-tracker";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { Criteria, Operation, Sort, View } from "shared/utilities/criteria";
 
 const EntitiesDataGrid = forwardRef((props, ref) => {
+    const { t, i18n } = useTranslation("dashboard");
     const [store, dispatch] = useDashboardStore();
     const navigate = useNavigate();
     const isFirstRender = useRef(true);
@@ -38,6 +41,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     const [sortModel, setSortModel] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
+    const dateFormat = useMemo(() => i18n.language === 'it' ? DATE_TO_DISPLAY_FORMAT_IT : DATE_TO_DISPLAY_FORMAT_EN, [i18n.language]);
 
 
     /////////////////////
@@ -123,7 +127,10 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
             filterable: true,
             filterOperators: dateFilterOperators,
             minWidth: 175,
-            valueGetter: (params) => new Date(params)
+            valueGetter: (params) => new Date(params),
+            renderCell: (params) => (
+                params?.value ? moment(params.value).format(dateFormat) : null
+            )
         },
         {
             field: 'toDate',
@@ -135,7 +142,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
             minWidth: 175,
             valueGetter: (params) => params ? new Date(params) : undefined,
             renderCell: (params) => (
-                params?.value ? moment(params.value).format('DD/MM/YYYY') : 'Present'
+                params?.value ? moment(params.value).format(dateFormat) : 'Present'
             )
         },
         {
@@ -288,7 +295,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                 if (filter.field === 'title' || filter.field === 'companyName' || filter.field === 'school' || filter.field === 'field') {
                     value = filter.operator === "contains" ? "*" + filter.value?.replace(" ", "*") + "*" : filter.value;
                 } else if (filter.field === 'fromDate' || filter.field === 'toDate') {
-                    value = moment(filter.value).format('DD/MM/YYYY');
+                    value = moment(filter.value).format(DATE_TO_DISPLAY_FORMAT_IT);
                 } else {
                     value = filter.value;
                 }

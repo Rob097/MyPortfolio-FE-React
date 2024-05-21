@@ -4,6 +4,7 @@ import useExtensions from "@/components/MuiEditor/useExtensions";
 import { EntityTypeEnum } from '@/models/categories.model';
 import { EntitiesStatus } from "@/models/enums";
 import { StoryService } from '@/services/story.service';
+import { DATE_TO_DISPLAY_FORMAT_IT, DATE_TO_DISPLAY_FORMAT_EN } from '@/utilities';
 import { ChevronLeft, ChevronRight, Edit } from '@mui/icons-material';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
@@ -13,10 +14,14 @@ import moment from 'moment';
 import { RichTextReadOnly } from "mui-tiptap";
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 const StoriesList = ({ entitiesType, handleEditStory }) => {
+    const { t, i18n } = useTranslation("dashboard");
     const myForm = useFormContext();
     const extensions = useExtensions();
+
+    const dateFormat = useMemo(() => i18n.language === 'it' ? DATE_TO_DISPLAY_FORMAT_IT : DATE_TO_DISPLAY_FORMAT_EN, [i18n.language]);
 
     const stories = myForm.watch('stories');
     const [storyToDeleteTmpId, setStoryToDeleteTmpId] = useState(null);
@@ -175,7 +180,7 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
                                             <CustomCardHeader
                                                 title={story.title}
                                                 // Show the dates (which are moment object) formatted as MM/DD/YYYY
-                                                subheader={<Typography variant="body2" color="primary">{moment(story.fromDate).format('MM/DD/YYYY')} - {story.toDate ? moment(story.toDate).format('MM/DD/YYYY') : 'Present'}</Typography>}
+                                                subheader={<Typography variant="body2" color="primary">{moment(story.fromDate).format(dateFormat)} - {story.toDate ? moment(story.toDate).format(dateFormat) : 'Present'}</Typography>}
                                             />
                                             <CustomCardContent adaptheight="true">
                                                 <Box className='w-full h-40' sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", }}>

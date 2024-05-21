@@ -9,7 +9,6 @@ import moment from 'moment';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-
 const EditEducation = () => {
 
     const defaultValues = {

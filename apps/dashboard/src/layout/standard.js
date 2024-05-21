@@ -4,11 +4,17 @@ import { CustomSnackProvider, SnackbarUtilsConfigurator, displayMessages } from 
 import { User } from "@/models/user.model";
 import { fetcher } from "@/services/base.service";
 import { UserService } from "@/services/user.service";
+import { School, Widgets, Work } from '@mui/icons-material';
+import { Button, Card, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Loading from "shared/components/Loading";
 import { useAuthStore } from "shared/stores/AuthStore";
 import { useDashboardStore } from "shared/stores/DashboardStore";
@@ -21,6 +27,7 @@ function ResponsiveDrawer() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { promiseInProgress } = usePromiseTracker();
+  const [isNewEntityDialogOpen, setIsNewEntityDialogOpen] = useState(false);
 
   authLogicsForAllPages();
 
@@ -39,14 +46,22 @@ function ResponsiveDrawer() {
     }
   };
 
+  function openNewEntityDialog() {
+    setIsNewEntityDialogOpen(true);
+  }
+
+  function closeNewEntityDialog() {
+    setIsNewEntityDialogOpen(false);
+  }
+
   // sidebar will collapse when the screen is smaller than lg
   return (
     <CustomSnackProvider>
       <SnackbarUtilsConfigurator />
       <Box sx={{ display: 'flex' }}>
-        <Navbar drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
+        <Navbar drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} openNewEntityDialog={openNewEntityDialog} />
 
-        <Sidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerTransitionEnd={handleDrawerTransitionEnd} handleDrawerClose={handleDrawerClose} />
+        <Sidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerTransitionEnd={handleDrawerTransitionEnd} handleDrawerClose={handleDrawerClose} openNewEntityDialog={openNewEntityDialog} />
 
         <Box
           component="main"
@@ -57,6 +72,9 @@ function ResponsiveDrawer() {
           <Outlet />
         </Box>
       </Box>
+
+      <NewEntityDialog isOpen={isNewEntityDialogOpen} onClose={closeNewEntityDialog} />
+
     </CustomSnackProvider>
   );
 }
@@ -95,4 +113,56 @@ function authLogicsForAllPages() {
     }
   }, [data]);
 
+}
+
+// Dialog to let the user decide to create a new Project, Education or Experience.
+const NewEntityDialog = ({ isOpen, onClose }) => {
+
+  const CustomButton = ({ children, icon, ...rest }) => {
+    return (
+      <Card
+        {...rest}
+        className='!rounded-md !m-2 !p-2 !cursor-pointer hover:bg-gray-100 w-40 h-40 flex flex-col justify-center items-center space-y-2'
+      >
+        {icon && icon}
+        {children}
+      </Card>
+    );
+  }
+
+  return (
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      keepMounted      
+    >
+      <DialogTitle id="alert-dialog-title" variant='h4' className='text-center sm:text-left'>
+        What would you like to create?
+      </DialogTitle>
+      <DialogContent>
+        <Box className='flex flex-row flex-wrap justify-center'>
+          <Link to="/dashboard/projects/new" onClick={onClose}>
+            <CustomButton icon={<Widgets fontSize='medium' color='primary' />}>
+              <Typography variant='h5'>Project</Typography>
+            </CustomButton>
+          </Link>
+          <Link to="/dashboard/educations/new" onClick={onClose}>
+            <CustomButton icon={<School fontSize='medium' color='primary' />}>
+              <Typography variant='h5'>Education</Typography>
+            </CustomButton>
+          </Link>
+          <Link to="/dashboard/experiences/new" onClick={onClose}>
+            <CustomButton icon={<Work fontSize='medium' color='primary' />}>
+              <Typography variant='h5'>Experience</Typography>
+            </CustomButton>
+          </Link>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} variant='outlined' color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }

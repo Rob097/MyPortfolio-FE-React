@@ -10,6 +10,7 @@ import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
 import { StoryService } from '@/services/story.service';
+import { DATE_TO_DISPLAY_FORMAT_IT, DATE_TO_DISPLAY_FORMAT_EN } from '@/utilities';
 import { Add, ArrowBack, Delete, ExpandMore, Save, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Autocomplete, Box, Button, CardActions, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
@@ -35,7 +36,9 @@ const fieldMapping = {
 
 const CreateOrEditStory = (props) => {
     const [store, dispatch] = useDashboardStore();
-    const { t } = useTranslation('dashboard');
+    const { t, i18n } = useTranslation('dashboard');
+
+    const dateFormat = useMemo(() => i18n.language === 'it' ? DATE_TO_DISPLAY_FORMAT_IT : DATE_TO_DISPLAY_FORMAT_EN, [i18n.language]);
 
     const [existingStory, setExistingStory] = useState(props.existingStory);
     const [isPublished, setIsPublished] = useState(existingStory?.status === EntitiesStatus.PUBLISHED);
@@ -93,10 +96,6 @@ const CreateOrEditStory = (props) => {
             setValue(fieldMapping[fieldName], value);
         }
     }, [entityName]);
-
-    /* useEffect(() => {
-        setExistingStory(props.existingStory);
-    }, [props.existingStory]); */
 
     useEffect(() => {
         const newStatus = isPublished ? EntitiesStatus.PUBLISHED : EntitiesStatus.DRAFT;
@@ -374,7 +373,7 @@ const CreateOrEditStory = (props) => {
                                 </FormControl>
                                 <ShowIf condition={existingStory?.updatedAt !== undefined && existingStory?.updatedAt != null && existingStory?.updatedAt !== ''}>
                                     <Tooltip title="Last Update" placement='top' arrow>
-                                        <Typography variant='body2' color="dark.main">{moment(existingStory?.updatedAt).format('DD/MM/YYYY')}</Typography>
+                                        <Typography variant='body2' color="dark.main">{moment(existingStory?.updatedAt).format(dateFormat)}</Typography>
                                     </Tooltip>
                                 </ShowIf>
                             </Box>

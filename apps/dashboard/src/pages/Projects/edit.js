@@ -6,7 +6,7 @@ import { EntitiesStatus } from "@/models/enums";
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
 import moment from 'moment';
-import { Controller, FormProvider, useFormContext, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 const EditProject = () => {
