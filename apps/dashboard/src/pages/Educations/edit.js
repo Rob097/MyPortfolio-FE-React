@@ -6,10 +6,13 @@ import { EntitiesStatus } from "@/models/enums";
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 const EditEducation = () => {
+    const { slug: entitySlug } = useParams();
 
     const defaultValues = {
         stories: [],
@@ -28,6 +31,11 @@ const EditEducation = () => {
     const myForm = useForm({
         defaultValues: defaultValues
     });
+
+    // Completely reset the form when the entitySlug changes
+    useEffect(() => {
+        myForm.reset(defaultValues);
+    }, [entitySlug]);
 
     return (
         <FormProvider {...myForm}>
@@ -49,7 +57,7 @@ export const EducationSpecificFields = () => {
             <CustomCardHeader
                 title={
                     <Box className='w-full flex justify-between items-center'>
-                        General Informations
+                        {t('entities.edit.general-information.title')}
                         <FormControl component="fieldset">
                             <FormGroup aria-label="position" row>
                                 <FormControlLabel
@@ -69,7 +77,7 @@ export const EducationSpecificFields = () => {
                                             )}
                                         />
                                     }
-                                    label="Published"
+                                    label={t('labels.status.published')}
                                     labelPlacement="start"
                                 />
                             </FormGroup>
@@ -87,11 +95,11 @@ export const EducationSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="field"
-                            rules={{ required: t('Field is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.field.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Field')}
+                                    label={t('entities.edit.general-information.fields.field.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={error}
@@ -106,11 +114,11 @@ export const EducationSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="school"
-                            rules={{ required: t('School is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.school.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('School')}
+                                    label={t('entities.edit.general-information.fields.school.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={error}
@@ -125,11 +133,11 @@ export const EducationSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="degree"
-                            rules={{ required: t('Degree is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.degree.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Degree')}
+                                    label={t('entities.edit.general-information.fields.degree.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={error}
@@ -147,7 +155,7 @@ export const EducationSpecificFields = () => {
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Grade')}
+                                    label={t('entities.edit.general-information.fields.grade.label')}
                                     variant="outlined"
                                     type='number'
                                     InputProps={{
@@ -170,11 +178,11 @@ export const EducationSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="fromDate"
-                            rules={{ required: t('From Date is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.from-date.required') }}
                             defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('From Date')}
+                                    label={t('entities.edit.general-information.fields.from-date.label')}
                                     value={field.value}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -200,7 +208,7 @@ export const EducationSpecificFields = () => {
                             defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('To Date')}
+                                    label={t('entities.edit.general-information.fields.to-date.label')}
                                     value={field.value}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -224,11 +232,11 @@ export const EducationSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="description"
-                            rules={{ required: t('Description is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.description.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextArea
-                                    label={t('Description')}
+                                    label={t('entities.edit.general-information.fields.description.label')}
                                     variant="outlined"
                                     fullWidth
                                     multiline

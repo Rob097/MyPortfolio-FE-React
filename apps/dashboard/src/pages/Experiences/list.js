@@ -4,11 +4,13 @@ import { Add } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { debounce } from '@mui/material/utils';
 import { useCallback, useMemo, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 
 const ExperiencesList = () => {
+    const { t, i18n } = useTranslation("dashboard");
     const [store, dispatch] = useDashboardStore();
 
     const hasUserEntities = useMemo(() => store.user?.experiences?.length > 0, [store.user]);
@@ -29,11 +31,11 @@ const ExperiencesList = () => {
     return (
         <>
             <Box className="w-full flex flex-row justify-between items-center mb-10 mt-5">
-                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >Experiences List</Typography>
+                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >{t('entities.list.title', { entity: t('labels.experiences') })}</Typography>
 
                 <ShowIf condition={hasUserEntities}>
                     <TextField
-                        label="Search"
+                        label={t('labels.search')}
                         variant="outlined"
                         value={searchTerm}
                         onChange={(event) => handleSearchChange(event.target.value)}
@@ -44,10 +46,10 @@ const ExperiencesList = () => {
             <ShowIf condition={!hasUserEntities}>
                 <Box className="w-full flex-auto mt-10 bg-white rounded-md">
                     <Box className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
-                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt='No Experience Found' />
-                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >Create your first Experience</Typography>
-                        <Typography variant='body1' className="" >Fortunately, it's easy to create a new one.</Typography>
-                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/experiences/new" >New Experience</Button>
+                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt={t('entities.list.no-results-2.title', { entity: t('labels.experiences') })} />
+                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >{t('entities.list.no-results-2.create-first', { entity: t('labels.experience') })}</Typography>
+                        <Typography variant='body1' className="" >{t('entities.list.no-results-2.description')}</Typography>
+                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/experiences/new" >{t('entities.list.add-new-experiences')}</Button>
                     </Box>
                 </Box>
             </ShowIf>

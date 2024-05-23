@@ -1,25 +1,36 @@
 import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { ErrorPage, PageNotFound } from "shared/pages/ErrorPages";
+import { ErrorPage } from "shared/pages/ErrorPages";
 import { useAuthStore } from "shared/stores/AuthStore";
 import StandardLayout from "./layout/standard";
+import PageNotFound from "./pages/404";
+import ServerErrorPage from "./pages/500";
+import EditEducation from "./pages/Educations/edit";
 import EducationsList from "./pages/Educations/list";
+import EditExperience from "./pages/Experiences/edit";
 import ExperiencesList from "./pages/Experiences/list";
 import Home from "./pages/Home";
+import EditProject from "./pages/Projects/edit";
 import ProjectsList from "./pages/Projects/list";
 import UserProfile from "./pages/UserProfile";
-import EditProject from "./pages/Projects/edit";
-import EditExperience from "./pages/Experiences/edit";
-import EditEducation from "./pages/Educations/edit";
 
 export const Routes = [
     {
         path: "",
         element: <StandardLayout />,
-        errorElement: <ErrorPage />,
+        errorElement: <Navigate to="/dashboard/500" replace />,
         children: [
             {
                 path: "",
                 element: <Navigate to="home" replace />
+            },
+            {
+                path: "404",
+                element: <PageNotFound />
+            },
+            {
+                path: "500",
+                element: <ServerErrorPage />,
+                errorElement: <Navigate to="/error" replace />
             },
             {
                 path: "home",
@@ -88,8 +99,12 @@ const Router = () => {
             children: Routes
         },
         {
+            path: "/error",
+            element: <ErrorPage />
+        },
+        {
             path: "*",
-            element: <PageNotFound />
+            element: <Navigate to="/dashboard/404" replace />
         }
     ])
 };

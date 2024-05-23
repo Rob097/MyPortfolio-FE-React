@@ -11,17 +11,25 @@ export class EntityTypeEnum {
         return type === this.PROJECTS || type === this.EXPERIENCES || type === this.EDUCATIONS;
     }
 
-    static getLabel(type, plural = false, capitalize = false) {
+    static getLabel(type, plural = false, capitalize = false, t = null) {
+        let result;
         switch (type) {
             case EntityTypeEnum.PROJECTS:
-                return plural ? (capitalize ? 'Projects' : 'projects') : (capitalize ? 'Project' : 'project');
+                result = plural ? (capitalize ? 'Projects' : 'projects') : (capitalize ? 'Project' : 'project');
+                break;
             case EntityTypeEnum.EXPERIENCES:
-                return plural ? (capitalize ? 'Experiences' : 'experiences') : (capitalize ? 'Experience' : 'experience');
+                result = plural ? (capitalize ? 'Experiences' : 'experiences') : (capitalize ? 'Experience' : 'experience');
+                break;
             case EntityTypeEnum.EDUCATIONS:
-                return plural ? (capitalize ? 'Educations' : 'educations') : (capitalize ? 'Education' : 'education');
+                result = plural ? (capitalize ? 'Educations' : 'educations') : (capitalize ? 'Education' : 'education');
+                break;
             default:
-                return '';
+                result = '';
+                break;
         }
+        result = t ? t(`labels.${result.toLowerCase()}`) : result;
+        result = capitalize ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+        return result;
     }
 
     static getFilters(type) {

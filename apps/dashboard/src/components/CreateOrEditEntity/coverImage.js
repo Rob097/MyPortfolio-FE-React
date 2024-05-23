@@ -4,9 +4,11 @@ import { displayMessages } from '@/components/alerts';
 import { Close, Edit, Image } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { useController, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
 const CoverImage = ({ coverImageUrl, setCoverImageUrl }) => {
+    const { t } = useTranslation("dashboard");
     const myForm = useFormContext();
 
     const { field: coverImage } = useController({
@@ -44,7 +46,7 @@ const CoverImage = ({ coverImageUrl, setCoverImageUrl }) => {
         <>
             <CustomCard>
                 <CustomCardHeader
-                    title="Cover Photo"
+                    title={t('entities.edit.cover-image')}
                     avatar={
                         <Image color='primary' fontSize='large' />
                     }

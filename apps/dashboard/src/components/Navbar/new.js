@@ -1,4 +1,5 @@
-import { Search } from '@mui/icons-material';
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { Add, Search } from '@mui/icons-material';
 import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
@@ -15,8 +16,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
-import Breadcrumbs from "components/Breadcrumbs";
+import { t } from 'i18next';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from "react-router-dom";
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import classes from './navbar.module.scss';
@@ -24,6 +26,7 @@ import classes from './navbar.module.scss';
 const SHOW_SEARCH_BAR = false;
 
 function Navbar(props) {
+  const { t } = useTranslation("dashboard");
   const [store, dispatch] = useDashboardStore();
   const route = useLocation().pathname.split("/").slice(1);
 
@@ -102,11 +105,11 @@ function Navbar(props) {
                     </InputAdornment>
                   ),
                   sx: { height: '40px' },
-                  placeholder: 'Search',
+                  placeholder: t('labels.search'),
                 }}
               />
             </Box>)}
-            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', lg: 'inherit' } }} className='whitespace-nowrap' onClick={props.openNewEntityDialog} >+ Add New</Button>
+            <Button variant='contained' color='primary' disableElevation sx={{ height: '40px', display: { xs: 'none', lg: 'inherit' } }} className='whitespace-nowrap' onClick={props.openNewEntityDialog} startIcon={<Add />} >{t('navbar.add-new-button')}</Button>
             <NotificationsNoneOutlinedIcon fontSize='large' className='cursor-pointer' onClick={handleNotificationsClick} aria-controls={openNotifications ? 'notifications-menu' : undefined} aria-haspopup="true" aria-expanded={openNotifications ? 'true' : undefined} />
             <Avatar alt="Remy Sharp" className='cursor-pointer' src={store.user?.customizations?.profileImage ?? ''} onClick={handleAccountClick} aria-controls={openAccount ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={openAccount ? 'true' : undefined} />
           </Box>
@@ -124,6 +127,7 @@ function Navbar(props) {
 export default Navbar;
 
 const AccountMenu = (props) => {
+  const { t } = useTranslation("dashboard");
   const [store, dispatch] = useDashboardStore();
 
   function handleLogout() {
@@ -187,20 +191,20 @@ const AccountMenu = (props) => {
       color='primary'
     >
       <CustomMenuItem onClick={props.handleClose} component={Link} to="/dashboard/profile">
-        <Avatar src={store.user?.customizations?.profileImage ?? ''} /> Profile
+        <Avatar src={store.user?.customizations?.profileImage ?? ''} /> {t('navbar.profile')}
       </CustomMenuItem>
       <Divider />
       <CustomMenuItem onClick={props.handleClose}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
-        Settings
+        {t('navbar.settings')}
       </CustomMenuItem>
       <CustomMenuItem onClick={handleLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />
         </ListItemIcon>
-        Logout
+        {t('navbar.logout')}
       </CustomMenuItem>
     </Menu>
 
@@ -208,6 +212,7 @@ const AccountMenu = (props) => {
 }
 
 const NotificationsMenu = (props) => {
+  const { t } = useTranslation("dashboard");
 
   const CustomMenuItem = ({ children, ...rest }) => {
     return (
@@ -250,7 +255,7 @@ const NotificationsMenu = (props) => {
       {
         props.notifications.length === 0 ?
           <Box className="p-2">
-            <Typography variant="body2">No new notifications</Typography>
+            <Typography variant="body2">{t('navbar.no-new-notifications')}</Typography>
           </Box>
           :
           props.notifications.map((notification, index) => (

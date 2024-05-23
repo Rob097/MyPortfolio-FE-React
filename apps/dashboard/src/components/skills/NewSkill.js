@@ -19,10 +19,6 @@ const NewSkill = ({ afterCreationAction }) => {
     const [searchedCategories, setSearchedCategories] = useState([]);
     const { t } = useTranslation("dashboard");
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
     async function fetchCategories(query) {
         const categoryName = new Criteria(SkillQ.skillName, Operation.equals, "*" + query?.replace(" ", "*") + "*");
 
@@ -95,6 +91,14 @@ const NewSkill = ({ afterCreationAction }) => {
                         const filtered = options.filter((option) =>
                             option.name.toLowerCase().includes(params.inputValue.toLowerCase())
                         );
+
+                        if (params.inputValue === '' && filtered.length === 0) {
+                            filtered.push({
+                                inputValue: params.inputValue,
+                                name: t('skills.start-typing'),
+                                disabled: true
+                            });
+                        }
 
                         if (params.inputValue === '' && filtered.length === SKILLS_TO_DISPLAY) {
                             filtered.push({

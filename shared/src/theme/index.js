@@ -15,37 +15,38 @@ export default function createCustomTheme(tailwindConfig) {
         return result;
     }, {});
 
-    const typography = defineTypography(tailwindConfig, createTheme({breakpoints: { values: breakpoints }}));
+    const typography = defineTypography(tailwindConfig, createTheme({ breakpoints: { values: breakpoints } }));
 
-    return createTheme({
-
-        breakpoints: { values: breakpoints },
-        palette: colors,
-        typography: typography,
-        boxShadows: tailwindConfig.theme.boxShadow,
-        functions: {
-            boxShadow,
-            hexToRgb,
-            linearGradient,
-            pxToRem,
-            rgba,
-        },
-        rounded: tailwindConfig.theme.borderRadius,
-        components: {
-            MuiButton: {
-                styleOverrides: {
-                    contained: {
-                        color: colors.white,
-                    },
-                },
+    return createTheme(
+        {
+            breakpoints: { values: breakpoints },
+            palette: colors,
+            typography: typography,
+            boxShadows: tailwindConfig.theme.boxShadow,
+            functions: {
+                boxShadow,
+                hexToRgb,
+                linearGradient,
+                pxToRem,
+                rgba,
             },
-            MuiInputBase: {
-                styleOverrides: {
-                    root: {
-                        backgroundColor: colors.white,
+            rounded: tailwindConfig.theme.borderRadius,
+            components: {
+                MuiButton: {
+                    styleOverrides: {
+                        contained: {
+                            color: colors.white,
+                        },
                     },
                 },
-            }
+                MuiInputBase: {
+                    styleOverrides: {
+                        root: {
+                            backgroundColor: colors.white,
+                        },
+                    },
+                }
+            },
         },
-    });
+    );
 }

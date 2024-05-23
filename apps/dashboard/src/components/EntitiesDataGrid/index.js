@@ -13,6 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import { DataGrid, GridActionsCellItem, getGridDateOperators, getGridNumericOperators, getGridSingleSelectOperators, getGridStringOperators } from '@mui/x-data-grid';
+import { itIT } from '@mui/x-data-grid/locales';
 import moment from 'moment';
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
@@ -42,6 +43,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const dateFormat = useMemo(() => i18n.language === 'it' ? DATE_TO_DISPLAY_FORMAT_IT : DATE_TO_DISPLAY_FORMAT_EN, [i18n.language]);
+    const gridLanguage = useMemo(() => i18n.language === 'it' ? itIT.components.MuiDataGrid.defaultProps.localeText : null, [i18n.language]);
 
 
     /////////////////////
@@ -102,7 +104,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     const columns = [
         {
             field: entitiesType === EntityTypeEnum.PROJECTS || entitiesType === EntityTypeEnum.EXPERIENCES ? 'title' : 'field',
-            headerName: 'Title',
+            headerName: entitiesType === EntityTypeEnum.PROJECTS || entitiesType === EntityTypeEnum.EXPERIENCES ? t('entities.list.datagrid.columns.title') : t('entities.list.datagrid.columns.field'),
             type: 'string',
             flex: 1,
             filterable: true,
@@ -121,7 +123,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         },
         {
             field: 'fromDate',
-            headerName: 'From date',
+            headerName: t('entities.list.datagrid.columns.from-date'),
             type: 'date',
             flex: 1,
             filterable: true,
@@ -134,7 +136,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         },
         {
             field: 'toDate',
-            headerName: 'To date',
+            headerName: t('entities.list.datagrid.columns.to-date'),
             type: 'date',
             flex: 1,
             filterable: true,
@@ -142,12 +144,12 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
             minWidth: 175,
             valueGetter: (params) => params ? new Date(params) : undefined,
             renderCell: (params) => (
-                params?.value ? moment(params.value).format(dateFormat) : 'Present'
+                params?.value ? moment(params.value).format(dateFormat) : t('labels.present')
             )
         },
         {
             field: 'stories',
-            headerName: 'Stories',
+            headerName: t('entities.list.datagrid.columns.stories'),
             type: 'number',
             flex: 1,
             filterable: true,
@@ -162,7 +164,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         },
         {
             field: 'status',
-            headerName: 'Status',
+            headerName: t('entities.list.datagrid.columns.status'),
             type: 'singleSelect',
             flex: 1,
             filterable: true,
@@ -172,7 +174,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
             renderCell: (params) => (
                 <Chip
                     icon={<TripOriginRoundedIcon fontSize="small" className={params.value === EntitiesStatus.PUBLISHED ? 'text-success-main' : 'text-gray-400'} />}
-                    label={params.value}
+                    label={t(`labels.status.${params.value.toLowerCase()}`)}
                     variant="outlined"
                     color={params.value === EntitiesStatus.PUBLISHED ? 'success' : 'default'}
                     sx={{ borderWidth: { xs: 0, md: 1 } }}
@@ -184,7 +186,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         },
         {
             field: 'actions',
-            headerName: 'Actions',
+            headerName: t('entities.list.datagrid.columns.actions'),
             type: 'actions',
             flex: 1,
             filterable: false,
@@ -192,14 +194,14 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={params.row.status === EntitiesStatus.PUBLISHED ? <DesignServices color="gray" /> : <Public color="success" />}
-                    label={params.row.status === EntitiesStatus.PUBLISHED ? 'Set as Draft' : 'Publish'}
+                    label={params.row.status === EntitiesStatus.PUBLISHED ? t('labels.status.set-as', { status: t('labels.status.draft') }) : t('labels.status.set-as', { status: t('labels.status.published') })}
                     color={params.row.status === EntitiesStatus.PUBLISHED ? 'gray' : 'success'}
                     showInMenu
                     onClick={() => handleStatusChange(params.row)}
                 />,
                 <GridActionsCellItem
                     icon={<Edit color="primary" />}
-                    label="Edit"
+                    label={t('labels.edit')}
                     color="primary"
                     showInMenu
                     onClick={() => navigate(`/dashboard/${entitiesType}/${params.row.slug}`)}
@@ -212,7 +214,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                 />,
                 <GridActionsCellItem
                     icon={<Delete color="error" />}
-                    label="Delete"
+                    label={t('labels.delete')}
                     color="error"
                     showInMenu
                     onClick={() => {
@@ -227,7 +229,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     if (entitiesType === EntityTypeEnum.EDUCATIONS) {
         const schoolCol = {
             field: 'school',
-            headerName: 'School',
+            headerName: t('entities.list.datagrid.columns.school'),
             type: 'string',
             flex: 1,
             filterable: true,
@@ -242,7 +244,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
     if (entitiesType === EntityTypeEnum.EXPERIENCES) {
         const companyCol = {
             field: 'companyName',
-            headerName: 'Company',
+            headerName: t('entities.list.datagrid.columns.company'),
             type: 'string',
             flex: 1,
             filterable: true,
@@ -365,6 +367,7 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                         classes={{
                             footerContainer: 'bg-white'
                         }}
+                        localeText={gridLanguage}
                     />
                 </div>
             </div>
@@ -375,23 +378,23 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{`Delete ${EntityTypeEnum.getLabel(entitiesType, false, true)}`}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{`${t('labels.delete')} ${EntityTypeEnum.getLabel(entitiesType, false, true, t)}`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this {EntityTypeEnum.getLabel(entitiesType, false, false)}?
+                        {t(`labels.check-delete-${entitiesType === EntityTypeEnum.PROJECTS ? '1' : '2'}`, { item: EntityTypeEnum.getLabel(entitiesType, false, true, t) })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDialogClose} color="primary">
-                        Cancel
+                        {t('labels.cancel')}
                     </Button>
                     <Button onClick={() => { handleDelete(selectedEntity); handleDialogClose(); }} color="primary" autoFocus>
-                        Delete
+                        {t('labels.delete')}
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            <Tooltip title={`Add a new ${EntityTypeEnum.getLabel(entitiesType, false, true)}`} placement='top' arrow>
+            <Tooltip title={t(`entities.list.add-new-${entitiesType}`)} placement='top' arrow>
                 <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
                     <Link to={`/dashboard/${entitiesType}/new`}>
                         <Fab color="primary" aria-label="create" >
@@ -432,6 +435,10 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
 }));
 
 function CustomNoRowsOverlay({ entitiesType }) {
+    const { t } = useTranslation("dashboard");
+
+    const translationType = useMemo(() => entitiesType === EntityTypeEnum.PROJECTS ? '1' : '2', [entitiesType]);
+
     return (
         <StyledGridOverlay>
             <svg
@@ -473,7 +480,7 @@ function CustomNoRowsOverlay({ entitiesType }) {
                     </g>
                 </g>
             </svg>
-            <Box sx={{ mt: 1 }}>{`No ${EntityTypeEnum.getLabel(entitiesType, false, true)} found for the selected criteria`}</Box>
+            <Box sx={{ mt: 1 }}>{t(`entities.list.no-results-${translationType}.empty-get`, { entity: entitiesType })}</Box>
         </StyledGridOverlay>
     );
 }

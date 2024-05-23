@@ -128,9 +128,12 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
             StoryService.removeEntity(storyId, EntityTypeEnum.getLabel(entitiesType, false, false))
                 .then(() => {
                     removeStoryFromList();
-                    displayMessages([{ text: 'Story removed', level: 'info' }]);
+                    displayMessages([{ text: t('entities.edit.stories-list.remove-ok'), severity: 'success' }]);
                 })
-                .catch((error) => console.error('Error removing story:', error))
+                .catch((error) => {
+                    displayMessages([{ text: t('entities.edit.stories-list.remove-ko'), severity: 'error' }]);
+                    console.error('Error removing story:', error)
+                })
                 .finally(() => setRemoveStoryModalOpen(false));
         } else {
             removeStoryFromList();
@@ -169,7 +172,7 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
                 <CustomCardContent ref={parentRef} id="stories-content-container" className={stories?.length == 0 ? 'justify-center items-center' : 'justify-start items-start'}>
                     {stories?.length == 0 ? (
                         <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl text-center">
-                            This {EntityTypeEnum.getLabel(entitiesType, false, false)} doesn't have<br />any story, yet...
+                            {t(`entities.edit.stories-list.no-stories-${entitiesType}`, { entity: EntityTypeEnum.getLabel(entitiesType, false, false, t) })}
                         </Typography>
                     ) :
                         <>
@@ -180,7 +183,7 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
                                             <CustomCardHeader
                                                 title={story.title}
                                                 // Show the dates (which are moment object) formatted as MM/DD/YYYY
-                                                subheader={<Typography variant="body2" color="primary">{moment(story.fromDate).format(dateFormat)} - {story.toDate ? moment(story.toDate).format(dateFormat) : 'Present'}</Typography>}
+                                                subheader={<Typography variant="body2" color="primary">{moment(story.fromDate).format(dateFormat)} - {story.toDate ? moment(story.toDate).format(dateFormat) : t('labels.present')}</Typography>}
                                             />
                                             <CustomCardContent adaptheight="true">
                                                 <Box className='w-full h-40' sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "5", WebkitBoxOrient: "vertical", }}>
@@ -193,41 +196,41 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
                                                 <Divider className='!my-4' />
                                                 <Box className='w-full flex flex-col space-y-4'>
                                                     <Box className='w-full flex flex-row items-center justify-between'>
-                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Status</Typography>
+                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>{t('labels.status.title')}</Typography>
                                                         <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>
-                                                            <Tooltip title={story.status ? story.status.charAt(0).toUpperCase() + story.status.slice(1).toLowerCase() : EntitiesStatus.DRAFT.charAt(0).toUpperCase() + EntitiesStatus.DRAFT.slice(1).toLowerCase()} placement='top' arrow>
+                                                            <Tooltip title={t(`labels.status.${story.status ? story.status.toLowerCase() : EntitiesStatus.DRAFT.toLowerCase()}`)} placement='top' arrow>
                                                                 <TripOriginRoundedIcon color={story.status === EntitiesStatus.PUBLISHED ? 'success' : 'error'} />
                                                             </Tooltip>
                                                         </Typography>
                                                     </Box>
                                                     <Box className='w-full flex flex-row items-center justify-between'>
-                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Relevant Sections</Typography>
+                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>{t('labels.relevant-sections')}</Typography>
                                                         <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>{story.relevantSections?.length ?? 0}</Typography>
                                                     </Box>
                                                     <Box className='w-full flex flex-row items-center justify-between'>
-                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>Skills</Typography>
+                                                        <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold}>{t('labels.skills')}</Typography>
                                                         <Typography variant="body2" fontWeight={theme => theme.typography.fontWeightBold} color='primary'>{story.skills?.length ?? 0}</Typography>
                                                     </Box>
                                                 </Box>
                                             </CustomCardContent>
                                             <CardActions className='flex flex-row justify-between !px-4'>
                                                 <Box className='flex flex-row space-x-2'>
-                                                    <Tooltip title="Edit" placement='top' arrow>
+                                                    <Tooltip title={t('labels.edit')} placement='top' arrow>
                                                         <Button variant='text' className='!w-fit !min-w-fit' classes={{ startIcon: '!m-0' }} onClick={() => handleEditStory(story)} startIcon={
                                                             <Edit color='primary' fontSize='medium' />
                                                         } />
                                                     </Tooltip>
-                                                    <Tooltip title={`Remove story from ${EntityTypeEnum.getLabel(entitiesType, false, false)}`} placement='top' arrow>
+                                                    <Tooltip title={t(`entities.edit.stories-list.remove-from-${entitiesType}`)} placement='top' arrow>
                                                         <Button variant='text' color='error' className='!w-fit !min-w-fit' classes={{ startIcon: '!m-0' }} onClick={(e) => handleOpenDeleteStoryDialog(e, story.tmpId)} startIcon={
                                                             <LinkOffIcon color='error' fontSize='medium' />
                                                         } />
                                                     </Tooltip>
                                                 </Box>
                                                 <Box className='flex flex-row space-x-2'>
-                                                    <Tooltip title="Move Back" placement='top' arrow>
+                                                    <Tooltip title={t('entities.edit.stories-list.move-back')} placement='top' arrow>
                                                         <ChevronLeft color='primary' fontSize='medium' onClick={() => swapStories(story.tmpOrder, 'left')} className={story.tmpOrder === 0 ? 'cursor-not-allowed !text-gray-300' : 'cursor-pointer'} />
                                                     </Tooltip>
-                                                    <Tooltip title="Move Forward" placement='top' arrow>
+                                                    <Tooltip title={t('entities.edit.stories-list.move-forward')} placement='top' arrow>
                                                         <ChevronRight color='primary' fontSize='medium' onClick={() => swapStories(story.tmpOrder, 'right')} className={story.tmpOrder === stories.length - 1 ? 'cursor-not-allowed !text-gray-300' : 'cursor-pointer'} />
                                                     </Tooltip>
                                                 </Box>
@@ -244,8 +247,9 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
 
             <CustomDialog
                 isOpen={removeStoryModalOpen}
-                title="Delete Story"
-                text={<>Are you sure you want to remove the story <b>{stories.find(story => story.tmpId === storyToDeleteTmpId)?.title}</b>?<br />The story will NOT be deleted from your account.</>}
+                title={t('entities.edit.stories-list.remove-dialog.title')}
+                isHtml={true}
+                text={t('entities.edit.stories-list.remove-dialog.text', { title: stories.find(story => story.tmpId === storyToDeleteTmpId)?.title })}
                 onCancel={() => setRemoveStoryModalOpen(false)}
                 onRemove={handleRemoveStory}
             />

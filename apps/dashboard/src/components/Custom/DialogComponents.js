@@ -4,11 +4,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import { useTranslation } from 'react-i18next';
 
 const CustomDialog = (props) => {
+    const { t } = useTranslation("dashboard");
 
-    const {isOpen, onClose, title, text, onCancel, onRemove, onDelete, onSave} = props;
+    const { isOpen, onClose, title, text, onCancel, onRemove, onDelete, onSave, isHtml } = props;
 
     return (
         <Dialog
@@ -17,34 +18,34 @@ const CustomDialog = (props) => {
         >
             <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    {text}
+                <DialogContentText id="alert-dialog-description" dangerouslySetInnerHTML={isHtml ? { __html: text } : null}>
+                    {isHtml ? null : text}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 {onCancel && (
                     <Button onClick={onCancel} color="primary">
-                        Cancel
+                        {t('labels.cancel')}
                     </Button>
                 )}
                 {onRemove && (
                     <Button onClick={onRemove} color="primary" autoFocus>
-                        Remove
+                        {t('labels.remove')}
                     </Button>
                 )}
                 {onDelete && (
                     <Button onClick={onDelete} color="primary" autoFocus>
-                        Delete
+                        {t('labels.delete')}
                     </Button>
                 )}
                 {onSave && (
                     <Button onClick={onSave} color="primary" autoFocus>
-                        Save
+                        {t('labels.save')}
                     </Button>
                 )}
                 {onClose && (
                     <Button onClick={onClose} color="primary" autoFocus>
-                        Close
+                        {t('labels.close')}
                     </Button>
                 )}
             </DialogActions>

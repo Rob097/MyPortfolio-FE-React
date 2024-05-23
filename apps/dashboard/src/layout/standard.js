@@ -13,6 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Loading from "shared/components/Loading";
@@ -86,22 +87,24 @@ function authLogicsForAllPages() {
   const [store, dispatch] = useDashboardStore();
   const navigate = useNavigate();
 
-  const { data, error, isLoading } = useSWR(UserService.getByIdUrl(authStore.user.id, View.verbose), fetcher);
+  const { data, error, isLoading } = useSWR(UserService.getByIdUrl(authStore.user?.id, View.verbose), fetcher);
 
   useEffect(() => {
-    if (!authStore.isLoggedIn) {
-      navigate('/auth/sign-in');
-    } else if (authStore.user && authStore.user.customizations && authStore.user.customizations.isSet !== true) {
-      navigate('/auth/setup');
-    } else if (authStore.isLoggedIn && authStore.token) {
-      // check if the token is expired:
-      const decodedToken = jwtDecode(authStore.token);
-      const currentTime = Date.now() / 1000;
-      if (decodedToken.exp < currentTime) {
-        displayMessages([{ text: "Session expired, please login again", level: 'error' }]);
-        authDispatch({ type: "logout" });
-        dispatch({ type: "logout" });
+    if (window.location.pathname !== '/dashboard/404' && window.location.pathname !== '/dashboard/500') {
+      if (!authStore.isLoggedIn) {
         navigate('/auth/sign-in');
+      } else if (authStore.user && authStore.user.customizations && authStore.user.customizations.isSet !== true) {
+        navigate('/auth/setup');
+      } else if (authStore.isLoggedIn && authStore.token) {
+        // check if the token is expired:
+        const decodedToken = jwtDecode(authStore.token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime) {
+          displayMessages([{ text: "Session expired, please login again", level: 'error' }]);
+          authDispatch({ type: "logout" });
+          dispatch({ type: "logout" });
+          navigate('/auth/sign-in');
+        }
       }
     }
   }, [store.user, authStore.user]);
@@ -117,6 +120,7 @@ function authLogicsForAllPages() {
 
 // Dialog to let the user decide to create a new Project, Education or Experience.
 const NewEntityDialog = ({ isOpen, onClose }) => {
+  const { t } = useTranslation("dashboard");
 
   const CustomButton = ({ children, icon, ...rest }) => {
     return (
@@ -134,33 +138,33 @@ const NewEntityDialog = ({ isOpen, onClose }) => {
     <Dialog
       open={isOpen}
       onClose={onClose}
-      keepMounted      
+      keepMounted
     >
       <DialogTitle id="alert-dialog-title" variant='h4' className='text-center sm:text-left'>
-        What would you like to create?
+        {t('navbar.add-new-title')}
       </DialogTitle>
       <DialogContent>
         <Box className='flex flex-row flex-wrap justify-center'>
           <Link to="/dashboard/projects/new" onClick={onClose}>
             <CustomButton icon={<Widgets fontSize='medium' color='primary' />}>
-              <Typography variant='h5'>Project</Typography>
+              <Typography variant='h5'>{t('labels.project')}</Typography>
             </CustomButton>
           </Link>
           <Link to="/dashboard/educations/new" onClick={onClose}>
             <CustomButton icon={<School fontSize='medium' color='primary' />}>
-              <Typography variant='h5'>Education</Typography>
+              <Typography variant='h5'>{t('labels.education')}</Typography>
             </CustomButton>
           </Link>
           <Link to="/dashboard/experiences/new" onClick={onClose}>
             <CustomButton icon={<Work fontSize='medium' color='primary' />}>
-              <Typography variant='h5'>Experience</Typography>
+              <Typography variant='h5'>{t('labels.experience')}</Typography>
             </CustomButton>
           </Link>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant='outlined' color="primary">
-          Close
+          {t('labels.close')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -6,10 +6,13 @@ import { EntitiesStatus } from "@/models/enums";
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 const EditProject = () => {
+    const { slug: entitySlug } = useParams();
 
     const defaultValues = {
         stories: [],
@@ -25,6 +28,11 @@ const EditProject = () => {
     const myForm = useForm({
         defaultValues: defaultValues
     });
+
+    // Completely reset the form when the entitySlug changes
+    useEffect(() => {
+        myForm.reset(defaultValues);
+    }, [entitySlug]);
 
     return (
         <FormProvider {...myForm}>
@@ -46,7 +54,7 @@ export const ProjectSpecificFields = () => {
             <CustomCardHeader
                 title={
                     <Box className='w-full flex justify-between items-center'>
-                        General Informations
+                        {t('entities.edit.general-information.title')}
                         <FormControl component="fieldset">
                             <FormGroup aria-label="position" row>
                                 <FormControlLabel
@@ -65,7 +73,7 @@ export const ProjectSpecificFields = () => {
                                             )}
                                         />
                                     }
-                                    label="Published"
+                                    label={t('labels.status.published')}
                                     labelPlacement="start"
                                 />
                             </FormGroup>
@@ -83,10 +91,10 @@ export const ProjectSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="title"
-                            rules={{ required: t('Title is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.title.required') }}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Title')}
+                                    label={t('entities.edit.general-information.fields.title.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}
@@ -101,10 +109,10 @@ export const ProjectSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="fromDate"
-                            rules={{ required: t('From Date is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.from-date.required') }}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('From Date')}
+                                    label={t('entities.edit.general-information.fields.from-date.label')}
                                     value={field.value || null}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -129,7 +137,7 @@ export const ProjectSpecificFields = () => {
                             name="toDate"
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('To Date')}
+                                    label={t('entities.edit.general-information.fields.to-date.label')}
                                     value={field.value || null}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -153,10 +161,10 @@ export const ProjectSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="description"
-                            rules={{ required: t('Description is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.description.required') }}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextArea
-                                    label={t('Description')}
+                                    label={t('entities.edit.general-information.fields.description.label')}
                                     variant="outlined"
                                     fullWidth
                                     multiline

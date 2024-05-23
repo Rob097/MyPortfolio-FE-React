@@ -4,11 +4,13 @@ import { Add } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { debounce } from '@mui/material/utils';
 import { useCallback, useMemo, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 
 const ProjectsList = () => {
+    const { t, i18n } = useTranslation("dashboard");
     const [store, dispatch] = useDashboardStore();
 
     const hasUserEntities = useMemo(() => store.user?.projects?.length > 0, [store.user]);
@@ -28,11 +30,11 @@ const ProjectsList = () => {
     return (
         <>
             <Box className="w-full flex flex-row justify-between items-center mb-10 mt-5">
-                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >Projects List</Typography>
+                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >{t('entities.list.title', { entity: t('labels.projects') })}</Typography>
 
                 <ShowIf condition={hasUserEntities}>
                     <TextField
-                        label="Search"
+                        label={t('labels.search')}
                         variant="outlined"
                         value={searchTerm}
                         onChange={(event) => handleSearchChange(event.target.value)}
@@ -43,10 +45,10 @@ const ProjectsList = () => {
             <ShowIf condition={!hasUserEntities}>
                 <Box className="w-full flex-auto mt-10 bg-white rounded-md">
                     <Box className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
-                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt='No Project Found' />
-                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >Create your first Project</Typography>
-                        <Typography variant='body1' className="" >Fortunately, it's easy to create a new one.</Typography>
-                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/projects/new" >New Project</Button>
+                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt={t('entities.list.no-results-1.title', { entity: t('labels.projects') })} />
+                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >{t('entities.list.no-results-1.create-first', { entity: t('labels.project') })}</Typography>
+                        <Typography variant='body1' className="" >{t('entities.list.no-results-1.description')}</Typography>
+                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/projects/new" >{t('entities.list.add-new-projects')}</Button>
                     </Box>
                 </Box>
             </ShowIf>

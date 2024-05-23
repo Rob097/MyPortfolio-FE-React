@@ -3,9 +3,24 @@ import Box from '@mui/material/Box';
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useCallback } from "react";
 
 function Breadcrumbs({ icon, title, route, light, showTitle }) {
+  const { t, i18n } = useTranslation("dashboard");
   const routes = route.slice(0, -1);
+
+  const translateRoute = useCallback((route) => {
+    let text = route === '' ? 'Dashboard' : route.replaceAll("-", " ")
+    if (i18n.exists(`dashboard:navbar.${text}`)) {
+      text = t(`navbar.${text}`);
+    } else if (i18n.exists(`dashboard:labels.${text}`)) {
+      text = t(`labels.${text}`);
+    } else {
+      text = text;
+    }
+    return text;
+  }, []);
 
   return (
     <Box mr={{ xs: 0, xl: 8 }}>
@@ -34,42 +49,35 @@ function Breadcrumbs({ icon, title, route, light, showTitle }) {
         </Link>
         {routes.map((el) => {
           const link = routes.slice(0, routes.indexOf(el) + 1).join('/');
+          const text = translateRoute(el);
+
           return (
             <Link to={`/${link}`} key={el}>
               <Typography
                 component="span"
                 variant="button"
-                fontWeight="regular"
+                fontWeight="bold"
                 textTransform="capitalize"
                 color={light ? "white" : "dark"}
                 opacity={light ? 0.8 : 0.5}
                 sx={{ lineHeight: 0 }}
               >
-                {el === '' ? 'Dashboard' : el.replaceAll("-", " ")}
+                {text}
               </Typography>
             </Link>
           )
         })}
         <Typography
           variant="button"
-          fontWeight="regular"
+          fontWeight="bold"
+          fontStyle="italic"
           textTransform="capitalize"
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {title === '' ? 'Dashboard' : title.replaceAll("-", " ")}
+          {translateRoute(title)}
         </Typography>
       </MuiBreadcrumbs>
-      <Typography
-        fontWeight="bold"
-        textTransform="capitalize"
-        variant="h6"
-        color={light ? "white" : "dark"}
-        noWrap
-        display={showTitle ? "block" : "none"}
-      >
-        {title === '' ? 'Dashboard' : title.replaceAll("-", " ")}
-      </Typography>
     </Box>
   );
 }

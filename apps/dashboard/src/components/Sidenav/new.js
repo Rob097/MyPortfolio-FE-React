@@ -1,5 +1,5 @@
 // Sidebar.js
-import { AccountCircle, Dashboard, Search } from '@mui/icons-material';
+import { AccountCircle, Add, Dashboard, Search } from '@mui/icons-material';
 import SchoolIcon from '@mui/icons-material/School';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import WorkIcon from '@mui/icons-material/Work';
@@ -16,8 +16,10 @@ import ListItemText from "@mui/material/ListItemText";
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from "react-router-dom";
 import LanguageSelector from './LanguageSelector';
+import { useCallback } from 'react';
 
 const primaryLinks = [
     { text: 'Dashboard', icon: <Dashboard />, to: '/dashboard/home' },
@@ -33,6 +35,7 @@ const secondaryLinks = [
 const SHOW_SEARCH_BAR = false;
 
 function Sidebar(props) {
+    const { t, i18n } = useTranslation("dashboard");
     // Get the current location from the last route
     const route = useLocation().pathname;
 
@@ -40,6 +43,19 @@ function Sidebar(props) {
     let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => el.to === route);
 
     const CustomListItem = ({ element, index }) => {
+
+        const translateText = useCallback((text) => {
+            let result;
+            if (i18n.exists(`dashboard:navbar.${text.toLowerCase()}`)) {
+                result = t(`navbar.${text.toLowerCase()}`);
+            } else if (i18n.exists(`dashboard:labels.${text.toLowerCase()}`)) {
+                result = t(`labels.${text.toLowerCase()}`);
+            } else {
+                result = text;
+            }
+            return result;
+        }, []);
+
         return (
             <ListItem key={element.text} disablePadding className='rounded-lg overflow-hidden my-2' >
                 <ListItemButton className='rounded-xl' selected={selectedItem === index} to={element.to} component={Link} onClick={() => !isBiggerThanMd && props.handleDrawerClose && props.handleDrawerClose()} >
@@ -47,10 +63,11 @@ function Sidebar(props) {
                         {element.icon && React.cloneElement(element.icon, { color: selectedItem === index ? 'primary' : 'inherit' })}
                     </ListItemIcon>
                     <ListItemText
-                        primary={element.text}
+                        primary={translateText(element.text)}
                         primaryTypographyProps={{
                             color: selectedItem === index ? 'primary' : 'inherit',
-                            fontWeight: selectedItem === index ? 'medium' : 'normal'
+                            fontWeight: selectedItem === index ? 'medium' : 'normal',
+                            textTransform: "capitalize"
                         }}
                     />
                 </ListItemButton>
@@ -75,7 +92,7 @@ function Sidebar(props) {
                             </InputAdornment>
                         ),
                         sx: { height: '40px' },
-                        placeholder: 'Search',
+                        placeholder: t('labels.search'),
                     }}
                 />
             </Box>)}
@@ -88,12 +105,12 @@ function Sidebar(props) {
                 </List>
                 <Divider />
                 <List>
-                    <Typography variant='h6' className='!text-md !font-bold !text-gray-400 !mt-4 !mb-2 pl-4'>My Diary</Typography>
+                    <Typography variant='h6' className='!text-md !font-bold !text-gray-400 !mt-4 !mb-2 pl-4'>{t('navbar.my-diary')}</Typography>
                     {secondaryLinks.map((element, index) => (
                         <CustomListItem key={`secondary_links_${index}`} element={element} index={primaryLinks.length + index} />
                     ))}
                 </List>
-                <Button variant='contained' color='primary' className='!w-full !mt-4' onClick={props.openNewEntityDialog}>+ Add New</Button>
+                <Button variant='contained' color='primary' className='!w-full !mt-4' onClick={props.openNewEntityDialog} startIcon={<Add />} >{t('navbar.add-new-button')}</Button>
 
             </Box>
 

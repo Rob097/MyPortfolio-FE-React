@@ -10,7 +10,7 @@ import { EducationService } from '@/services/education.service';
 import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
 import { StoryService } from '@/services/story.service';
-import { DATE_TO_DISPLAY_FORMAT_IT, DATE_TO_DISPLAY_FORMAT_EN } from '@/utilities';
+import { DATE_TO_DISPLAY_FORMAT_EN, DATE_TO_DISPLAY_FORMAT_IT } from '@/utilities';
 import { Add, ArrowBack, Delete, ExpandMore, Save, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Autocomplete, Box, Button, CardActions, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
@@ -91,7 +91,7 @@ const CreateOrEditStory = (props) => {
         if (fieldName) {
             const valueKey = fieldName === 'isEducation' ? 'field' : 'title';
             const value = {
-                [valueKey]: entityName || `The current ${fieldName.slice(2)}`
+                [valueKey]: entityName || t(`entities.edit.edit-story.current-entity`, { entity: t(`labels.${fieldName.slice(2).toLowerCase()}`) })
             };
             setValue(fieldMapping[fieldName], value);
         }
@@ -206,7 +206,7 @@ const CreateOrEditStory = (props) => {
         const id = Math.random().toString(36).substring(7);
         const newRelevantSection = {
             tmpId: id,
-            title: `Relevant Section #${relevantSections?.length + 1 ?? 1}`,
+            title: `${t('labels.relevant-section')} #${relevantSections?.length + 1 ?? 1}`,
             description: ''
         };
         append(newRelevantSection);
@@ -260,10 +260,13 @@ const CreateOrEditStory = (props) => {
         if (existingStory) {
             if (existingStory.id) {
                 StoryService.delete(existingStory.id).then(() => {
-                    displayMessages([{ text: 'Story deleted', level: 'info' }]);
+                    displayMessages([{ text: t('services.story.delete.ok'), level: 'info' }]);
                     removeStoryFromList(existingStory.tmpId);
                     closeAndGoBack();
-                }).catch(console.error);
+                }).catch((error) => {
+                    displayMessages([{ text: t('services.story.delete.ko'), level: 'error' }]);
+                    console.error('Error while deleting story', error);
+                });
             } else {
                 removeStoryFromList(existingStory.tmpId);
                 closeAndGoBack();
@@ -280,19 +283,20 @@ const CreateOrEditStory = (props) => {
 
     const goBack = useCallback(() => {
         handleSubmit(submit)().then(() => {
-            if (isDirty && !isValid && !window.confirm('Are you sure you want to go back? You will lose all the changes you made.')) {
+            if (isDirty && !isValid && !window.confirm(t('entity.edit.edit-story.go-back-check'))) {
                 return;
             }
             props.goBack();
         }).catch((error) => {
-            console.error('Error while going back', error);
+            console.error(t('entity.edit.edit-story.go-back-error'), error);
         });
     }, [handleSubmit, isDirty, isValid, props]);
 
     function save() {
         handleSubmit(submit)().then(() => {
-            displayMessages([{ text: 'Story saved', level: 'info' }]);
+            displayMessages([{ text: t('services.story.save.ok'), level: 'info' }]);
         }).catch(error => {
+            displayMessages([{ text: t('services.story.save.ko'), level: 'error' }]);
             console.error('Error while saving story', error);
         });
     }
@@ -316,7 +320,7 @@ const CreateOrEditStory = (props) => {
             stories[index] = { ...stories[index], ...data };
 
             props.myForm.setValue('stories', stories);
-            console.log('Story updated', stories[index]);
+            console.log(t('services.story.update.ok'), stories[index]);
         } else {
             const stories = props.myForm.getValues('stories') || [];
 
@@ -331,7 +335,7 @@ const CreateOrEditStory = (props) => {
             // set the new list of stories
             props.myForm.setValue('stories', stories);
             setExistingStory(data);
-            console.log('Story added', data);
+            console.log('services.story.create.ok', data);
         }
     }
 
@@ -346,9 +350,9 @@ const CreateOrEditStory = (props) => {
                             <Box className="h-full flex flex-row items-center space-x-4">
                                 <Box onClick={goBack} className="h-full bg-background-main hover:bg-primary-main/[.05] transition-colors flex flex-row flex-auto px-4 items-center space-x-2 cursor-pointer">
                                     <ArrowBack color='primary' fontSize='large' />
-                                    <Typography variant='body2' color="dark.main" fontWeight={theme => theme.typography.fontWeightMedium}>{isDirty && isValid ? 'Save' : 'Back'}</Typography>
+                                    <Typography variant='body2' color="dark.main" fontWeight={theme => theme.typography.fontWeightMedium}>{isDirty && isValid ? t('labels.save') : t('labels.back')}</Typography>
                                 </Box>
-                                <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} noWrap className="!text-2xl" >{storyTitle ? storyTitle : 'New Story'}</Typography>
+                                <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} noWrap className="!text-2xl" >{storyTitle ? storyTitle : t('labels.new-story')}</Typography>
                             </Box>
                             <Box className="h-full flex flex-row items-center space-x-4 px-4">
                                 <FormControl component="fieldset">
@@ -366,13 +370,13 @@ const CreateOrEditStory = (props) => {
                                                     color="primary"
                                                 />
                                             }
-                                            label="Published"
+                                            label={t('labels.status.published')}
                                             labelPlacement="start"
                                         />
                                     </FormGroup>
                                 </FormControl>
                                 <ShowIf condition={existingStory?.updatedAt !== undefined && existingStory?.updatedAt != null && existingStory?.updatedAt !== ''}>
-                                    <Tooltip title="Last Update" placement='top' arrow>
+                                    <Tooltip title={t('labels.last-update')} placement='top' arrow>
                                         <Typography variant='body2' color="dark.main">{moment(existingStory?.updatedAt).format(dateFormat)}</Typography>
                                     </Tooltip>
                                 </ShowIf>
@@ -389,10 +393,10 @@ const CreateOrEditStory = (props) => {
                                 <Controller
                                     control={control}
                                     name="title"
-                                    rules={{ required: t('Title is required') }}
+                                    rules={{ required: t('entities.edit.edit-story.fields.title.required') }}
                                     render={({ field }) => (
                                         <CustomTextField
-                                            label={t('Title')}
+                                            label={t('entities.edit.edit-story.fields.title.label')}
                                             variant="outlined"
                                             fullWidth
                                             error={!!errors.title}
@@ -405,10 +409,10 @@ const CreateOrEditStory = (props) => {
                                     control={control}
                                     name="fromDate"
                                     defaultValue={null}
-                                    rules={{ required: t('From Date is required') }}
+                                    rules={{ required: t('entities.edit.edit-story.fields.from-date.required') }}
                                     render={({ field, fieldState: { error } }) => (
                                         <CustomDatePicker
-                                            label={t('From Date')}
+                                            label={t('entities.edit.edit-story.fields.from-date.label')}
                                             value={field.value}
                                             inputRef={field.ref}
                                             onChange={(date) => {
@@ -432,7 +436,7 @@ const CreateOrEditStory = (props) => {
                                     defaultValue={null}
                                     render={({ field, fieldState: { error } }) => (
                                         <CustomDatePicker
-                                            label={t('To Date')}
+                                            label={t('entities.edit.edit-story.fields.to-date.label')}
                                             value={field.value}
                                             inputRef={field.ref}
                                             onChange={(date) => {
@@ -464,8 +468,8 @@ const CreateOrEditStory = (props) => {
                                     renderInput={(params) => (
                                         <CustomTextField
                                             {...params}
-                                            placeholder={formEducation ? null : "Connected Education"}
-                                            label={formEducation ? "Connected Education" : null}
+                                            placeholder={formEducation ? null : t('entities.edit.edit-story.fields.connectedEducation')}
+                                            label={formEducation ? t('entities.edit.edit-story.fields.connectedEducation') : null}
                                             variant="outlined"
                                             InputProps={{
                                                 ...params.InputProps,
@@ -502,8 +506,8 @@ const CreateOrEditStory = (props) => {
                                     renderInput={(params) => (
                                         <CustomTextField
                                             {...params}
-                                            placeholder={formExperience ? null : "Connected Experience"}
-                                            label={formExperience ? "Connected Experience" : null}
+                                            placeholder={formExperience ? null : t('entities.edit.edit-story.fields.connectedExperience')}
+                                            label={formExperience ? t('entities.edit.edit-story.fields.connectedExperience') : null}
                                             variant="outlined"
                                             InputProps={{
                                                 ...params.InputProps,
@@ -540,8 +544,8 @@ const CreateOrEditStory = (props) => {
                                     renderInput={(params) => (
                                         <CustomTextField
                                             {...params}
-                                            placeholder={formProject ? null : "Connected Project"}
-                                            label={formProject ? "Connected Project" : null}
+                                            placeholder={formProject ? null : t('entities.edit.edit-story.fields.connectedProject')}
+                                            label={formProject ? t('entities.edit.edit-story.fields.connectedProject') : null}
                                             variant="outlined"
                                             InputProps={{
                                                 ...params.InputProps,
@@ -579,14 +583,14 @@ const CreateOrEditStory = (props) => {
                         <Grid item xs={12}>
                             <Box className='w-fit flex flex-row items-center justify-center'>
                                 <Typography variant="h5" fontWeight={theme => theme.typography.fontWeightMedium} gutterBottom className='w-fit mr-2'>
-                                    {t('Description')}
+                                    {t('entities.edit.edit-story.fields.description.label')}
                                 </Typography>
                             </Box>
                             <Controller
                                 control={control}
                                 name="description"
                                 defaultValue={defaultValues.description}
-                                rules={{ required: t('Description is required') }}
+                                rules={{ required: t('entities.edit.edit-story.fields.description.required') }}
                                 render={({ field, fieldState: { error } }) => (
                                     /* TODO: set useComplete to true when images are correctely managed */
                                     <MuiEditor useComplete={false} existingText={field?.value ?? ''} onChange={field.onChange} error={error} />
@@ -599,7 +603,7 @@ const CreateOrEditStory = (props) => {
                     <Grid container spacing={2} padding={2} component="section">
                         <Grid item xs={12}>
                             <Button className='!mb-4' variant='outlined' onClick={addNewRelevantSection} startIcon={<Add />}>
-                                Add new Relevant section
+                                {t('entities.edit.edit-story.relevant-sections.add')}
                             </Button>
 
                             <DragDropContext onDragEnd={handleDragEnd}>
@@ -614,8 +618,8 @@ const CreateOrEditStory = (props) => {
                                                             /* Allow only vertical movements while dragging: */
                                                             var transform = provided.draggableProps.style.transform
                                                             if (transform) {
-                                                                var t = transform.split(",")[1]
-                                                                provided.draggableProps.style.transform = "translate(0px," + t
+                                                                var t1 = transform.split(",")[1]
+                                                                provided.draggableProps.style.transform = "translate(0px," + t1
                                                             }
 
                                                             const isTitleError = errors?.relevantSections?.[index]?.title;
@@ -653,10 +657,10 @@ const CreateOrEditStory = (props) => {
                                                                             <Controller
                                                                                 control={control}
                                                                                 name={`relevantSections[${index}].title`}
-                                                                                rules={{ required: 'Title is required' }}
+                                                                                rules={{ required: t('entities.edit.edit-story.relevant-sections.fields.title.required') }}
                                                                                 render={({ field, fieldState: { error } }) => (
                                                                                     <CustomTextField
-                                                                                        label={'Title'}
+                                                                                        label={t('entities.edit.edit-story.relevant-sections.fields.title.label')}
                                                                                         variant="outlined"
                                                                                         fullWidth
                                                                                         error={!!error}
@@ -668,7 +672,7 @@ const CreateOrEditStory = (props) => {
                                                                             <Controller
                                                                                 control={control}
                                                                                 name={`relevantSections[${index}].description`}
-                                                                                rules={{ required: 'Description is required' }}
+                                                                                rules={{ required: t('entities.edit.edit-story.relevant-sections.fields.description.required') }}
                                                                                 render={({ field, fieldState: { error } }) => (
                                                                                     /* TODO: set useComplete to true when images are correctely managed */
                                                                                     <MuiEditor
@@ -699,16 +703,16 @@ const CreateOrEditStory = (props) => {
                 <CardActions className='!px-8 justify-center sm:justify-between'>
                     <Box className='space-x-4'>
                         <Button variant='outlined' color='primary' onClick={props.goBack} startIcon={<ArrowBack />}>
-                            Cancel
+                            {t('labels.cancel')}
                         </Button>
                         <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty} startIcon={<Save />}>
-                            Save
+                            {t('labels.save')}
                         </Button>
                     </Box>
                     {existingStory && (
                         <Box>
                             <Button variant='contained' color='error' onClick={() => setDeleteStoryModalOpen(true)} startIcon={<Delete />}>
-                                Delete
+                                {t('labels.delete')}
                             </Button>
                         </Box>
                     )}
@@ -718,16 +722,18 @@ const CreateOrEditStory = (props) => {
 
             <CustomDialog
                 isOpen={deleteStoryModalOpen}
-                title="Delete Story"
-                text={<>Are you sure you want to delete the story <b>{storyTitle}</b>?<br /><br /><b>ATTENTION</b>: The Story will be removed from the project, experience and education it is connected to.<br /><br /><b>This action cannot be undone.</b></>}
+                title={t('entities.edit.edit-story.delete-dialog.title')}
+                isHtml={true}
+                text={t('entities.edit.edit-story.delete-dialog.text', { title: storyTitle })}
                 onCancel={() => setDeleteStoryModalOpen(false)}
                 onDelete={handleDeleteStory}
             />
 
             <CustomDialog
                 isOpen={deleteRelevantSectionModalOpen}
-                title="Delete Section"
-                text={<>Are you sure you want to delete the section <b>{relevantSections[relevantSectionToDeleteIndex]?.title}</b>?<br />This action cannot be undone.</>}
+                title={t('entities.edit.edit-story.relevant-sections.delete-dialog.title')}
+                isHtml={true}
+                text={t('entities.edit.edit-story.relevant-sections.delete-dialog.text', { title: relevantSections[relevantSectionToDeleteIndex]?.title })}
                 onCancel={() => setDeleteRelevantSectionModalOpen(false)}
                 onDelete={handleDeleteRelevantSection}
             />

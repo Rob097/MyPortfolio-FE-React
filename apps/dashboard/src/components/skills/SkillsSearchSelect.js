@@ -18,12 +18,10 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
     const [searchedSkills, setSearchedSkills] = useState([]);
     const formSkills = myForm.watch('skills');
     const { t } = useTranslation("dashboard");
-
-    useEffect(() => {
-        fetchSkills();
-    }, []);
+    const [searchedText, setSearchedText] = useState('');
 
     async function fetchSkills(query) {
+        setSearchedText(query);
         const skillName = new Criteria(SkillQ.skillName, Operation.equals, "*" + query?.replace(" ", "*") + "*");
 
         const criterias = query ? [skillName] : null;
@@ -99,6 +97,7 @@ const SkillsSearchSelect = ({ myForm, numberOfMain }) => {
                             </li>
                         </Tooltip>
                     )}
+                    noOptionsText={searchedText ? t('skills.no-skill-found') : t('skills.start-typing')}
                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
                     onChange={(e, value) => {
                         if (value) {

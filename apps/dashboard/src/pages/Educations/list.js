@@ -4,11 +4,13 @@ import { Add } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { debounce } from '@mui/material/utils';
 import { useCallback, useMemo, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 
 const EducationsList = () => {
+    const { t, i18n } = useTranslation("dashboard");
     const [store, dispatch] = useDashboardStore();
 
     const hasUserEntities = useMemo(() => store.user?.educations?.length > 0, [store.user]);
@@ -30,7 +32,7 @@ const EducationsList = () => {
         <>
 
             <Box className="w-full flex flex-row justify-between items-center mb-10 mt-5">
-                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >Educations List</Typography>
+                <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className={`!text-4xl ${hasUserEntities && "!my-4"}`} >{t('entities.list.title', { entity: t('labels.educations') })}</Typography>
 
                 <ShowIf condition={hasUserEntities}>
                     <TextField
@@ -45,10 +47,10 @@ const EducationsList = () => {
             <ShowIf condition={!hasUserEntities}>
                 <Box className="w-full flex-auto mt-10 bg-white rounded-md">
                     <Box className="w-full h-full p-4 flex flex-col justify-center items-center text-center">
-                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt='No Education Found' />
-                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >Create your first Education</Typography>
-                        <Typography variant='body1' className="" >Fortunately, it's easy to create a new one.</Typography>
-                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/educations/new" >New Education</Button>
+                        <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-projects.png`} width={350} height="auto" alt={t('entities.list.no-results-2.title', { entity: t('labels.educations') })} />
+                        <Typography variant='h2' fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4" >{t('entities.list.no-results-2.create-first', { entity: t('labels.education') })}</Typography>
+                        <Typography variant='body1' className="" >{t('entities.list.no-results-2.description')}</Typography>
+                        <Button variant="contained" color="primary" className="!mt-4" startIcon={<Add />} LinkComponent={Link} to="/dashboard/educations/new" >{t('entities.list.add-new-educations')}</Button>
                     </Box>
                 </Box>
             </ShowIf>

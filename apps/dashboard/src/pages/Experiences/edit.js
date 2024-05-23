@@ -7,10 +7,13 @@ import { EmploymentTypeEnum } from '@/models/experience.model';
 import { Receipt } from '@mui/icons-material';
 import { Box, FormControl, FormControlLabel, FormGroup, Grid, MenuItem, Switch } from '@mui/material';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 const EditExperience = () => {
+    const { slug: entitySlug } = useParams();
 
     const defaultValues = {
         stories: [],
@@ -29,6 +32,11 @@ const EditExperience = () => {
     const myForm = useForm({
         defaultValues: defaultValues
     });
+
+    // Completely reset the form when the entitySlug changes
+    useEffect(() => {
+        myForm.reset(defaultValues);
+    }, [entitySlug]);
 
     return (
         <FormProvider {...myForm}>
@@ -50,7 +58,7 @@ export const ExperienceSpecificFields = () => {
             <CustomCardHeader
                 title={
                     <Box className='w-full flex justify-between items-center'>
-                        General Informations
+                        {t('entities.edit.general-information.title')}
                         <FormControl component="fieldset">
                             <FormGroup aria-label="position" row>
                                 <FormControlLabel
@@ -70,7 +78,7 @@ export const ExperienceSpecificFields = () => {
                                             )}
                                         />
                                     }
-                                    label="Published"
+                                    label={t('labels.status.published')}
                                     labelPlacement="start"
                                 />
                             </FormGroup>
@@ -88,11 +96,11 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="title"
-                            rules={{ required: t('Title is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.title.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Title')}
+                                    label={t('entities.edit.general-information.fields.title.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}
@@ -107,12 +115,12 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="employmentType"
-                            rules={{ required: t('Employment Type is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.employmentType.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
                                     select
-                                    label={t('Employment Type')}
+                                    label={t('entities.edit.general-information.fields.employmentType.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}
@@ -120,7 +128,7 @@ export const ExperienceSpecificFields = () => {
                                     onChange={(e) => field.onChange(e.target.value)}
                                     value={field.value || ''}
                                 >
-                                    <MenuItem value="" disabled> {t('Select Employment Type')} </MenuItem>
+                                    <MenuItem value="" disabled> {t('entities.edit.general-information.fields.employmentType.select')} </MenuItem>
                                     {Object.values(EmploymentTypeEnum).map((value) => (
                                         <MenuItem key={value} value={value}>
                                             {value}
@@ -134,11 +142,11 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="companyName"
-                            rules={{ required: t('Company Name is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.company.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Company Name')}
+                                    label={t('entities.edit.general-information.fields.company.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}
@@ -153,11 +161,11 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="location"
-                            rules={{ required: t('Location is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.location.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextField
-                                    label={t('Location')}
+                                    label={t('entities.edit.general-information.fields.location.label')}
                                     variant="outlined"
                                     fullWidth
                                     error={!!error}
@@ -172,11 +180,11 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="fromDate"
-                            rules={{ required: t('From Date is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.from-date.required') }}
                             defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('From Date')}
+                                    label={t('entities.edit.general-information.fields.from-date.label')}
                                     value={field.value || null}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -202,7 +210,7 @@ export const ExperienceSpecificFields = () => {
                             defaultValue={null}
                             render={({ field, fieldState: { error } }) => (
                                 <CustomDatePicker
-                                    label={t('To Date')}
+                                    label={t('entities.edit.general-information.fields.to-date.label')}
                                     value={field.value || null}
                                     inputRef={field.ref}
                                     onChange={(date) => {
@@ -226,11 +234,11 @@ export const ExperienceSpecificFields = () => {
                         <Controller
                             control={myForm.control}
                             name="description"
-                            rules={{ required: t('Description is required') }}
+                            rules={{ required: t('entities.edit.general-information.fields.description.required') }}
                             defaultValue=""
                             render={({ field, fieldState: { error } }) => (
                                 <CustomTextArea
-                                    label={t('Description')}
+                                    label={t('entities.edit.general-information.fields.description.label')}
                                     variant="outlined"
                                     fullWidth
                                     multiline

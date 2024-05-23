@@ -18,7 +18,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import _, { cloneDeep } from 'lodash';
 import moment from 'moment';
 import 'moment/locale/it';
-// import 'moment/locale/en-us';
 import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -41,8 +40,8 @@ const CreateOrEditEntity = (props) => {
     const dateLocale = useMemo(() => i18n.language === 'it' ? 'it' : 'en-us', [i18n.language]);
 
     if (!entitySlug) {
-        displayMessages([{ text: `${EntityTypeEnum.getLabel(entitiesType, false, true)} ID is required`, level: 'error' }]);
-        navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}`);
+        displayMessages([{ text: t('entities.edit.messages.required-id'), level: 'error' }]);
+        navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false, t)}`);
     }
     const isCreate = useMemo(() => entitySlug === 'new', [entitySlug]);
     const [originalEntity, setOriginalEntity] = useState(null);
@@ -133,8 +132,8 @@ const CreateOrEditEntity = (props) => {
         }
 
         const entityPromise = isCreate ? EntityService.create(entitiesType, entity) : EntityService.update(entitiesType, entity);
-        const successMessage = isCreate ? `${EntityTypeEnum.getLabel(entitiesType, false, true)} created successfully` : `${EntityTypeEnum.getLabel(entitiesType, false, true)} updated successfully`;
-        const errorMessage = isCreate ? `Error while creating the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : `Error while updating the ${EntityTypeEnum.getLabel(entitiesType, false, false)}`;
+        const successMessage = isCreate ? t(`services.${entitiesType}.create.ok`) : t(`services.${entitiesType}.update.ok`);
+        const errorMessage = isCreate ? t(`services.${entitiesType}.create.ko`) : t(`services.${entitiesType}.update.ko`);
 
         trackPromise(
             entityPromise.then((response) => {
@@ -143,7 +142,7 @@ const CreateOrEditEntity = (props) => {
                 if (coverImage && coverImage !== originalEntity?.coverImage) {
                     return trackPromise(
                         EntityService.uploadCoverImage(entitiesType, response.content.id, coverImage).then(() => {
-                            displayMessages([{ text: 'Cover image uploaded successfully', level: 'success' }]);
+                            displayMessages([{ text: t('entities.edit.messages.cover-add'), level: 'success' }]);
                             if (isCreate) {
                                 navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
                             } else {
@@ -154,7 +153,7 @@ const CreateOrEditEntity = (props) => {
                 } else if (originalEntity?.coverImage && !coverImage) {
                     return trackPromise(
                         EntityService.removeCoverImage(entitiesType, response.content.id).then(() => {
-                            displayMessages([{ text: 'Cover image removed successfully', level: 'success' }]);
+                            displayMessages([{ text: t('entities.edit.messages.cover-remove'), level: 'success' }]);
                             if (isCreate) {
                                 navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
                             } else {
@@ -215,7 +214,7 @@ const CreateOrEditEntity = (props) => {
                     setCoverImageUrl(coverImage);
                 }
             }).catch((error) => {
-                displayMessages([{ text: `Error while fetching the ${EntityTypeEnum.getLabel(entitiesType, false, false)}`, level: 'error' }]);
+                displayMessages([{ text: t(`entities.edit.messages.fetch-error-${entitiesType}`), level: 'error' }]);
                 console.error(error);
             })
         );
@@ -262,9 +261,9 @@ const CreateOrEditEntity = (props) => {
     function hasUnsavedChanges() {
 
         if (isCreate) {
-            console.log('isCreate', isCreate);
-            console.log('myForm.formState.isDirty', myForm.formState.isDirty);
-            console.log('myForm.formState.isValid', myForm.formState.isValid);
+            //console.log('isCreate', isCreate);
+            //console.log('myForm.formState.isDirty', myForm.formState.isDirty);
+            //console.log('myForm.formState.isValid', myForm.formState.isValid);
             return myForm.formState.isDirty && !myForm.formState.isValid;
         }
 
@@ -283,20 +282,20 @@ const CreateOrEditEntity = (props) => {
                 if (actualValue && originalValue) {
                     const hasChanged = moment(actualValue).format(DATE_TO_SAVE_FORMAT) !== moment(originalValue).format(DATE_TO_SAVE_FORMAT);
                     if (hasChanged) {
-                        console.log(`Field ${key} has changed`, moment(actualValue).format(DATE_TO_SAVE_FORMAT), moment(originalValue).format(DATE_TO_SAVE_FORMAT));
+                        //console.log(`Field ${key} has changed`, moment(actualValue).format(DATE_TO_SAVE_FORMAT), moment(originalValue).format(DATE_TO_SAVE_FORMAT));
                     }
                     return hasChanged;
                 }
                 const hasChanged = Boolean(actualValue || originalValue);
                 if (hasChanged) {
-                    console.log(`Field ${key} has changed`, actualValue, originalValue);
+                    //console.log(`Field ${key} has changed`, actualValue, originalValue);
                 }
                 return hasChanged;
             } else if (key === 'skills') {
                 const actualSkills = actualValue.map(s => s.skill);
                 const hasChanged = !_.isEqual(actualSkills, originalValue);
                 if (hasChanged) {
-                    console.log(`Field ${key} has changed`, actualSkills, originalValue);
+                    //console.log(`Field ${key} has changed`, actualSkills, originalValue);
                 }
                 return hasChanged;
             } else if (key === 'stories') {
@@ -317,7 +316,7 @@ const CreateOrEditEntity = (props) => {
 
                 const hasChanged = !_.isEqual(actualStories, originalStories);
                 if (hasChanged) {
-                    console.log(`Field ${key} has changed`, actualStories, originalStories);
+                    //console.log(`Field ${key} has changed`, actualStories, originalStories);
                 }
                 return hasChanged;
             }
@@ -336,7 +335,7 @@ const CreateOrEditEntity = (props) => {
             }
 
             if (hasChanged) {
-                console.log(`Field ${key} has changed`, actualValue, originalValue);
+                //console.log(`Field ${key} has changed`, actualValue, originalValue);
             }
 
             return hasChanged;
@@ -359,7 +358,7 @@ const CreateOrEditEntity = (props) => {
         <>
             <FormProvider {...myForm}>
                 <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={dateLocale}>
-                    <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{!formTitle && !formField ? (isCreate ? `New ${EntityTypeEnum.getLabel(entitiesType, false, true)}` : `Edit ${EntityTypeEnum.getLabel(entitiesType, false, true)}`) : (formTitle ?? formField)}</Typography>
+                    <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{!formTitle && !formField ? (isCreate ? t(`labels.new-${entitiesType}`) : `${t('labels.edit')} ${EntityTypeEnum.getLabel(entitiesType, false, true, t)}`) : (formTitle ?? formField)}</Typography>
                     <Box className="w-full flex-auto mt-10" component="form" onSubmit={myForm.handleSubmit(handleSubmit)} noValidate>
                         <Grid container spacing={2} padding={2} component="section" id="main-info-section">
 
@@ -391,7 +390,7 @@ const CreateOrEditEntity = (props) => {
                                     <CustomCard className='button-clicked-inner-shadow cursor-pointer' onClick={() => toggleStoriesMode(true)}>
                                         <CustomCardContent className='justify-center items-center'>
                                             <Add color='primary' className='!text-5xl' />
-                                            <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4 text-center" >Add a new Story</Typography>
+                                            <Typography variant="h3" fontWeight={theme => theme.typography.fontWeightBold} className="!text-2xl !my-4 text-center" >{t('entities.edit.add-new-story')}</Typography>
                                         </CustomCardContent>
                                     </CustomCard>
                                 </Grid>
@@ -433,7 +432,7 @@ const CreateOrEditEntity = (props) => {
                     </Box>
                 </LocalizationProvider>
 
-                <Tooltip title={isAddingNewStory ? `Close the story editor before saving the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : (myForm.formState.isValid ? `Save the ${EntityTypeEnum.getLabel(entitiesType, false, false)}` : 'Fill all the required fields')} placement='top' arrow>
+                <Tooltip title={isAddingNewStory ? t(`entities.edit.close-story-editor-${entitiesType}`) : (myForm.formState.isValid ? t(`entities.edit.save-${entitiesType}`) : t('entities.edit.fill-required-fields'))} placement='top' arrow>
                     <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
                         <Fab color="primary" aria-label="save" onClick={myForm.handleSubmit(handleSubmit)} disabled={isAddingNewStory /* || !myForm.formState.isValid */}>
                             <Save className='text-white' />

@@ -1,10 +1,28 @@
 {
     "home": {
-        "welcome": "WELCOME"
+        "title": "Dashboard",
+        "analytics-alert": "Analytics are coming soon",
+        "experience-title": "What I do",
+        "education-title": "What I studied",
+        "project-title": "What I'm working on",
+        "view-main-entity": "View main {{entity}}",
+        "number-of-stories": "Number of stories",
+        "number-of-skills": "Number of skills",
+        "nothing-to-show": "There is nothing to show here",
+        "start": "to get started"
     },
     "navbar": {
         "sign-out-button": "Sign out",
-        "sign-out-confirm": "Are you sure you want to sign out?"
+        "sign-out-confirm": "Are you sure you want to sign out?",
+        "dashboard": "Dashboard",
+        "home": "Home",
+        "profile": "Profile",
+        "my-diary": "My Diary",
+        "add-new-button": "Create",
+        "add-new-title": "What would you like to create?",
+        "no-new-notifications": "No new notifications",
+        "settings": "Settings",
+        "logout": "Logout"
     },
     "profile-builder": {
         "title": "Build Your Profile",
@@ -97,7 +115,9 @@
         "category-label": "Category",
         "category-required": "Category is required",
         "category-placeholder": "Search categories",
-        "add-skill": "Add \"{{name}}\""
+        "add-skill": "Add \"{{name}}\"",
+        "start-typing": "Start typing to search for skills",
+        "no-skill-found": "No skill found"
     },
     "user-profile": {
         "title": "My Profile",
@@ -180,12 +200,44 @@
         "unsaved-changes": "You have unsaved changes, do you want to leave the page?"
     },
     "labels": {
+        "search": "Search",
         "more-options": "More Options",
         "less-options": "Less Options",
         "add": "Add",
         "save": "Save",
         "change": "Change",
-        "remove": "Remove"
+        "remove": "Remove",
+        "close": "Close",
+        "new-projects": "New Project",
+        "new-educations": "New Education",
+        "new-experiences": "New Experience",
+        "new-story": "New Story",
+        "new": "New",
+        "edit": "Edit",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "reset": "Reset",
+        "back": "Back",
+        "view-all": "View All",
+        "projects": "Projects",
+        "educations": "Educations",
+        "experiences": "Experiences",
+        "project": "Project",
+        "education": "Education",
+        "experience": "Experience",
+        "relevant-sections": "Relevant Sections",
+        "relevant-section": "Relevant Section",
+        "skills": "Skills",
+        "present": "Present",
+        "status": {
+            "title": "Status",
+            "published": "Published",
+            "draft": "Draft",
+            "set-as": "Set as {{status}}"
+        },
+        "check-delete-1": "Are you sure you want to delete this {{item}}?",
+        "check-delete-2": "Are you sure you want to delete this {{item}}?",
+        "last-update": "Last Update"
     },
     "messages": {
         "success": "Success",
@@ -233,9 +285,17 @@
             "update": {
                 "ok": "Story successfully updated",
                 "ko": "Error during story update"
+            },
+            "delete": {
+                "ok": "Story successfully deleted",
+                "ko": "Error during story deletion"
+            },
+            "save": {
+                "ok": "Story successfully saved",
+                "ko": "Error during story saving"
             }
         },
-        "project": {
+        "projects": {
             "create": {
                 "ok": "Project successfully created",
                 "ko": "Error during project creation"
@@ -245,7 +305,7 @@
                 "ko": "Error during project update"
             }
         },
-        "education": {
+        "educations": {
             "create": {
                 "ok": "Education successfully created",
                 "ko": "Error during education creation"
@@ -255,7 +315,7 @@
                 "ko": "Error during education update"
             }
         },
-        "experience": {
+        "experiences": {
             "create": {
                 "ok": "Experience successfully created",
                 "ko": "Error during experience creation"
@@ -263,6 +323,194 @@
             "update": {
                 "ok": "Experience successfully updated",
                 "ko": "Error during experience update"
+            }
+        }
+    },
+    "entities": {
+        "list": {
+            "title": "{{entity}} List",
+            "add-new-projects": "Add a new project",
+            "add-new-educations": "Add a new education",
+            "add-new-experiences": "Add a new experience",
+            "no-results-1": {
+                "title": "No {{entity}} found",
+                "create-first": "Create your first {{entity}}",
+                "description": "Fortunately, it's easy to create a new one.",
+                "empty-get": "No {{entity}} found for the selected criteria"
+            },
+            "no-results-2": {
+                "title": "No {{entity}} found",
+                "create-first": "Create your first {{entity}}",
+                "description": "Fortunately, it's easy to create a new one.",
+                "empty-get": "No {{entity}} found for the selected criteria"
+            },
+            "datagrid": {
+                "columns": {
+                    "title": "Title",
+                    "field": "Field",
+                    "company": "Company",
+                    "school": "School",
+                    "from-date": "From Date",
+                    "to-date": "To Date",
+                    "stories": "Stories",
+                    "status": "Status",
+                    "actions": "Actions"
+                },
+                "actions": {
+                    "sort-by-asc": "Sort by ascending",
+                    "sort-by-desc": "Sort by descending",
+                    "unsort": "Unsort",
+                    "filter": "Filter",
+                    "hide-column": "Hide column",
+                    "manage-columns": "Manage columns",
+                    "show-hide-all": "Show/Hide all"
+                },
+                "filters": {
+                    "columns": "Columns",
+                    "operator": "Operator",
+                    "value": "Value",
+                    "value-placeholder": "Filter value",
+                    "contains": "Contains",
+                    "equals": "Equals",
+                    "is": "Is",
+                    "is-after": "Is after",
+                    "is-before": "Is before"
+                },
+                "footer": {
+                    "rows-selected": "{{count}} rows selected",
+                    "rows-per-page": "Rows per page"
+                }
+            }
+        },
+        "edit": {
+            "messages": {
+                "required-id": "The id is required",
+                "cover-add": "Cover image uploaded successfully",
+                "cover-remove": "Cover image removed successfully",
+                "fetch-error-projects": "Error while fetching the project",
+                "fetch-error-educations": "Error while fetching the education",
+                "fetch-error-experiences": "Error while fetching the experience"
+            },
+            "close-story-editor-projects": "Close the story editor before saving the project",
+            "close-story-editor-educations": "Close the story editor before saving the education",
+            "close-story-editor-experiences": "Close the story editor before saving the experience",
+            "save-projects": "Save the project",
+            "save-educations": "Save the education",
+            "save-experiences": "Save the experience",
+            "fill-required-fields": "Please fill all the required fields",
+            "add-new-story": "Add a new story",
+            "cover-image": "Cover Image",
+            "general-information": {
+                "title": "General Information",
+                "fields": {
+                    "title": {
+                        "label": "Title",
+                        "required": "Title is required"
+                    },
+                    "field": {
+                        "label": "Field",
+                        "required": "Field is required"
+                    },
+                    "from-date": {
+                        "label": "From Date",
+                        "required": "From Date is required"
+                    },
+                    "to-date": {
+                        "label": "To Date"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "required": "Description is required"
+                    },
+                    "employmentType": {
+                        "label": "Employment Type",
+                        "required": "Employment Type is required",
+                        "select": "Select an employment type"
+                    },
+                    "company": {
+                        "label": "Company Name",
+                        "required": "Company Name is required"
+                    },
+                    "location": {
+                        "label": "Location",
+                        "required": "Location is required"
+                    },
+                    "school": {
+                        "label": "School",
+                        "required": "School is required"
+                    },
+                    "degree": {
+                        "label": "Degree",
+                        "required": "Degree is required"
+                    },
+                    "grade": {
+                        "label": "Grade"
+                    }
+                }
+            },
+            "stories-list": {
+                "remove-ok": "Story removed successfully",
+                "remove-ko": "Error while removing the story",
+                "delete-ok": "Story deleted successfully",
+                "delete-ko": "Error while deleting the story",
+                "no-stories-projects": "This projects doesn't have any stories, yet...",
+                "no-stories-educations": "This education doesn't have any stories, yet...",
+                "no-stories-experiences": "This experience doesn't have any stories, yet...",
+                "remove-from-projects": "Remove story from project",
+                "remove-from-educations": "Remove story from education",
+                "remove-from-experiences": "Remove story from experience",
+                "remove-dialog": {
+                    "title": "Remove Story",
+                    "text": "Are you sure you want to remove the story <b>{{title}}</b>?<br />The story will NOT be deleted from your account."
+                },
+                "move-back": "Move back",
+                "move-forward": "Move forward"
+            },
+            "edit-story": {
+                "current-entity": "Current {{entity}}",
+                "go-back-check": "Are you sure you want to go back? You will lose all the changes you made.",
+                "go-back-error": "Error while going back",
+                "fields": {
+                    "title": {
+                        "label": "Title",
+                        "required": "Title is required"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "required": "Description is required"
+                    },
+                    "from-date": {
+                        "label": "From Date",
+                        "required": "From Date is required"
+                    },
+                    "to-date": {
+                        "label": "To Date"
+                    },
+                    "connectedProject": "Connected Project",
+                    "connectedEducation": "Connected Education",
+                    "connectedExperience": "Connected Experience"
+                },
+                "delete-dialog": {
+                    "title": "Delete Story",
+                    "text": "Are you sure you want to delete the story <b>{{title}}</b>?<br /><b>ATTENTION</b>: The Story will be removed from the project, experience and education it is connected to.<br /><br /><b>This action cannot be undone.</b>"
+                },
+                "relevant-sections": {
+                    "add": "Add new relevant section",
+                    "fields": {
+                        "title": {
+                            "label": "Title",
+                            "required": "Title is required"
+                        },
+                        "description": {
+                            "label": "Description",
+                            "required": "Description is required"
+                        }
+                    },
+                    "delete-dialog": {
+                        "title": "Delete Relevant Section",
+                        "text": "Are you sure you want to delete the relevant section <b>{{title}}</b>?<br />This action cannot be undone."
+                    }
+                }
             }
         }
     }
