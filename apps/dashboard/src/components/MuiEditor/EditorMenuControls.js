@@ -1,3 +1,4 @@
+import { FormatAlignCenter, FormatAlignJustify, FormatAlignLeft, FormatAlignRight } from "@mui/icons-material";
 import { useTheme } from "@mui/material";
 import {
     MenuButtonAddTable,
@@ -29,8 +30,10 @@ import {
     MenuSelectTextAlign,
     isTouchDevice
 } from "mui-tiptap";
+import { useTranslation } from 'react-i18next';
 
 export default function EditorMenuControls(props) {
+    const { t } = useTranslation('dashboard');
     const theme = useTheme();
 
     const toBase64 = file => new Promise((resolve, reject) => {
@@ -43,29 +46,71 @@ export default function EditorMenuControls(props) {
     return (
         <MenuControlsContainer>
 
-            <MenuSelectHeading />
+            <MenuSelectHeading
+                aria-label={t('editor.header.headings.tooltip')}
+                tooltipTitle={t('editor.header.headings.tooltip')}
+                labels={{
+                    empty: t('editor.header.headings.empty'),
+                    paragraph: t('editor.header.headings.paragraph'),
+                    heading1: t('editor.header.headings.h1'),
+                    heading2: t('editor.header.headings.h2'),
+                    heading3: t('editor.header.headings.h3'),
+                    heading4: t('editor.header.headings.h4'),
+                    heading5: t('editor.header.headings.h5'),
+                    heading6: t('editor.header.headings.h6')
+                }}
+            />
 
             <MenuDivider />
 
-            <MenuSelectFontSize />
+            <MenuSelectFontSize
+                aria-label={t('editor.header.font-size')}
+                tooltipTitle={t('editor.header.font-size')}
+            />
 
             <MenuDivider />
 
-            <MenuButtonBold />
+            <MenuButtonBold
+                aria-label={t('editor.header.bold')}
+                tooltipLabel={t('editor.header.bold')}
+            />
 
-            <MenuButtonItalic />
+            <MenuButtonItalic
+                aria-label={t('editor.header.italic')}
+                tooltipLabel={t('editor.header.italic')}
+            />
 
-            <MenuButtonUnderline />
+            <MenuButtonUnderline
+                aria-label={t('editor.header.underline')}
+                tooltipLabel={t('editor.header.underline')}
+            />
 
-            <MenuButtonStrikethrough />
+            <MenuButtonStrikethrough
+                aria-label={t('editor.header.strike')}
+                tooltipLabel={t('editor.header.strike')}
+            />
 
-            <MenuButtonSubscript />
+            <MenuButtonSubscript
+                aria-label={t('editor.header.subscript')}
+                tooltipLabel={t('editor.header.subscript')}
+            />
 
-            <MenuButtonSuperscript />
+            <MenuButtonSuperscript
+                aria-label={t('editor.header.superscript')}
+                tooltipLabel={t('editor.header.superscript')}
+            />
 
             <MenuDivider />
 
             <MenuButtonTextColor
+                aria-label={t('editor.header.text-color.tooltip')}
+                tooltipLabel={t('editor.header.text-color.tooltip')}
+                labels={{
+                    textFieldPlaceholder: t('editor.header.text-color.placeholder'),
+                    cancelButton: t('editor.header.text-color.cancel'),
+                    removeColorButton: t('editor.header.text-color.remove'),
+                    saveButton: t('editor.header.text-color.save')
+                }}
                 defaultTextColor={theme.palette.text.primary}
                 swatchColors={[
                     { value: "#000000", label: "Black" },
@@ -80,6 +125,15 @@ export default function EditorMenuControls(props) {
             />
 
             <MenuButtonHighlightColor
+                aria-label={t('editor.header.highlight-color.tooltip')}
+                tooltipLabel={t('editor.header.highlight-color.tooltip')}
+                labels={{
+                    textFieldPlaceholder: t('editor.header.highlight-color.placeholder'),
+                    cancelButton: t('editor.header.highlight-color.cancel'),
+                    removeColorButton: t('editor.header.highlight-color.remove'),
+                    removeColorButtonTooltipTitle: t('editor.header.highlight-color.remove'),
+                    saveButton: t('editor.header.highlight-color.save')
+                }}
                 swatchColors={[
                     { value: "#595959", label: "Dark grey" },
                     { value: "#dddddd", label: "Light grey" },
@@ -95,19 +149,60 @@ export default function EditorMenuControls(props) {
 
             <MenuDivider />
 
-            <MenuButtonEditLink />
+            <MenuButtonEditLink
+                aria-label={t('editor.header.link.tooltip')}
+                tooltipLabel={t('editor.header.link.tooltip')}
+            />
 
             <MenuDivider />
 
-            <MenuSelectTextAlign />
+            <MenuSelectTextAlign
+                aria-label={t('editor.header.text-align.tooltip')}
+                tooltipTitle={t('editor.header.text-align.tooltip')}
+                options={[
+                    {
+                        value: "left",
+                        label: t('editor.header.text-align.left'),
+                        IconComponent: FormatAlignLeft,
+                        shortcutKeys: ['Ctrl', 'Shift', 'L']
+                    },
+                    {
+                        value: "center",
+                        label: t('editor.header.text-align.center'),
+                        IconComponent: FormatAlignCenter,
+                        shortcutKeys: ['Ctrl', 'Shift', 'E']
+                    },
+                    {
+                        value: "right",
+                        label: t('editor.header.text-align.right'),
+                        IconComponent: FormatAlignRight,
+                        shortcutKeys: ['Ctrl', 'Shift', 'R']
+                    },
+                    {
+                        value: "justify",
+                        label: t('editor.header.text-align.justify'),
+                        IconComponent: FormatAlignJustify,
+                        shortcutKeys: ['Ctrl', 'Shift', 'J']
+                    }
+                ]}
+            />
 
             <MenuDivider />
 
-            <MenuButtonOrderedList />
+            <MenuButtonOrderedList
+                aria-label={t('editor.header.ordered-list')}
+                tooltipLabel={t('editor.header.ordered-list')}
+            />
 
-            <MenuButtonBulletedList />
+            <MenuButtonBulletedList
+                aria-label={t('editor.header.bulleted-list')}
+                tooltipLabel={t('editor.header.bulleted-list')}
+            />
 
-            <MenuButtonTaskList />
+            <MenuButtonTaskList
+                aria-label={t('editor.header.task-list')}
+                tooltipLabel={t('editor.header.task-list')}
+            />
 
             {/* On touch devices, we'll show indent/unindent buttons, since they're
       unlikely to have a keyboard that will allow for using Tab/Shift+Tab. These
@@ -115,28 +210,45 @@ export default function EditorMenuControls(props) {
       clutter. */}
             {isTouchDevice() && (
                 <>
-                    <MenuButtonIndent />
+                    <MenuButtonIndent
+                        aria-label={t('editor.header.indent')}
+                        tooltipLabel={t('editor.header.indent')}
+                    />
 
-                    <MenuButtonUnindent />
+                    <MenuButtonUnindent
+                        aria-label={t('editor.header.unindent')}
+                        tooltipLabel={t('editor.header.unindent')}
+                    />
                 </>
             )}
 
             <MenuDivider />
 
-            <MenuButtonBlockquote />
+            <MenuButtonBlockquote
+                aria-label={t('editor.header.blockquote')}
+                tooltipLabel={t('editor.header.blockquote')}
+            />
 
             {/* Fin qui sono i menu della versione semplificata dell'editor */}
             {props.useComplete && (
                 <>
                     <MenuDivider />
 
-                    <MenuButtonCode />
+                    <MenuButtonCode
+                        aria-label={t('editor.header.code')}
+                        tooltipLabel={t('editor.header.code')}
+                    />
 
-                    <MenuButtonCodeBlock />
+                    <MenuButtonCodeBlock
+                        aria-label={t('editor.header.code-block')}
+                        tooltipLabel={t('editor.header.code-block')}
+                    />
 
                     <MenuDivider />
 
                     <MenuButtonImageUpload
+                        aria-label={t('editor.header.upload-images')}
+                        tooltipLabel={t('editor.header.upload-images')}
                         onUploadFiles={async (files) =>
                             // For the sake of a demo, we don't have a server to upload the files
                             // to, so we'll instead convert each one to a local "temporary" object
@@ -162,9 +274,15 @@ export default function EditorMenuControls(props) {
 
                     <MenuDivider />
 
-                    <MenuButtonHorizontalRule />
+                    <MenuButtonHorizontalRule
+                        aria-label={t('editor.header.horizontal-rule')}
+                        tooltipLabel={t('editor.header.horizontal-rule')}
+                    />
 
-                    <MenuButtonAddTable />
+                    <MenuButtonAddTable
+                        aria-label={t('editor.header.table.tooltip')}
+                        tooltipLabel={t('editor.header.table.tooltip')}
+                    />
 
                 </>
             )}
@@ -173,8 +291,14 @@ export default function EditorMenuControls(props) {
 
             <MenuDivider />
 
-            <MenuButtonUndo />
-            <MenuButtonRedo />
+            <MenuButtonUndo
+                aria-label={t('editor.header.undo')}
+                tooltipLabel={t('editor.header.undo')}
+            />
+            <MenuButtonRedo
+                aria-label={t('editor.header.redo')}
+                tooltipLabel={t('editor.header.redo')}
+            />
         </MenuControlsContainer>
     );
 }

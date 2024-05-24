@@ -17,7 +17,7 @@ export const Routes = [
     {
         path: "",
         element: <StandardLayout />,
-        errorElement: <Navigate to="/dashboard/500" replace />,
+        errorElement: <StandardLayout><ServerErrorPage /></StandardLayout>,
         children: [
             {
                 path: "",
@@ -26,11 +26,6 @@ export const Routes = [
             {
                 path: "404",
                 element: <PageNotFound />
-            },
-            {
-                path: "500",
-                element: <ServerErrorPage />,
-                errorElement: <Navigate to="/error" replace />
             },
             {
                 path: "home",
@@ -96,11 +91,8 @@ const Router = () => {
         {
             path: "/dashboard",
             element: <Outlet />,
-            children: Routes
-        },
-        {
-            path: "/error",
-            element: <ErrorPage />
+            children: Routes,
+            errorElement: <ErrorPage />
         },
         {
             path: "*",

@@ -513,5 +513,107 @@
                 }
             }
         }
+    },
+    "editor": {
+        "default-placeholder": "Write your story here...",
+        "header": {
+            "headings": {
+                "tooltip": "Styles",
+                "empty": "Change the style of the text",
+                "paragraph": "Paragraph",
+                "h1": "Heading 1",
+                "h2": "Heading 2",
+                "h3": "Heading 3",
+                "h4": "Heading 4",
+                "h5": "Heading 5",
+                "h6": "Heading 6"
+            },
+            "font-size": "Font Size",
+            "bold": "Bold",
+            "italic": "Italic",
+            "underline": "Underline",
+            "strike": "Strikethrough",
+            "subscript": "Subscript",
+            "superscript": "Superscript",
+            "text-color": {
+                "tooltip": "Text Color",
+                "placeholder": "Ex: #000000",
+                "remove": "Reset",
+                "cancel": "Cancel",
+                "save": "Ok"
+            },
+            "highlight-color": {
+                "tooltip": "Highlight Color",
+                "placeholder": "Ex: #000000",
+                "remove": "None",
+                "cancel": "Cancel",
+                "save": "Ok"
+            },
+            "link": {
+                "tooltip": "Link",
+                "add": "Add Link",
+                "cancel": "Cancel",
+                "edit": "Edit Link",
+                "url": "Link",
+                "save": "Save",
+                "text": "Text",
+                "view-edit": "Edit",
+                "view-remove": "Remove"
+            },
+            "text-align": {
+                "tooltip": "Align",
+                "left": "Align Left",
+                "center": "Align Center",
+                "right": "Align Right",
+                "justify": "Justify"
+            },
+            "ordered-list": "Ordered List",
+            "bulleted-list": "Bullet List",
+            "task-list": "Task Checklist",
+            "indent": "Indent",
+            "unindent": "Unindent",
+            "blockquote": "Blockquote",
+            "code": "Code",
+            "code-block": "Code Block",
+            "upload-images": "Upload Images",
+            "horizontal-rule": "Insert Horizontal Line",
+            "table": {
+                "tooltip": "Insert Table",
+                "insertColumnBefore": "Insert Column Before",
+                "insertColumnAfter": "Insert Column After",
+                "deleteColumn": "Delete Column",
+                "insertRowAbove": "Insert Row Above",
+                "insertRowBelow": "Insert Row Below",
+                "deleteRow": "Delete Row",
+                "mergeCells": "Merge Cells",
+                "splitCell": "Split Cell",
+                "toggleHeaderRow": "Toggle Header Row",
+                "toggleHeaderColumn": "Toggle Header Column",
+                "toggleHeaderCell": "Toggle Header Cell",
+                "deleteTable": "Delete Table"
+            },
+            "undo": "Undo",
+            "redo": "Redo"
+        },
+        "footer": {
+            "hide-formatting": "Hide Formatting",
+            "show-formatting": "Show Formatting",
+            "prevent-edits": "Prevent Edits",
+            "allow-edits": "Allow Edits",
+            "instructions": "Press “Save” above to show the HTML markup for the editor content. Typically you'd use a similar <code>editor.getHTML()</code> approach to save your data in a form.",
+            "snapshot": "Read-only saved snapshot:"
+        }
+    },
+    "error-pages": {
+        "404": {
+            "title": "Page not found",
+            "description": "Ouch, it looks like you got lost",
+            "button": "Go back home"
+        },
+        "500": {
+            "title": "Internal server error",
+            "description": "Ouch, it looks like something went wrong",
+            "button": "Go back home"
+        }
     }
 }

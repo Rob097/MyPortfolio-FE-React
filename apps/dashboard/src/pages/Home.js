@@ -2,7 +2,6 @@ import { CardWithBorder } from "@/components/Custom/CardComponents";
 import { DATE_TO_DISPLAY_FORMAT_EN, DATE_TO_DISPLAY_FORMAT_IT } from '@/utilities';
 import { AutoGraph, Inbox, School, TripOriginRounded, Widgets, Work } from "@mui/icons-material";
 import { Box, Divider, Grid, Tooltip, Typography } from "@mui/material";
-import { t } from 'i18next';
 import moment from 'moment';
 import { useMemo } from "react";
 import { useTranslation } from 'react-i18next';

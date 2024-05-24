@@ -12,7 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import jwtDecode from "jwt-decode";
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ import useSWR from 'swr';
 
 const drawerWidth = 300;
 
-function ResponsiveDrawer() {
+function ResponsiveDrawer({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { promiseInProgress } = usePromiseTracker();
@@ -70,7 +70,7 @@ function ResponsiveDrawer() {
           className='flex flex-col max-w-full min-h-screen text-dark-main'
         >
           {promiseInProgress && <Loading adaptToComponent />}
-          <Outlet />
+          {children ?? <Outlet />}
         </Box>
       </Box>
 
@@ -88,9 +88,10 @@ function authLogicsForAllPages() {
   const navigate = useNavigate();
 
   const { data, error, isLoading } = useSWR(UserService.getByIdUrl(authStore.user?.id, View.verbose), fetcher);
+  const isErrorPage = useMemo(() => window.location.pathname === '/dashboard/404' || window.location.pathname === '/dashboard/500', []);
 
   useEffect(() => {
-    if (window.location.pathname !== '/dashboard/404' && window.location.pathname !== '/dashboard/500') {
+    if (!isErrorPage) {
       if (!authStore.isLoggedIn) {
         navigate('/auth/sign-in');
       } else if (authStore.user && authStore.user.customizations && authStore.user.customizations.isSet !== true) {
@@ -110,7 +111,7 @@ function authLogicsForAllPages() {
   }, [store.user, authStore.user]);
 
   useEffect(() => {
-    if (data) {
+    if (!isErrorPage && data) {
       const user = new User(data.content);
       dispatch({ type: "replaceUser", payload: { user: user } });
     }

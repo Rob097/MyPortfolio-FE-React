@@ -513,5 +513,107 @@
                 }
             }
         }
+    },
+    "editor": {
+        "default-placeholder": "Scrivi la tua storia qui...",
+        "header": {
+            "headings": {
+                "tooltip": "Stili",
+                "empty": "Cambia lo stile del testo",
+                "paragraph": "Paragrafo",
+                "h1": "Intestazione 1",
+                "h2": "Intestazione 2",
+                "h3": "Intestazione 3",
+                "h4": "Intestazione 4",
+                "h5": "Intestazione 5",
+                "h6": "Intestazione 6"
+            },
+            "font-size": "Dimensione del carattere",
+            "bold": "Grassetto",
+            "italic": "Corsivo",
+            "underline": "Sottolineato",
+            "strike": "Barrato",
+            "subscript": "Pedice",
+            "superscript": "Apice",
+            "text-color": {
+                "tooltip": "Colore del testo",
+                "placeholder": "Es: #000000",
+                "remove": "Reset",
+                "cancel": "Annulla",
+                "save": "Ok"
+            },
+            "highlight-color": {
+                "tooltip": "Colore di evidenziazione",
+                "placeholder": "Es: #000000",
+                "remove": "Reset",
+                "cancel": "Annulla",
+                "save": "Ok"
+            },
+            "link": {
+                "tooltip": "Link",
+                "add": "Aggiungi Link",
+                "cancel": "Annulla",
+                "edit": "Modifica Link",
+                "url": "Link",
+                "save": "Salva",
+                "text": "Testo",
+                "view-edit": "Modifica",
+                "view-remove": "Rimuovi"
+            },
+            "text-align": {
+                "tooltip": "Allinea",
+                "left": "Allinea a sinistra",
+                "center": "Allinea al centro",
+                "right": "Allinea a destra",
+                "justify": "Giustifica"
+            },
+            "ordered-list": "Lista ordinata",
+            "bulleted-list": "Lista puntata",
+            "task-list": "Lista di attività",
+            "indent": "Aumenta rientro",
+            "unindent": "Riduci rientro",
+            "blockquote": "Citazione",
+            "code": "Codice",
+            "code-block": "Blocco di codice",
+            "upload-images": "Carica immagini",
+            "horizontal-rule": "Inserisci linea orizzontale",
+            "table": {
+                "tooltip": "Inserisci tabella",
+                "insertColumnBefore": "Inserisci colonna prima",
+                "insertColumnAfter": "Inserisci colonna dopo",
+                "deleteColumn": "Elimina colonna",
+                "insertRowAbove": "Inserisci riga sopra",
+                "insertRowBelow": "Inserisci riga sotto",
+                "deleteRow": "Elimina riga",
+                "mergeCells": "Unisci celle",
+                "splitCell": "Dividi cella",
+                "toggleHeaderRow": "Attiva/Disattiva riga di intestazione",
+                "toggleHeaderColumn": "Attiva/Disattiva colonna di intestazione",
+                "toggleHeaderCell": "Attiva/Disattiva cella di intestazione",
+                "deleteTable": "Elimina tabella"
+            },
+            "undo": "Annulla",
+            "redo": "Ripeti"
+        },
+        "footer": {
+            "hide-formatting": "Nascondi formattazione",
+            "show-formatting": "Mostra formattazione",
+            "prevent-edits": "Impedisci modifiche",
+            "allow-edits": "Permetti modifiche",
+            "instructions": "Premi “Salva” sopra per mostrare il markup HTML per il contenuto dell'editor. Tipicamente usi un approccio simile a <code>editor.getHTML()</code> per salvare i tuoi dati in un modulo.",
+            "snapshot": "Istantanea salvata in sola lettura:"
+        }
+    },
+    "error-pages": {
+        "404": {
+            "title": "Pagina non trovata",
+            "description": "Ouch, sembra che tu abbia perso la strada",
+            "button": "Torna alla home"
+        },
+        "500": {
+            "title": "Errore del server",
+            "description": "Ouch, qualcosa è andato storto",
+            "button": "Torna alla home"
+        }
     }
 }

@@ -10,19 +10,21 @@ import {
     insertImages
 } from "mui-tiptap";
 import { useCallback, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import EditorMenuControls from "./EditorMenuControls";
-import useExtensions from "./useExtensions";
 import classes from './MuiEditor.module.scss';
+import useExtensions from "./useExtensions";
 
 const MuiEditor = (props) => {
+    const { t } = useTranslation('dashboard');
     const rteRef = useRef(null);
     const [isEditable, setIsEditable] = useState(true);
     const [showMenuBar, setShowMenuBar] = useState(true);
     const [submittedContent, setSubmittedContent] = useState("");
 
     const extensions = useExtensions({
-        placeholder: "Add your own content here...",
+        placeholder: props.placeholder ?? t('editor.default-placeholder'),
     });
 
     ////////////////// IMAGE FUNCTIONS - START //////////////////////////
@@ -231,7 +233,7 @@ const MuiEditor = (props) => {
                             {props.showHideFormatting && <MenuButton
                                 value="formatting"
                                 tooltipLabel={
-                                    showMenuBar ? "Hide formatting" : "Show formatting"
+                                    showMenuBar ? t('editor.footer.hide-formatting') : t('editor.footer.show-formatting')
                                 }
                                 size="small"
                                 onClick={() =>
@@ -245,8 +247,8 @@ const MuiEditor = (props) => {
                                 value="formatting"
                                 tooltipLabel={
                                     isEditable
-                                        ? "Prevent edits (use read-only mode)"
-                                        : "Allow edits"
+                                        ? t('editor.footer.prevent-edits')
+                                        : t('editor.footer.allow-edits')
                                 }
                                 size="small"
                                 onClick={() => setIsEditable((currentState) => !currentState)}
@@ -263,7 +265,7 @@ const MuiEditor = (props) => {
                                     );
                                 }}
                             >
-                                Save
+                                {t('labels.save')}
                             </Button>
                             }
                         </Stack>
@@ -272,8 +274,35 @@ const MuiEditor = (props) => {
             >
                 {() => (
                     <>
-                        <LinkBubbleMenu />
-                        <TableBubbleMenu />
+                        <LinkBubbleMenu
+                            labels={{
+                                editLinkAddTitle: t('editor.header.link.add'),
+                                editLinkCancelButtonLabel: t('editor.header.link.cancel'),
+                                editLinkEditTitle: t('editor.header.link.edit'),
+                                editLinkHrefInputLabel: t('editor.header.link.url'),
+                                editLinkSaveButtonLabel: t('editor.header.link.save'),
+                                editLinkTextInputLabel: t('editor.header.link.text'),
+
+                                viewLinkEditButtonLabel: t('editor.header.link.view-edit'),
+                                viewLinkRemoveButtonLabel: t('editor.header.link.view-remove')
+                            }}
+                        />
+                        <TableBubbleMenu
+                            labels={{
+                                insertColumnBefore: t('editor.header.table.insertColumnBefore'),
+                                insertColumnAfter: t('editor.header.table.insertColumnAfter'),
+                                deleteColumn: t('editor.header.table.deleteColumn'),
+                                insertRowAbove: t('editor.header.table.insertRowAbove'),
+                                insertRowBelow: t('editor.header.table.insertRowBelow'),
+                                deleteRow: t('editor.header.table.deleteRow'),
+                                mergeCells: t('editor.header.table.mergeCells'),
+                                splitCell: t('editor.header.table.splitCell'),
+                                toggleHeaderRow: t('editor.header.table.toggleHeaderRow'),
+                                toggleHeaderColumn: t('editor.header.table.toggleHeaderColumn'),
+                                toggleHeaderCell: t('editor.header.table.toggleHeaderCell'),
+                                deleteTable: t('editor.header.table.deleteTable'),
+                            }}
+                        />
                     </>
                 )}
             </RichTextEditor>
@@ -292,7 +321,7 @@ const MuiEditor = (props) => {
 
                         <Box mt={3}>
                             <Typography variant="overline" sx={{ mb: 2 }}>
-                                Read-only saved snapshot:
+                                {t('editor.footer.snapshot')}
                             </Typography>
 
                             <RichTextReadOnly
@@ -302,11 +331,7 @@ const MuiEditor = (props) => {
                         </Box>
                     </>
                 ) : (
-                    <>
-                        Press “Save” above to show the HTML markup for the editor content.
-                        Typically you'd use a similar <code>editor.getHTML()</code> approach
-                        to save your data in a form.
-                    </>
+                    <p dangerouslySetInnerHTML={{ __html: t('editor.footer.instructions') }}></p>
                 )}
             </ShowIf>
         </div>
