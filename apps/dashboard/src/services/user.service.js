@@ -51,6 +51,14 @@ export class UserService {
         return this.update(user);
     }
 
+    static delete(userId) {
+        return fetcher(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/auth/${userId}`,
+            false,
+            constants.METHODS.DELETE
+        );
+    }
+
     /////////////////////////////////////////////////////////////////
 
     static uploadAvatar(id, file) {

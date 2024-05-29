@@ -260,7 +260,7 @@ const CreateOrEditStory = (props) => {
         if (existingStory) {
             if (existingStory.id) {
                 StoryService.delete(existingStory.id).then(() => {
-                    displayMessages([{ text: t('services.story.delete.ok'), level: 'info' }]);
+                    displayMessages([{ text: t('services.story.delete.ok'), level: 'success' }]);
                     removeStoryFromList(existingStory.tmpId);
                     closeAndGoBack();
                 }).catch((error) => {
@@ -283,12 +283,12 @@ const CreateOrEditStory = (props) => {
 
     const goBack = useCallback(() => {
         handleSubmit(submit)().then(() => {
-            if (isDirty && !isValid && !window.confirm(t('entity.edit.edit-story.go-back-check'))) {
+            if (isDirty && !isValid && !window.confirm(t('entities.edit.edit-story.go-back-check'))) {
                 return;
             }
             props.goBack();
         }).catch((error) => {
-            console.error(t('entity.edit.edit-story.go-back-error'), error);
+            console.error(t('entities.edit.edit-story.go-back-error'), error);
         });
     }, [handleSubmit, isDirty, isValid, props]);
 
@@ -624,6 +624,7 @@ const CreateOrEditStory = (props) => {
 
                                                             const isTitleError = errors?.relevantSections?.[index]?.title;
                                                             const isDescriptionError = errors?.relevantSections?.[index]?.description;
+                                                            const [sectionTitle, setSectionTitle] = useState(section.title);
 
                                                             return (
                                                                 <div {...provided.draggableProps} ref={provided.innerRef}>
@@ -647,7 +648,7 @@ const CreateOrEditStory = (props) => {
                                                                                         <DragHandleIcon color='primary' className='cursor-pointer' />
                                                                                     </span>
                                                                                     <Typography variant="h6" fontWeight={theme => theme.typography.fontWeightMedium} className='w-fit !mx-2'>
-                                                                                        {section.title}
+                                                                                        {sectionTitle}
                                                                                     </Typography>
                                                                                 </Box>
                                                                                 <Delete color='error' className='cursor-pointer' fontSize='small' onClick={event => handleOpenDeleteRelevantSectionDialog(event, index)} />
@@ -660,12 +661,17 @@ const CreateOrEditStory = (props) => {
                                                                                 rules={{ required: t('entities.edit.edit-story.relevant-sections.fields.title.required') }}
                                                                                 render={({ field, fieldState: { error } }) => (
                                                                                     <CustomTextField
+                                                                                        {...field}
                                                                                         label={t('entities.edit.edit-story.relevant-sections.fields.title.label')}
                                                                                         variant="outlined"
                                                                                         fullWidth
                                                                                         error={!!error}
                                                                                         helperText={error?.message}
-                                                                                        {...field}
+                                                                                        value={field.value}
+                                                                                        onChange={(e) => {
+                                                                                            setSectionTitle(e.target.value);
+                                                                                            field.onChange(e);
+                                                                                        }}
                                                                                     />
                                                                                 )}
                                                                             />

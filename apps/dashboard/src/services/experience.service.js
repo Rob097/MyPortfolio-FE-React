@@ -2,6 +2,7 @@ const constants = require('shared/utilities/constants');
 const { View } = require('shared/utilities/criteria');
 import { fetcher } from "./base.service";
 const EXPERIENCES_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/experiences';
+const FILES_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/files';
 
 export class ExperienceService {
 

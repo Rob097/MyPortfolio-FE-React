@@ -7,6 +7,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
+const ONE_MB = 1024 * 1024;
 const CoverImage = ({ coverImageUrl, setCoverImageUrl }) => {
     const { t } = useTranslation("dashboard");
     const myForm = useFormContext();

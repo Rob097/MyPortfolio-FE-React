@@ -64,7 +64,7 @@ const Home = () => {
                 <Grid item xs={12} md={6} lg={4}>
                     <MainEntity
                         topic={t('home.experience-title')}
-                        image='/images/experience.png'
+                        image={`${process.env.REACT_APP_DASHBOARD_URL}/images/experience.png`}
                         entity={experience}
                         type='experience'
                         newLink='/dashboard/experiences/new'

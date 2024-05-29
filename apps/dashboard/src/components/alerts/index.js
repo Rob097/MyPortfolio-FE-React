@@ -74,7 +74,7 @@ export const CustomAlert = forwardRef((props, ref) => {
     <SnackbarContent
       ref={ref}
       role="alert"
-      {...other}
+      //{...other}
     >
       <Alert severity={variant} onClose={() => closeSnackbar(id)} sx={{ width: '100%', maxWidth: '30em' }}>
         <AlertTitle>

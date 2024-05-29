@@ -42,5 +42,83 @@
             "matchingPassword-required": "Ripeti la tua password",
             "matchingPassword-notMatch": "Le password non coincidono"
         }
+    },
+    "setup": {
+        "first-slide": "Benvenuto {{name}}",
+        "second-slide": "Impostiamo il tuo profilo",
+        "fourth-slide": {
+            "title": "Sei pronto!",
+            "subtitle": "Ti stiamo reindirizzando alla tua dashboard...",
+            "error-title": "Devi completare il setup",
+            "error-subtitle": "Torna indietro e completa il setup"
+        },
+        "stepper": {
+            "optional": "Opzionale",
+            "next": "Avanti",
+            "back": "Indietro",
+            "finish": "Fine",
+            "address": {
+                "title": "Indirizzo",
+                "subtitle": "Dove vivi?",
+                "fields": {
+                    "nation": {
+                        "label": "Nazione",
+                        "required": "La nazione è obbligatoria",
+                        "placeholder": "La tua nazione"
+                    },
+                    "region": {
+                        "label": "Regione",
+                        "required": "La regione è obbligatoria",
+                        "placeholder": "La tua regione"
+                    },
+                    "city": {
+                        "label": "Città",
+                        "required": "La città è obbligatoria",
+                        "placeholder": "La tua città"
+                    },
+                    "cap": {
+                        "label": "CAP",
+                        "required": "Il CAP è obbligatorio",
+                        "placeholder": "Il tuo CAP"
+                    },
+                    "address": {
+                        "label": "Indirizzo",
+                        "required": "L'indirizzo è obbligatorio",
+                        "placeholder": "Il tuo indirizzo"
+                    }
+                }
+            },
+            "who": {
+                "title": "Chi sei?",
+                "fields": {
+                    "type": {
+                        "label": "Tipo",
+                        "required": "Il tipo è obbligatorio",
+                        "placeholder": "Studente / Professionista / Organizzazione",
+                        "options": {
+                            "student": "Studente",
+                            "professional": "Professionista",
+                            "organization": "Organizzazione"
+                        }
+                    },
+                    "role": {
+                        "label": "Ruolo",
+                        "required": "Il ruolo è obbligatorio",
+                        "placeholder": "La tua Scuola / Professione / Ruolo"
+                    },
+                    "bio": {
+                        "label": "Bio",
+                        "required": "La bio è obbligatoria",
+                        "placeholder": "Scrivi qualcosa su di te..."
+                    }
+                }
+            },
+            "skills": {
+                "title": "Le tue competenze",
+                "subtitle-1": "Scegli 3 competenze che ti rappresentano di più",
+                "subtitle-2": "Potrai aggiungerne altre in seguito",
+                "subtitle-3": "Se non trovi la competenza che stai cercando, potrai crearla in seguito"
+            }
+        }
     }
 }

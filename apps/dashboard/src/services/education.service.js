@@ -2,6 +2,7 @@ const constants = require('shared/utilities/constants');
 const { View } = require('shared/utilities/criteria');
 import { fetcher } from "./base.service";
 const EDUCATIONS_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/educations';
+const FILES_URL = process.env.NEXT_PUBLIC_BASE_URL + '/core/files';
 
 export class EducationService {
 

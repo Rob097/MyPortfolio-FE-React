@@ -150,7 +150,7 @@ export default function useExtensions({
             }),
             TextStyle,
             Color,
-            FontFamily,
+            //FontFamily, // commented because otherwise, sometimes the font family is set differently from Montserrat
             FontSize,
             Highlight.configure({ multicolor: true }),
             HorizontalRule,

@@ -27,9 +27,9 @@ const primaryLinks = [
 ];
 
 const secondaryLinks = [
-    { text: 'Projects', icon: <WidgetsIcon />, to: '/dashboard/projects' },
     { text: 'Experiences', icon: <WorkIcon />, to: '/dashboard/experiences' },
     { text: 'Educations', icon: <SchoolIcon />, to: '/dashboard/educations' },
+    { text: 'Projects', icon: <WidgetsIcon />, to: '/dashboard/projects' },
 ];
 
 const SHOW_SEARCH_BAR = false;

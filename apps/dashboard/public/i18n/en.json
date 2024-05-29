@@ -117,6 +117,7 @@
         "category-placeholder": "Search categories",
         "add-skill": "Add \"{{name}}\"",
         "start-typing": "Start typing to search for skills",
+        "start-typing-category": "Start typing to search for categories",
         "no-skill-found": "No skill found"
     },
     "user-profile": {
@@ -187,8 +188,17 @@
                 "title": "Socials"
             },
             "main-story-not-found": "Main story not found",
+            "main-story-required": "Main story is required",
             "your-story": "Your Story",
-            "your-story-info": "Write your personal story here. This is the first thing people will see when they visit your profile."
+            "your-story-info": "Write your personal story here. This is the first thing people will see when they visit your profile.",
+            "delete-profile": {
+                "title": "Delete Profile",
+                "confirmation": "Are you sure you want to delete your profile?<br/> Please enter your full name to confirm.<br/><b>{{fullName}}</b>",
+                "fullname": "Full Name",
+                "error": "The name entered does not match the full name on the profile.",
+                "cancel": "Cancel",
+                "delete": "Delete"
+            }
         },
         "skills": {
             "main-title": "Skills",
@@ -205,6 +215,7 @@
         "less-options": "Less Options",
         "add": "Add",
         "save": "Save",
+        "confirm": "Confirm",
         "change": "Change",
         "remove": "Remove",
         "close": "Close",
@@ -425,7 +436,16 @@
                     "employmentType": {
                         "label": "Employment Type",
                         "required": "Employment Type is required",
-                        "select": "Select an employment type"
+                        "select": "Select an employment type",
+                        "FULL_TIME": "Full Time",
+                        "PART_TIME": "Part Time",
+                        "SELF_EMPLOYED": "Self Employed",
+                        "FREELANCE": "Freelance",
+                        "CONTRACT": "Contract",
+                        "INTERNSHIP": "Internship",
+                        "APPRENTICESHIP": "Apprenticeship",
+                        "SEASONAL": "Seasonal",
+                        "VOLUNTEER": "Volunteer"
                     },
                     "company": {
                         "label": "Company Name",

@@ -1,9 +1,9 @@
 const constants = require('@rob097/common-lib/constants');
 import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
-import { fetcher } from "@/services/base.service";
+import { BASE_URL, fetcher } from "@/services/base.service";
 import { Experience, ExperienceQ } from "../models/experience.model";
 import useSWR from "swr";
-const EXPERIENCES_URL = constants.BASE_URL + '/core/experiences';
+const EXPERIENCES_URL = BASE_URL + '/core/experiences';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function useUserExperiences(userId: number, view?: View) {

@@ -71,7 +71,10 @@ const Diary = () => {
     }
 
     function getDatesRange(entity) {
-        return new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT") + " - " + (entity.toDate ? new Date(entity.toDate).toLocaleDateString("it-IT") : t('user-home:quick-overview.present'));
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const fromDate = new Date(entity.fromDate || entity.updatedAt).toLocaleDateString("it-IT", options);
+        const toDate = entity.toDate ? new Date(entity.toDate).toLocaleDateString("it-IT", options) : t('user-home:quick-overview.present');
+        return `${fromDate} - ${toDate}`;
     }
 
     // take the entities passed as paramerer and order them by date

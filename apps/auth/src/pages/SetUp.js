@@ -1,6 +1,5 @@
 import { setUpProfile } from '@/services/auth.service';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Button, Chip, FormControl, FormHelperText, Grid, LinearProgress, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControl, FormHelperText, Grid, LinearProgress, MenuItem, Select, TextField, Typography } from "@mui/material";
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
@@ -15,13 +14,17 @@ import TextArea from 'shared/components/TextArea';
 import { useAuthStore } from "shared/stores/AuthStore";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import SkillsSearchSelect from '../components/skills/SkillsSearchSelect';
 import { User } from "../models/user.model";
+import LanguageSelector from '../components/headerNavbar/languageSelector';
 
 const SetUp = () => {
     const [store, dispatch] = useAuthStore();
     const navigate = useNavigate();
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [slickSlider, setSlickSlider] = useState(null);
+    const [errorMessage, setErrorMessage] = useState();
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     // If not allowed, redirect to home
     useEffect(() => {
@@ -36,6 +39,7 @@ const SetUp = () => {
         dots: false,
         arrows: false,
         infinite: false,
+        swipe: false,
         autoplay: currentSlideIndex >= 2 ? false : true,
         autoplaySpeed: 1500,
         speed: 500,
@@ -48,33 +52,45 @@ const SetUp = () => {
     }), [currentSlideIndex]);
 
     return (
-        <Box component="section" className="min-h-screen h-full flex flex-col">
-            {/* Display an h1 at 25% of the height of the screen: */}
-            <Box component="div" className="flex items-end justify-center" style={{ height: "25vh" }}>
-                <Typography variant="h1" component="h1" className="!text-6xl font-extrabold mb-4"><span className="text-primary-main">My</span><span className="text-dark">Portfolio</span></Typography>
-            </Box>
-            <Box component="div" className="h-full w-full slider-container" style={{ minHeight: "75vh" }}>
+        <>
+            {
+                errorMessage &&
+                <Box mb={2}>
+                    <Alert className="mt-2" severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
+                </Box>
+            }
+            <Box component="section" className="min-h-screen h-full flex flex-col">
+                {/* Display an h1 at 25% of the height of the screen: */}
+                <Box component="div" className="flex items-end justify-center" style={{ height: "25vh" }}>
+                    <Typography variant="h1" component="h1" className="!text-6xl font-extrabold mb-4"><span className="text-primary-main">My</span><span className="text-dark">Portfolio</span></Typography>
+                </Box>
+                <Box component="div" className="relative h-full w-full slider-container" style={{ minHeight: "75vh" }}>
 
-                <Slider
-                    {...settings}
-                    ref={slider => setSlickSlider(slider)}
-                >
-                    <div>
-                        <FirstSlide firstName={store.user?.firstName} isActive={currentSlideIndex === 0} />
-                    </div>
-                    <div>
-                        <SecondSlide isActive={currentSlideIndex === 1} />
-                    </div>
-                    <div>
-                        <ProfileStepper isActive={currentSlideIndex === 2} slickSlider={slickSlider} />
-                    </div>
-                    <div>
-                        <FourthSlide isActive={currentSlideIndex === 3} />
-                    </div>
-                </Slider>
+                    <Slider
+                        {...settings}
+                        ref={slider => setSlickSlider(slider)}
+                    >
+                        <div>
+                            <FirstSlide firstName={store.user?.firstName} isActive={currentSlideIndex === 0} />
+                        </div>
+                        <div>
+                            <SecondSlide isActive={currentSlideIndex === 1} />
+                        </div>
+                        <div>
+                            <ProfileStepper isActive={currentSlideIndex === 2} slickSlider={slickSlider} setErrorMessage={setErrorMessage} setCurrentSlideIndex={setCurrentSlideIndex} setHasSubmitted={setHasSubmitted} />
+                        </div>
+                        <div>
+                            <FourthSlide isActive={currentSlideIndex === 3} slickSlider={slickSlider} hasSubmitted={hasSubmitted} />
+                        </div>
+                    </Slider>
 
+                    <Box className="fixed bottom-0 left-0 mb-4 ml-4">
+                        <LanguageSelector />
+                    </Box>
+
+                </Box>
             </Box>
-        </Box>
+        </>
     );
 };
 
@@ -104,27 +120,34 @@ const SimpleSlide = (props) => {
 }
 
 const FirstSlide = ({ isActive, firstName }) => {
+    const { t, i18n } = useTranslation("auth");
+
     return (
         <SimpleSlide isActive={isActive}>
-            Welcome, {firstName}
+            {t('setup.first-slide', { name: firstName })}
         </SimpleSlide>
     );
 }
 
 const SecondSlide = ({ isActive }) => {
+    const { t, i18n } = useTranslation("auth");
+
     return (
         <SimpleSlide isActive={isActive}>
-            Let's set up your profile.
+            {t('setup.second-slide')}
         </SimpleSlide>
     );
 }
 
-const FourthSlide = ({ isActive }) => {
+const FourthSlide = ({ isActive, slickSlider, hasSubmitted }) => {
+    const { t, i18n } = useTranslation("auth");
     const navigate = useNavigate();
 
     /* After 5 seconds redirect the user to the /dashboard/home */
     useEffect(() => {
-        if (isActive) {
+        console.log('Fourth slide effect', isActive, hasSubmitted);
+        if (isActive && hasSubmitted) {
+            console.log('Redirecting to /dashboard/home');
             const time = setTimeout(() => {
                 navigate('/dashboard/home');
             }, 5000);
@@ -133,22 +156,33 @@ const FourthSlide = ({ isActive }) => {
                 clearTimeout(time);
             };
         }
-    }, [isActive]);
+    }, [isActive, hasSubmitted]);
 
     return (
         <SimpleSlide isActive={isActive} fullHeight>
             <Box className="mt-20">
-                <Typography variant='h3'>You're all set!</Typography>
-                <Typography variant='body1'>Redirecting you to your dashboard...</Typography>
-                <img src={`${process.env.REACT_APP_AUTH_URL}/images/party-popper.png`} alt="party-popper" width={150} height={150} className='mx-auto mt-10' />
+                {hasSubmitted && (
+                    <>
+                        <Typography variant='h3'>{t('setup.fourth-slide.title')}</Typography>
+                        <Typography variant='body1'>{t('setup.fourth-slide.subtitle')}</Typography>
+                        <img src={`${process.env.REACT_APP_AUTH_URL}/images/party-popper.png`} alt="party-popper" width={150} height={150} className='mx-auto mt-10' />
+                    </>
+                )}
+                {!hasSubmitted && (
+                    <>
+                        <Typography variant='h3'>{t('setup.fourth-slide.error-title')}</Typography>
+                        <Typography variant='body1'>{t('setup.fourth-slide.error-subtitle')}</Typography>
+                        <Button variant="contained" color="primary" size="medium" onClick={() => slickSlider.slickPrev()}>{t('setup.stepper.back')}</Button>
+                    </>
+                )}
             </Box>
         </SimpleSlide>
     );
 }
 
-const ProfileStepper = ({ isActive, slickSlider }) => {
-    const steps = ['Address', 'Who are you?', 'Your Skills'];
-    const { t, i18n } = useTranslation();
+const ProfileStepper = ({ isActive, slickSlider, setErrorMessage, setCurrentSlideIndex, setHasSubmitted }) => {
+    const { t, i18n } = useTranslation("auth");
+    const steps = [t('setup.stepper.address.title'), t('setup.stepper.who.title'), t('setup.stepper.skills.title')];
     const [activeStep, setActiveStep] = useState(0);
     const [store, dispatch] = useAuthStore();
     const [info, setInfo] = useState({});
@@ -180,12 +214,16 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
         if (data.skills?.length > 3) {
             data.skills = data.skills.slice(0, 3);
         }
-
         setInfo(oldData => ({ ...oldData, ...data }));
     }
 
     useEffect(() => {
         if (activeStep === 2 && info?.skills) {
+
+            info.skills = info.skills.map(skill => {
+                return skill.id;
+            });
+
             trackPromise(
                 setUpProfile(info, store.user?.id, store.token)
                     .then(async response => {
@@ -194,17 +232,25 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
                             throw bodyResponse.messages;
                         }
 
+                        setHasSubmitted(true);
                         const newCustostomizations = bodyResponse.content.customizations;
                         const user = new User({ ...store.user, customizations: newCustostomizations });
 
-                        dispatch({ 
-                            type: 'replaceUser', 
+                        dispatch({
+                            type: 'replaceUser',
                             payload: { user: user }
                         });
+
+                        setCurrentSlideIndex(3);
                         slickSlider.slickGoTo(3);
                     })
                     .catch((error) => {
                         console.log(error);
+                        if (error.length > 0) {
+                            setErrorMessage(error[0]?.text);
+                        } else {
+                            setErrorMessage(JSON.stringify(error) !== '{}' ? JSON.stringify(error) : t('sign-in.generic-error'));
+                        }
                         throw error;
                     })
             );
@@ -222,7 +268,7 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
                         const labelProps = {};
                         if (isStepOptional(index)) {
                             labelProps.optional = (
-                                <Typography variant="caption">Optional</Typography>
+                                <Typography variant="caption">{t('setup.stepper.optional')}</Typography>
                             );
                         }
                         return (
@@ -265,7 +311,7 @@ const ProfileStepper = ({ isActive, slickSlider }) => {
 };
 
 const AddressForm = ({ handleSubmitAddress, info }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const { register, handleSubmit, formState: { errors }, reset, setValue, getFieldState } = useForm();
 
     useEffect(() => {
@@ -283,7 +329,7 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
             onSubmit={handleSubmit((data) => handleSubmitAddress(data))}
         >
             <Box className="my-10">
-                <Typography variant="h3" className="text-4xl font-extrabold">Where do you live?</Typography>
+                <Typography variant="h3" className="text-4xl font-extrabold">{t('setup.stepper.address.subtitle')}</Typography>
             </Box>
 
             <Box component="div" className="flex flex-col md:flex-row gap-4 justify-center items-center mt-4">
@@ -291,12 +337,12 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
                 <TextField
                     type="text"
                     id="nation"
-                    placeholder="Italy"
+                    placeholder={t('setup.stepper.address.fields.nation.placeholder')}
                     name="nation"
-                    label={t('Nation')}
-                    aria-label={t('Nation')}
+                    label={t('setup.stepper.address.fields.nation.label')}
+                    aria-label={t('setup.stepper.address.fields.nation.label')}
                     variant="outlined"
-                    {...register("nation", { required: t('profile.set-up.validations.nation-required') })}
+                    {...register("nation", { required: t('setup.stepper.address.fields.nation.required') })}
                     error={errors.nation && true}
                     helperText={errors.nation?.message}
                     color='primary'
@@ -306,12 +352,12 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
                 <TextField
                     type="text"
                     id="region"
-                    placeholder="Trento"
+                    placeholder={t('setup.stepper.address.fields.region.placeholder')}
                     name="region"
-                    label={t('Region')}
-                    aria-label={t('Region')}
+                    label={t('setup.stepper.address.fields.region.label')}
+                    aria-label={t('setup.stepper.address.fields.region.label')}
                     variant="outlined"
-                    {...register("region", { required: t('profile.set-up.validations.region-required') })}
+                    {...register("region", { required: t('setup.stepper.address.fields.region.required') })}
                     error={errors.region && true}
                     helperText={errors.region?.message}
                     color='primary'
@@ -321,12 +367,12 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
                 <TextField
                     type="text"
                     id="city"
-                    placeholder="Predazzo"
+                    placeholder={t('setup.stepper.address.fields.city.placeholder')}
                     name="city"
-                    label={t('City')}
-                    aria-label={t('City')}
+                    label={t('setup.stepper.address.fields.city.label')}
+                    aria-label={t('setup.stepper.address.fields.city.label')}
                     variant="outlined"
-                    {...register("city", { required: t('profile.set-up.validations.city-required') })}
+                    {...register("city", { required: t('setup.stepper.address.fields.city.required') })}
                     error={errors.city && true}
                     helperText={errors.city?.message}
                     color='primary'
@@ -339,12 +385,12 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
                 <TextField
                     type="text"
                     id="cap"
-                    placeholder="38037"
+                    placeholder={t('setup.stepper.address.fields.cap.placeholder')}
                     name="cap"
-                    label={t('CAP')}
-                    aria-label={t('cap')}
+                    label={t('setup.stepper.address.fields.cap.label')}
+                    aria-label={t('setup.stepper.address.fields.cap.label')}
                     variant="outlined"
-                    {...register("cap", { required: t('profile.set-up.validations.cap-required') })}
+                    {...register("cap", { required: t('setup.stepper.address.fields.cap.required') })}
                     error={errors.cap && true}
                     helperText={errors.cap?.message}
                     color='primary'
@@ -354,12 +400,12 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
                 <TextField
                     type="text"
                     id="address"
-                    placeholder="Via Garibaldi 74"
+                    placeholder={t('setup.stepper.address.fields.address.placeholder')}
                     name="address"
-                    label={t('Address')}
-                    aria-label={t('address')}
+                    label={t('setup.stepper.address.fields.address.label')}
+                    aria-label={t('setup.stepper.address.fields.address.label')}
                     variant="outlined"
-                    {...register("address", { required: t('profile.set-up.validations.address-required') })}
+                    {...register("address", { required: t('setup.stepper.address.fields.address.required') })}
                     error={errors.address && true}
                     helperText={errors.address?.message}
                     color='primary'
@@ -368,14 +414,14 @@ const AddressForm = ({ handleSubmitAddress, info }) => {
             </Box>
 
             <Box component="div" className="flex justify-end mt-4">
-                <Button type="submit" variant="contained" color="primary" size="medium">Next</Button>
+                <Button type="submit" variant="contained" color="primary" size="medium">{t('setup.stepper.next')}</Button>
             </Box>
         </Box>
     );
 }
 
 const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const { register, handleSubmit, formState: { errors }, reset, watch, getValues, setValue, getFieldState } = useForm();
     const type = watch('type', 'default');
 
@@ -396,7 +442,7 @@ const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
         >
 
             <Box className="my-10">
-                <Typography variant="h3" className="text-4xl font-extrabold">Who are you?</Typography>
+                <Typography variant="h3" className="text-4xl font-extrabold">{t('setup.stepper.who.title')}</Typography>
             </Box>
 
             <Box>
@@ -417,22 +463,22 @@ const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
                                     className="text-left"
                                 >
                                     <MenuItem value="default" disabled>
-                                        <em>Student / Professional / Organizzation</em>
+                                        <em>{t('setup.stepper.who.fields.type.placeholder')}</em>
                                     </MenuItem>
-                                    <MenuItem value="student">Student</MenuItem>
-                                    <MenuItem value="professional">Professional</MenuItem>
-                                    <MenuItem value="organization">Organization</MenuItem>
+                                    <MenuItem value="student">{t('setup.stepper.who.fields.type.options.student')}</MenuItem>
+                                    <MenuItem value="professional">{t('setup.stepper.who.fields.type.options.professional')}</MenuItem>
+                                    <MenuItem value="organization">{t('setup.stepper.who.fields.type.options.organization')}</MenuItem>
                                 </Select>
-                                {errors.type && <FormHelperText error>{t('profile.set-up.validations.type-required')}</FormHelperText>}
+                                {errors.type && <FormHelperText error>{t('setup.stepper.who.fields.type.required')}</FormHelperText>}
                             </FormControl>
 
                             <TextField
                                 type="text"
                                 id="role"
-                                placeholder="Your School / Profession / Role"
+                                placeholder={t('setup.stepper.who.fields.role.placeholder')}
                                 name="role"
                                 variant="outlined"
-                                {...register("role", { required: t('profile.set-up.validations.role-required') })}
+                                {...register("role", { required: t('setup.stepper.who.fields.role.required') })}
                                 error={errors.role && true}
                                 helperText={errors.role?.message}
                                 color='primary'
@@ -443,13 +489,13 @@ const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
                     <Grid item xs={12} sm={6}>
                         <TextArea
                             id="bio"
-                            placeholder="Write something about you..."
+                            placeholder={t('setup.stepper.who.fields.bio.placeholder')}
                             name="bio"
-                            aria-label={t('Bio')}
+                            aria-label={t('setup.stepper.who.fields.bio.label')}
                             minRows={5}
                             maxRows={10}
                             style={{ width: '100%' }}
-                            {...register("bio", { required: t('profile.set-up.validations.bio-required') })}
+                            {...register("bio", { required: t('setup.stepper.who.fields.bio.required') })}
                             error={errors.bio && true}
                             helpertext={errors.bio?.message}
                             maxLength={150}
@@ -459,96 +505,38 @@ const PersonalInfoForm = ({ handleSubmitPersonalInfo, handleBack, info }) => {
             </Box>
 
             <Box component="div" className="flex justify-between mt-4">
-                <Button type="button" variant="contained" color="primary" size="medium" onClick={handleBack}>Back</Button>
-                <Button type="submit" variant="contained" color="primary" size="medium">Next</Button>
+                <Button type="button" variant="contained" color="primary" size="medium" onClick={handleBack}>{t('setup.stepper.back')}</Button>
+                <Button type="submit" variant="contained" color="primary" size="medium">{t('setup.stepper.next')}</Button>
             </Box>
         </Box>
     );
 }
 
 const SkillsForm = ({ handleSubmitSkills, handleBack, info }) => {
-    const { t } = useTranslation();
-    const { register, handleSubmit, formState: { errors }, watch, getValues, setValue, getFieldState } = useForm();
-    const skills = watch('skills', []);
-
-    const availableSkills = [
-        { id: 1, name: 'Java' },
-        { id: 2, name: 'React' },
-        { id: 3, name: 'MySql' },
-    ]
-
-    useEffect(() => {
-        for (const key in info) {
-            if (getFieldState(key)) {
-                setValue(key, info[key]);
-            }
-        }
-    }, [info]);
-
-    const handleDeleteSkill = (e, skill) => {
-        e.preventDefault();
-        const values = getValues('skills');
-        const newValues = values.filter(value => value !== skill);
-        setValue('skills', newValues);
-    }
+    const { t } = useTranslation("auth");
+    const skillsForm = useForm(); //{ register, handleSubmit, formState: { errors }, watch, getValues, setValue, getFieldState }
 
     /* Form with a chip input where a user can write in three different skills */
     return (
         <Box
             component="form"
             role="form"
-            onSubmit={handleSubmit((data) => handleSubmitSkills(data))}
+            onSubmit={skillsForm.handleSubmit((data) => handleSubmitSkills(data))}
         >
             <Box className="my-10">
-                <Typography variant="h3" className="text-4xl font-extrabold">Choose 3 skills that most represents you</Typography>
-                <Typography variant="body1" className="text-lg font-bold">You will be able to add more later on</Typography>
+                <Typography variant="h3" className="text-4xl font-extrabold">{t('setup.stepper.skills.subtitle-1')}</Typography>
+                <Typography variant="body1" className="text-lg font-bold">{t('setup.stepper.skills.subtitle-2')}</Typography>
+                <Typography variant="body2">{t('setup.stepper.skills.subtitle-3')}</Typography>
             </Box>
 
             <Box component="div" className="flex flex-col" style={{ maxWidth: '40rem' }}>
-                <FormControl fullWidth>
-                    <Select
-                        labelId="skills-label"
-                        id="skills"
-                        name="skills"
-                        {...register("skills", { required: t('profile.set-up.validations.skill-required'), validate: value => value.length === 3 })}
-                        error={errors.skills && true}
-                        color='primary'
-                        size="small"
-                        multiple
-                        value={skills ? skills : []}
-                        className="text-left"
-                        renderValue={(selected) => (
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {selected.map((value) => (
-                                    <Chip
-                                        key={value}
-                                        id={value}
-                                        label={availableSkills.find(skill => skill.id === value).name}
-                                        deleteIcon={
-                                            <CancelIcon
-                                                onMouseDown={(event) => event.stopPropagation()}
-                                            />
-                                        }
-                                        onMouseDown={(event) => event.stopPropagation()}
-                                        onDelete={(e) => handleDeleteSkill(e, value)}
-                                    />
-                                ))}
-                            </Box>
-                        )}
-                    >
-                        {availableSkills.map((availableSkill) => (
-                            <MenuItem key={availableSkill.id} value={availableSkill.id} disabled={skills?.length >= 3 && !skills?.includes(availableSkill.id)}>
-                                {availableSkill.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    {errors.skills && <FormHelperText error>{t('profile.set-up.validations.skill-required')}</FormHelperText>}
-                </FormControl>
+                <SkillsSearchSelect myForm={skillsForm} numberOfMain={3} />
+                {/* <NewSkill afterCreationAction={addNewSkill} /> */}
             </Box>
 
             <Box component="div" className="flex justify-between mt-4">
-                <Button type="button" variant="contained" color="primary" size="medium" onClick={handleBack}>Back</Button>
-                <Button type="submit" variant="contained" color="primary" size="medium">Finish</Button>
+                <Button type="button" variant="contained" color="primary" size="medium" onClick={handleBack}>{t('setup.stepper.back')}</Button>
+                <Button type="submit" variant="contained" color="primary" size="medium">{t('setup.stepper.finish')}</Button>
             </Box>
         </Box>
     );

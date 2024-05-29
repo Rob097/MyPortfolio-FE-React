@@ -138,11 +138,11 @@ body {
 }
 
 /** MUI INPUT **/
-:not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
+/* :not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
   top: 50%;
   left: 10px;
   transform: translateY(-50%) translateX(0);
-}
+} */
 
 li.MuiMenuItem-root {
   margin: 8px;
@@ -169,9 +169,9 @@ a {
 }
 
 // label with class Mui-error without class Mui-focused
-label.Mui-error:not(.Mui-focused) {
+/* label.Mui-error:not(.Mui-focused) {
   top: 35% !important;
-}
+} */
 
 .disabled {
   pointer-events:none; //This makes it not clickable

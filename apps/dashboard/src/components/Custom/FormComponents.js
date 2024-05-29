@@ -18,7 +18,8 @@ export const CustomTextArea = styled(TextField)(({ theme }) => ({
     },
     '& .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused)': {
         top: '0 !important',
-        transform: 'translateY(16px) !important'
+        transform: 'translateY(16px) !important',
+        left: '10px'
     }
 }));
 

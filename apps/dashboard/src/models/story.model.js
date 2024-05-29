@@ -15,6 +15,7 @@ export class Story extends SlugDto {
     orderInExperience;
     skills;
     relevantSections;
+    status;
 
     constructor(obj) {
         super(obj);
@@ -31,6 +32,7 @@ export class Story extends SlugDto {
         this.orderInExperience = obj.orderInExperience;
         this.skills = obj.skills;
         this.relevantSections = obj.relevantSections;
+        this.status = obj.status;
     }
 }
 

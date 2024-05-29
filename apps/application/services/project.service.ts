@@ -1,10 +1,10 @@
 import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
 import { Project, ProjectQ } from "@/models/project.model";
-import { fetcher } from "@/services/base.service";
+import { BASE_URL, fetcher } from "@/services/base.service";
 import useSWR from "swr";
 
 const constants = require('@rob097/common-lib/constants');
-const PROJECTS_URL = constants.BASE_URL + '/core/projects';
+const PROJECTS_URL = BASE_URL + '/core/projects';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function useUserProjects(userId: number, view?: View) {

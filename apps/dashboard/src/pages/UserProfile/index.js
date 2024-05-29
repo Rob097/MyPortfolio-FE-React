@@ -7,18 +7,24 @@ import NewSkill from '@/components/skills/NewSkill';
 import SkillsSearchSelect from '@/components/skills/SkillsSearchSelect';
 import { StoryService } from "@/services/story.service";
 import { UserService } from "@/services/user.service";
-import { Facebook, Info, Instagram, LinkedIn, Save, Twitter } from '@mui/icons-material';
+import { Delete, Facebook, Info, Instagram, LinkedIn, Save, Twitter } from '@mui/icons-material';
 import { Box, Button, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import { cloneDeep } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import { useController, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { trackPromise } from 'react-promise-tracker';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker, useNavigate } from 'react-router-dom';
+import { useAuthStore } from "shared/stores/AuthStore";
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { MAX_FILE_SIZE } from "shared/utilities/constants";
 
@@ -38,6 +44,11 @@ const UserProfile = () => {
             return;
         }
 
+        if (!data.customizations.mainStory) {
+            displayMessages([{ text: t('user-profile.about.main-story-required'), level: 'error' }]);
+            return;
+        }
+
         const isMainStoryToUpdate = hasMainStoryChanged();
         const isUserToUpdate = hasUserInfoChanged();
 
@@ -49,8 +60,12 @@ const UserProfile = () => {
 
         // Update the main story
         if (isMainStoryToUpdate) {
+            const mainStory = store.user
+                ?.diaries?.find(d => d?.isMain)
+                ?.stories?.find(s => s?.id === store.user?.mainStoryId);
+            mainStory.description = data.customizations.mainStory;
             trackPromise(
-                StoryService.update(data.customizations.mainStory)
+                StoryService.update(mainStory)
                     .then(async response => {
                         if (response.messages?.length === 0 && !isUserToUpdate) {
                             displayMessages([{ text: t('services.story.update.ok'), level: 'success' }]);
@@ -89,10 +104,11 @@ const UserProfile = () => {
         const data = cloneDeep(myForm.getValues());
         const dataToCheck = {};
         Object.keys(data).forEach(key => {
-            if (key !== 'customizations.profileImage' && key !== 'customizations.CV') {
-                dataToCheck[key] = store.user[key];
+            if (key === 'customizations') {
+                dataToCheck[key] = cloneDeep(data[key]);
+                dataToCheck[key].socials = cloneDeep(store.user.customizations?.socials);
             } else {
-                dataToCheck[key] = data[key];
+                dataToCheck[key] = cloneDeep(store.user[key]);
             }
         });
         return JSON.stringify(dataToCheck) !== JSON.stringify(data);
@@ -102,7 +118,7 @@ const UserProfile = () => {
     function hasMainStoryChanged() {
         const data = cloneDeep(myForm.getValues());
         return data.customizations.mainStory !== undefined
-            && data.customizations.mainStory.description !== store.user?.diaries
+            && data.customizations.mainStory !== store.user?.diaries
                 ?.find(d => d.isMain)?.stories
                 ?.find(s => s.id === store.user?.mainStoryId)
                 ?.description;
@@ -126,9 +142,11 @@ const UserProfile = () => {
                 <Box className='flex flex-row items-center justify-between'>
                     <Typography variant='h1' fontWeight={theme => theme.typography.fontWeightBold} className="!text-4xl !my-4" >{t('user-profile.title')}</Typography>
                 </Box>
-                <GeneralInformation myForm={myForm} />
-                <About myForm={myForm} />
-                <Skills myForm={myForm} />
+                <FormProvider {...myForm}>
+                    <GeneralInformation />
+                    <About />
+                    <Skills />
+                </FormProvider>
             </Box>
             <Tooltip title={myForm.formState.isValid ? t('labels.save') : 'Fill all the required fields'} placement='top' arrow>
                 <span className='fixed bottom-6 right-6' style={{ zIndex: 9 }}>
@@ -143,7 +161,8 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-const GeneralInformation = ({ myForm }) => {
+const GeneralInformation = () => {
+    const myForm = useFormContext();
     const [store, dispatch] = useDashboardStore();
     const { t } = useTranslation("dashboard");
     const [completeAt, setCompleteAt] = useState(0);
@@ -235,7 +254,8 @@ const GeneralInformation = ({ myForm }) => {
         );
     }
 
-    const MainBody = ({ myForm }) => {
+    const MainBody = () => {
+        const myForm = useFormContext();
         const { t } = useTranslation("dashboard");
         return (
             <>
@@ -256,33 +276,57 @@ const GeneralInformation = ({ myForm }) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <CustomTextField
-                            label={t('user-profile.general-information.fields.first-name.label')}
-                            variant="outlined"
-                            fullWidth
-                            {...myForm.register('firstName', { required: t('user-profile.general-information.fields.first-name.required') })}
-                            error={myForm.formState.errors.firstName !== undefined}
-                            helperText={myForm.formState.errors.firstName?.message}
+                        <Controller
+                            control={myForm.control}
+                            name="firstName"
+                            rules={{ required: t('user-profile.general-information.fields.first-name.required') }}
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('user-profile.general-information.fields.first-name.label')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
                         />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <CustomTextField
-                            label={t('user-profile.general-information.fields.last-name.label')}
-                            variant="outlined"
-                            fullWidth
-                            {...myForm.register('lastName', { required: t('user-profile.general-information.fields.last-name.required') })}
-                            error={myForm.formState.errors.lastName !== undefined}
-                            helperText={myForm.formState.errors.lastName?.message}
+                        <Controller
+                            control={myForm.control}
+                            name="lastName"
+                            rules={{ required: t('user-profile.general-information.fields.last-name.required') }}
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('user-profile.general-information.fields.last-name.label')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
                         />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <CustomTextField
-                            label={t('user-profile.general-information.fields.email.label')}
-                            variant="outlined"
-                            fullWidth
-                            {...myForm.register('email', { required: t('user-profile.general-information.fields.email.required') })}
-                            error={myForm.formState.errors.email !== undefined}
-                            helperText={myForm.formState.errors.email?.message}
+                        <Controller
+                            control={myForm.control}
+                            name="email"
+                            rules={{ required: t('user-profile.general-information.fields.email.required') }}
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextField
+                                    label={t('user-profile.general-information.fields.email.label')}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
                         />
                     </Grid>
                 </Grid>
@@ -290,38 +334,60 @@ const GeneralInformation = ({ myForm }) => {
                     <Grid item xs={12} md={4}>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
-                                <CustomTextField
-                                    label={t('user-profile.general-information.fields.profession.label')}
-                                    variant="outlined"
-                                    fullWidth
-                                    {...myForm.register('profession', { required: false })}
-                                    error={myForm.formState.errors.profession !== undefined}
-                                    helperText={myForm.formState.errors.profession?.message}
+                                <Controller
+                                    control={myForm.control}
+                                    name="profession"
+                                    render={({ field, fieldState: { error } }) => (
+                                        <CustomTextField
+                                            label={t('user-profile.general-information.fields.profession.label')}
+                                            variant="outlined"
+                                            fullWidth
+                                            error={!!error}
+                                            helperText={error?.message}
+                                            onChange={(e) => field.onChange(e.target.value)}
+                                            value={field.value || ''}
+                                        />
+                                    )}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <CustomTextField
-                                    label={t('user-profile.general-information.fields.slug.label')}
-                                    variant="outlined"
-                                    fullWidth
-                                    {...myForm.register('slug', { required: t('user-profile.general-information.fields.slug.required') })}
-                                    error={myForm.formState.errors.slug !== undefined}
-                                    helperText={myForm.formState.errors.slug?.message}
+                                <Controller
+                                    control={myForm.control}
+                                    name="slug"
+                                    rules={{ required: t('user-profile.general-information.fields.slug.required') }}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <CustomTextField
+                                            label={t('user-profile.general-information.fields.slug.label')}
+                                            variant="outlined"
+                                            fullWidth
+                                            error={!!error}
+                                            helperText={error?.message}
+                                            onChange={(e) => field.onChange(e.target.value)}
+                                            value={field.value || ''}
+                                        />
+                                    )}
                                 />
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12} md={8}>
-                        <CustomTextArea
-                            label={t('user-profile.general-information.fields.presentation.label')}
-                            placeholder={t('user-profile.general-information.fields.presentation.placeholder')}
-                            variant="outlined"
-                            fullWidth
-                            multiline
-                            rows={4}
-                            {...myForm.register('presentation', { required: false })}
-                            error={myForm.formState.errors.presentation !== undefined}
-                            helperText={myForm.formState.errors.presentation?.message}
+                        <Controller
+                            control={myForm.control}
+                            name="presentation"
+                            render={({ field, fieldState: { error } }) => (
+                                <CustomTextArea
+                                    label={t('user-profile.general-information.fields.presentation.label')}
+                                    placeholder={t('user-profile.general-information.fields.presentation.placeholder')}
+                                    variant="outlined"
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    onChange={(e) => field.onChange(e.target.value)}
+                                    value={field.value || ''}
+                                />
+                            )}
                         />
                     </Grid>
                 </Grid>
@@ -329,71 +395,41 @@ const GeneralInformation = ({ myForm }) => {
         )
     }
 
-    const SecondaryBody = ({ myForm }) => {
+    const SecondaryBody = () => {
+        const myForm = useFormContext();
         const { t } = useTranslation("dashboard");
         return (
-            <Grid container spacing={4}>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.nationality.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.nationality', { required: false })}
-                        error={myForm.formState.errors.nationality !== undefined}
-                        helperText={myForm.formState.errors.nationality?.message}
-                    />
+            <>
+                <Grid container spacing={4}>
+                    {[
+                        { name: 'address.nationality', required: false, label: 'user-profile.general-information.fields.nationality.label' },
+                        { name: 'address.nation', required: true, label: 'user-profile.general-information.fields.nation.label' },
+                        { name: 'address.province', required: true, label: 'user-profile.general-information.fields.province.label' },
+                        { name: 'address.city', required: true, label: 'user-profile.general-information.fields.city.label' },
+                        { name: 'address.cap', required: true, label: 'user-profile.general-information.fields.cap.label' },
+                        { name: 'address.address', required: true, label: 'user-profile.general-information.fields.address.label' },
+                    ].map(({ name, required, label }) => (
+                        <Grid item xs={12} sm={6} lg={4} key={name}>
+                            <Controller
+                                control={myForm.control}
+                                name={name}
+                                rules={{ required: required ? t(`${label}.required`) : false }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <CustomTextField
+                                        label={t(label)}
+                                        variant="outlined"
+                                        fullWidth
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value || ''}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.nation.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.nation', { required: t('user-profile.general-information.fields.nation.required') })}
-                        error={myForm.formState.errors.nation !== undefined}
-                        helperText={myForm.formState.errors.nation?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.province.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.province', { required: t('user-profile.general-information.fields.province.required') })}
-                        error={myForm.formState.errors.province !== undefined}
-                        helperText={myForm.formState.errors.province?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.city.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.city', { required: t('user-profile.general-information.fields.city.required') })}
-                        error={myForm.formState.errors.city !== undefined}
-                        helperText={myForm.formState.errors.city?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.cap.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.cap', { required: t('user-profile.general-information.fields.cap.required') })}
-                        error={myForm.formState.errors.cap !== undefined}
-                        helperText={myForm.formState.errors.cap?.message}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                    <CustomTextField
-                        label={t('user-profile.general-information.fields.address.label')}
-                        variant="outlined"
-                        fullWidth
-                        {...myForm.register('address.address', { required: t('user-profile.general-information.fields.address.required') })}
-                        error={myForm.formState.errors.address !== undefined}
-                        helperText={myForm.formState.errors.address?.message}
-                    />
-                </Grid>
-            </Grid>
+            </>
         )
     }
 
@@ -403,13 +439,14 @@ const GeneralInformation = ({ myForm }) => {
             mainTitle={t('user-profile.general-information.main-title')}
             secondaryTitle={t('user-profile.general-information.secondary-title')}
             badge={t('user-profile.general-information.percentage', { percentage: completeAt })}
-            MainBody={<MainBody myForm={myForm} />}
-            SecondaryBody={<SecondaryBody myForm={myForm} />}
+            MainBody={<MainBody />}
+            SecondaryBody={<SecondaryBody />}
         />
     )
 }
 
-const About = ({ myForm }) => {
+const About = () => {
+    const myForm = useFormContext();
     const [store, dispatch] = useDashboardStore();
     const { t } = useTranslation("dashboard");
     const isBiggerThanSm = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -420,15 +457,11 @@ const About = ({ myForm }) => {
 
             customizations?.CV?.en !== undefined && customizations?.CV?.en != null ? myForm.setValue('customizations.CV.en', customizations?.CV?.en) : null;
             customizations?.CV?.it !== undefined && customizations?.CV?.it != null ? myForm.setValue('customizations.CV.it', customizations?.CV?.it) : null;
-
-            myForm.setValue('customizations.socials.facebook', customizations?.socials?.facebook ?? '');
-            myForm.setValue('customizations.socials.twitter', customizations?.socials?.twitter ?? '');
-            myForm.setValue('customizations.socials.instagram', customizations?.socials?.instagram ?? '');
-            myForm.setValue('customizations.socials.linkedin', customizations?.socials?.linkedin ?? '');
         }
     }, [store.user]);
 
-    const MainBody = ({ myForm }) => {
+    const MainBody = () => {
+        const myForm = useFormContext();
         const { t } = useTranslation("dashboard");
 
         const currentMainStory = useMemo(() => (
@@ -436,33 +469,6 @@ const About = ({ myForm }) => {
                 ?.diaries?.find(d => d?.isMain)
                 ?.stories?.find(s => s?.id === store.user?.mainStoryId)
         ), [store.user.diaries, store.user.mainStoryId]);
-
-        function handleEditorChange(content) {
-            const newStory = { ...currentMainStory, description: content };
-            myForm.setValue('customizations.mainStory', newStory);
-        }
-
-        function handleSave(data) {
-            if (!currentMainStory) {
-                displayMessages([{ text: t('user-profile.about.main-story-not-found'), level: 'error' }]);
-                return;
-            }
-            currentMainStory.description = data;
-
-            trackPromise(
-                StoryService.update(currentMainStory)
-                    .then(async response => {
-                        if (response.messages?.length === 0) {
-                            displayMessages([{ text: t('services.story.update.ok'), level: 'success' }]);
-                        }
-                        UserService.invalidateCurrentUser();
-                    }).catch(err => {
-                        console.error('error', err);
-                        displayMessages([{ text: t('services.story.update.ko'), level: 'error' }]);
-                    })
-            );
-
-        }
 
         return (
             <>
@@ -474,12 +480,24 @@ const About = ({ myForm }) => {
                         <Info color='primary' className='ml-2' />
                     </Tooltip>
                 </Box>
-                <MuiEditor useComplete={false} existingText={currentMainStory?.description ?? ''} handleSave={handleSave} onChange={handleEditorChange} />
+                <Controller
+                    name="customizations.mainStory"
+                    control={myForm.control}
+                    defaultValue={currentMainStory?.description ?? ''}
+                    render={({ field }) => (
+                        <MuiEditor
+                            useComplete={false}
+                            existingText={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
             </>
         )
     }
 
-    const SecondaryBody = ({ myForm }) => {
+    const SecondaryBody = () => {
+        const myForm = useFormContext();
         const { t } = useTranslation("dashboard");
         const isBiggerThanXl = useMediaQuery((theme) => theme.breakpoints.up('xl'));
 
@@ -528,6 +546,68 @@ const About = ({ myForm }) => {
             );
         }
 
+        const DeleteUserProfile = ({ fullName }) => {
+            const [store, dispatch] = useDashboardStore();
+            const [authStore, authDispatch] = useAuthStore();
+            const navigate = useNavigate();
+            const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
+            const [inputName, setInputName] = useState('');
+
+            const isError = useMemo(() => inputName && inputName.toLowerCase() !== fullName.toLowerCase(), [inputName, fullName]);
+
+            const handleDelete = () => {
+                if (inputName && !isError) {
+                    deleteUserProfile();
+                    setConfirmDeleteModalOpen(false);
+                }
+            };
+
+            function deleteUserProfile() {
+                trackPromise(
+                    UserService.delete(store.user.id)
+                        .then(async response => {
+                            console.debug('response', response);
+                            authDispatch({ type: "logout" });
+                            dispatch({ type: "logout" });
+                            navigate('/auth/sign-up');
+                        }).catch(err => {
+                            console.error('error', err);
+                        })
+                );
+            }
+
+            return (
+                <>
+                    <Button variant="contained" color='error' size='large' startIcon={<Delete fontSize='medium' />} onClick={() => setConfirmDeleteModalOpen(true)} className='!mt-4'>{t('user-profile.about.delete-profile.title')}</Button>
+                    <Dialog open={confirmDeleteModalOpen} onClose={() => setConfirmDeleteModalOpen(false)}>
+                        <DialogTitle>{t('user-profile.about.delete-profile.title')}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText className='!mb-8' dangerouslySetInnerHTML={{ __html: t('user-profile.about.delete-profile.confirmation', { fullName: fullName }) }} />
+                            <CustomTextField
+                                id="name"
+                                variant="outlined"
+                                label={t('user-profile.about.delete-profile.fullname')}
+                                placeholder={fullName}
+                                fullWidth
+                                error={isError}
+                                helperText={isError ? t('user-profile.about.delete-profile.error') : ''}
+                                value={inputName}
+                                onChange={(e) => setInputName(e.target.value)}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setConfirmDeleteModalOpen(false)} color="primary">
+                                {t('user-profile.about.delete-profile.cancel')}
+                            </Button>
+                            <Button onClick={handleDelete} variant='contained' color="error" startIcon={<Delete />} disabled={inputName !== fullName}>
+                                {t('user-profile.about.delete-profile.delete')}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
+            );
+        }
+
         return (
 
             <>
@@ -557,60 +637,110 @@ const About = ({ myForm }) => {
                     <Box className='w-full max-w-md flex flex-col items-start justify-start'>
                         <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} className={isBiggerThanXl ? '!mt-5 !mb-10' : '!mt-10'}>{t('user-profile.about.socials.title')}</Typography>
                         <Box className='w-full max-w-md flex flex-col gap-y-4 items-start justify-start mt-4'>
-                            <CustomTextField
-                                {...myForm.register('customizations.socials.facebook')}
-                                variant="outlined"
-                                placeholder='John.Doe'
-                                fullWidth
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Facebook />
-                                        </InputAdornment>
-                                    )
-                                }}
+                            <Controller
+                                control={myForm.control}
+                                name="customizations.socials.facebook"
+                                defaultValue={store.user.customizations?.socials?.facebook ?? ''}
+                                render={({ field, fieldState: { error } }) => (
+                                    <CustomTextField
+                                        placeholder='John.Doe'
+                                        variant="outlined"
+                                        fullWidth
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value || ''}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Facebook />
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                )}
                             />
-                            <CustomTextField
-                                {...myForm.register('customizations.socials.twitter')}
-                                variant="outlined"
-                                placeholder='JohnDoe'
-                                fullWidth
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Twitter />
-                                        </InputAdornment>
-                                    )
-                                }}
+
+                            <Controller
+                                control={myForm.control}
+                                name="customizations.socials.twitter"
+                                defaultValue={store.user.customizations?.socials?.twitter ?? ''}
+                                render={({ field, fieldState: { error } }) => (
+                                    <CustomTextField
+                                        placeholder='JohnDoe'
+                                        variant="outlined"
+                                        fullWidth
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value || ''}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Twitter />
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                )}
                             />
-                            <CustomTextField
-                                {...myForm.register('customizations.socials.instagram')}
-                                variant="outlined"
-                                placeholder='johndoe'
-                                fullWidth
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Instagram />
-                                        </InputAdornment>
-                                    )
-                                }}
+
+                            <Controller
+                                control={myForm.control}
+                                name="customizations.socials.instagram"
+                                defaultValue={store.user.customizations?.socials?.instagram ?? ''}
+                                render={({ field, fieldState: { error } }) => (
+                                    <CustomTextField
+                                        placeholder='johndoe'
+                                        variant="outlined"
+                                        fullWidth
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value || ''}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Instagram />
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                )}
                             />
-                            <CustomTextField
-                                {...myForm.register('customizations.socials.linkedin')}
-                                variant="outlined"
-                                placeholder='john-doe'
-                                fullWidth
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <LinkedIn />
-                                        </InputAdornment>
-                                    )
-                                }}
+
+                            <Controller
+                                control={myForm.control}
+                                name="customizations.socials.linkedin"
+                                defaultValue={store.user.customizations?.socials?.linkedin ?? ''}
+                                render={({ field, fieldState: { error } }) => (
+                                    <CustomTextField
+                                        placeholder='john-doe'
+                                        variant="outlined"
+                                        fullWidth
+                                        error={!!error}
+                                        helperText={error?.message}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        value={field.value || ''}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <LinkedIn />
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                )}
                             />
+
                         </Box>
                     </Box>
+
+                    <Box className='w-full max-w-md flex flex-col items-start justify-start'>
+                        <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} className='!mt-5 !mb-10' >{t('Other')}</Typography>
+                        <DeleteUserProfile fullName={`${store.user.firstName} ${store.user.lastName}`} />
+                    </Box>
+
                 </Box>
             </>
 
@@ -620,13 +750,14 @@ const About = ({ myForm }) => {
     return (
         <ExpandableSection
             mainTitle={t('user-profile.about.main-title')}
-            MainBody={<MainBody myForm={myForm} />}
-            SecondaryBody={<SecondaryBody myForm={myForm} />}
+            MainBody={<MainBody />}
+            SecondaryBody={<SecondaryBody />}
         />
     )
 }
 
-const Skills = ({ myForm }) => {
+const Skills = () => {
+    const myForm = useFormContext();
     const [store, dispatch] = useDashboardStore();
     const { t } = useTranslation("dashboard");
     const userSkills = useMemo(() => store.user?.skills, [store.user?.skills]);

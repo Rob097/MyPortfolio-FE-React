@@ -1,9 +1,9 @@
 const constants = require('@rob097/common-lib/constants');
 import { Criteria, Filters, Operation, View } from "@/models/criteria.model";
-import { fetcher } from "@/services/base.service";
+import { BASE_URL, fetcher } from "@/services/base.service";
 import useSWR from "swr";
 import { Education, EducationQ } from "../models/education.model";
-const EDUCATIONS_URL = constants.BASE_URL + '/core/educations';
+const EDUCATIONS_URL = BASE_URL + '/core/educations';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export function useUserEducations(userId: number, view?: View) {

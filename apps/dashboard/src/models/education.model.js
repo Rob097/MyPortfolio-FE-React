@@ -17,6 +17,7 @@ export class Education {
     stories;
     skills;
     coverImage;
+    status;
 
     constructor(obj) {
         this.id = obj.id;
@@ -35,6 +36,7 @@ export class Education {
         this.stories = obj.stories;
         this.skills = obj.skills;
         this.coverImage = obj.coverImage;
+        this.status = obj.status;
     }
 }
 

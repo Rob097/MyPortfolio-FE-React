@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const CustomDialog = (props) => {
     const { t } = useTranslation("dashboard");
 
-    const { isOpen, onClose, title, text, onCancel, onRemove, onDelete, onSave, isHtml } = props;
+    const { isOpen, onClose, title, text, onCancel, onRemove, onDelete, onSave, onConfirm, isHtml } = props;
 
     return (
         <Dialog
@@ -41,6 +41,11 @@ const CustomDialog = (props) => {
                 {onSave && (
                     <Button onClick={onSave} color="primary" autoFocus>
                         {t('labels.save')}
+                    </Button>
+                )}
+                {onConfirm && (
+                    <Button onClick={onConfirm} color="primary" autoFocus>
+                        {t('labels.confirm')}
                     </Button>
                 )}
                 {onClose && (

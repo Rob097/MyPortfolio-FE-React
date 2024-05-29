@@ -95,7 +95,7 @@ const NewSkill = ({ afterCreationAction }) => {
                         if (params.inputValue === '' && filtered.length === 0) {
                             filtered.push({
                                 inputValue: params.inputValue,
-                                name: t('skills.start-typing'),
+                                name: t('skills.start-typing-category'),
                                 disabled: true
                             });
                         }

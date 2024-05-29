@@ -15,6 +15,7 @@ import { RichTextReadOnly } from "mui-tiptap";
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { displayMessages } from '../alerts';
 
 const StoriesList = ({ entitiesType, handleEditStory }) => {
     const { t, i18n } = useTranslation("dashboard");
@@ -128,10 +129,10 @@ const StoriesList = ({ entitiesType, handleEditStory }) => {
             StoryService.removeEntity(storyId, EntityTypeEnum.getLabel(entitiesType, false, false))
                 .then(() => {
                     removeStoryFromList();
-                    displayMessages([{ text: t('entities.edit.stories-list.remove-ok'), severity: 'success' }]);
+                    displayMessages([{ text: t('entities.edit.stories-list.remove-ok'), level: 'success' }]);
                 })
                 .catch((error) => {
-                    displayMessages([{ text: t('entities.edit.stories-list.remove-ko'), severity: 'error' }]);
+                    displayMessages([{ text: t('entities.edit.stories-list.remove-ko'), level: 'error' }]);
                     console.error('Error removing story:', error)
                 })
                 .finally(() => setRemoveStoryModalOpen(false));

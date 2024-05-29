@@ -42,5 +42,83 @@
             "matchingPassword-required": "Repeat your password",
             "matchingPassword-notMatch": "Your passwords do not match"
         }
+    },
+    "setup": {
+        "first-slide": "Welcome {{name}}",
+        "second-slide": "Let's setup your profile",
+        "fourth-slide": {
+            "title": "You're all set!",
+            "subtitle": "Redirecting you to your dashboard...",
+            "error-title": "You have to complete the setup",
+            "error-subtitle": "Go back to the setup"
+        },
+        "stepper": {
+            "optional": "Optional",
+            "next": "Next",
+            "back": "Back",
+            "finish": "Finish",
+            "address": {
+                "title": "Address",
+                "subtitle": "Where do you live?",
+                "fields": {
+                    "nation": {
+                        "label": "Nation",
+                        "required": "Nation is required",
+                        "placeholder": "Your Country"
+                    },
+                    "region": {
+                        "label": "Region",
+                        "required": "Region is required",
+                        "placeholder": "Your Region"
+                    },
+                    "city": {
+                        "label": "City",
+                        "required": "City is required",
+                        "placeholder": "Your City"
+                    },
+                    "cap": {
+                        "label": "CAP/ZIP",
+                        "required": "CAP/ZIP is required",
+                        "placeholder": "Your CAP/ZIP"
+                    },
+                    "address": {
+                        "label": "Address",
+                        "required": "Address is required",
+                        "placeholder": "Your Address"
+                    }
+                }
+            },
+            "who": {
+                "title": "Who are you?",
+                "fields": {
+                    "type": {
+                        "label": "Type",
+                        "required": "Type is required",
+                        "placeholder": "Student / Professional / Organizzation",
+                        "options": {
+                            "student": "Student",
+                            "professional": "Professional",
+                            "organization": "Organization"
+                        }
+                    },
+                    "role": {
+                        "label": "Role",
+                        "required": "Role is required",
+                        "placeholder": "Your School / Profession / Role"
+                    },
+                    "bio": {
+                        "label": "Bio",
+                        "required": "Bio is required",
+                        "placeholder": "Write something about you..."
+                    }
+                }
+            },
+            "skills": {
+                "title": "Your Skills",
+                "subtitle-1": "Choose 3 skills that most represents you",
+                "subtitle-2": "You will be able to add more later on",
+                "subtitle-3": "If you don't find the skill you are looking for, you will be able to create it later on"
+            }
+        }
     }
 }

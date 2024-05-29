@@ -1,8 +1,8 @@
 const constants = require('@rob097/common-lib/constants');
 import { View } from "@/models/criteria.model";
 import { Skill, SkillQ } from "../models/skill.model";
-import { BaseService } from "./base.service";
-const SKILLS_URL = constants.BASE_URL + '/core/skills';
+import { BASE_URL, BaseService } from "./base.service";
+const SKILLS_URL = BASE_URL + '/core/skills';
 const JSON_HEADER = { "Content-Type": "application/json" }
 
 export class SkillService implements BaseService {

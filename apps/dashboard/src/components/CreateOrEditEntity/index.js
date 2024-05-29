@@ -28,6 +28,7 @@ import { useDashboardStore } from "shared/stores/DashboardStore";
 import { View } from "shared/utilities/criteria";
 import CoverImage from './coverImage';
 import StoriesList from './storiesList';
+import { UserService } from '@/services/user.service';
 
 const CreateOrEditEntity = (props) => {
     const [store, dispatch] = useDashboardStore();
@@ -138,6 +139,11 @@ const CreateOrEditEntity = (props) => {
         trackPromise(
             entityPromise.then((response) => {
                 displayMessages([{ text: successMessage, level: 'success' }]);
+
+                // If the user didn't have any entity of this type, invalidate the user to refresh the store
+                if(isCreate && (!store.user?.[entitiesType] || store.user?.[entitiesType]?.length === 0)) {
+                    UserService.invalidateCurrentUser();
+                }
 
                 if (coverImage && coverImage !== originalEntity?.coverImage) {
                     return trackPromise(

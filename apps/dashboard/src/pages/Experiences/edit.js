@@ -67,7 +67,6 @@ export const ExperienceSpecificFields = () => {
                                         <Controller
                                             name="status"
                                             control={myForm.control}
-                                            defaultValue={EntitiesStatus.DRAFT}
                                             render={({ field }) => (
                                                 <Switch
                                                     {...field}
@@ -131,7 +130,7 @@ export const ExperienceSpecificFields = () => {
                                     <MenuItem value="" disabled> {t('entities.edit.general-information.fields.employmentType.select')} </MenuItem>
                                     {Object.values(EmploymentTypeEnum).map((value) => (
                                         <MenuItem key={value} value={value}>
-                                            {value}
+                                            {t(`entities.edit.general-information.fields.employmentType.${value}`)}
                                         </MenuItem>
                                     ))}
                                 </CustomTextField>

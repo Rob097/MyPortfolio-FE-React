@@ -1,6 +1,7 @@
 import { EntityTypeEnum } from "@/models/categories.model";
 import { EntitiesStatus } from "@/models/enums";
 import { EntityService } from "@/services/entity.service";
+import { UserService } from "@/services/user.service";
 import { DATE_TO_DISPLAY_FORMAT_EN, DATE_TO_DISPLAY_FORMAT_IT } from '@/utilities';
 import { Add, Delete, DesignServices, Edit, Public } from '@mui/icons-material';
 import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
@@ -83,6 +84,9 @@ const EntitiesDataGrid = forwardRef((props, ref) => {
         setIsLoading(true);
         EntityService.delete(entitiesType, entity.id).then(() => {
             setEntities(entities.filter(p => p.id !== entity.id));
+            if(store.user?.[entitiesType]?.length === 1) {
+                UserService.invalidateCurrentUser();
+            }
         }).catch((error) => {
             console.error(error);
         }).finally(() => setIsLoading(false));

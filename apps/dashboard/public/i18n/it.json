@@ -117,6 +117,7 @@
         "category-placeholder": "Cerca categorie",
         "add-skill": "Aggiungi \"{{name}}\"",
         "start-typing": "Inizia a scrivere per cercare una skill",
+        "start-typing-category": "Inizia a scrivere per cercare una categoria",
         "no-skill-found": "Nessuna skill trovata"
     },
     "user-profile": {
@@ -187,8 +188,17 @@
                 "title": "Social"
             },
             "main-story-not-found": "Storia principale non trovata",
+            "main-story-required": "La storia principale è obbligatoria",
             "your-story": "La tua storia",
-            "your-story-info": "Scrivi la tua storia personale qui. Questa è la prima cosa che le persone vedranno quando visiteranno il tuo profilo."
+            "your-story-info": "Scrivi la tua storia personale qui. Questa è la prima cosa che le persone vedranno quando visiteranno il tuo profilo.",
+            "delete-profile": {
+                "title": "Elimina Profilo",
+                "confirmation": "Sei sicuro di voler eliminare il tuo profilo?<br/> Per favore inserisci il tuo nome completo per confermare.<br/><b>{{fullName}}</b>",
+                "fullname": "Nome completo",
+                "error": "Il nome inserito non corrisponde al nome completo sul profilo.",
+                "cancel": "Annulla",
+                "delete": "Elimina"
+            }
         },
         "skills": {
             "main-title": "Skills",
@@ -205,6 +215,7 @@
         "less-options": "Meno opzioni",
         "add": "Aggiungi",
         "save": "Salva",
+        "confirm": "Conferma",
         "change": "Cambia",
         "remove": "Rimuovi",
         "close": "Chiudi",
@@ -295,7 +306,7 @@
                 "ko": "Errore durante il salvataggio della storia"
             }
         },
-        "project": {
+        "projects": {
             "create": {
                 "ok": "Progetto creato con successo",
                 "ko": "Errore durante la creazione del progetto"
@@ -305,17 +316,17 @@
                 "ko": "Errore durante l'aggiornamento del progetto"
             }
         },
-        "education": {
+        "educations": {
             "create": {
-                "ok": "Formazione creata con successo",
-                "ko": "Errore durante la creazione della formazione"
+                "ok": "Educazione creata con successo",
+                "ko": "Errore durante la creazione della educazione"
             },
             "update": {
-                "ok": "Formazione aggiornata con successo",
-                "ko": "Errore durante l'aggiornamento della formazione"
+                "ok": "Educazione aggiornata con successo",
+                "ko": "Errore durante l'aggiornamento della educazione"
             }
         },
-        "experience": {
+        "experiences": {
             "create": {
                 "ok": "Esperienza creata con successo",
                 "ko": "Errore durante la creazione dell'esperienza"
@@ -425,7 +436,16 @@
                     "employmentType": {
                         "label": "Tipo di impiego",
                         "required": "Il tipo di impiego è obbligatorio",
-                        "select": "Seleziona un tipo di impiego"
+                        "select": "Seleziona un tipo di impiego",
+                        "FULL_TIME": "Tempo pieno",
+                        "PART_TIME": "Part time",
+                        "SELF_EMPLOYED": "Libero professionista",
+                        "FREELANCE": "Freelance",
+                        "CONTRACT": "Contratto",
+                        "INTERNSHIP": "Tirocinio",
+                        "APPRENTICESHIP": "Apprendistato",
+                        "SEASONAL": "Stagionale",
+                        "VOLUNTEER": "Volontariato"
                     },
                     "company": {
                         "label": "Nome dell'azienda",

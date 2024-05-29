@@ -12,10 +12,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import jwtDecode from "jwt-decode";
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Loading from "shared/components/Loading";
 import { useAuthStore } from "shared/stores/AuthStore";
 import { useDashboardStore } from "shared/stores/DashboardStore";
@@ -87,8 +87,10 @@ function authLogicsForAllPages() {
   const [store, dispatch] = useDashboardStore();
   const navigate = useNavigate();
 
-  const { data, error, isLoading } = useSWR(UserService.getByIdUrl(authStore.user?.id, View.verbose), fetcher);
-  const isErrorPage = useMemo(() => window.location.pathname === '/dashboard/404' || window.location.pathname === '/dashboard/500', []);
+  const location = useLocation();
+  const isErrorPage = location.pathname.includes('404') || location.pathname.includes('500');
+  const loggedUserId = authStore.user?.id;
+  const { data, error, isLoading } = !isErrorPage && loggedUserId ? useSWR(UserService.getByIdUrl(loggedUserId, View.verbose), fetcher) : { data: null, error: null, isLoading: false }
 
   useEffect(() => {
     if (!isErrorPage) {
@@ -146,9 +148,9 @@ const NewEntityDialog = ({ isOpen, onClose }) => {
       </DialogTitle>
       <DialogContent>
         <Box className='flex flex-row flex-wrap justify-center'>
-          <Link to="/dashboard/projects/new" onClick={onClose}>
-            <CustomButton icon={<Widgets fontSize='medium' color='primary' />}>
-              <Typography variant='h5'>{t('labels.project')}</Typography>
+          <Link to="/dashboard/experiences/new" onClick={onClose}>
+            <CustomButton icon={<Work fontSize='medium' color='primary' />}>
+              <Typography variant='h5'>{t('labels.experience')}</Typography>
             </CustomButton>
           </Link>
           <Link to="/dashboard/educations/new" onClick={onClose}>
@@ -156,9 +158,9 @@ const NewEntityDialog = ({ isOpen, onClose }) => {
               <Typography variant='h5'>{t('labels.education')}</Typography>
             </CustomButton>
           </Link>
-          <Link to="/dashboard/experiences/new" onClick={onClose}>
-            <CustomButton icon={<Work fontSize='medium' color='primary' />}>
-              <Typography variant='h5'>{t('labels.experience')}</Typography>
+          <Link to="/dashboard/projects/new" onClick={onClose}>
+            <CustomButton icon={<Widgets fontSize='medium' color='primary' />}>
+              <Typography variant='h5'>{t('labels.project')}</Typography>
             </CustomButton>
           </Link>
         </Box>

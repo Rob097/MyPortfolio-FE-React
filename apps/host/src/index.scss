@@ -137,11 +137,11 @@ body {
 }
 
 /** MUI INPUT **/
-:not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
+/* :not(.customInputLabel) > .MuiInputLabel-root:not(.MuiFormLabel-filled, .Mui-focused) {
   top: 50%;
   left: 10px;
   transform: translateY(-50%) translateX(0);
-}
+} */
 
 li.MuiMenuItem-root {
   margin: 8px;
@@ -168,6 +168,50 @@ a {
 }
 
 // label with class Mui-error without class Mui-focused
-label.Mui-error:not(.Mui-focused) {
+/* label.Mui-error:not(.Mui-focused) {
   top: 35% !important;
+} */
+
+.disabled {
+  pointer-events:none; //This makes it not clickable
+  opacity:0.6;         //This grays it out to look disabled
+}
+
+pre {
+  white-space: normal !important;
+}
+
+.striped-row-odd {
+  background-color: white;
+}
+.striped-row-odd:hover {
+  background-color: #ffebd5 !important;
+}
+
+.striped-row-even {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.striped-row-even:hover {
+  background-color: #ffebd5 !important;
+}
+
+.button-clicked-inner-shadow {
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+
+.button-clicked-inner-shadow::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease-in-out !important;
+}
+
+.button-clicked-inner-shadow:hover::after {
+  opacity: 1 !important;
 }
