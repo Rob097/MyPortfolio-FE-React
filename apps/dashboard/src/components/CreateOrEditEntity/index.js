@@ -9,9 +9,10 @@ import { EducationSpecificFields } from '@/pages/Educations/edit';
 import { ExperienceSpecificFields } from '@/pages/Experiences/edit';
 import { ProjectSpecificFields } from '@/pages/Projects/edit';
 import { EntityService } from '@/services/entity.service';
+import { UserService } from '@/services/user.service';
 import { DATE_TO_SAVE_FORMAT } from '@/utilities';
 import { Add, Save } from '@mui/icons-material';
-import { Box, Grid, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Grid, Tooltip, Typography } from '@mui/material';
 import Fab from '@mui/material/Fab';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,9 +27,9 @@ import { useBlocker, useNavigate, useParams } from 'react-router-dom';
 import ShowIf from 'shared/components/ShowIf';
 import { useDashboardStore } from "shared/stores/DashboardStore";
 import { View } from "shared/utilities/criteria";
+import CustomDialog from '../Custom/DialogComponents';
 import CoverImage from './coverImage';
 import StoriesList from './storiesList';
-import { UserService } from '@/services/user.service';
 
 const CreateOrEditEntity = (props) => {
     const [store, dispatch] = useDashboardStore();
@@ -50,6 +51,7 @@ const CreateOrEditEntity = (props) => {
     const [coverImageUrl, setCoverImageUrl] = useState(null);
     const [storyToEdit, setStoryToEdit] = useState(null);
     const [isAddingNewStory, setIsAddingNewStory] = useState(false);
+    const [deleteEntityModalOpen, setDeleteEntityModalOpen] = useState(false);
 
     // Fetch the entity if it's not a new one
     useEffect(() => {
@@ -141,7 +143,7 @@ const CreateOrEditEntity = (props) => {
                 displayMessages([{ text: successMessage, level: 'success' }]);
 
                 // If the user didn't have any entity of this type, invalidate the user to refresh the store
-                if(isCreate && (!store.user?.[entitiesType] || store.user?.[entitiesType]?.length === 0)) {
+                if (isCreate && (!store.user?.[entitiesType] || store.user?.[entitiesType]?.length === 0)) {
                     UserService.invalidateCurrentUser();
                 }
 
@@ -181,6 +183,20 @@ const CreateOrEditEntity = (props) => {
             })
         );
     }
+
+    const handleDelete = () => {
+        setDeleteEntityModalOpen(false);
+        trackPromise(
+            EntityService.delete(entitiesType, originalEntity.id).then(() => {
+                if (store.user?.[entitiesType]?.length === 1) {
+                    UserService.invalidateCurrentUser();
+                }
+                navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}`);
+            }).catch((error) => {
+                console.error(error);
+            })
+        );
+    };
 
     function fetchEntity() {
         trackPromise(
@@ -436,6 +452,9 @@ const CreateOrEditEntity = (props) => {
                             />
                         </Box>
                     </Box>
+                    <ShowIf condition={!isCreate}>
+                        <Button className='w-fit !m-4' variant="contained" color="error" onClick={() => setDeleteEntityModalOpen(true)} >{t('labels.delete')}</Button>
+                    </ShowIf>
                 </LocalizationProvider>
 
                 <Tooltip title={isAddingNewStory ? t(`entities.edit.close-story-editor-${entitiesType}`) : (myForm.formState.isValid ? t(`entities.edit.save-${entitiesType}`) : t('entities.edit.fill-required-fields'))} placement='top' arrow>
@@ -447,6 +466,15 @@ const CreateOrEditEntity = (props) => {
                 </Tooltip>
 
             </FormProvider>
+
+            <CustomDialog
+                isOpen={deleteEntityModalOpen}
+                title={t(`entities.edit.delete-${entitiesType}-dialog.title`)}
+                isHtml={true}
+                text={t(`entities.edit.delete-${entitiesType}-dialog.text`)}
+                onCancel={() => setDeleteEntityModalOpen(false)}
+                onDelete={handleDelete}
+            />
         </>
     );
 };

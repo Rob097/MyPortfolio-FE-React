@@ -187,6 +187,9 @@
             "socials": {
                 "title": "Social"
             },
+            "other": {
+                "title": "Altro"
+            },
             "main-story-not-found": "Storia principale non trovata",
             "main-story-required": "La storia principale è obbligatoria",
             "your-story": "La tua storia",
@@ -206,6 +209,32 @@
             "badge": "{{number}} skills",
             "info": "<ul><li>Le prime tre sono le principali</li><li>Trascina le skills per cambiare l'ordine</li></ul>",
             "at-least-three": "Perfavore, seleziona almeno tre skills"
+        },
+        "plan": {
+            "title": "Piano",
+            "basic": {
+                "title": "Base",
+                "price": "Gratis"
+            },
+            "professional": {
+                "title": "Professionale",
+                "price": "€30",
+                "type": " / utente / mese"
+            },
+            "organization": {
+                "title": "Organizzazione",
+                "price": "€200",
+                "type": " / team / mese"
+            },
+            "selected": "Piano selezionato",
+            "coming-soon": "Piano in arrivo",
+            "aiIntegration": {
+                "title": "Integrazione AI",
+                "announcement": "Siamo entusiasti di annunciare che l'integrazione AI arriverà presto!",
+                "description": "Il nostro team sta lavorando duramente per portarti questa funzionalità. Con l'integrazione AI, sarai in grado di scrivere storie interessanti e complete, e molto altro.",
+                "stayTuned": "Resta sintonizzato per gli aggiornamenti e preparati a portare la tua produttività al livello successivo.",
+                "comingSoon": "Presto in arrivo!"
+            }
         },
         "unsaved-changes": "Hai delle modifiche non salvate. Sei sicuro di voler uscire?"
     },
@@ -531,6 +560,18 @@
                         "text": "Sei sicuro di voler eliminare la sezione rilevante <b>{{title}}</b>?<br />Questa azione non può essere annullata."
                     }
                 }
+            },
+            "delete-projects-dialog": {
+                "title": "Elimina Progetto",
+                "text": "Sei sicuro di voler eliminare questo progetto?<br /><b>ATTENZIONE: Questa azione non può essere annullata.</b>"
+            },
+            "delete-educations-dialog": {
+                "title": "Elimina Educazione",
+                "text": "Sei sicuro di voler eliminare questa educazione?<br /><b>ATTENZIONE: Questa azione non può essere annullata.</b>"
+            },
+            "delete-experiences-dialog": {
+                "title": "Elimina Esperienza",
+                "text": "Sei sicuro di voler eliminare questa esperienza?<br /><b>ATTENZIONE: Questa azione non può essere annullata.</b>"
             }
         }
     },

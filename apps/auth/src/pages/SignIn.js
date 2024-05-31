@@ -119,6 +119,7 @@ function SignIn() {
               {t('sign-in.register')}
             </Typography>
           </Typography>
+          <img src={`${process.env.REACT_APP_AUTH_URL}/images/social-login.svg`} alt="Social login" className="w-full mt-4" style={{maxHeight: '6rem'}} />
         </Box>
       </Box>
     </CoverLayout>

@@ -1,5 +1,9 @@
 import { Lock, LockOpen, TextFields } from "@mui/icons-material";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import UpdateIcon from '@mui/icons-material/Update';
+import WorkIcon from '@mui/icons-material/Work';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from "@mui/material";
 import { debounce } from '@mui/material/utils';
 import {
     LinkBubbleMenu,
@@ -9,12 +13,13 @@ import {
     TableBubbleMenu,
     insertImages
 } from "mui-tiptap";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import ShowIf from 'shared/components/ShowIf';
 import EditorMenuControls from "./EditorMenuControls";
 import classes from './MuiEditor.module.scss';
 import useExtensions from "./useExtensions";
+import { Link } from "react-router-dom";
 
 const MuiEditor = (props) => {
     const { t } = useTranslation('dashboard');
@@ -268,6 +273,9 @@ const MuiEditor = (props) => {
                                 {t('labels.save')}
                             </Button>
                             }
+
+                            {props.showAIButton && <AIButton />
+                            }
                         </Stack>
                     ) : null,
                 }}
@@ -339,3 +347,69 @@ const MuiEditor = (props) => {
 }
 
 export default MuiEditor;
+
+const AIButton = () => {
+    const { t, i18n } = useTranslation('dashboard');
+    const buttonRef = useRef(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        const root = document.documentElement;
+
+        // Set gradient position to fixed value
+        root.style.setProperty("--gradient-pos-x", `50%`);
+        root.style.setProperty("--gradient-pos-y", `50%`);
+    }, []);
+
+    return (
+        <>
+            <button ref={buttonRef} id="AIButton" type="button" className={classes.button} onClick={() => setModalOpen(true)}>
+                <div className={classes.neon}>
+                    <div className={classes.gradient}>
+                    </div>
+                </div>
+                <div className={classes.border}>
+                    <div className={classes.gradient}></div>
+                </div>
+                <div className={classes.content}>
+                    <AutoAwesomeIcon />
+                    Start With AI
+                </div>
+            </button>
+
+            <Dialog
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                keepMounted
+            >
+                <DialogTitle id="alert-dialog-title">{t('user-profile.plan.aiIntegration.title')}</DialogTitle>
+                <DialogContent>
+                    <Box textAlign="center" m={2}>
+                        <Typography variant="h4" component="p" style={{ fontWeight: 'bold' }} className="flex flex-col justify-center items-center">
+                            <NotificationsActiveIcon color="primary" /> {t('user-profile.plan.aiIntegration.announcement')}
+                        </Typography>
+                        <br />
+                        <Typography variant="body1" component="p" style={{ margin: '20px 0' }} className="flex flex-col justify-center items-center">
+                            <WorkIcon color="primary" /> {t('user-profile.plan.aiIntegration.description')}
+                        </Typography>
+                        <br />
+                        <Typography variant="body1" component="p" style={{ margin: '20px 0' }} className="flex flex-col justify-center items-center">
+                            <UpdateIcon color="primary" /> {t('user-profile.plan.aiIntegration.stayTuned')}
+                        </Typography>
+                        <br />
+                        <Typography variant="h4" component="p" style={{ color: '#3f51b5', fontWeight: 'bold' }}>
+                            <Link to={`https://www.my-portfolio.it/${i18n.language ?? 'en'}/support`} target="_blank" rel="noreferrer" style={{ color: '#3f51b5', fontWeight: 'bold' }}>
+                                <span className="!underline !underline-offset-4">{t('user-profile.plan.aiIntegration.comingSoon')}</span><span> 🚀</span>
+                            </Link>
+                        </Typography>
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setModalOpen(false)} color="primary" autoFocus>
+                        {t('labels.close')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
+    );
+}

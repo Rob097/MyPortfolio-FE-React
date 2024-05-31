@@ -50,7 +50,7 @@ const CreateOrEditStory = (props) => {
         toDate: existingStory?.toDate ? moment(existingStory.toDate) : null,
         description: existingStory?.description ?? '',
         relevantSections: existingStory?.relevantSections ?? [],
-        diaryId: existingStory?.diaryId ?? store.getMainDiary()?.id,
+        diaryId: existingStory?.diaryId ?? store?.getMainDiary()?.id,
         status: existingStory?.status ?? EntitiesStatus.DRAFT,
     }), [existingStory]);
 
@@ -234,6 +234,7 @@ const CreateOrEditStory = (props) => {
     // Function to confirm deletion of the story
     const handleDeleteStory = () => {
         const removeStoryFromList = (id) => {
+            console.log('Removing story with id', id);
             // Read the list of stories
             const stories = props.myForm.getValues('stories') || [];
 
@@ -489,7 +490,7 @@ const CreateOrEditStory = (props) => {
                                     value={watch('connectedEducation') || null}
                                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
                                     onChange={(e, value) => {
-                                        setValue("connectedEducation", value);
+                                        setValue("connectedEducation", value, { shouldDirty: true });
                                         setValue("educationId", value?.id ?? null);
                                         if (!value?.id) {
                                             setValue("orderInEducation", null);
@@ -527,7 +528,7 @@ const CreateOrEditStory = (props) => {
                                     value={watch('connectedExperience') || null}
                                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
                                     onChange={(e, value) => {
-                                        setValue("connectedExperience", value);
+                                        setValue("connectedExperience", value, { shouldDirty: true });
                                         setValue("experienceId", value?.id ?? null);
                                         if (!value?.id) {
                                             setValue("orderInExperience", null);
@@ -565,7 +566,7 @@ const CreateOrEditStory = (props) => {
                                     value={watch('connectedProject') || null}
                                     isOptionEqualToValue={(option, value) => option?.id === value?.id}
                                     onChange={(e, value) => {
-                                        setValue("connectedProject", value);
+                                        setValue("connectedProject", value, { shouldDirty: true });
                                         setValue("projectId", value?.id ?? null);
                                         if (!value?.id) {
                                             setValue("orderInProject", null);
@@ -593,7 +594,14 @@ const CreateOrEditStory = (props) => {
                                 rules={{ required: t('entities.edit.edit-story.fields.description.required') }}
                                 render={({ field, fieldState: { error } }) => (
                                     /* TODO: set useComplete to true when images are correctely managed */
-                                    <MuiEditor useComplete={false} existingText={field?.value ?? ''} onChange={field.onChange} error={error} />
+                                    <MuiEditor
+                                        useComplete={false}
+                                        existingText={field?.value ?? ''}
+                                        onChange={field.onChange}
+                                        error={error}
+                                        showFooter={true}
+                                        showAIButton={true}
+                                    />
                                 )}
                             />
                         </Grid>
@@ -686,6 +694,8 @@ const CreateOrEditStory = (props) => {
                                                                                         existingText={field?.value ?? ''}
                                                                                         onChange={field.onChange}
                                                                                         error={error}
+                                                                                        showFooter={true}
+                                                                                        showAIButton={true}
                                                                                     />
                                                                                 )}
                                                                             />
@@ -711,9 +721,9 @@ const CreateOrEditStory = (props) => {
                         <Button variant='outlined' color='primary' onClick={props.goBack} startIcon={<ArrowBack />}>
                             {t('labels.cancel')}
                         </Button>
-                        <Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty} startIcon={<Save />}>
+                        {/*<Button variant='contained' color='primary' onClick={save} disabled={!isValid || !isDirty} startIcon={<Save />}>
                             {t('labels.save')}
-                        </Button>
+                        </Button>*/}
                     </Box>
                     {existingStory && (
                         <Box>

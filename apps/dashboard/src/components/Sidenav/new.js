@@ -40,7 +40,7 @@ function Sidebar(props) {
     const route = useLocation().pathname;
 
     const isBiggerThanMd = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-    let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => el.to === route);
+    let selectedItem = [...primaryLinks, ...secondaryLinks].findIndex((el) => route.includes(el.to));
 
     const CustomListItem = ({ element, index }) => {
 

@@ -18,7 +18,7 @@ const CustomDialog = (props) => {
         >
             <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description" dangerouslySetInnerHTML={isHtml ? { __html: text } : null}>
+                <DialogContentText id="alert-dialog-description" component={isHtml ? 'div' : 'p'} dangerouslySetInnerHTML={isHtml ? { __html: text } : null}>
                     {isHtml ? null : text}
                 </DialogContentText>
             </DialogContent>

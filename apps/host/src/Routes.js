@@ -18,11 +18,11 @@ const AuthRoutes = (isLoggedIn) => [
     },
     {
         path: "sign-in",
-        element: <ProtectedRoute isAllowed={!isLoggedIn}><SignIn /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={!isLoggedIn} customRedirect="/dashboard"><SignIn /></ProtectedRoute>
     },
     {
         path: "sign-up",
-        element: <ProtectedRoute isAllowed={!isLoggedIn}><SignUp /></ProtectedRoute>
+        element: <ProtectedRoute isAllowed={!isLoggedIn} customRedirect="/dashboard"><SignUp /></ProtectedRoute>
     }
 ]
 

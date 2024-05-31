@@ -19,8 +19,9 @@ import Toolbar from '@mui/material/Toolbar';
 import { t } from 'i18next';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDashboardStore } from "shared/stores/DashboardStore";
+import { useAuthStore } from "shared/stores/AuthStore";
 import classes from './navbar.module.scss';
 
 const SHOW_SEARCH_BAR = false;
@@ -129,13 +130,14 @@ export default Navbar;
 const AccountMenu = (props) => {
   const { t } = useTranslation("dashboard");
   const [store, dispatch] = useDashboardStore();
+  const [authStore, authDispatch] = useAuthStore();
+  const navigate = useNavigate();
 
   function handleLogout() {
     props.handleClose();
-    dispatch({
-      type: "logout"
-    });
-    window.location.reload();
+    dispatch({ type: "logout" });
+    authDispatch({ type: "logout" });
+    navigate("/auth/sign-in");
   }
 
   const CustomMenuItem = ({ children, ...rest }) => {
@@ -194,12 +196,14 @@ const AccountMenu = (props) => {
         <Avatar src={store.user?.customizations?.profileImage ?? ''} /> {t('navbar.profile')}
       </CustomMenuItem>
       <Divider />
+      {/* 
+      Al momento disattivato
       <CustomMenuItem onClick={props.handleClose}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
         {t('navbar.settings')}
-      </CustomMenuItem>
+      </CustomMenuItem> */}
       <CustomMenuItem onClick={handleLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />

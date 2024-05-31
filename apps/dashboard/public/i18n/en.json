@@ -187,6 +187,9 @@
             "socials": {
                 "title": "Socials"
             },
+            "other": {
+                "title": "Other"
+            },
             "main-story-not-found": "Main story not found",
             "main-story-required": "Main story is required",
             "your-story": "Your Story",
@@ -206,6 +209,32 @@
             "badge": "{{number}} skills",
             "info": "<ul><li>The first three are the main ones</li><li>Drag the skills to change the order</li></ul>",
             "at-least-three": "Please, select at least three skills"
+        },
+        "plan": {
+            "title": "Plan",
+            "basic": {
+                "title": "Basic",
+                "price": "Free"
+            },
+            "professional": {
+                "title": "Professional",
+                "price": "$30",
+                "type": " / user / month"
+            },
+            "organization": {
+                "title": "Organization",
+                "price": "$200",
+                "type": " / team / month"
+            },
+            "selected": "Selected Plan",
+            "coming-soon": "Coming Soon",
+            "aiIntegration": {
+                "title": "AI Integration",
+                "announcement": "We're excited to announce that AI Integration is coming soon!",
+                "description": "Our team is working hard to bring you this feature. With AI Integration, you'll be able to write interesting and comprehensive stories, and much more.",
+                "stayTuned": "Stay tuned for updates and get ready to take your productivity to the next level.",
+                "comingSoon": "Coming Soon!"
+            }
         },
         "unsaved-changes": "You have unsaved changes, do you want to leave the page?"
     },
@@ -531,6 +560,18 @@
                         "text": "Are you sure you want to delete the relevant section <b>{{title}}</b>?<br />This action cannot be undone."
                     }
                 }
+            },
+            "delete-projects-dialog": {
+                "title": "Delete Project",
+                "text": "Are you sure you want to delete this project?<br /><b>ATTENTION: This action cannot be undone.</b>"
+            },
+            "delete-educations-dialog": {
+                "title": "Delete Education",
+                "text": "Are you sure you want to delete this education?<br /><b>ATTENTION: This action cannot be undone.</b>"
+            },
+            "delete-experiences-dialog": {
+                "title": "Delete Experience",
+                "text": "Are you sure you want to delete this experience?<br /><b>ATTENTION: This action cannot be undone.</b>"
             }
         }
     },
