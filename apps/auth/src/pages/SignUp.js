@@ -23,6 +23,7 @@ function SignUp() {
     const [errorMessage, setErrorMessage] = useState();
     const [passwordShown, setPasswordShown] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const disableSignUp = false;
     const userEmail = useMemo(() => searchParams.get('userEmail'), [searchParams]);
     const plan = useMemo(() => searchParams.get('plan') ?? 'basic', [searchParams]);
     const period = useMemo(() => searchParams.get('period') ?? 'monthly', [searchParams]);
@@ -137,9 +138,9 @@ function SignUp() {
                         fullWidth
                         loading={isProcessing ? true : undefined}
                         startIcon={<span />}
-                        disabled
+                        disabled={disableSignUp}
                     >
-                        {t('sign-up.comingSoon')}
+                        {t(disableSignUp ? 'sign-up.comingSoon' : 'sign-up.sign-up')}
                     </LoadingButton>
                 </Box>
                 <Box mt={3} textAlign="center">
