@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from "react-router-dom";
 import LanguageSelector from './LanguageSelector';
 import { useCallback } from 'react';
+import { useDashboardStore } from "shared/stores/DashboardStore";
 
 const primaryLinks = [
     { text: 'Dashboard', icon: <Dashboard />, to: '/dashboard/home' },
@@ -35,6 +36,7 @@ const secondaryLinks = [
 const SHOW_SEARCH_BAR = false;
 
 function Sidebar(props) {
+    const [store, dispatch] = useDashboardStore();
     const { t, i18n } = useTranslation("dashboard");
     // Get the current location from the last route
     const route = useLocation().pathname;
@@ -98,6 +100,10 @@ function Sidebar(props) {
             </Box>)}
 
             <Box className="px-4 pb-4" sx={{ minHeight: { xs: `calc(100% - 200px)`, xl: `calc(100% - 150px)` } }}>
+                <Button variant='outlined' color='primary' className='!w-full !mt-4' startIcon={<AccountCircle />} component={Link} to={`https://www.my-portfolio.it/users/${store.user?.slug}/home`} target="_blank">
+                    {/* {t('navbar.view-public-profile')} */}
+                    <Typography variant='h6' className='!text-md' color='primary' noWrap textTransform={'capitalize'}>{t('navbar.view-public-profile')}</Typography>
+                </Button>
                 <List >
                     {primaryLinks.map((element, index) => (
                         <CustomListItem key={`primary_links_${index}`} element={element} index={index} />

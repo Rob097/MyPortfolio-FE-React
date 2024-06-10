@@ -1,13 +1,13 @@
 import DraggableBox from '@/components/draggableBox';
 import ShowIf from '@/components/utils/showIf';
-import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
-import Link from 'next/link';
+import { Box, Button, Chip, Typography } from "@mui/material";
 import Image from 'next/image';
+import Link from 'next/link';
 
 const HorizontalCard = ({ id, image, title, firstSubtitle, secondSubtitle, chips, buttons, children: mainContent }) => {
 
     return (
-        <Box className="w-full max-w-sm md:max-w-full md:h-36 h-fit bg-white border rounded-lg mb-4 py-4 md:py-0 flex flex-col md:flex-row text-center md:text-start items-center px-8 z-10 relative">
+        <Box className="w-full max-w-sm md:max-w-full h-fit bg-white border rounded-lg mb-4 py-4 md:py-0 flex flex-col md:flex-row text-center md:text-start items-center px-2 md:px-8 z-10 relative">
             <ShowIf condition={image !== undefined}>
                 {/* <Avatar
                     alt="Remy Sharp"
@@ -16,14 +16,14 @@ const HorizontalCard = ({ id, image, title, firstSubtitle, secondSubtitle, chips
                 /> */}
                 <Image src={image} width={70} height={70} style={{ width: '70px', height: '70px' }} className='rounded-full object-cover' alt={title + (firstSubtitle ? (' - ' + firstSubtitle) : '') + (secondSubtitle ? (' - ' + secondSubtitle) : '')} />
             </ShowIf>
-            <Box className="ml-4 ">
+            <Box className="md:ml-4 py-2 flex flex-col max-w-full md:pr-8">
                 <Typography variant="h5" fontWeight='bold' color='black'>{title}</Typography>
                 <Box className='flex flex-col md:flex-row md:divide-x-2'>
-                    <Typography variant="body2" color='black' paddingRight={{xs: 0, md: 2}}>{firstSubtitle}</Typography>
-                    <Typography variant="body2" color='black' paddingLeft={{xs: 0, md: 2}}>{secondSubtitle}</Typography>
+                    <Typography variant="body2" color='black' paddingRight={{ xs: 0, md: 2 }}>{firstSubtitle}</Typography>
+                    <Typography variant="body2" color='black' paddingLeft={{ xs: 0, md: 2 }} sx={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical", }}>{secondSubtitle}</Typography>
                 </Box>
                 {chips?.length > 0 &&
-                    <DraggableBox noDrag>
+                    <DraggableBox noDrag={chips?.length < 3}>
                         {chips?.map((chip, index) => (
                             <Chip key={"chip-" + id + "-" + chip.id} id={"chip-" + id + "-" + chip.id} label={chip.name} />
                         ))}

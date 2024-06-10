@@ -8,7 +8,7 @@ const CustomPieChart = ({ data, width, height, hideLegend }) => {
         paddingAngle: 5,
         cornerRadius: 5,
         cx: width / 2,
-        cy: height / 2 - 30
+        cy: height / 2 - 60
     };
 
     return (

@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
 const webpack = require('webpack');
@@ -120,6 +121,12 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin(dotenv.parsed),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env)
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'public/robots.txt', to: 'robots.txt' },
+          { from: 'public/favicon.ico', to: 'favicon.ico' }
+        ],
       })
     ]
   }

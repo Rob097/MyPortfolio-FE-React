@@ -8,16 +8,20 @@ const Router = () => {
         return createBrowserRouter([
                 {
                         path: "/",
-                        element: <Navigate to="/sign-in" />,
+                        element: <Navigate to="/auth/sign-in" />,
                 },
                 {
-                        path: "/sign-in",
+                        path: "/auth",
+                        element: <Navigate to="/auth/sign-in" />,
+                },
+                {
+                        path: "/auth/sign-in",
                         element: <SignIn />,
                         errorElement: <ErrorPage />
 
                 },
                 {
-                        path: "/sign-up",
+                        path: "/auth/sign-up",
                         element: <SignUp />,
                         errorElement: <ErrorPage />
 

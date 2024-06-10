@@ -22,7 +22,8 @@
         "add-new-title": "What would you like to create?",
         "no-new-notifications": "No new notifications",
         "settings": "Settings",
-        "logout": "Logout"
+        "logout": "Logout",
+        "view-public-profile": "View Profile"
     },
     "profile-builder": {
         "title": "Build Your Profile",
@@ -212,19 +213,26 @@
         },
         "plan": {
             "title": "Plan",
+            "monthly": "Monthly",
+            "yearly": "Yearly",
             "basic": {
                 "title": "Basic",
-                "price": "Free"
+                "price": "Free",
+                "price-yearly": "Free"
             },
             "professional": {
                 "title": "Professional",
                 "price": "$30",
-                "type": " / user / month"
+                "price-yearly": "$300",
+                "type": " / user / month",
+                "type-yearly": " / user / year"
             },
             "organization": {
                 "title": "Organization",
                 "price": "$200",
-                "type": " / team / month"
+                "price-yearly": "$2000",
+                "type": " / team / month",
+                "type-yearly": " / team / year"
             },
             "selected": "Selected Plan",
             "coming-soon": "Coming Soon",

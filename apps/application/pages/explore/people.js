@@ -94,7 +94,7 @@ const People = (props) => {
     /*     METHODS    */
     /******************/
 
-    function updateStatistics() {
+    /* function updateStatistics() {
         if (statisticsBy === 'industry') {
             setStatisticsData(users?.map((user => user.profession))?.filter((value, index, self) => self.indexOf(value) === index).map((profession, index) => {
                 return { id: index, value: users?.filter((user) => user.profession === profession).length, label: profession }
@@ -107,6 +107,52 @@ const People = (props) => {
                 })
             );
         }
+    } */
+    function updateStatistics() {
+        if (statisticsBy === 'industry') {
+            const data = users?.map(user => user.profession)
+                ?.filter((value, index, self) => self.indexOf(value) === index)
+                ?.map((profession, index) => ({
+                    id: index,
+                    value: users?.filter(user => user.profession === profession).length,
+                    label: truncateLabel(profession)
+                }));
+
+            setStatisticsData(processData(data));
+        } else if (statisticsBy === 'skill') {
+            const data = users?.map(user => user.skills?.filter(userSkill => userSkill.isMain).map(userSkill => userSkill.skill.name))
+                ?.flat()
+                ?.filter((value, index, self) => self.indexOf(value) === index)
+                ?.map((skill, index) => ({
+                    id: index,
+                    value: users?.filter(user => user.skills?.filter(userSkill => userSkill.isMain).map(userSkill => userSkill.skill.name).includes(skill)).length,
+                    label: truncateLabel(skill)
+                }));
+
+            setStatisticsData(processData(data));
+        }
+    }
+
+    function processData(data) {
+        // Sort data by value in descending order
+        const sortedData = [...data].sort((a, b) => b.value - a.value);
+
+        // Take the first 4 items
+        const topData = sortedData.slice(0, 4);
+
+        // Merge the rest into an "Other" category
+        const otherData = {
+            id: topData.length,
+            value: sortedData.slice(4).reduce((total, item) => total + item.value, 0),
+            label: 'Other'
+        };
+
+        // Return the new data
+        return [...topData, otherData];
+    }
+
+    function truncateLabel(label) {
+        return label.length > 25 ? label.slice(0, 25) + '...' : label;
     }
 
     // When going to the next page, fetch the next 10 users and add them to the users array.
@@ -143,7 +189,7 @@ const People = (props) => {
         data.name && criterias.push(fullNameCriteria);
         data.industry && data.industry !== 'All' && criterias.push(professionCriteria);
         data.location && data.location !== 'All' && criterias.push(nationCriteria);
-        const internalFilters = new UserQ(criterias, View.verbose, 0, numberPerPage, new Sort(UserQ.createdAt, 'DESC'));
+        const internalFilters = new UserQ(criterias, View.verbose, 0, numberPerPage, new Sort(UserQ.updatedAt, 'DESC'));
         setFilters(internalFilters);
     }
 
@@ -182,14 +228,14 @@ const People = (props) => {
                                             <HorizontalCard
                                                 key={'list-' + user.id}
                                                 id={user.id}
-                                                image={JSON.parse(user?.customizations)?.profileImage}
+                                                image={JSON.parse(user?.customizations)?.profileImage ?? '/images/default-profile-image.webp'}
                                                 title={`${user?.firstName} ${user?.lastName}`}
                                                 firstSubtitle={user?.address?.nation}
                                                 secondSubtitle={user?.profession}
                                                 chips={user.skills?.filter((userSkill) => userSkill.isMain).sort((a, b) => a.orderId - b.orderId).map((userSkill) => userSkill.skill)}
                                                 buttons={[{ label: t('people.view-profile'), link: `/users/${user.slug}/home` }, { label: t('user-home:contact-me.title'), link: `/users/${user.slug}/home#contact-section` }]}
                                             >
-                                                <Box className="flex flex-col justify-between">
+                                                {/* <Box className="flex flex-col justify-between">
                                                     <Box className="flex flex-row justify-between">
                                                         <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.projects')}:</Typography>
                                                         <Typography variant="h5" fontWeight='bold' color='black'>{user?.projects?.length}</Typography>
@@ -198,14 +244,14 @@ const People = (props) => {
                                                         <Typography variant="body2" color='black' paddingRight={2}>{t('user-diary:categories.list.experiences')}:</Typography>
                                                         <Typography variant="h5" fontWeight='bold' color='black'>{user?.experiences?.length}</Typography>
                                                     </Box>
-                                                </Box>
+                                                </Box> */}
                                             </HorizontalCard>
                                         ))}
                             </Box>
                         </ShowIf>
 
                         <ShowIf condition={layout === 'grid'}>
-                            <Box className={"w-full flex flex-row flex-wrap items-start " + (visibleUsers?.length >= 3 ? 'justify-center' : 'justify-start')}>
+                            <Box className={"w-full flex flex-row flex-wrap items-start justify-start"}>
                                 {
                                     visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
                                         visibleUsers.map((user) => (
@@ -282,7 +328,7 @@ export async function getStaticProps(context) {
     try {
         const { locale } = context
 
-        const filters = new UserQ(null, View.verbose, 0, 10, new Sort(UserQ.createdAt, 'DESC'));
+        const filters = new UserQ(null, View.verbose, 0, 10, new Sort(UserQ.updatedAt, 'DESC'));
         const firstTenUsersUrl = UserService.getByCriteriaUrl(filters);
         const firstTenUsersResponse = await fetcher(firstTenUsersUrl, true);
 

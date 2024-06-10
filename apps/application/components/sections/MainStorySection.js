@@ -35,6 +35,9 @@ const MainStorySection = ({ useContainer, mainStory }) => {
                                     {mainStory?.description}
                                 </HtmlContent>
                             </ShowIf>
+                            <ShowIf condition={mainStory?.description === undefined || mainStory?.description == null || mainStory?.description === ''}>
+                                <img src='/images/no-data.svg' className='h-full mx-auto' />
+                            </ShowIf>
                             {promiseInProgress && <Loading adaptToComponent />}
                         </div>
                         <Box sx={{ display: { xs: 'none', md: 'block' } }}>

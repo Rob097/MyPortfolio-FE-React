@@ -8,7 +8,7 @@
     },
     "sign-in": {
         "generic-error": "Errore nell'effettuare il login",
-        "welcome-back": "Bentornato",
+        "welcome-back": "Ciao!",
         "instruction": "Inserisci la tua email e password per accedere",
         "remember-me": "Ricordami",
         "sign-in": "login",
@@ -41,13 +41,14 @@
             "password-required": "La password è obbligatoria",
             "matchingPassword-required": "Ripeti la tua password",
             "matchingPassword-notMatch": "Le password non coincidono"
-        }
+        },
+        "comingSoon": "Presto in arrivo!"
     },
     "setup": {
-        "first-slide": "Benvenuto {{name}}",
+        "first-slide": "Ciao {{name}}",
         "second-slide": "Impostiamo il tuo profilo",
         "fourth-slide": {
-            "title": "Sei pronto!",
+            "title": "Tutto fatto!",
             "subtitle": "Ti stiamo reindirizzando alla tua dashboard...",
             "error-title": "Devi completare il setup",
             "error-subtitle": "Torna indietro e completa il setup"

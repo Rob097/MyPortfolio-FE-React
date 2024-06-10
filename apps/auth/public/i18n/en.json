@@ -41,7 +41,8 @@
             "password-required": "Password is required",
             "matchingPassword-required": "Repeat your password",
             "matchingPassword-notMatch": "Your passwords do not match"
-        }
+        },
+        "comingSoon": "Coming Soon!"
     },
     "setup": {
         "first-slide": "Welcome {{name}}",

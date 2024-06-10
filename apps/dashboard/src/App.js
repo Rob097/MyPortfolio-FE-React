@@ -36,3 +36,21 @@ const App = () => {
 };
 const root = createRoot(document.getElementById("app"));
 root.render(<App />);
+
+/*
+TO BE DONE:
+    - ✅ Pulsanti "Add New"
+    - ✅ Uniformare formattazione date
+    - ✅ Search bar navbar
+    - ✅ Dashboard
+    - ✅ Pagine di errore
+    - ✅ Traduzioni
+    - ✅ Tests con più utenti
+    - ✅ Info sul piano in profilo
+    - ✅ Pulsanti AI con modale "Cooming soon" o simile
+    - Info sul piano in signup
+    - Implementare gestione immagini
+
+Problemi da risolvere:
+    - ✅ Quando si aggiunge un entità, nell'application si vede nel profilo ma entrando si ottiene un errore 404
+*/

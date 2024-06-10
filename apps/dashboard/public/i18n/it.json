@@ -22,7 +22,8 @@
         "add-new-title": "Cosa ti piacerebbe creare?",
         "no-new-notifications": "Nessuna nuova notifica",
         "settings": "Impostazioni",
-        "logout": "Esci"
+        "logout": "Esci",
+        "view-public-profile": "Visualizza profilo"
     },
     "profile-builder": {
         "title": "Completa il tuo Profilo",
@@ -212,18 +213,23 @@
         },
         "plan": {
             "title": "Piano",
+            "monthly": "Mensile",
+            "yearly": "Annuale",
             "basic": {
                 "title": "Base",
-                "price": "Gratis"
+                "price": "Gratis",
+                "price-yearly": "Gratis"
             },
             "professional": {
                 "title": "Professionale",
                 "price": "€30",
+                "price-yearly": "€300",
                 "type": " / utente / mese"
             },
             "organization": {
                 "title": "Organizzazione",
                 "price": "€200",
+                "price-yearly": "€2000",
                 "type": " / team / mese"
             },
             "selected": "Piano selezionato",

@@ -114,7 +114,7 @@ function authLogicsForAllPages() {
 
   useEffect(() => {
     if (!isErrorPage && data) {
-      const user = new User(data.content);
+      const user = new User(data?.content);
       dispatch({ type: "replaceUser", payload: { user: user } });
     }
   }, [data]);

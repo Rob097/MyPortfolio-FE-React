@@ -6,6 +6,7 @@ const deps = require("./package.json").dependencies;
 const devDeps = require("./package.json").devDependencies;
 const parentDeps = require("../../package.json").dependencies;
 const parentDevDeps = require("../../package.json").devDependencies;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
 
@@ -131,6 +132,11 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin(dotenv.parsed),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env)
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'public/images', to: 'images' }
+        ],
       })
     ]
   }
