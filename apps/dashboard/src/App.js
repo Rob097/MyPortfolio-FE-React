@@ -29,7 +29,7 @@ const App = () => {
           <CustomRouterProvider />
 
         </DashboardStoreProvider>
-      </AuthStoreProvider>
+      </AuthStoreProvider>  
 
     </ThemeProvider>
   )
@@ -48,8 +48,15 @@ TO BE DONE:
     - ✅ Tests con più utenti
     - ✅ Info sul piano in profilo
     - ✅ Pulsanti AI con modale "Cooming soon" o simile
-    - Info sul piano in signup
+    - ✅ Info sul piano in signup
+    - ✅ Creare nuove API KEYS per gli env e properties da NON pushare su github
+    - ✅ Backuppare tutte le properties non su github
+    - ✅ Popolare skills
+    - Prova sign up in prod
     - Implementare gestione immagini
+    - Creare email my-portfolio e mailing list
+    - Scrivere articoli sul nuovo MVP nelle varie piattaforme
+    - Google ADS
 
 Problemi da risolvere:
     - ✅ Quando si aggiunge un entità, nell'application si vede nel profilo ma entrando si ottiene un errore 404

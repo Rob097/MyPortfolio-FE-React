@@ -41,7 +41,10 @@ function SignUp() {
     };
 
     async function handleSignUp(data) {
-        return;
+        if(disableSignUp) {
+            return;
+        }
+
         setIsProcessing(true);
 
         signUp(data).then(async response => {
