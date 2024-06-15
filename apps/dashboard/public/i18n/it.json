@@ -103,6 +103,7 @@
         "inputPlaceholder": "Trascina qui il file <br /> O <br /> <span class=\"text-primary-main font-bold\">Sfoglia i file</span>",
         "imageTypes": "Immagini",
         "documentTypes": "Pdf o Testo",
+        "imagesPdf": "Immagini o Pdf",
         "allTypes": "Pdf, Testo o Immagini"
     },
     "skills": {

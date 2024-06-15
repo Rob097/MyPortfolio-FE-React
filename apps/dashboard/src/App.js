@@ -52,7 +52,7 @@ TO BE DONE:
     - ✅ Creare nuove API KEYS per gli env e properties da NON pushare su github
     - ✅ Backuppare tutte le properties non su github
     - ✅ Popolare skills
-    - Prova sign up in prod
+    - ✅ Prova sign up in prod
     - Implementare gestione immagini
     - Creare email my-portfolio e mailing list
     - Scrivere articoli sul nuovo MVP nelle varie piattaforme

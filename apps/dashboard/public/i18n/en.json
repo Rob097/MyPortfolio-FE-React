@@ -103,6 +103,7 @@
         "inputPlaceholder": "Drop File Here <br /> OR <br /> <span class=\"text-primary-main font-bold\">Browse Files</span>",
         "imageTypes": "Images",
         "documentTypes": "Pdf or Text",
+        "imagesPdf": "Images or Pdf",
         "allTypes": "Pdf, Text or Images"
     },
     "skills": {

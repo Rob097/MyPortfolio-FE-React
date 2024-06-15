@@ -70,8 +70,11 @@ const People = (props) => {
                 trackPromise(
                     UserService.getByCriteria(filters, true)
                         .then((response) => {
-                            setUsers(response?.content);
-                            setTotalUsers(response?.headers?.get('number'));
+                            const foundUsers = response?.content?.filter((user) => user.diaries?.length > 0);
+                            const excluded = response?.content?.filter((user) => !user.diaries || user.diaries?.length === 0)?.length ?? 0;
+
+                            setUsers(foundUsers);
+                            setTotalUsers(response?.headers?.get('number') - excluded);
                         })
                         .catch(error => {
                             Snack.error(error);
@@ -339,14 +342,18 @@ export async function getStaticProps(context) {
             }
         }
 
+        // filter out all the users that have no diaries:
+        const users = firstTenUsersResponse?.content.filter((user) => user.diaries?.length > 0);
+        const excluded = firstTenUsersResponse?.content.filter((user) => !user.diaries || user.diaries?.length === 0)?.length ?? 0;
+
         props = {
             ...(await serverSideTranslations(locale)),
-            users: firstTenUsersResponse?.content,
+            users: users,
             messages: firstTenUsersResponse?.messages,
             revalidate: revalidate,
             isEmpty: firstTenUsersResponse.headers?.get('is-empty'),
             isLast: firstTenUsersResponse.headers?.get('is-last'),
-            number: firstTenUsersResponse.headers?.get('number')
+            number: firstTenUsersResponse.headers?.get('number') - excluded
         }
 
     } catch (error) {

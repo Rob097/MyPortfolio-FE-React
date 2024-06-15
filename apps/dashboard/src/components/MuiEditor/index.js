@@ -60,6 +60,23 @@ const MuiEditor = (props) => {
     Servirà chiamare questo componente sia dai EditorMenuControls che dalla funzione di drag&drop e paste delle immagini.
     Valutare se creare il componente normalemente e fare una versione "modale" in modo da poter usare il componente anche in altre parti dell'applicazione.
 
+    1) ✅ Mockup
+    2) BE
+        - ✅ Tabella
+        - ✅ Entity, DTO e Mapper
+        - ✅ Service, Repository e Controller
+        - ✅ API per caricare immagini
+        - ✅ API per eliminare immagini
+        - ✅ API per ritornare immagini
+        - ✅ Eliminare files quando un utente viene eliminato
+    3) ✅ Test
+    4) Migrazione dati esistenti
+    5) FE
+    6) Test
+    7) Eventuale pulizia codice
+    8) Deploy
+    9) Test finali
+
     */
 
     function fileListToImageFiles(fileList) {

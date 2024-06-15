@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import EditProject from "./pages/Projects/edit";
 import ProjectsList from "./pages/Projects/list";
 import UserProfile from "./pages/UserProfile";
+import Media from "./pages/Media";
 
 export const Routes = [
     {
@@ -30,6 +31,10 @@ export const Routes = [
             {
                 path: "home",
                 element: <Home />,
+            },
+            {
+                path: "media",
+                element: <Media />,
             },
             {
                 path: "profile",
