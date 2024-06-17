@@ -11,7 +11,7 @@ import { ExperienceService } from '@/services/experience.service';
 import { ProjectService } from '@/services/project.service';
 import { StoryService } from '@/services/story.service';
 import { DATE_TO_DISPLAY_FORMAT_EN, DATE_TO_DISPLAY_FORMAT_IT } from '@/utilities';
-import { Add, ArrowBack, Delete, ExpandMore, Save, School, Widgets, Work } from '@mui/icons-material';
+import { Add, ArrowBack, Delete, ExpandMore, School, Widgets, Work } from '@mui/icons-material';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Autocomplete, Box, Button, CardActions, FormControl, FormControlLabel, FormGroup, Grid, InputAdornment, Switch, Tooltip, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
@@ -593,9 +593,8 @@ const CreateOrEditStory = (props) => {
                                 defaultValue={defaultValues.description}
                                 rules={{ required: t('entities.edit.edit-story.fields.description.required') }}
                                 render={({ field, fieldState: { error } }) => (
-                                    /* TODO: set useComplete to true when images are correctely managed */
                                     <MuiEditor
-                                        useComplete={false}
+                                        useComplete={true}
                                         existingText={field?.value ?? ''}
                                         onChange={field.onChange}
                                         error={error}
@@ -688,9 +687,8 @@ const CreateOrEditStory = (props) => {
                                                                                 name={`relevantSections[${index}].description`}
                                                                                 rules={{ required: t('entities.edit.edit-story.relevant-sections.fields.description.required') }}
                                                                                 render={({ field, fieldState: { error } }) => (
-                                                                                    /* TODO: set useComplete to true when images are correctely managed */
                                                                                     <MuiEditor
-                                                                                        useComplete={false}
+                                                                                        useComplete={true}
                                                                                         existingText={field?.value ?? ''}
                                                                                         onChange={field.onChange}
                                                                                         error={error}

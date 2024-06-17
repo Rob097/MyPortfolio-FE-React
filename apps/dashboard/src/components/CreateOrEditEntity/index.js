@@ -120,6 +120,7 @@ const CreateOrEditEntity = (props) => {
 
         let entity = {
             userId: store.user.id,
+            coverImage,
             published,
             description,
             fromDate: moment(fromDate).format(DATE_TO_SAVE_FORMAT),
@@ -146,35 +147,10 @@ const CreateOrEditEntity = (props) => {
                 if (isCreate && (!store.user?.[entitiesType] || store.user?.[entitiesType]?.length === 0)) {
                     UserService.invalidateCurrentUser();
                 }
-
-                if (coverImage && coverImage !== originalEntity?.coverImage) {
-                    return trackPromise(
-                        EntityService.uploadCoverImage(entitiesType, response.content.id, coverImage).then(() => {
-                            displayMessages([{ text: t('entities.edit.messages.cover-add'), level: 'success' }]);
-                            if (isCreate) {
-                                navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
-                            } else {
-                                fetchEntity();
-                            }
-                        })
-                    );
-                } else if (originalEntity?.coverImage && !coverImage) {
-                    return trackPromise(
-                        EntityService.removeCoverImage(entitiesType, response.content.id).then(() => {
-                            displayMessages([{ text: t('entities.edit.messages.cover-remove'), level: 'success' }]);
-                            if (isCreate) {
-                                navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
-                            } else {
-                                fetchEntity();
-                            }
-                        })
-                    );
+                if (isCreate) {
+                    navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
                 } else {
-                    if (isCreate) {
-                        navigate(`/dashboard/${EntityTypeEnum.getLabel(entitiesType, true, false)}/${response.content.slug}`);
-                    } else {
-                        fetchEntity();
-                    }
+                    fetchEntity();
                 }
 
             }).catch((error) => {

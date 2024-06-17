@@ -1,6 +1,7 @@
 import { FormatAlignCenter, FormatAlignJustify, FormatAlignLeft, FormatAlignRight } from "@mui/icons-material";
 import { useTheme } from "@mui/material";
 import {
+    MenuButtonAddImage,
     MenuButtonAddTable,
     MenuButtonBlockquote,
     MenuButtonBold,
@@ -10,7 +11,6 @@ import {
     MenuButtonEditLink,
     MenuButtonHighlightColor,
     MenuButtonHorizontalRule,
-    MenuButtonImageUpload,
     MenuButtonIndent,
     MenuButtonItalic,
     MenuButtonOrderedList,
@@ -28,20 +28,29 @@ import {
     MenuSelectFontSize,
     MenuSelectHeading,
     MenuSelectTextAlign,
-    isTouchDevice
+    isTouchDevice,
+    useRichTextEditorContext
 } from "mui-tiptap";
 import { useTranslation } from 'react-i18next';
+import { REPLACE_MEDIA_MANAGER, useDashboardStore } from "shared/stores/DashboardStore";
 
 export default function EditorMenuControls(props) {
+    const [store, dispatch] = useDashboardStore();
     const { t } = useTranslation('dashboard');
     const theme = useTheme();
+    const editor = useRichTextEditorContext();
 
-    const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-    });
+
+    function handleAddImage() {
+        dispatch({ type: REPLACE_MEDIA_MANAGER, payload: { open: true, onlyImages: true, onSelect: addImageToEditor } });
+    }
+
+    function addImageToEditor(file) {
+        console.log('addImageToEditor', file);
+        if (file && file.url) {
+            editor?.chain().focus().setImage({ src: file.url }).run();
+        }
+    }
 
     return (
         <MenuControlsContainer>
@@ -246,30 +255,10 @@ export default function EditorMenuControls(props) {
 
                     <MenuDivider />
 
-                    <MenuButtonImageUpload
+                    <MenuButtonAddImage
                         aria-label={t('editor.header.upload-images')}
                         tooltipLabel={t('editor.header.upload-images')}
-                        onUploadFiles={async (files) =>
-                            // For the sake of a demo, we don't have a server to upload the files
-                            // to, so we'll instead convert each one to a local "temporary" object
-                            // URL. This will not persist properly in a production setting. You
-                            // should instead upload the image files to your server, or perhaps
-                            // convert the images to bas64 if you would like to encode the image
-                            // data directly into the editor content, though that can make the
-                            // editor content very large.
-                            /* files.map((file) => ({
-                                src: URL.createObjectURL(file),
-                                alt: file.name,
-                            })) */
-
-                            await Promise.all(files.map(async (file) => {
-                                const src = await toBase64(file);
-                                return {
-                                    src,
-                                    alt: file.name,
-                                };
-                            }))
-                        }
+                        onClick={handleAddImage}
                     />
 
                     <MenuDivider />

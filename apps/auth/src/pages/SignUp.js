@@ -97,7 +97,7 @@ function SignUp() {
                     <Typography variant='h6' color="white" fontWeight={theme => theme.typography.fontWeightMedium} textTransform="uppercase">
                         {t(`dashboard:user-profile.plan.${plan}.title`)}
                     </Typography>
-                    <Typography variant='h3' color="white" ffontWeight={theme => theme.typography.fontWeightBold} textTransform="uppercase">
+                    <Typography variant='h3' color="white" fontWeight={theme => theme.typography.fontWeightBold} textTransform="uppercase">
                         {t(`dashboard:user-profile.plan.${plan}.${period !== 'yearly' ? 'price' : 'price-yearly'}`)}
                         {plan !== 'basic' && (
                             <Typography variant='body2' component="span" color="white" fontWeight={theme => theme.typography.fontWeightRegular}>

@@ -1,3 +1,4 @@
+import { AttachmentService } from "@/services/attachment.service";
 import { Lock, LockOpen, TextFields } from "@mui/icons-material";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -13,14 +14,18 @@ import {
     TableBubbleMenu,
     insertImages
 } from "mui-tiptap";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { manuallyDecrementPromiseCounter, manuallyIncrementPromiseCounter } from "react-promise-tracker";
+import { Link } from "react-router-dom";
 import ShowIf from 'shared/components/ShowIf';
+import { MAX_FILE_SIZE } from "shared/utilities/constants";
+import { displayMessages } from "../alerts";
 import EditorMenuControls from "./EditorMenuControls";
 import classes from './MuiEditor.module.scss';
 import useExtensions from "./useExtensions";
-import { Link } from "react-router-dom";
 
+const ONE_MB = 1024 * 1024;
 const MuiEditor = (props) => {
     const { t } = useTranslation('dashboard');
     const rteRef = useRef(null);
@@ -79,22 +84,25 @@ const MuiEditor = (props) => {
 
     */
 
-    function fileListToImageFiles(fileList) {
-        // You may want to use a package like attr-accept
-        // (https://www.npmjs.com/package/attr-accept) to restrict to certain file
-        // types.
-        return Array.from(fileList).filter((file) => {
-            const mimeType = (file.type || "").toLowerCase();
-            return mimeType.startsWith("image/");
-        });
-    }
+    function validateFiles(fileList) {
+        const files = Array.from(fileList);
+        const wrongFiles = files.filter(file => !file.type.includes('image'));
+        if (wrongFiles?.length > 0) {
+            displayMessages(wrongFiles.map(file => {
+                return { text: t('files.errors.wrong-type', { fileName: file.name, allowedTypes: t('files.imageTypes') }), level: 'error' };
+            }));
+        }
 
-    const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-    });
+        const filesTooLarge = files.filter(file => file.size > MAX_FILE_SIZE);
+        if (filesTooLarge?.length > 0) {
+            displayMessages(filesTooLarge.map(file => {
+                return { text: t('files.errors.too-large', { fileName: file.name, maxSize: MAX_FILE_SIZE / ONE_MB }), level: 'error' };
+            }));
+        }
+
+        const filteredFiles = files.filter(file => file.size <= MAX_FILE_SIZE && file.type.includes('image'));
+        return filteredFiles;
+    }
 
     const handleNewImageFiles = useCallback(
         async (files, insertPosition) => {
@@ -107,28 +115,40 @@ const MuiEditor = (props) => {
                 return;
             }
 
-            // For the sake of a demo, we don't have a server to upload the files to,
-            // so we'll instead convert each one to a local "temporary" object URL.
-            // This will not persist properly in a production setting. You should
-            // instead upload the image files to your server, or perhaps convert the
-            // images to bas64 if you would like to encode the image data directly
-            // into the editor content, though that can make the editor content very
-            // large. You will probably want to use the same upload function here as
-            // for the MenuButtonImageUpload `onUploadFiles` prop.
-            const attributesForImageFiles = await Promise.all(files.map(async (file) => {
-                const src = await toBase64(file);
-                return {
-                    src,
-                    alt: file.name,
-                };
-            }));
-            console.log(attributesForImageFiles);
+            // Map each file to a promise that resolves to the response from AttachmentService.create
+            const requests = files.map(file => AttachmentService.create(file));
 
-            insertImages({
-                images: attributesForImageFiles,
-                editor: rteRef.current.editor,
-                insertPosition,
-            });
+            try {
+                manuallyIncrementPromiseCounter();
+
+                // Use Promise.all to wait for all promises to resolve
+                const responses = await Promise.all(requests);
+
+                // Map each response to a promise that resolves to an object with the src property
+                const attributesForImageFilesPromises = responses.map(async response => {
+                    const json = await response.json();
+                    console.log(json);
+                    return {
+                        src: json?.content?.[0]?.url
+                    };
+                });
+
+                // Use Promise.all to wait for all promises to resolve
+                const attributesForImageFiles = await Promise.all(attributesForImageFilesPromises);
+
+                // Insert images
+                insertImages({
+                    images: attributesForImageFiles,
+                    editor: rteRef.current.editor,
+                    insertPosition,
+                });
+
+            } catch (error) {
+                // Log any errors that occurred during the process
+                console.error('An error occurred while processing the files:', error);
+            } finally {
+                manuallyDecrementPromiseCounter();
+            }
         },
         [],
     );
@@ -144,7 +164,7 @@ const MuiEditor = (props) => {
                 return false;
             }
 
-            const imageFiles = fileListToImageFiles(event.dataTransfer.files);
+            const imageFiles = validateFiles(event.dataTransfer.files);
             if (imageFiles.length > 0) {
                 const insertPosition = view.posAtCoords({
                     left: event.clientX,
@@ -175,16 +195,11 @@ const MuiEditor = (props) => {
                 return false;
             }
 
-            const pastedImageFiles = fileListToImageFiles(
+            const pastedImageFiles = validateFiles(
                 event.clipboardData.files,
             );
             if (pastedImageFiles.length > 0) {
                 handleNewImageFiles(pastedImageFiles);
-                // Return true to mark the paste event as handled. This can for
-                // instance prevent redundant copies of the same image showing up,
-                // like if you right-click and copy an image from within the editor
-                // (in which case it will be added to the clipboard both as a file and
-                // as HTML, which Tiptap would otherwise separately parse.)
                 return true;
             }
 
@@ -200,6 +215,12 @@ const MuiEditor = (props) => {
         setSubmittedContent(data);
         if (props.handleSave) {
             props.handleSave(data);
+        }
+    }
+
+    function handleUpdate() {
+        if (props.onChange) {
+            props.onChange(rteRef.current?.editor?.getHTML() !== '<p></p>' ? rteRef.current?.editor?.getHTML() : null);
         }
     }
 
@@ -225,7 +246,7 @@ const MuiEditor = (props) => {
                     props.onChange(editor.getHTML());
                 }} */
                 // onUpdate should call props.onUpdate if it exists but through a debounce function:
-                onUpdate={props.onChange ? debounce(({ editor }) => props.onChange(editor.getHTML() !== '<p></p>' ? editor.getHTML() : null), 500) : undefined}
+                onUpdate={debounce(handleUpdate, 500)}
                 RichTextFieldProps={{
                     // The "outlined" variant is the default (shown here only as
                     // example), but can be changed to "standard" to remove the outlined
@@ -390,7 +411,7 @@ const AIButton = () => {
                 </div>
                 <div className={classes.content}>
                     <AutoAwesomeIcon />
-                    Start With AI
+                    {t('labels.start-with-ai')}
                 </div>
             </button>
 

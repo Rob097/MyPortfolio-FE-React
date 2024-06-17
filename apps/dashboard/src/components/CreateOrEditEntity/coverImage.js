@@ -1,16 +1,15 @@
 import { CustomCard, CustomCardContent, CustomCardHeader } from '@/components/Custom/CardComponents';
 import CustomFileInput from '@/components/CustomFileInput';
-import { displayMessages } from '@/components/alerts';
 import { Close, Edit, Image } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { useController, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { MAX_FILE_SIZE } from "shared/utilities/constants";
+import { REPLACE_MEDIA_MANAGER, useDashboardStore } from "shared/stores/DashboardStore";
 
-const ONE_MB = 1024 * 1024;
 const CoverImage = ({ coverImageUrl, setCoverImageUrl }) => {
     const { t } = useTranslation("dashboard");
     const myForm = useFormContext();
+    const [store, dispatch] = useDashboardStore();
 
     const { field: coverImage } = useController({
         control: myForm.control,
@@ -18,29 +17,16 @@ const CoverImage = ({ coverImageUrl, setCoverImageUrl }) => {
     });
 
     function handleReplaceCoverImage(file) {
-        myForm.setValue('coverImage', file);
+        myForm.setValue('coverImage', file?.url ?? null);
         if (file) {
-            setCoverImageUrl(URL.createObjectURL(file));
+            setCoverImageUrl(file.url);
         } else {
             setCoverImageUrl(null);
         }
     }
 
     function handleChooseCoverImage() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.maxFiles = 1;
-        input.maxSize = MAX_FILE_SIZE;
-        input.onchange = (event) => {
-            const file = event.target.files[0];
-            if (file && file.size <= MAX_FILE_SIZE) {
-                handleReplaceCoverImage(file);
-            } else {
-                displayMessages([{ text: t('files.errors.too-large', { fileName: file?.name, maxSize: MAX_FILE_SIZE / ONE_MB }), level: 'error' }]);
-            }
-        };
-        input.click();
+        dispatch({ type: REPLACE_MEDIA_MANAGER, payload: { open: true, onlyImages: true, onSelect: handleReplaceCoverImage } });
     }
 
     return (

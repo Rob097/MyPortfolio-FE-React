@@ -102,9 +102,20 @@
         "defaultDisplayedName": "Il tuo {{label}}",
         "inputPlaceholder": "Trascina qui il file <br /> O <br /> <span class=\"text-primary-main font-bold\">Sfoglia i file</span>",
         "imageTypes": "Immagini",
+        "pdfTypes": "Pdf",
         "documentTypes": "Pdf o Testo",
         "imagesPdf": "Immagini o Pdf",
-        "allTypes": "Pdf, Testo o Immagini"
+        "allTypes": "Pdf, Testo o Immagini",
+        "all": "Tutti",
+        "manage": "Gestisci i tuoi files",
+        "upload": "Carica un nuovo file",
+        "delete-dialog": {
+            "title": "Elimina File",
+            "text": "Sei sicuro di voler eliminare questo file?<br />Questa azione non può essere annullata."
+        },
+        "no-images": "Nessuna immagine trovata",
+        "no-documents": "Nessun documento trovato",
+        "no-files": "Nessun file trovato"
     },
     "skills": {
         "search": "Cerca skills",
@@ -265,6 +276,8 @@
         "cancel": "Annulla",
         "reset": "Resetta",
         "back": "Indietro",
+        "select": "Seleziona",
+        "download": "Scarica",
         "view-all": "Vedi tutto",
         "projects": "Progetti",
         "educations": "Educazioni",
@@ -284,7 +297,8 @@
         },
         "check-delete-1": "Sei sicuro di voler eliminare questo {{item}}?",
         "check-delete-2": "Sei sicuro di voler eliminare questa {{item}}?",
-        "last-update": "Ultimo aggiornamento"
+        "last-update": "Ultimo aggiornamento",
+        "start-with-ai": "Usa AI"
     },
     "messages": {
         "success": "Successo",
