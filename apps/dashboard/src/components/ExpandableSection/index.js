@@ -34,7 +34,7 @@ const ExpandableSection = ({ mainTitle, secondaryTitle, badge, info, MainBody, S
                 >
                     <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} >{mainTitle}</Typography>
                     <ShowIf condition={badge !== undefined}>
-                        <Chip variant="outlined" color="primary" size='small' label={badge} className='ml-2' />
+                        <Chip variant="outlined" color="primary" size='small' label={badge} className='ml-2 !hidden sm:!inline-flex' />
                     </ShowIf>
                     <ShowIf condition={info !== undefined}>
                         {/* tooltip title is html */}

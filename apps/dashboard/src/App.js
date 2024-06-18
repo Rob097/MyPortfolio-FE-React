@@ -53,7 +53,7 @@ TO BE DONE:
     - ✅ Backuppare tutte le properties non su github
     - ✅ Popolare skills
     - ✅ Prova sign up in prod
-    - Implementare gestione immagini
+    - ✅ Implementare gestione immagini
     - Creare email my-portfolio e mailing list
     - Scrivere articoli sul nuovo MVP nelle varie piattaforme
     - Google ADS

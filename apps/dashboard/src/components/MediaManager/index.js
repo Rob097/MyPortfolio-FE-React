@@ -1,7 +1,7 @@
 import { AttachmentQ } from '@/models/attachment.model';
 import { AttachmentService } from '@/services/attachment.service';
 import { Check, Close, Contacts, Delete, Download, Image, PictureAsPdf, UploadFile } from '@mui/icons-material';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { Worker } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -23,6 +23,7 @@ const MediaManager = (props) => {
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState();
     const [deleteFileModalOpen, setDeleteFileModalOpen] = useState(false);
+    const isBiggerThanSm = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
     useEffect(() => {
         if (onlyImages) {
@@ -167,7 +168,7 @@ const MediaManager = (props) => {
                 maxWidth="xl"
                 classes={{ paper: 'h-full' }}
             >
-                <DialogTitle variant='h2'>{t('files.manage')}</DialogTitle>
+                <DialogTitle variant='h2' className='!text-2xl'>{t('files.manage')}</DialogTitle>
                 <IconButton
                     aria-label="close"
                     onClick={close}
@@ -180,41 +181,39 @@ const MediaManager = (props) => {
                 >
                     <Close />
                 </IconButton>
-                <DialogContent
-                    style={{ overflow: "hidden" }}
-                >
+                <DialogContent className='overflow-hidden flex flex-col'>
                     <Box className="w-full h-fit flex flex-col sm:flex-row justify-between items-center px-4 mb-4">
 
-                        <Box className="relative flex border-b-2 border-transparent gap-x-2">
+                        <Box className="relative flex border-b-2 border-transparent gap-x-2 ">
                             <Button
                                 variant='text'
-                                className='!w-1/3 !font-semibold'
+                                className='!w-1/3 !font-semibold content-none'
                                 color={mode === 'all' ? 'primary' : 'inherit'}
                                 onClick={() => handleChangeMode('all')}
                                 startIcon={<Contacts />}
                                 disabled={onlyImages || onlyPDFs}
                             >
-                                {t('files.all')}
+                                {isBiggerThanSm && t('files.all')}
                             </Button>
                             <Button
                                 variant='text'
-                                className='!w-1/3 !font-semibold'
+                                className='!w-1/3 !font-semibold content-none'
                                 color={mode === 'images' ? 'primary' : 'inherit'}
                                 onClick={() => handleChangeMode('images')}
                                 startIcon={<Image />}
                                 disabled={onlyPDFs}
                             >
-                                {t('files.imageTypes')}
+                                {isBiggerThanSm && t('files.imageTypes')}
                             </Button>
                             <Button
                                 variant='text'
-                                className='!w-1/3 !font-semibold'
+                                className='!w-1/3 !font-semibold content-none'
                                 color={mode === 'pdfs' ? 'primary' : 'inherit'}
                                 onClick={() => handleChangeMode('pdfs')}
                                 startIcon={<PictureAsPdf />}
                                 disabled={onlyImages}
                             >
-                                {t('files.pdfTypes')}
+                                {isBiggerThanSm && t('files.pdfTypes')}
                             </Button>
                             <div
                                 className={`absolute bottom-0 h-1 bg-primary-main transition-all duration-300 w-1/3 
@@ -225,11 +224,11 @@ const MediaManager = (props) => {
                         </Box>
 
                         <Box className="w-fit h-fit flex flex-row justify-start items-center mt-4 sm:mt-0">
-                            <Button variant="contained" color="primary" startIcon={<UploadFile />} onClick={handleAddFile}>{t('files.upload')}</Button>
+                            <Button className='!text-nowrap !text-xs' variant="contained" color="primary" startIcon={<UploadFile />} onClick={handleAddFile}>{t('files.upload')}</Button>
                         </Box>
                     </Box>
 
-                    <Box className="w-full h-full px-4 my-2 overflow-y-auto" sx={{ maxHeight: '35rem' }}>
+                    <Box className="w-full h-full px-4 my-2 overflow-y-auto">
                         <Grid container spacing={2}>
                             {files && files.length > 0 && (
                                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
@@ -251,7 +250,7 @@ const MediaManager = (props) => {
 
                             {!displayableFilesLength && (
                                 <Grid item xs={12}>
-                                    <img src='/images/no-data.svg' className='m-auto' style={{ width: '40em' }} />
+                                    <img src={`${process.env.REACT_APP_DASHBOARD_URL}/images/no-data.svg`} className='m-auto' style={{ width: '40em' }} />
                                     <Typography variant='h6' className='text-center'>{mode === 'images' ? t('files.no-images') : mode === 'pdfs' ? t('files.no-documents') : t('files.no-files')}</Typography>
                                 </Grid>
                             )}
@@ -260,9 +259,9 @@ const MediaManager = (props) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Box className="w-full h-fit flex flex-row justify-center sm:justify-between items-center px-4 mb-4">
+                    <Box className="w-full h-fit flex flex-col sm:flex-row justify-center sm:justify-between items-center px-4 mb-4 gap-y-2">
                         <Button onClick={handleDownloadFile} variant="outlined" color="primary" startIcon={<Download />} disabled={!selectedFile} >{t('labels.download')}</Button>
-                        <Box className="w-fit h-fit flex flex-row justify-start items-center gap-x-2">
+                        <Box className="w-fit h-fit flex flex-col sm:flex-row justify-start items-center gap-x-2 gap-y-2">
                             <Button onClick={() => setDeleteFileModalOpen(true)} variant="contained" color="error" startIcon={<Delete />} disabled={!selectedFile} >{t('labels.delete')}</Button>
                             {allowSelect && <Button onClick={handleSelect} variant="contained" color="primary" startIcon={<Check />} disabled={!selectedFile} >{t('labels.select')}</Button>}
                         </Box>

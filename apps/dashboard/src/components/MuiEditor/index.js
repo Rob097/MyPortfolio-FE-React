@@ -39,51 +39,6 @@ const MuiEditor = (props) => {
 
     ////////////////// IMAGE FUNCTIONS - START //////////////////////////
 
-    /*
-    TODO:
-    Gestione immagini in-editor:
-    Per gestire al meglio le immagini aggiunte alle storie tramite l'editor e i file di un utente (i.e. CVs), sarà necessario implementare un architettura ad-hoc. (soluzione più corretta e semplice):
-    Innanzitutto servirà una tabella a DB con:
-     - id (autoincrement)
-     - user_id
-     - attachment_url
-     - attachment_type (image, pdf, ecc)
-    Dopodiché servirà un API a cui passare un file che caricherà su FireBase nella cartella chiamata "USER_${user_id}" e salverà l'url ritornato nella nuova tabella (userAttachments).
-    Servirà anche un API che, dato un url, elimini l'immagine/file da firebase e dalla tabella.
-    Infine, servirà un API che, dato un user_id, ritorni tutte le immagini associate a quell'utente o tutti i file.
-
-    NOTA PER IL BE:
-    In generale, quando un utente viene eliminato dal sistema, bisogna eliminare tutte le immagini associate a quell'utente da firebase e dalla tabella userImages.
-    Servirà comunque revisionare tutto il funzionamento dell'applicazione quando un utente viene rimosso (mai testato).
-
-    Per quanto riguarda il FE invece, servirà implementare un componente che è una modale che permette di:
-     - visualizzare tutte le immagini dell'utente
-     - selezionare un'immagine da inserire nell'editor (url)
-     - eliminare un'immagine
-     - caricare un'immagine
-
-    Servirà chiamare questo componente sia dai EditorMenuControls che dalla funzione di drag&drop e paste delle immagini.
-    Valutare se creare il componente normalemente e fare una versione "modale" in modo da poter usare il componente anche in altre parti dell'applicazione.
-
-    1) ✅ Mockup
-    2) BE
-        - ✅ Tabella
-        - ✅ Entity, DTO e Mapper
-        - ✅ Service, Repository e Controller
-        - ✅ API per caricare immagini
-        - ✅ API per eliminare immagini
-        - ✅ API per ritornare immagini
-        - ✅ Eliminare files quando un utente viene eliminato
-    3) ✅ Test
-    4) Migrazione dati esistenti
-    5) ✅ FE
-    6) ✅ Test
-    7) ✅ Eventuale pulizia codice
-    8) Deploy
-    9) Test finali
-
-    */
-
     function validateFiles(fileList) {
         const files = Array.from(fileList);
         const wrongFiles = files.filter(file => !file.type.includes('image'));

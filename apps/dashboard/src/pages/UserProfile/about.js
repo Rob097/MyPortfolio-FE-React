@@ -106,7 +106,7 @@ const About = () => {
 
                     <Box className='w-full max-w-md flex flex-col items-start justify-start'>
                         <Typography variant='h4' color='dark.main' fontWeight={theme => theme.typography.fontWeightBold} className='!mt-5 !mb-10' >{t('user-profile.about.cv.title')}</Typography>
-                        <Box className='w-full max-w-md flex flex-row gap-x-4 items-start justify-start mt-4'>
+                        <Box className='w-full max-w-md flex flex-col sm:flex-row gap-x-4 items-start justify-start mt-4 gap-y-8'>
                             <CustomFileInput
                                 label={enCvLabel}
                                 field={fieldEn}
