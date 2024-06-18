@@ -3,7 +3,7 @@ import { AttachmentService } from '@/services/attachment.service';
 import { Check, Close, Contacts, Delete, Download, Image, PictureAsPdf, UploadFile } from '@mui/icons-material';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import { Worker } from '@react-pdf-viewer/core';
-//import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { trackPromise } from 'react-promise-tracker';

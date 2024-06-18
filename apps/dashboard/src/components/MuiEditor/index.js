@@ -76,9 +76,9 @@ const MuiEditor = (props) => {
         - ✅ Eliminare files quando un utente viene eliminato
     3) ✅ Test
     4) Migrazione dati esistenti
-    5) FE
-    6) Test
-    7) Eventuale pulizia codice
+    5) ✅ FE
+    6) ✅ Test
+    7) ✅ Eventuale pulizia codice
     8) Deploy
     9) Test finali
 
@@ -108,10 +108,12 @@ const MuiEditor = (props) => {
         async (files, insertPosition) => {
 
             if (!props.useComplete) {
+                displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
                 return;
             }
 
             if (!rteRef.current?.editor) {
+                displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
                 return;
             }
 
@@ -157,10 +159,12 @@ const MuiEditor = (props) => {
         (view, event, _slice, _moved) => {
 
             if (!props.useComplete) {
+                displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
                 return false;
             }
 
             if (!(event instanceof DragEvent) || !event.dataTransfer) {
+                displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
                 return false;
             }
 
@@ -188,10 +192,12 @@ const MuiEditor = (props) => {
         (_view, event, _slice) => {
 
             if (!props.useComplete) {
+                displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
                 return false;
             }
 
             if (!event.clipboardData) {
+                displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
                 return false;
             }
 

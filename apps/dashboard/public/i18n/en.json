@@ -97,7 +97,9 @@
         "errors": {
             "too-large": "File {{fileName}} is too large. Max size is {{maxSize}}Mb",
             "wrong-type": "File {{fileName}} has a wrong type. Allowed types are {{allowedTypes}}",
-            "generic": "An error occurred while uploading the file {{fileName}}"
+            "generic": "An error occurred while uploading the file {{fileName}}",
+            "image-not-allowed": "Image files are not allowed",
+            "image-generic-error": "An error occurred while uploading the image"
         },
         "defaultDisplayedName": "Your {{label}}",
         "inputPlaceholder": "Drop File Here <br /> OR <br /> <span class=\"text-primary-main font-bold\">Browse Files</span>",

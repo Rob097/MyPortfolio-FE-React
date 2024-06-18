@@ -97,7 +97,9 @@
         "errors": {
             "too-large": "Il file {{fileName}} è troppo grande. La dimensione massima è {{maxSize}}Mb",
             "wrong-type": "Il file {{fileName}} ha un tipo errato. I tipi consentiti sono {{allowedTypes}}",
-            "generic": "Si è verificato un errore durante il caricamento del file {{fileName}}"
+            "generic": "Si è verificato un errore durante il caricamento del file {{fileName}}",
+            "image-not-allowed": "Le immagini non sono consentite",
+            "image-generic-error": "Si è verificato un errore durante il caricamento dell'immagine"
         },
         "defaultDisplayedName": "Il tuo {{label}}",
         "inputPlaceholder": "Trascina qui il file <br /> O <br /> <span class=\"text-primary-main font-bold\">Sfoglia i file</span>",
