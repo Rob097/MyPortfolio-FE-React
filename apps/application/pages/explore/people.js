@@ -70,11 +70,8 @@ const People = (props) => {
                 trackPromise(
                     UserService.getByCriteria(filters, true)
                         .then((response) => {
-                            const foundUsers = response?.content?.filter((user) => user.diaries?.length > 0);
-                            const excluded = response?.content?.filter((user) => !user.diaries || user.diaries?.length === 0)?.length ?? 0;
-
-                            setUsers(foundUsers);
-                            setTotalUsers(response?.headers?.get('number') - excluded);
+                            setUsers(response?.content);
+                            setTotalUsers(response?.headers?.get('number'));
                         })
                         .catch(error => {
                             Snack.error(error);
@@ -162,10 +159,10 @@ const People = (props) => {
     // if the user array already contains the number of users of "numberPerPage"*"page" then don't fetch anything and just show the users already fetched.
     function handlePagination(event, page) {
         if (Math.ceil(users?.length / numberPerPage) < page) {
-            const internalFilters = filters;
+            const internalFilters = filters ?? new UserQ(null, View.verbose, 0, numberPerPage, new Sort(UserQ.updatedAt, 'DESC'));
             internalFilters.page = page - 1;
             trackPromise(
-                UserService.getByCriteria(filters)
+                UserService.getByCriteria(internalFilters)
                     .then((response) => {
                         const newUsersWithoutDuplicates = response?.content?.filter((user) => !users?.map((user) => user.id).includes(user.id));
                         setUsers([...users, ...newUsersWithoutDuplicates]);
@@ -178,17 +175,17 @@ const People = (props) => {
                     })
             );
         } else {
-            setUsers(users?.slice(0, numberPerPage * page));
             setCurrentPage(page - 1);
         }
     }
 
     async function handleFilters(data) {
+        const diariesCriteria = new Criteria(UserQ.diaries, Operation.greaterThan, 1);
         const fullNameCriteria = new Criteria(UserQ.firstName + " " + UserQ.lastName, Operation.equals, "*" + data.name?.replace(" ", "*") + "*");
         const professionCriteria = new Criteria(UserQ.profession, Operation.equals, data.industry);
         const nationCriteria = new Criteria(UserQ.nation, Operation.equals, data.location);
 
-        const criterias = [];
+        const criterias = [diariesCriteria];
         data.name && criterias.push(fullNameCriteria);
         data.industry && data.industry !== 'All' && criterias.push(professionCriteria);
         data.location && data.location !== 'All' && criterias.push(nationCriteria);
@@ -331,7 +328,9 @@ export async function getStaticProps(context) {
     try {
         const { locale } = context
 
-        const filters = new UserQ(null, View.verbose, 0, 10, new Sort(UserQ.updatedAt, 'DESC'));
+        const diariesCriteria = new Criteria(UserQ.diaries, Operation.greaterThan, 1);
+        const criterias = [diariesCriteria];
+        const filters = new UserQ(criterias, View.verbose, 0, 10, new Sort(UserQ.updatedAt, 'DESC'));
         const firstTenUsersUrl = UserService.getByCriteriaUrl(filters);
         const firstTenUsersResponse = await fetcher(firstTenUsersUrl, true);
 
@@ -342,18 +341,14 @@ export async function getStaticProps(context) {
             }
         }
 
-        // filter out all the users that have no diaries:
-        const users = firstTenUsersResponse?.content.filter((user) => user.diaries?.length > 0);
-        const excluded = firstTenUsersResponse?.content.filter((user) => !user.diaries || user.diaries?.length === 0)?.length ?? 0;
-
         props = {
             ...(await serverSideTranslations(locale)),
-            users: users,
+            users: firstTenUsersResponse?.content,
             messages: firstTenUsersResponse?.messages,
             revalidate: revalidate,
             isEmpty: firstTenUsersResponse.headers?.get('is-empty'),
             isLast: firstTenUsersResponse.headers?.get('is-last'),
-            number: firstTenUsersResponse.headers?.get('number') - excluded
+            number: firstTenUsersResponse.headers?.get('number')
         }
 
     } catch (error) {

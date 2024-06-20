@@ -29,7 +29,7 @@ const App = () => {
           <CustomRouterProvider />
 
         </DashboardStoreProvider>
-      </AuthStoreProvider>  
+      </AuthStoreProvider>
 
     </ThemeProvider>
   )
@@ -54,7 +54,7 @@ TO BE DONE:
     - ✅ Popolare skills
     - ✅ Prova sign up in prod
     - ✅ Implementare gestione immagini
-    - Creare email my-portfolio e mailing list
+    - ✅ Creare email my-portfolio e mailing list
     - Scrivere articoli sul nuovo MVP nelle varie piattaforme
     - Google ADS
 

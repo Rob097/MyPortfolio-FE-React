@@ -72,4 +72,5 @@ export class UserQ extends Filters {
     static slug = 'slug';
     static createdAt = 'createdAt';
     static updatedAt = 'updatedAt';
+    static diaries = 'diaries';
 }
