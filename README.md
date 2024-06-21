@@ -77,7 +77,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Roberto - [Your LinkedIn](https://www.linkedin.com/in/roberto-dellantonio) - [Your Email](mailto:dellantonio47@gmail.com)
 
 Project Link: [GitHub Repository](https://github.com/Rob097/MyPortfolio-FE-React)
-
-```
-
-Replace the placeholders (e.g., `your-username`, `your-profile`, `your.email@example.com`) with your actual information. This README provides a comprehensive guide to your project, helping users understand its purpose, how to install and use it, and how to contribute.
