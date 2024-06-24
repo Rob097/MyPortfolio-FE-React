@@ -59,14 +59,14 @@ const SquareCard = ({ image, title, subtitle, description, chips, bottomCaption,
             </CardContent>
             <CardActions>
                 <Grid container mx={2}>
-                    <Grid item xs={12} lg={6} className="flex items-center lg:justify-start justify-center">
+                    <Grid item xs={12} /* lg={6} */ className="flex items-center lg:justify-start justify-center">
                         <ShowIf condition={bottomCaption !== undefined}>
                             <Typography variant="caption" color="primary" fontWeight='bold'>
                                 {bottomCaption}
                             </Typography>
                         </ShowIf>
                     </Grid>
-                    <Grid item xs={12} lg={6} className="flex items-center lg:justify-end justify-center">
+                    <Grid item xs={12} /* md={6} */ className="flex items-center lg:justify-end justify-center">
                         <Box className="flex flex-row justify-end">
                             {buttons[1] !== undefined &&
                                 <Link href={buttons[1]?.link} scroll={!buttons[1]?.blockScroll}>

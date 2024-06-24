@@ -14,6 +14,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from "next/head";
 import { useEffect, useRef, useState } from 'react';
+import { ErrorBoundary } from "react-error-boundary";
 import { FormProvider, useForm } from 'react-hook-form';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 
@@ -38,7 +39,7 @@ const People = (props) => {
     const [totalUsers, setTotalUsers] = useState(props.number);
     const [users, setUsers] = useState(props.users);
     const [visibleUsers, setVisibleUsers] = useState(props.users);
-    const [filters, setFilters] = useState();
+    const [filters, setFilters] = useState(new UserQ([new Criteria(UserQ.diaries, Operation.greaterThan, 1)], View.verbose, 0, numberPerPage, new Sort(UserQ.updatedAt, 'DESC')));
     const [currentPage, setCurrentPage] = useState(0);
     const [sideWidth, setSideWidth] = useState(0)
     let sideRef = useRef()
@@ -94,27 +95,13 @@ const People = (props) => {
     /*     METHODS    */
     /******************/
 
-    /* function updateStatistics() {
-        if (statisticsBy === 'industry') {
-            setStatisticsData(users?.map((user => user.profession))?.filter((value, index, self) => self.indexOf(value) === index).map((profession, index) => {
-                return { id: index, value: users?.filter((user) => user.profession === profession).length, label: profession }
-            }
-            ));
-        } else if (statisticsBy === 'skill') {
-            setStatisticsData(
-                users?.map((user => user.skills?.filter((userSkill) => userSkill.isMain).map((userSkill) => userSkill.skill.name)))?.flat()?.filter((value, index, self) => self.indexOf(value) === index).map((skill, index) => {
-                    return { id: index, value: users?.filter((user) => user.skills?.filter((userSkill) => userSkill.isMain).map((userSkill) => userSkill.skill.name).includes(skill)).length, label: skill }
-                })
-            );
-        }
-    } */
     function updateStatistics() {
         if (statisticsBy === 'industry') {
             const data = users?.map(user => user.profession)
                 ?.filter((value, index, self) => self.indexOf(value) === index)
                 ?.map((profession, index) => ({
                     id: index,
-                    value: users?.filter(user => user.profession === profession).length,
+                    value: users?.filter(user => user.profession === profession)?.length,
                     label: truncateLabel(profession)
                 }));
 
@@ -125,7 +112,7 @@ const People = (props) => {
                 ?.filter((value, index, self) => self.indexOf(value) === index)
                 ?.map((skill, index) => ({
                     id: index,
-                    value: users?.filter(user => user.skills?.filter(userSkill => userSkill.isMain).map(userSkill => userSkill.skill.name).includes(skill)).length,
+                    value: users?.filter(user => user.skills?.filter(userSkill => userSkill.isMain).map(userSkill => userSkill.skill.name).includes(skill))?.length,
                     label: truncateLabel(skill)
                 }));
 
@@ -137,22 +124,27 @@ const People = (props) => {
         // Sort data by value in descending order
         const sortedData = [...data].sort((a, b) => b.value - a.value);
 
-        // Take the first 4 items
-        const topData = sortedData.slice(0, 4);
+        let results = sortedData;
+        if (sortedData?.length > 5) {
+            // Take the first 4 items
+            const topData = sortedData.slice(0, 4);
 
-        // Merge the rest into an "Other" category
-        const otherData = {
-            id: topData.length,
-            value: sortedData.slice(4).reduce((total, item) => total + item.value, 0),
-            label: 'Other'
-        };
+            // Merge the rest into an "Other" category
+            const otherData = {
+                id: topData?.length,
+                value: sortedData.slice(4).reduce((total, item) => total + item.value, 0),
+                label: 'Other'
+            };
+
+            results = [...topData, otherData];
+        }
 
         // Return the new data
-        return [...topData, otherData];
+        return results;
     }
 
     function truncateLabel(label) {
-        return label.length > 25 ? label.slice(0, 25) + '...' : label;
+        return label?.length > 25 ? label.slice(0, 25) + '...' : label;
     }
 
     // When going to the next page, fetch the next 10 users and add them to the users array.
@@ -251,7 +243,7 @@ const People = (props) => {
                         </ShowIf>
 
                         <ShowIf condition={layout === 'grid'}>
-                            <Box className={"w-full flex flex-row flex-wrap items-start justify-start"}>
+                            <Box className={"w-full flex flex-row flex-wrap items-start justify-center"}>
                                 {
                                     visibleUsers?.length <= 0 ? <h1>{t('people.no-results')}</h1> :
                                         visibleUsers.map((user) => (
@@ -300,11 +292,13 @@ const People = (props) => {
                             </Box>
 
                             <Box className='w-fit mx-auto'>
-                                <CustomPieChart
-                                    data={statisticsData}
-                                    width={sideWidth}
-                                    height={400}
-                                />
+                                <ErrorBoundary onError={error => console.log("ERROR PIE CHART: ", error)} fallback={<CustomPieChart data={statisticsData} width={sideWidth} height={400} />}>
+                                    <CustomPieChart
+                                        data={statisticsData}
+                                        width={sideWidth}
+                                        height={400}
+                                    />
+                                </ErrorBoundary>
                             </Box>
 
 
