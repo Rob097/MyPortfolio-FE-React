@@ -62,6 +62,10 @@ const MuiEditor = (props) => {
     const handleNewImageFiles = useCallback(
         async (files, insertPosition) => {
 
+            if (!files || files?.length === 0) {
+                return;
+            }
+
             if (!props.useComplete) {
                 displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
                 return;
@@ -113,29 +117,31 @@ const MuiEditor = (props) => {
     const handleDrop = useCallback(
         (view, event, _slice, _moved) => {
 
-            if (!props.useComplete) {
-                displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
-                return false;
-            }
+            if (event?.dataTransfer?.files?.length > 0) {
+                if (!props.useComplete) {
+                    displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
+                    return false;
+                }
 
-            if (!(event instanceof DragEvent) || !event.dataTransfer) {
-                displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
-                return false;
-            }
+                if (!(event instanceof DragEvent) || !event.dataTransfer) {
+                    displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
+                    return false;
+                }
 
-            const imageFiles = validateFiles(event.dataTransfer.files);
-            if (imageFiles.length > 0) {
-                const insertPosition = view.posAtCoords({
-                    left: event.clientX,
-                    top: event.clientY,
-                })?.pos;
+                const imageFiles = validateFiles(event.dataTransfer.files);
+                if (imageFiles.length > 0) {
+                    const insertPosition = view.posAtCoords({
+                        left: event.clientX,
+                        top: event.clientY,
+                    })?.pos;
 
-                handleNewImageFiles(imageFiles, insertPosition);
+                    handleNewImageFiles(imageFiles, insertPosition);
 
-                // Return true to treat the event as handled. We call preventDefault
-                // ourselves for good measure.
-                event.preventDefault();
-                return true;
+                    // Return true to treat the event as handled. We call preventDefault
+                    // ourselves for good measure.
+                    event.preventDefault();
+                    return true;
+                }
             }
 
             return false;
@@ -146,22 +152,24 @@ const MuiEditor = (props) => {
     const handlePaste = useCallback(
         (_view, event, _slice) => {
 
-            if (!props.useComplete) {
-                displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
-                return false;
-            }
+            if (event?.clipboardData?.files?.length > 0) {
+                if (!props.useComplete) {
+                    displayMessages([{ text: t('files.errors.image-not-allowed'), level: 'warning' }]);
+                    return false;
+                }
 
-            if (!event.clipboardData) {
-                displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
-                return false;
-            }
+                if (!event.clipboardData) {
+                    displayMessages([{ text: t('files.errors.image-generic-error'), level: 'error' }]);
+                    return false;
+                }
 
-            const pastedImageFiles = validateFiles(
-                event.clipboardData.files,
-            );
-            if (pastedImageFiles.length > 0) {
-                handleNewImageFiles(pastedImageFiles);
-                return true;
+                const pastedImageFiles = validateFiles(
+                    event.clipboardData.files,
+                );
+                if (pastedImageFiles?.length > 0) {
+                    handleNewImageFiles(pastedImageFiles);
+                    return true;
+                }
             }
 
             // We return false here to allow the standard paste-handler to run.

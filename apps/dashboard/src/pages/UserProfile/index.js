@@ -107,6 +107,9 @@ const UserProfile = () => {
                 if(data.customizations.CV[key] == null) {
                     data.customizations.CV[key] = undefined;
                 }
+                if(!dataToCheck.customizations.CV) {
+                    dataToCheck.customizations.CV = {};
+                }
                 if (!dataToCheck.customizations.CV[key]) {
                     dataToCheck.customizations.CV[key] = undefined;
                 }
