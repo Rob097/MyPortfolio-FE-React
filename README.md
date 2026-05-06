@@ -2,13 +2,13 @@
 
 Platform for building detailed professional portfolios, structured as stories rather than plain CV entries. Instead of just listing experiences and projects, MyPortfolio lets you write the full story behind each one and connect everything through a personal diary.
 
-This repository contains the frontend. For the backend, see [MyPortFolio-BE-v2](https://github.com/Rob097/MyPortFolio-BE-v2).
+This repository contains the frontend. For the backend, see [MyPortFolio-BE-v2](https://github.com/Rob097/MyPortfolio-BE-v2).
 
 ---
 
 ## Features
 
-- Write in-depth stories for each experience, education and project
+- Write in-depth stories for eich experience, education and project
 - Connect portfolio entries through a personal diary
 - Clean, focused interface for both creating and reading portfolios
 
